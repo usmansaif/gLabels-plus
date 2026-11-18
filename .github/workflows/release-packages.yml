@@ -1,14 +1,33 @@
-# Builds release packages on each OS with release.sh and uploads them as artifacts.
-# Run it manually from the GitHub "Actions" tab.
+# Builds installable packages on each OS with release.sh and publishes them
+# to a GitHub Release, where anyone can download them.
 #
 #     - ubuntu-22.04  -> .AppImage, .deb, .rpm, .tar.gz
 #     - windows-2022  -> .exe (NSIS installer), .zip
 #     - macos-latest  -> .tar.gz, .dmg
+#
+# To publish a release, push a version tag:
+#
+#     git tag v5.1 && git push origin v5.1
+#
+# It can also be run by hand from the GitHub "Actions" tab for an existing tag.
 
 name: Release Packages
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to build and publish (e.g. v5.0)'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
 
 jobs:
   package:
@@ -23,6 +42,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: ${{ env.RELEASE_TAG }}
         fetch-depth: 0
 
     - name: Install packaging tools (Ubuntu)
@@ -45,8 +65,28 @@ jobs:
       shell: bash
       run: ./release.sh --qt "$QT_ROOT_DIR"
 
-    - name: Upload packages
+    - name: Upload packages (workflow artifact)
       uses: actions/upload-artifact@v4
       with:
         name: glabels-${{ matrix.os }}
         path: dist/*
+
+    - name: Publish to GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ env.RELEASE_TAG }}
+        name: gLabels Plus ${{ env.RELEASE_TAG }}
+        files: dist/*
+        fail_on_unmatched_files: true
+        body: |
+          ## Download
+
+          | System | File | How to install |
+          |---|---|---|
+          | **Windows** | `.exe` | Run the installer. If SmartScreen appears, click *More info* then *Run anyway*. A portable `.zip` is also available. |
+          | **Ubuntu / Debian** | `.deb` | `sudo apt install ./glabels-qt_*.deb` or double-click it. |
+          | **Fedora / openSUSE** | `.rpm` | `sudo dnf install ./glabels-qt-*.rpm` |
+          | **Any Linux** | `.AppImage` | `chmod +x glabels-qt-*.AppImage` then run it. No install needed. |
+          | **macOS** | `.dmg` | Needs Qt first: `brew install qt qrencode`. Then open the `.dmg`, copy the folder and run `bin/glabels-qt`. |
+
+          Qt is bundled in the Windows and Linux packages, so nothing else needs to be installed.
