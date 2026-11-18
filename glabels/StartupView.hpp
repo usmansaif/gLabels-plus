@@ -25,10 +25,12 @@
 #include <QWidget>
 
 
+class QFileSystemWatcher;
 class QLabel;
 class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
+class QTimer;
 class QToolButton;
 
 
@@ -53,6 +55,9 @@ namespace glabels
         public:
                 StartupView( MainWindow* window );
 
+                /// Select a project in the Projects panel (e.g. after File > New Project)
+                void selectProject( const QString& project );
+
 
                 /////////////////////////////////
                 // Events
@@ -73,6 +78,15 @@ namespace glabels
                 void onSettingsChanged();
                 void onAppearanceChanged();
 
+                void onCreateProject();
+                void onProjectSelectionChanged();
+                void onProjectContextMenu( const QPoint& pos );
+                void onNewLabelInProject();
+                void onOpenProjectFolder();
+                void onProjectLabelActivated( QListWidgetItem* item );
+                void onProjectLabelContextMenu( const QPoint& pos );
+                void onProjectsChangedOnDisk();
+
 
                 /////////////////////////////////
                 // Private methods
@@ -82,6 +96,16 @@ namespace glabels
                                                const QString& title,
                                                const QString& description );
                 void loadRecentList();
+                QWidget* createProjectsSection();
+                void loadProjects( const QString& select = QString() );
+                void loadProjectLabels();
+                QString currentProject() const;
+                void renameProject( const QString& project );
+                void trashProject( const QString& project );
+                void renameLabel( const QString& filePath );
+                void duplicateLabel( const QString& filePath );
+                void trashLabel( const QString& filePath );
+                void watchProjectFolders();
                 void updateStyle();
 
 
@@ -102,6 +126,19 @@ namespace glabels
                 QListWidget*    mRecentList;
                 QLabel*         mRecentEmptyLabel;
                 bool            mUpdatingStyle { false };
+
+                // Projects panel
+                QStackedWidget*     mProjectsStack;
+                QListWidget*        mProjectList;
+                QLabel*             mProjectsEmptyLabel;
+                QLabel*             mProjectTitle;
+                QToolButton*        mNewLabelInProjectButton;
+                QToolButton*        mProjectFolderButton;
+                QStackedWidget*     mProjectLabelsStack;
+                QListWidget*        mProjectLabelList;
+                QLabel*             mProjectLabelsEmptyLabel;
+                QFileSystemWatcher* mWatcher;
+                QTimer*             mReloadTimer;
 
         };
 

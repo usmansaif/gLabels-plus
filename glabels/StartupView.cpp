@@ -24,12 +24,22 @@
 #include "AppearanceModel.hpp"
 #include "File.hpp"
 #include "MainWindow.hpp"
+#include "Projects.hpp"
 #include "WhatsNewDialog.hpp"
 
 #include "model/Settings.hpp"
 #include "model/Version.hpp"
 
+#include <QApplication>
 #include <QDesktopServices>
+#include <QFile>
+#include <QFileSystemWatcher>
+#include <QLocale>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSettings>
+#include <QStyle>
+#include <QTimer>
 #include <QDir>
 #include <QEvent>
 #include <QFileInfo>
@@ -47,7 +57,7 @@
 namespace
 {
         const int   cardIconSize   = 32;
-        const int   contentMaxWidth = 880;
+        const int   contentMaxWidth = 1120;
 }
 
 
@@ -129,11 +139,11 @@ namespace glabels
                 startColumn->addWidget( startTitle );
 
                 mNewButton = createActionCard( "glabels-file-new",
-                                               tr("New project..."),
+                                               tr("New label..."),
                                                tr("Pick a label or card product and start designing") );
                 mOpenButton = createActionCard( "glabels-file-open",
-                                                tr("Open project..."),
-                                                tr("Browse for an existing gLabels Plus project") );
+                                                tr("Open label..."),
+                                                tr("Browse for an existing gLabels Plus label file") );
                 mDesignerButton = createActionCard( "glabels-file-new",
                                                     tr("Product template designer..."),
                                                     tr("Create a template for a product that isn't listed") );
@@ -156,7 +166,7 @@ namespace glabels
                 auto* recentColumn = new QVBoxLayout();
                 recentColumn->setContentsMargins( 0, 0, 0, 0 );
                 recentColumn->setSpacing( 8 );
-                auto* recentTitle = new QLabel( tr("Recent projects") );
+                auto* recentTitle = new QLabel( tr("Recent labels") );
                 recentTitle->setObjectName( "startupSectionTitle" );
                 recentColumn->addWidget( recentTitle );
 
@@ -172,8 +182,8 @@ namespace glabels
                 connect( mRecentList, &QListWidget::itemClicked,   this, &StartupView::onRecentItemActivated );
                 connect( mRecentList, &QWidget::customContextMenuRequested, this, &StartupView::onRecentContextMenu );
 
-                mRecentEmptyLabel = new QLabel( tr("No recent projects yet.\n\n"
-                                                   "Projects you open or save will appear here.") );
+                mRecentEmptyLabel = new QLabel( tr("No recent labels yet.\n\n"
+                                                   "Labels you open or save will appear here.") );
                 mRecentEmptyLabel->setObjectName( "startupEmpty" );
                 mRecentEmptyLabel->setAlignment( Qt::AlignCenter );
                 mRecentEmptyLabel->setWordWrap( true );
@@ -187,6 +197,11 @@ namespace glabels
                 recentWidget->setLayout( recentColumn );
                 recentWidget->setMinimumWidth( 260 );
                 body->addWidget( recentWidget, 6 );
+
+                //
+                // Projects: folders that group labels, e.g. one per business
+                //
+                columnLayout->addWidget( createProjectsSection(), 2 );
 
                 //
                 // Footer: quick links
@@ -235,6 +250,7 @@ namespace glabels
 
                 updateStyle();
                 loadRecentList();
+                loadProjects( QSettings().value( "Projects/current" ).toString() );
 
                 connect( model::Settings::instance(), SIGNAL(changed()), this, SLOT(onSettingsChanged()) );
                 connect( AppearanceModel::instance(), SIGNAL(changed()), this, SLOT(onAppearanceChanged()) );
@@ -314,11 +330,26 @@ namespace glabels
                         "  border-color: palette(highlight); background: palette(alternate-base); }"
                         "QToolButton#startupCard:pressed { background: palette(midlight); }"
                         "QToolButton#startupCard:focus { border: 2px solid palette(highlight); }"
-                        "#startupRecentList {"
+                        "#startupRecentList, #startupProjectList, #startupProjectLabels {"
                         "  border: 1px solid palette(mid); border-radius: 8px; padding: 4px;"
                         "  background: palette(window); }"
-                        "#startupRecentList::item { padding: 6px 4px; border-radius: 6px; }"
-                        "#startupRecentList::item:hover { background: palette(alternate-base); }"
+                        "#startupRecentList::item, #startupProjectList::item, #startupProjectLabels::item {"
+                        "  padding: 6px 4px; border-radius: 6px; }"
+                        "#startupRecentList::item:hover, #startupProjectList::item:hover,"
+                        "#startupProjectLabels::item:hover { background: palette(alternate-base); }"
+                        "#startupProjectList::item:selected {"
+                        "  background: palette(highlight); color: palette(highlighted-text); }"
+                        "#startupProjectTitle { font-weight: 600; font-size: 11pt; }"
+                        "QToolButton#startupSmallButton {"
+                        "  padding: 5px 12px; border: 1px solid palette(mid); border-radius: 6px;"
+                        "  background: palette(window); }"
+                        "QToolButton#startupSmallButton:hover {"
+                        "  border-color: palette(highlight); background: palette(alternate-base); }"
+                        "QToolButton#startupSmallButton:disabled { color: palette(placeholder-text); }"
+                        "QToolButton#startupPrimaryButton {"
+                        "  padding: 5px 14px; border: 1px solid palette(highlight); border-radius: 6px;"
+                        "  background: palette(highlight); color: palette(highlighted-text); font-weight: 600; }"
+                        "QToolButton#startupPrimaryButton:hover { background: palette(link); }"
                 );
 
                 mUpdatingStyle = false;
@@ -412,6 +443,7 @@ namespace glabels
         void StartupView::onSettingsChanged()
         {
                 loadRecentList();
+                loadProjectLabels();   // a save may have changed a project's labels
         }
 
 
@@ -456,6 +488,499 @@ namespace glabels
 
                 mRecentStack->setCurrentWidget( fileList.isEmpty() ? static_cast<QWidget*>( mRecentEmptyLabel )
                                                                    : static_cast<QWidget*>( mRecentList ) );
+        }
+
+
+        ///
+        /// Build the Projects section: project list on the left, the selected
+        /// project's labels on the right
+        ///
+        QWidget* StartupView::createProjectsSection()
+        {
+                auto* section = new QWidget();
+                auto* layout = new QVBoxLayout( section );
+                layout->setContentsMargins( 0, 0, 0, 0 );
+                layout->setSpacing( 8 );
+
+                auto makeButton = []( const QString& text, const QString& tip, const char* objectName,
+                                      const QIcon& icon = QIcon() ) {
+                        auto* b = new QToolButton();
+                        b->setObjectName( objectName );
+                        b->setText( text );
+                        b->setToolTip( tip );
+                        b->setIcon( icon );
+                        b->setToolButtonStyle( icon.isNull() ? Qt::ToolButtonTextOnly : Qt::ToolButtonTextBesideIcon );
+                        b->setCursor( Qt::PointingHandCursor );
+                        return b;
+                };
+
+                // Title row
+                auto* titleRow = new QHBoxLayout();
+                auto* title = new QLabel( tr("Projects") );
+                title->setObjectName( "startupSectionTitle" );
+                auto* subtitle = new QLabel( tr("Keep each business or client's labels together") );
+                subtitle->setObjectName( "startupMuted" );
+                auto* newProject = makeButton( tr("+  New project..."),
+                                               tr("Create a project, for example for a business or client"),
+                                               "startupPrimaryButton" );
+                connect( newProject, &QToolButton::clicked, this, &StartupView::onCreateProject );
+                titleRow->addWidget( title, 0, Qt::AlignVCenter );
+                titleRow->addSpacing( 8 );
+                titleRow->addWidget( subtitle, 0, Qt::AlignVCenter );
+                titleRow->addStretch( 1 );
+                titleRow->addWidget( newProject );
+                layout->addLayout( titleRow );
+
+                // Body
+                auto* body = new QHBoxLayout();
+                body->setSpacing( 16 );
+                layout->addLayout( body, 1 );
+
+                // Left: projects
+                mProjectList = new QListWidget();
+                mProjectList->setObjectName( "startupProjectList" );
+                mProjectList->setIconSize( QSize( 24, 24 ) );
+                mProjectList->setTextElideMode( Qt::ElideRight );
+                mProjectList->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+                mProjectList->setContextMenuPolicy( Qt::CustomContextMenu );
+                mProjectList->setMinimumHeight( 200 );
+                connect( mProjectList, &QListWidget::itemSelectionChanged, this, &StartupView::onProjectSelectionChanged );
+                connect( mProjectList, &QWidget::customContextMenuRequested, this, &StartupView::onProjectContextMenu );
+
+                mProjectsEmptyLabel = new QLabel( tr("No projects yet.\n\n"
+                                                     "Create a project for each business or client,\n"
+                                                     "then add its labels to it.") );
+                mProjectsEmptyLabel->setObjectName( "startupEmpty" );
+                mProjectsEmptyLabel->setAlignment( Qt::AlignCenter );
+                mProjectsEmptyLabel->setWordWrap( true );
+
+                mProjectsStack = new QStackedWidget();
+                mProjectsStack->addWidget( mProjectList );
+                mProjectsStack->addWidget( mProjectsEmptyLabel );
+                mProjectsStack->setMinimumWidth( 260 );
+                body->addWidget( mProjectsStack, 4 );
+
+                // Right: labels in the selected project
+                auto* labelsColumn = new QVBoxLayout();
+                labelsColumn->setSpacing( 8 );
+                auto* labelsHeader = new QHBoxLayout();
+                mProjectTitle = new QLabel();
+                mProjectTitle->setObjectName( "startupProjectTitle" );
+                mProjectTitle->setTextFormat( Qt::PlainText );
+                mNewLabelInProjectButton = makeButton( tr("New label..."),
+                                                       tr("Choose a product and add a new label to this project"),
+                                                       "startupSmallButton",
+                                                       QIcon::fromTheme( "glabels-file-new" ) );
+                mProjectFolderButton = makeButton( tr("Open folder"),
+                                                   tr("Show this project's folder in your file manager"),
+                                                   "startupSmallButton",
+                                                   QIcon::fromTheme( "glabels-file-open" ) );
+                connect( mNewLabelInProjectButton, &QToolButton::clicked, this, &StartupView::onNewLabelInProject );
+                connect( mProjectFolderButton, &QToolButton::clicked, this, &StartupView::onOpenProjectFolder );
+                labelsHeader->addWidget( mProjectTitle, 1 );
+                labelsHeader->addWidget( mNewLabelInProjectButton );
+                labelsHeader->addWidget( mProjectFolderButton );
+                labelsColumn->addLayout( labelsHeader );
+
+                mProjectLabelList = new QListWidget();
+                mProjectLabelList->setObjectName( "startupProjectLabels" );
+                mProjectLabelList->setIconSize( QSize( 24, 24 ) );
+                mProjectLabelList->setTextElideMode( Qt::ElideRight );
+                mProjectLabelList->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+                mProjectLabelList->setContextMenuPolicy( Qt::CustomContextMenu );
+                connect( mProjectLabelList, &QListWidget::itemActivated, this, &StartupView::onProjectLabelActivated );
+                connect( mProjectLabelList, &QListWidget::itemDoubleClicked, this, &StartupView::onProjectLabelActivated );
+                connect( mProjectLabelList, &QWidget::customContextMenuRequested, this, &StartupView::onProjectLabelContextMenu );
+
+                mProjectLabelsEmptyLabel = new QLabel();
+                mProjectLabelsEmptyLabel->setObjectName( "startupEmpty" );
+                mProjectLabelsEmptyLabel->setAlignment( Qt::AlignCenter );
+                mProjectLabelsEmptyLabel->setWordWrap( true );
+
+                mProjectLabelsStack = new QStackedWidget();
+                mProjectLabelsStack->addWidget( mProjectLabelList );
+                mProjectLabelsStack->addWidget( mProjectLabelsEmptyLabel );
+                labelsColumn->addWidget( mProjectLabelsStack, 1 );
+
+                auto* labelsWidget = new QWidget();
+                labelsColumn->setContentsMargins( 0, 0, 0, 0 );
+                labelsWidget->setLayout( labelsColumn );
+                body->addWidget( labelsWidget, 7 );
+
+                // Keep lists current when files change on disk (saves, file manager edits)
+                mReloadTimer = new QTimer( this );
+                mReloadTimer->setSingleShot( true );
+                mReloadTimer->setInterval( 250 );
+                connect( mReloadTimer, &QTimer::timeout, this, &StartupView::onProjectsChangedOnDisk );
+
+                mWatcher = new QFileSystemWatcher( this );
+                connect( mWatcher, &QFileSystemWatcher::directoryChanged, mReloadTimer, qOverload<>( &QTimer::start ) );
+
+                return section;
+        }
+
+
+        ///
+        /// Name of the selected project, or empty
+        ///
+        QString StartupView::currentProject() const
+        {
+                auto items = mProjectList->selectedItems();
+                return items.isEmpty() ? QString() : items.first()->data( Qt::UserRole ).toString();
+        }
+
+
+        ///
+        /// Select a project by name
+        ///
+        void StartupView::selectProject( const QString& project )
+        {
+                loadProjects( project );
+        }
+
+
+        ///
+        /// (Re)load the project list, keeping or setting the selection
+        ///
+        void StartupView::loadProjects( const QString& select )
+        {
+                QString wanted = select.isEmpty() ? currentProject() : select;
+
+                QIcon folderIcon = QIcon::fromTheme( "folder", style()->standardIcon( QStyle::SP_DirIcon ) );
+
+                mProjectList->blockSignals( true );
+                mProjectList->clear();
+                QListWidgetItem* selectItem = nullptr;
+                for ( const auto& name : Projects::list() )
+                {
+                        int n = Projects::labelCount( name );
+                        auto* item = new QListWidgetItem( folderIcon,
+                                                          name + "\n" + ( n == 1 ? tr("1 label") : tr("%1 labels").arg( n ) ) );
+                        item->setData( Qt::UserRole, name );
+                        item->setToolTip( QDir::toNativeSeparators( Projects::path( name ) ) );
+                        mProjectList->addItem( item );
+                        if ( name == wanted )
+                        {
+                                selectItem = item;
+                        }
+                }
+                if ( !selectItem && mProjectList->count() > 0 )
+                {
+                        selectItem = mProjectList->item( 0 );
+                }
+                if ( selectItem )
+                {
+                        selectItem->setSelected( true );
+                        mProjectList->setCurrentItem( selectItem );
+                        mProjectList->scrollToItem( selectItem );
+                }
+                mProjectList->blockSignals( false );
+
+                mProjectsStack->setCurrentWidget( mProjectList->count() ? static_cast<QWidget*>( mProjectList )
+                                                                        : static_cast<QWidget*>( mProjectsEmptyLabel ) );
+                watchProjectFolders();
+                loadProjectLabels();
+        }
+
+
+        ///
+        /// (Re)load the labels of the selected project
+        ///
+        void StartupView::loadProjectLabels()
+        {
+                QString project = currentProject();
+                bool hasProject = !project.isEmpty();
+
+                mNewLabelInProjectButton->setEnabled( hasProject );
+                mProjectFolderButton->setEnabled( hasProject );
+                mProjectLabelList->clear();
+
+                if ( !hasProject )
+                {
+                        mProjectTitle->setText( tr("Labels") );
+                        mProjectLabelsEmptyLabel->setText( tr("Select or create a project to see its labels.") );
+                        mProjectLabelsStack->setCurrentWidget( mProjectLabelsEmptyLabel );
+                        return;
+                }
+
+                QSettings().setValue( "Projects/current", project );
+                mProjectTitle->setText( project );
+
+                QLocale locale;
+                for ( const auto& label : Projects::labels( project ) )
+                {
+                        QString details = label.modified.toString( locale.dateTimeFormat( QLocale::ShortFormat ) );
+                        if ( !label.product.isEmpty() )
+                        {
+                                details = label.product + "  ·  " + details;
+                        }
+                        auto* item = new QListWidgetItem( QIcon::fromTheme( "glabels" ), label.name + "\n" + details );
+                        item->setData( Qt::UserRole, label.filePath );
+                        item->setToolTip( QDir::toNativeSeparators( label.filePath ) );
+                        mProjectLabelList->addItem( item );
+                }
+
+                if ( mProjectLabelList->count() == 0 )
+                {
+                        mProjectLabelsEmptyLabel->setText(
+                                tr("\"%1\" has no labels yet.\n\nClick \"New label...\" to add one.").arg( project ) );
+                        mProjectLabelsStack->setCurrentWidget( mProjectLabelsEmptyLabel );
+                }
+                else
+                {
+                        mProjectLabelsStack->setCurrentWidget( mProjectLabelList );
+                }
+        }
+
+
+        ///
+        /// Watch the projects root and each project folder for changes
+        ///
+        void StartupView::watchProjectFolders()
+        {
+                if ( !mWatcher->directories().isEmpty() )
+                {
+                        mWatcher->removePaths( mWatcher->directories() );
+                }
+                QStringList dirs { Projects::rootDir().absolutePath() };
+                for ( const auto& name : Projects::list() )
+                {
+                        dirs << Projects::path( name );
+                }
+                mWatcher->addPaths( dirs );
+        }
+
+
+        void StartupView::onProjectsChangedOnDisk()
+        {
+                loadProjects();
+        }
+
+
+        void StartupView::onProjectSelectionChanged()
+        {
+                loadProjectLabels();
+        }
+
+
+        void StartupView::onCreateProject()
+        {
+                QString name = Projects::askNewProject( this );
+                if ( !name.isEmpty() )
+                {
+                        loadProjects( name );
+                }
+        }
+
+
+        void StartupView::onNewLabelInProject()
+        {
+                QString project = currentProject();
+                if ( !project.isEmpty() )
+                {
+                        File::newLabelInProject( mWindow, project );
+                        loadProjects( project );
+                }
+        }
+
+
+        void StartupView::onOpenProjectFolder()
+        {
+                QString project = currentProject();
+                if ( !project.isEmpty() )
+                {
+                        QDesktopServices::openUrl( QUrl::fromLocalFile( Projects::path( project ) ) );
+                }
+        }
+
+
+        void StartupView::onProjectLabelActivated( QListWidgetItem* item )
+        {
+                if ( item )
+                {
+                        File::open( item->data( Qt::UserRole ).toString(), mWindow );
+                }
+        }
+
+
+        ///
+        /// Project context menu
+        ///
+        void StartupView::onProjectContextMenu( const QPoint& pos )
+        {
+                QListWidgetItem* item = mProjectList->itemAt( pos );
+                if ( !item )
+                {
+                        return;
+                }
+                QString project = item->data( Qt::UserRole ).toString();
+                loadProjects( project );
+
+                QMenu menu;
+                menu.addAction( QIcon::fromTheme( "glabels-file-new" ), tr("New label..."),
+                                this, &StartupView::onNewLabelInProject );
+                menu.addAction( QIcon::fromTheme( "glabels-file-open" ), tr("Open folder"),
+                                this, &StartupView::onOpenProjectFolder );
+                menu.addSeparator();
+                menu.addAction( tr("Rename..."), this, [this, project]{ renameProject( project ); } );
+                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash..."),
+                                this, [this, project]{ trashProject( project ); } );
+                menu.exec( mProjectList->viewport()->mapToGlobal( pos ) );
+        }
+
+
+        ///
+        /// Label context menu
+        ///
+        void StartupView::onProjectLabelContextMenu( const QPoint& pos )
+        {
+                QListWidgetItem* item = mProjectLabelList->itemAt( pos );
+                if ( !item )
+                {
+                        return;
+                }
+                QString filePath = item->data( Qt::UserRole ).toString();
+
+                QMenu menu;
+                menu.addAction( QIcon::fromTheme( "glabels-file-open" ), tr("Open"), this, [this, filePath]{
+                        File::open( filePath, mWindow );
+                } );
+                menu.addAction( tr("Rename..."), this, [this, filePath]{ renameLabel( filePath ); } );
+                menu.addAction( QIcon::fromTheme( "glabels-copy" ), tr("Duplicate"), this, [this, filePath]{ duplicateLabel( filePath ); } );
+                menu.addAction( tr("Show in folder"), this, [filePath]{
+                        QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( filePath ).absolutePath() ) );
+                } );
+                menu.addSeparator();
+                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash..."),
+                                this, [this, filePath]{ trashLabel( filePath ); } );
+                menu.exec( mProjectLabelList->viewport()->mapToGlobal( pos ) );
+        }
+
+
+        void StartupView::renameProject( const QString& project )
+        {
+                QString name = Projects::askName( this, tr("Rename Project"), tr("Project name:"),
+                                                  project, Projects::rootDir().absolutePath(), QString() );
+                if ( name.isEmpty() || name == project )
+                {
+                        return;
+                }
+                QString error;
+                if ( !Projects::rename( project, name, &error ) )
+                {
+                        QMessageBox::warning( this, tr("Rename Project"), error );
+                        return;
+                }
+
+                // Keep the recent-files list pointing at the moved labels
+                QString oldDir = Projects::rootDir().absoluteFilePath( project ) + "/";
+                for ( const auto& file : model::Settings::recentFileList() )
+                {
+                        if ( file.startsWith( oldDir ) )
+                        {
+                                model::Settings::removeFromRecentFileList( file );
+                        }
+                }
+                loadProjects( name );
+        }
+
+
+        void StartupView::trashProject( const QString& project )
+        {
+                int n = Projects::labelCount( project );
+                QMessageBox box( QMessageBox::Warning, tr("Move Project to Trash"),
+                                 tr("Move the project \"%1\" to the Trash?").arg( project ),
+                                 QMessageBox::NoButton, this );
+                box.setInformativeText( ( n == 1 ? tr("Its folder and 1 label will be moved to the Trash.")
+                                                 : tr("Its folder and %1 labels will be moved to the Trash.").arg( n ) )
+                                        + " " + tr("You can restore them from there.") );
+                auto* trash = box.addButton( tr("Move to Trash"), QMessageBox::DestructiveRole );
+                box.addButton( QMessageBox::Cancel );
+                box.setDefaultButton( QMessageBox::Cancel );
+                box.exec();
+                if ( box.clickedButton() != static_cast<QAbstractButton*>( trash ) )
+                {
+                        return;
+                }
+
+                QString error;
+                if ( !Projects::moveToTrash( project, &error ) )
+                {
+                        QMessageBox::warning( this, tr("Move Project to Trash"), error );
+                        return;
+                }
+                QSettings().remove( "Projects/current" );
+                loadProjects();
+        }
+
+
+        void StartupView::renameLabel( const QString& filePath )
+        {
+                if ( Projects::isOpen( filePath ) )
+                {
+                        QMessageBox::information( this, tr("Rename Label"), tr("Close this label first, then rename it.") );
+                        return;
+                }
+                QFileInfo info( filePath );
+                QString name = Projects::askName( this, tr("Rename Label"), tr("Label name:"),
+                                                  info.completeBaseName(), info.absolutePath(), ".glabels" );
+                if ( name.isEmpty() || name == info.completeBaseName() )
+                {
+                        return;
+                }
+                QString newPath = info.absoluteDir().absoluteFilePath( name + ".glabels" );
+                if ( !QFile::rename( filePath, newPath ) )
+                {
+                        QMessageBox::warning( this, tr("Rename Label"), tr("Couldn't rename the label file.") );
+                        return;
+                }
+                model::Settings::removeFromRecentFileList( filePath );
+                loadProjects( currentProject() );
+        }
+
+
+        void StartupView::duplicateLabel( const QString& filePath )
+        {
+                QFileInfo info( filePath );
+                QDir dir = info.absoluteDir();
+                QString base = tr("%1 copy").arg( info.completeBaseName() );
+                QString name = base;
+                for ( int i = 2; QFileInfo::exists( dir.absoluteFilePath( name + ".glabels" ) ); i++ )
+                {
+                        name = QString( "%1 %2" ).arg( base ).arg( i );
+                }
+                if ( !QFile::copy( filePath, dir.absoluteFilePath( name + ".glabels" ) ) )
+                {
+                        QMessageBox::warning( this, tr("Duplicate Label"), tr("Couldn't copy the label file.") );
+                        return;
+                }
+                loadProjects( currentProject() );
+        }
+
+
+        void StartupView::trashLabel( const QString& filePath )
+        {
+                if ( Projects::isOpen( filePath ) )
+                {
+                        QMessageBox::information( this, tr("Move Label to Trash"),
+                                                  tr("Close this label first, then move it to the Trash.") );
+                        return;
+                }
+                QString name = QFileInfo( filePath ).completeBaseName();
+                if ( QMessageBox::question( this, tr("Move Label to Trash"),
+                                            tr("Move the label \"%1\" to the Trash?").arg( name ),
+                                            QMessageBox::Yes | QMessageBox::Cancel,
+                                            QMessageBox::Cancel ) != QMessageBox::Yes )
+                {
+                        return;
+                }
+                if ( !QFile::moveToTrash( filePath ) )
+                {
+                        QMessageBox::warning( this, tr("Move Label to Trash"), tr("Couldn't move the label to the Trash.") );
+                        return;
+                }
+                model::Settings::removeFromRecentFileList( filePath );
+                loadProjects( currentProject() );
         }
 
 

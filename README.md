@@ -13,7 +13,7 @@ Jaye Evins. It adds a refreshed interface, faster ways to work, and new barcode 
 
 | | |
 |:--|:--|
-| **Version** | 3.99.0 (pre-release) |
+| **Version** | 5.0 |
 | **Maintainer** | [Usman Saif](https://usmansaif.com) |
 | **Original author** | Jaye Evins (gLabels) |
 | **License** | GPL v3 or later |
@@ -26,6 +26,7 @@ Jaye Evins. It adds a refreshed interface, faster ways to work, and new barcode 
 - [Screenshots](#screenshots)
 - [Features](#features)
 - [What's new in this release](#whats-new-in-this-release)
+- [Projects](#projects)
 - [Barcode label presets](#barcode-label-presets)
 - [Download](#download)
 - [Building from source](#building-from-source)
@@ -43,8 +44,8 @@ in the toolbar.
 
 ![Label editor](docs/images/screenshots/editor.png)
 
-### Welcome screen
-Quick actions, recent projects and links to Preferences, Keyboard shortcuts, Help and What's New.
+### Welcome screen and Projects
+Quick actions, recent labels, and **Projects**: each business or client gets its own list of labels.
 
 ![Welcome screen](docs/images/screenshots/welcome.png)
 
@@ -83,6 +84,10 @@ The new **Barcode labels** category is shown here.
 - **Align to** the selection, the last selected object, or the label itself.
 - Hold **Shift** with the arrow keys to nudge in larger steps.
 
+### Projects
+- **Group labels by business or client.** Each project has its own list of labels on the
+  welcome screen. See [Projects](#projects).
+
 ### Pages and products
 - **Page selector** in the toolbar, also available as **Edit > Page Setup** (Ctrl+Shift+P).
   Change the page at any time; every object keeps its position and size, and one undo reverts it.
@@ -108,7 +113,7 @@ The new **Barcode labels** category is shown here.
 
 ### Workspace
 - **Startup splash screen** with loading progress.
-- The main window **opens maximized**.
+- Windows **always open maximized**.
 - **Light and dark color schemes** and a choice of icon styles.
 - **Redesigned Preferences** with a search box.
 - **Custom keyboard shortcuts** for every menu command (Edit > Keyboard Shortcuts).
@@ -120,17 +125,37 @@ The new **Barcode labels** category is shown here.
 
 ## What's new in this release
 
+- **Projects**: keep each business or client's labels together. Create a project on the welcome
+  screen (or **File > New Project**), then add as many labels to it as you need.
 - **Page selector** in the toolbar, next to Units, and **Edit > Page Setup...** (Ctrl+Shift+P).
   Choose or change the page without moving any objects.
 - **24 new barcode label sizes** for thermal roll printers (Zebra, TSC, Xprinter, Godex, ...),
   from 30 × 15 mm jewelry tags to 4 × 6″ shipping labels.
 - New **Barcode labels** category in the product chooser.
 - **Startup splash screen** with an animated loading bar.
-- The main window **opens maximized** at startup.
+- Windows **always open maximized**.
 - **App icon** on every window and dialog.
 - **About dialog** with a new product description and maintainer credit.
 
 The full list is in **Help > What's New** inside the app.
+
+*******************************************************************************
+
+## Projects
+
+Projects keep labels for different businesses or clients apart.
+
+1. On the welcome screen, click **+ New project...** (or use **File > New Project...**) and type
+   a name, such as *Coffee House* or *Northside Pharmacy*.
+2. Select the project and click **New label...**. Choose a product, give the label a name, and it's
+   saved straight into the project.
+3. Click a label in the project's list to open it. Right-click for **Rename**, **Duplicate**,
+   **Show in folder** and **Move to Trash**.
+4. Right-click a project to **rename** it or **move it to the Trash**.
+
+Each project is an ordinary folder in **Documents/gLabels Plus Projects/**, holding that project's
+`.glabels` files. You can back it up, copy it to another computer, or share it like any other
+folder, and changes made in your file manager show up in the app automatically.
 
 *******************************************************************************
 

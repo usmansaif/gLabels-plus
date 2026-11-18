@@ -105,6 +105,7 @@ namespace glabels
                 void clipboardChanged();
 
                 void fileNew();
+                void fileNewProject();
                 void fileOpen();
                 void fileOpenRecent();
                 void fileSave();
@@ -320,6 +321,7 @@ namespace glabels
                 QLabel*   cursorInfoLabel;
 
                 QAction*  fileNewAction;
+                QAction*  fileNewProjectAction;
                 QAction*  fileOpenAction;
                 QAction*  fileSaveAction;
                 QAction*  fileSaveAsAction;

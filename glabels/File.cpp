@@ -22,6 +22,7 @@
 #include "File.hpp"
 
 #include "MainWindow.hpp"
+#include "Projects.hpp"
 #include "SelectProductDialog.hpp"
 #include "TemplateDesigner.hpp"
 
@@ -32,6 +33,8 @@
 #include "model/XmlLabelCreator.hpp"
 
 #include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -87,6 +90,64 @@ namespace glabels
 
 
         ///
+        /// New label inside a project: choose a product, name the label, and save it
+        /// straight into the project folder so it always belongs to the project
+        ///
+        bool File::newLabelInProject( MainWindow *window, const QString& project )
+        {
+                SelectProductDialog dialog( window );
+                dialog.exec();
+
+                auto tmplate = dialog.tmplate();
+                if ( tmplate.isNull() )
+                {
+                        return false;
+                }
+
+                QString name = Projects::askName( window,
+                                                  tr("New Label in \"%1\"").arg( project ),
+                                                  tr("Label name:"),
+                                                  Projects::nextLabelName( project ),
+                                                  Projects::path( project ),
+                                                  ".glabels" );
+                if ( name.isEmpty() )
+                {
+                        return false;
+                }
+
+                auto* model = new model::Model();
+                model->setTmplate( tmplate );
+                auto frame = tmplate.frame();
+                model->setRotate( frame->h() > frame->w() );
+
+                QString fileName = Projects::labelPath( project, name );
+                model::XmlLabelCreator::writeFile( model, fileName );
+                if ( model->fileName().isEmpty() || !QFileInfo::exists( fileName ) )
+                {
+                        delete model;
+                        QMessageBox::warning( window, tr("New Label"),
+                                              tr("Couldn't save \"%1\".").arg( QDir::toNativeSeparators( fileName ) ) );
+                        return false;
+                }
+                model->clearModified();
+
+                if ( window->isEmpty() )
+                {
+                        window->setModel( model );
+                }
+                else
+                {
+                        auto *newWindow = new MainWindow();
+                        newWindow->setModel( model );
+                        newWindow->show();
+                }
+                model::Settings::addToRecentFileList( model->fileName() );
+
+                return true;
+        }
+
+
+        ///
         /// Open File Dialog
         ///
         void File::open( MainWindow *window )
@@ -104,7 +165,7 @@ namespace glabels
 
                 QString fileName =
                         QFileDialog::getOpenFileName( window,
-                                                      tr("gLabels Plus - Open Project"),
+                                                      tr("gLabels Plus - Open Label"),
                                                       cwd,
                                                       tr("glabels files (*.glabels);;All files (*)")
                                 );
@@ -227,7 +288,7 @@ namespace glabels
 
                 QString rawFileName =
                         QFileDialog::getSaveFileName( window,
-                                                      tr("gLabels Plus - Save Project As"),
+                                                      tr("gLabels Plus - Save Label As"),
                                                       cwd,
                                                       tr("glabels files (*.glabels);;All files (*)"),
                                                       nullptr,

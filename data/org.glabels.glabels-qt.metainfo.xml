@@ -40,8 +40,8 @@
     <keyword translate="no">qt</keyword>
   </keywords>
   <url type="homepage">https://glabels.org/</url>
-  <url type="bugtracker">https://github.com/j-evins/glabels-qt/issues</url>
-  <url type="vcs-browser">https://github.com/j-evins/glabels-qt</url>
+  <url type="bugtracker">https://github.com/usmansaif/gLabels-plus/issues</url>
+  <url type="vcs-browser">https://github.com/usmansaif/gLabels-plus</url>
   <update_contact>evins_at_snaught.com</update_contact>
   <content_rating type="oars-1.1" />
   <branding>
@@ -49,6 +49,19 @@
     <color type="primary" scheme_preference="dark">#4e9a06</color>
   </branding>
   <translation type="qt">glabels-qt/translations/glabels</translation>
+  <releases>
+    <release version="5.0" date="2026-11-19">
+      <description>
+        <p>gLabels Plus 5.0</p>
+        <ul>
+          <li>Projects: group labels by business or client</li>
+          <li>Page selector and Edit &gt; Page Setup to change the page without moving objects</li>
+          <li>24 thermal-roll barcode label presets and a Barcode labels category</li>
+          <li>Startup splash screen and refreshed About and What's New dialogs</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
   <!--
   <screenshots>
     <screenshot type="default">

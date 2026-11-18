@@ -245,7 +245,7 @@ namespace glabels
 
                 auto* card = addCard( page, tr("Startup folder") );
                 auto* l = card->layout();
-                addHelp( l, tr("The folder shown first when you open or save a project.") );
+                addHelp( l, tr("The folder shown first when you open or save a label.") );
 
                 mStartupGroup = new QButtonGroup( this );
                 mStartupParentRadio    = addRadio( l, mStartupGroup, tr("Folder gLabels Plus was started from"),
@@ -267,7 +267,7 @@ namespace glabels
                 connect( mStartupBrowseButton, &QPushButton::clicked, this, &PreferencesDialog::onStartupOtherBrowseButtonClicked );
 
                 auto* recentCard = addCard( page, tr("Recent files") );
-                addHelp( recentCard->layout(), tr("gLabels Plus remembers the last %1 projects you opened (File > Open Recent).")
+                addHelp( recentCard->layout(), tr("gLabels Plus remembers the last %1 labels you opened (File > Open Recent).")
                                                .arg( model::Settings::maxRecentFiles() ) );
                 mClearRecentButton = new QPushButton( tr("Clear Recent Files List") );
                 auto* recentRow = new QHBoxLayout();
@@ -823,7 +823,7 @@ namespace glabels
                 if ( actions.isEmpty() )
                 {
                         QMessageBox::information( this, tr("Keyboard Shortcuts"),
-                                                  tr("Open a project window first, then use Edit > Keyboard Shortcuts.") );
+                                                  tr("Open a label window first, then use Edit > Keyboard Shortcuts.") );
                         return;
                 }
 

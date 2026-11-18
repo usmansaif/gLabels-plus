@@ -29,6 +29,7 @@
 #include "ObjectListView.hpp"
 #include "PreferencesDialog.hpp"
 #include "PrintView.hpp"
+#include "Projects.hpp"
 #include "PropertiesView.hpp"
 #include "Ruler.hpp"
 #include "SelectProductDialog.hpp"
@@ -223,6 +224,9 @@ namespace glabels
                 connect( mLabelEditor, &LabelEditor::pointerExited, this, &MainWindow::onPointerExit );
 
                 readSettings();
+
+                // Always open maximized (applies to every window, including new ones)
+                setWindowState( windowState() | Qt::WindowMaximized );
         }
 
 
@@ -308,13 +312,18 @@ namespace glabels
                 fileNewAction = new QAction( tr("&New..."), this );
                 fileNewAction->setIcon( QIcon::fromTheme( "glabels-file-new" ) );
                 fileNewAction->setShortcut( QKeySequence::New );
-                fileNewAction->setStatusTip( tr("Create a new gLabels Plus project") );
+                fileNewAction->setStatusTip( tr("Create a new gLabels Plus label") );
                 connect( fileNewAction, SIGNAL(triggered()), this, SLOT(fileNew()) );
+
+                fileNewProjectAction = new QAction( tr("New &Project..."), this );
+                fileNewProjectAction->setIcon( QIcon::fromTheme( "folder-new", QIcon::fromTheme( "glabels-file-new" ) ) );
+                fileNewProjectAction->setStatusTip( tr("Create a project to keep a business or client's labels together") );
+                connect( fileNewProjectAction, &QAction::triggered, this, &MainWindow::fileNewProject );
 
                 fileOpenAction = new QAction( tr("&Open..."), this );
                 fileOpenAction->setIcon( QIcon::fromTheme( "glabels-file-open" ) );
                 fileOpenAction->setShortcut( QKeySequence::Open );
-                fileOpenAction->setStatusTip( tr("Open an existing gLabels Plus project") );
+                fileOpenAction->setStatusTip( tr("Open an existing gLabels Plus label") );
                 connect( fileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()) );
 
                 for ( int i = 0; i < model::Settings::maxRecentFiles(); i++ )
@@ -329,38 +338,38 @@ namespace glabels
                 fileSaveAction = new QAction( tr("&Save"), this );
                 fileSaveAction->setIcon( QIcon::fromTheme( "glabels-file-save" ) );
                 fileSaveAction->setShortcut( QKeySequence::Save );
-                fileSaveAction->setStatusTip( tr("Save current gLabels Plus project") );
+                fileSaveAction->setStatusTip( tr("Save current gLabels Plus label") );
                 connect( fileSaveAction, SIGNAL(triggered()), this, SLOT(fileSave()) );
 
                 fileSaveAsAction = new QAction( tr("Save &As..."), this );
                 fileSaveAsAction->setIcon( QIcon::fromTheme( "glabels-file-save-as" ) );
                 fileSaveAsAction->setShortcut( QKeySequence::SaveAs );
-                fileSaveAsAction->setStatusTip( tr("Save current gLabels Plus project to a different name") );
+                fileSaveAsAction->setStatusTip( tr("Save current gLabels Plus label to a different name") );
                 connect( fileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()) );
 
                 fileShowEditorPageAction = new QAction( tr("&Edit") , this );
                 fileShowEditorPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_1 ) );
-                fileShowEditorPageAction->setStatusTip( tr("Select project Edit mode") );
+                fileShowEditorPageAction->setStatusTip( tr("Select label Edit mode") );
                 connect( fileShowEditorPageAction, SIGNAL(triggered()), this, SLOT(fileShowEditorPage()) );
 
                 fileShowPropertiesPageAction = new QAction( tr("P&roperties") , this );
                 fileShowPropertiesPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_2 ) );
-                fileShowPropertiesPageAction->setStatusTip( tr("Select project Properties mode") );
+                fileShowPropertiesPageAction->setStatusTip( tr("Select label Properties mode") );
                 connect( fileShowPropertiesPageAction, SIGNAL(triggered()), this, SLOT(fileShowPropertiesPage()) );
 
                 fileShowMergePageAction = new QAction( tr("&Merge") , this );
                 fileShowMergePageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_3 ) );
-                fileShowMergePageAction->setStatusTip( tr("Select project Merge mode") );
+                fileShowMergePageAction->setStatusTip( tr("Select label Merge mode") );
                 connect( fileShowMergePageAction, SIGNAL(triggered()), this, SLOT(fileShowMergePage()) );
 
                 fileShowVariablesPageAction = new QAction( tr("&Variables") , this );
                 fileShowVariablesPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_4 ) );
-                fileShowVariablesPageAction->setStatusTip( tr("Select project Variables mode") );
+                fileShowVariablesPageAction->setStatusTip( tr("Select label Variables mode") );
                 connect( fileShowVariablesPageAction, SIGNAL(triggered()), this, SLOT(fileShowVariablesPage()) );
 
                 fileShowPrintPageAction = new QAction( tr("&Print") , this );
                 fileShowPrintPageAction->setShortcut( QKeySequence::Print );
-                fileShowPrintPageAction->setStatusTip( tr("Select project Print mode") );
+                fileShowPrintPageAction->setStatusTip( tr("Select label Print mode") );
                 connect( fileShowPrintPageAction, SIGNAL(triggered()), this, SLOT(fileShowPrintPage()) );
 
                 fileTemplateDesignerAction = new QAction( tr("Product Template &Designer..."), this );
@@ -761,6 +770,7 @@ namespace glabels
         {
                 fileMenu = menuBar()->addMenu( tr("&File") );
                 fileMenu->addAction( fileNewAction );
+                fileMenu->addAction( fileNewProjectAction );
                 fileMenu->addAction( fileOpenAction );
                 fileRecentMenu = fileMenu->addMenu( QIcon::fromTheme( "glabels-file-recent" ), tr("Open Recent") );
                 for ( auto* action : fileRecentActionList )
@@ -1142,7 +1152,7 @@ namespace glabels
         void MainWindow::registerShortcuts()
         {
                 const QList<QPair<QAction*,QString>> table = {
-                        { fileNewAction, "file.new" }, { fileOpenAction, "file.open" },
+                        { fileNewAction, "file.new" }, { fileNewProjectAction, "file.newProject" }, { fileOpenAction, "file.open" },
                         { fileSaveAction, "file.save" }, { fileSaveAsAction, "file.saveAs" },
                         { fileShowEditorPageAction, "file.showEditor" }, { fileShowPropertiesPageAction, "file.showProperties" },
                         { fileShowMergePageAction, "file.showMerge" }, { fileShowVariablesPageAction, "file.showVariables" },
@@ -1782,7 +1792,7 @@ namespace glabels
                 {
                         if ( mModel->isModified() )
                         {
-                                QString msg = tr("Save changes to project \"%1\" before closing?").arg( mModel->shortName() );
+                                QString msg = tr("Save changes to label \"%1\" before closing?").arg( mModel->shortName() );
                                 QString info = tr("Your changes will be lost if you don't save them.");
 
                                 int ret = QMessageBox::warning( this,
@@ -1870,6 +1880,29 @@ namespace glabels
         void MainWindow::fileNew()
         {
                 File::newLabel( this );
+        }
+
+
+        ///
+        /// File->New Project Action: create a project and show it on the welcome screen
+        /// (in this window if it's empty, otherwise in a new window)
+        ///
+        void MainWindow::fileNewProject()
+        {
+                QString project = Projects::askNewProject( this );
+                if ( project.isEmpty() )
+                {
+                        return;
+                }
+
+                MainWindow* target = this;
+                if ( !isEmpty() )
+                {
+                        target = new MainWindow();
+                        target->show();
+                }
+                target->mWelcomeView->selectProject( project );
+                target->activateWindow();
         }
 
 

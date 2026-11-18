@@ -581,6 +581,62 @@
     </message>
 </context>
 <context>
+    <name>Projects</name>
+    <message>
+        <source>Please enter a name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name is too long (100 characters at most).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name can&apos;t start with a dot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name can&apos;t contain any of these characters: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A project called &quot;%1&quot; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t create the folder &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close the labels from &quot;%1&quot; that are open first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t rename the project folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t move the project folder to the Trash. You can delete it yourself from:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;%1&quot; already exists. Please choose another name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Project name (for example a business or client name):</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PropertiesView</name>
     <message>
         <source>Product</source>
@@ -1207,11 +1263,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels Plus - Open Project</source>
+        <source>New Label in &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels Plus - Save Project As</source>
+        <source>Label name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t save &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus - Open Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus - Save Label As</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1309,15 +1381,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select project Edit mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>P&amp;roperties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select project Properties mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1325,23 +1389,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select project Merge mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Variables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select project Variables mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Print</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select project Print mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1701,10 +1753,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save changes to project &quot;%1&quot; before closing?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Your changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1804,22 +1852,6 @@
     </message>
     <message>
         <source>Switch page. Right-click to change button style.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a new gLabels Plus project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open an existing gLabels Plus project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save current gLabels Plus project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save current gLabels Plus project to a different name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2146,6 +2178,54 @@
         <source>Choose or change the page (product) without moving any objects</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Create a new gLabels Plus label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New &amp;Project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a project to keep a business or client&apos;s labels together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open an existing gLabels Plus label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current gLabels Plus label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current gLabels Plus label to a different name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select label Edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select label Properties mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select label Merge mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select label Variables mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select label Print mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save changes to label &quot;%1&quot; before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -2432,10 +2512,6 @@ Click the lock column to lock or unlock an object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The folder shown first when you open or save a project.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Folder gLabels Plus was started from</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2461,10 +2537,6 @@ Click the lock column to lock or unlock an object.</source>
     </message>
     <message>
         <source>Recent files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gLabels Plus remembers the last %1 projects you opened (File &gt; Open Recent).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2844,10 +2916,6 @@ Ctrl+] / Ctrl+[: bring forward / send backward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open a project window first, then use Edit &gt; Keyboard Shortcuts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Restore Defaults</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2855,6 +2923,18 @@ Ctrl+] / Ctrl+[: bring forward / send backward</source>
         <source>Reset all preferences to their original values?
 
 Your recent files, favorites and keyboard shortcuts are kept.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The folder shown first when you open or save a label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus remembers the last %1 labels you opened (File &gt; Open Recent).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a label window first, then use Edit &gt; Keyboard Shortcuts.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3248,19 +3328,7 @@ Double-click a product, or press Enter, to choose it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Pick a label or card product and start designing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Browse for an existing gLabels Plus project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3269,16 +3337,6 @@ Double-click a product, or press Enter, to choose it.</source>
     </message>
     <message>
         <source>Create a template for a product that isn&apos;t listed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Recent projects</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No recent projects yet.
-
-Projects you open or save will appear here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3315,6 +3373,177 @@ Projects you open or save will appear here.</source>
     </message>
     <message>
         <source>Maintainer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New label...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open label...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse for an existing gLabels Plus label file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No recent labels yet.
+
+Labels you open or save will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Projects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep each business or client&apos;s labels together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>+  New project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a project, for example for a business or client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No projects yet.
+
+Create a project for each business or client,
+then add its labels to it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a product and add a new label to this project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show this project&apos;s folder in your file manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select or create a project to see its labels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;%1&quot; has no labels yet.
+
+Click &quot;New label...&quot; to add one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to Trash...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show in folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Project name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Project to Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the project &quot;%1&quot; to the Trash?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close this label first, then rename it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t rename the label file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t copy the label file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Label to Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close this label first, then move it to the Trash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the label &quot;%1&quot; to the Trash?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t move the label to the Trash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Its folder and 1 label will be moved to the Trash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Its folder and %1 labels will be moved to the Trash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can restore them from there.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3673,10 +3902,6 @@ Projects you open or save will appear here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;New welcome screen&lt;/b&gt; with quick actions and recent projects (right-click a project to remove it from the list).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Redesigned Preferences&lt;/b&gt; with a search box and sections for general, appearance, editor and printing options.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3717,10 +3942,6 @@ Projects you open or save will appear here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The main window now &lt;b&gt;opens maximized&lt;/b&gt; at startup.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The &lt;b&gt;gLabels Plus icon&lt;/b&gt; now appears on every window and dialog.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3730,6 +3951,22 @@ Projects you open or save will appear here.</source>
     </message>
     <message>
         <source>&lt;b&gt;Page selector&lt;/b&gt; in the toolbar, next to Units: click it to choose or change the page (product) at any time (also &lt;b&gt;Edit &amp;gt; Page Setup&lt;/b&gt;, Ctrl+Shift+P). Objects keep their positions and sizes, and the change can be undone in one step.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;New welcome screen&lt;/b&gt; with quick actions and recent labels (right-click a label to remove it from the list).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Projects&lt;/b&gt; keep each business or client&apos;s labels together. Create a project on the welcome screen (or File &amp;gt; New Project), then add labels to it with &lt;b&gt;New label...&lt;/b&gt;. Each project is a folder in &lt;i&gt;Documents/gLabels Plus Projects&lt;/i&gt;, so it&apos;s easy to back up or share.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right-click a project to rename it or move it to the Trash; right-click a label to open, rename, duplicate or remove it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows now &lt;b&gt;always open maximized&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

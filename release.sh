@@ -15,7 +15,7 @@
 #   -q, --qt PATH        Qt 6 prefix (default: auto-detect, see build.sh)
 #   -o, --out DIR        Output directory (default: dist)
 #   -f, --formats LIST   Comma-separated subset, e.g. appimage,deb  (default: all for this OS)
-#       --version VER    Package version (default: from the build, e.g. 3.99-master648)
+#       --version VER    Package version (default: from the build, e.g. 5.0)
 #       --skip-build     Reuse an existing build-release directory
 #   -h, --help           Show this help
 #
@@ -158,7 +158,7 @@ linux_deb() {
     have dpkg-deb || { warn "dpkg-deb not found, skipping .deb"; return; }
     local root="$WORK/deb" debarch debver
     debarch="$(dpkg --print-architecture 2>/dev/null || echo amd64)"
-    debver="${VERSION/-/\~}-1"                   # 3.99-master648 -> 3.99~master648-1
+    debver="${VERSION/-/\~}-1"                   # 5.0-master660 -> 5.0~master660-1
     cp -a "$PKGROOT" "$root"
     mkdir -p "$root/DEBIAN"
     cat > "$root/DEBIAN/control" <<EOF

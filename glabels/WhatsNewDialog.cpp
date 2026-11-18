@@ -102,6 +102,12 @@ namespace glabels
 
                 const QList<Section> sections = {
                         { tr("Latest additions"), {
+                                tr("<b>Projects</b> keep each business or client's labels together. "
+                                   "Create a project on the welcome screen (or File &gt; New Project), "
+                                   "then add labels to it with <b>New label...</b>. Each project is a folder "
+                                   "in <i>Documents/gLabels Plus Projects</i>, so it's easy to back up or share."),
+                                tr("Right-click a project to rename it or move it to the Trash; right-click a label "
+                                   "to open, rename, duplicate or remove it."),
                                 tr("<b>Page selector</b> in the toolbar, next to Units: click it to choose or change "
                                    "the page (product) at any time (also <b>Edit &gt; Page Setup</b>, Ctrl+Shift+P). "
                                    "Objects keep their positions and sizes, and the change can be undone in one step."),
@@ -110,7 +116,7 @@ namespace glabels
                                    "Find them under the brand <i>Barcode Labels</i>."),
                                 tr("New <b>Barcode labels</b> category in the product chooser to show only those sizes."),
                                 tr("<b>Startup splash screen</b> with loading progress."),
-                                tr("The main window now <b>opens maximized</b> at startup."),
+                                tr("Windows now <b>always open maximized</b>."),
                                 tr("The <b>gLabels Plus icon</b> now appears on every window and dialog."),
                         } },
                         { tr("Designing labels"), {
@@ -142,8 +148,8 @@ namespace glabels
                                 tr("Default <b>label outlines</b> and <b>crop marks</b> can be set in Preferences."),
                         } },
                         { tr("Workspace"), {
-                                tr("<b>New welcome screen</b> with quick actions and recent projects "
-                                   "(right-click a project to remove it from the list)."),
+                                tr("<b>New welcome screen</b> with quick actions and recent labels "
+                                   "(right-click a label to remove it from the list)."),
                                 tr("<b>Redesigned Preferences</b> with a search box and sections for general, "
                                    "appearance, editor and printing options."),
                                 tr("<b>Light and dark color schemes</b> and a choice of icon styles."),

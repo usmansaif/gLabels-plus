@@ -43,6 +43,7 @@ namespace glabels
 
         public:
                 static bool newLabel( MainWindow *window = nullptr );
+                static bool newLabelInProject( MainWindow *window, const QString& project );
                 static void open( MainWindow *window );
                 static void open( const QString& fileName, MainWindow *window );
                 static bool save( MainWindow *window );

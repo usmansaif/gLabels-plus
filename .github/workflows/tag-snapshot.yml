@@ -21,7 +21,7 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "version=3.99-master$(git rev-list --count master --)" >> "$GITHUB_OUTPUT"
+        echo "version=5.0-master$(git rev-list --count master --)" >> "$GITHUB_OUTPUT"
 
     - name: Create GitHub Release
       uses: actions/create-release@v1
@@ -29,6 +29,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.strings.outputs.version }}
-        body: "Pre-4.0 development snapshot release"
+        body: "gLabels Plus 5.0 development snapshot release"
         draft: false
         prerelease: true

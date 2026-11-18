@@ -32,6 +32,7 @@ set (glabels_sources
   PreferencesDialog.cpp
   PrinterMonitor.cpp
   PrintView.cpp
+  Projects.cpp
   PropertiesView.cpp
   Preview.cpp
   PreviewOverlayItem.cpp

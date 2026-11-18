@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.22)
 ###############################################################################
 # gLabels Label Designer Project
 ###############################################################################
-project (glabels-plus VERSION "3.99.0")
+project (glabels-plus VERSION "5.0.0")
 
 #
 # Path for locally defined cmake modules
@@ -20,7 +20,7 @@ set (APPLICATION_NAME "glabels-qt")
 set (DESKTOP_FILE_NAME "org.glabels.glabels-qt")
 
 set (WEBSITE  "glabels.org")
-set (BUG_WEBSITE  "https://github.com/j-evins/glabels-qt/issues")
+set (BUG_WEBSITE  "https://github.com/usmansaif/gLabels-plus/issues")
 
 execute_process(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -67,10 +67,10 @@ if (NOT ${COMMIT_DATE_VALID} STREQUAL "0")
 endif ()
 
 # Uncomment for snapshots, comment for releases
-set(VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}-${BRANCH}${COMMIT_COUNT}")
+#set(VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}-${BRANCH}${COMMIT_COUNT}")
 
-# Uncomment for releases, comment for snapshots
-#set(VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+# Uncomment for releases, comment for snapshots (shown as e.g. "5.0")
+set(VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
 
 set(LONG_VERSION_STRING "${VERSION_STRING} (${COMMIT_HASH} ${COMMIT_DATE})")
 
