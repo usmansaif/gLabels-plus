@@ -1,0 +1,52 @@
+# Builds release packages on each OS with release.sh and uploads them as artifacts.
+# Run it manually from the GitHub "Actions" tab.
+#
+#     - ubuntu-22.04  -> .AppImage, .deb, .rpm, .tar.gz
+#     - windows-2022  -> .exe (NSIS installer), .zip
+#     - macos-latest  -> .tar.gz, .dmg
+
+name: Release Packages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install packaging tools (Ubuntu)
+      if: startsWith( matrix.os, 'ubuntu-' )
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install ninja-build libqrencode-dev zlib1g-dev rpm file libxcb-cursor0
+
+    - name: Install packaging tools (macOS)
+      if: startsWith( matrix.os, 'macos-' )
+      run: brew install ninja qrencode
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.5.3'
+        install-deps: 'true'
+
+    - name: Build packages
+      shell: bash
+      run: ./release.sh --qt "$QT_ROOT_DIR"
+
+    - name: Upload packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: glabels-${{ matrix.os }}
+        path: dist/*

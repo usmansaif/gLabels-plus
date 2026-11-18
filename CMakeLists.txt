@@ -100,6 +100,9 @@ set (CPACK_NSIS_DISPLAY_NAME "gLabels Plus")
 set (CPACK_NSIS_URL_INFO_ABOUT "http://${WEBSITE}")
 set (CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/glabels/windows-icon/glabels.ico")
 set (CPACK_NSIS_MODIFY_PATH "ON")
+set (CPACK_PACKAGE_INSTALL_DIRECTORY "gLabels Plus")
+set (CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\glabels-qt.exe")
+set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
 
 include (CPack)
 

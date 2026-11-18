@@ -40,3 +40,8 @@ TEST-DATA
 SAV*
 OLD*
 
+
+# build.sh / release.sh output
+/build-release
+/dist
+/.tools
