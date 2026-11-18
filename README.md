@@ -6,6 +6,8 @@ Design barcode, address, shipping and product labels, name badges, CD/DVD labels
 business cards, with mail merge and over 1,800 ready-made templates from 70+ brands, for
 sheet printers and thermal roll printers.
 
+**Website:** [usmansaif.github.io/gLabels-plus](https://usmansaif.github.io/gLabels-plus/)
+
 ![gLabels Plus splash screen](docs/images/screenshots/splash.png)
 
 gLabels Plus is built on [gLabels-qt](https://github.com/j-evins/glabels-qt) (gLabels 4) by
