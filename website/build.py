@@ -568,6 +568,7 @@ def head(key, page):
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="google-site-verification" content="Gp_U57yyeAGGdQGBVQgmgPYSD87tRu7QaAAQKwBh7Wc" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 {base}  <title>{esc(page["title"])}</title>
   <meta name="description" content="{esc(page["description"])}">
