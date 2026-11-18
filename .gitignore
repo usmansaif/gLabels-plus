@@ -45,3 +45,6 @@ OLD*
 /build-release
 /dist
 /.tools
+
+# Qt installer (aqtinstall) log
+aqtinstall.log
