@@ -292,8 +292,8 @@ namespace glabels
                                  "<a %4 href='whatsnew'>%5</a>" )
                         .arg( tr("Preferences"), tr("Keyboard shortcuts"), tr("Help"), link, tr("What's New") ) );
                 mBannerLabel->setText(
-                        QString( "%1<br><a %2 href='https://usmansaif.com'><b>Usman Saif</b></a>" )
-                        .arg( tr("Enhanced with new features and a refreshed interface by"), link ) );
+                        QString( "%1<br>%3: <a %2 href='https://usmansaif.com'><b>Usman Saif</b></a>" )
+                        .arg( tr("Enhanced with new features and a refreshed interface."), link, tr("Maintainer") ) );
 
                 setStyleSheet(
                         "#startupCanvas { background: palette(base); }"

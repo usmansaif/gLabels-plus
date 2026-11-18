@@ -431,5 +431,101 @@
         <source>CD/DVD spine labels</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Address / Dymo 30252</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box / Tray Marking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Carton &amp; Inventory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compact Barcode Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compact Retail &amp; Logistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compact Retail &amp; Stock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compact Shelf / Bin ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Courier &amp; Warehouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exact 4×6″ Zebra Shipping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Healthcare &amp; Asset Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inventory / Warehouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Barcode / ID Strip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mid-Size Warehouse / Retail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mini / Jewelry Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outer Box Logistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pallet / Location Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pallet / Warehouse Tracking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Product / Shelf Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shipping &amp; Courier (4×6)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small Retail &amp; Logistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Square Retail / Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard Retail / MRP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stock Control &amp; Packing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wide Product &amp; Box ID</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

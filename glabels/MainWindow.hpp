@@ -140,6 +140,7 @@ namespace glabels
                 void viewDockToggled( bool );
                 void onZoomComboActivated();
                 void onUnitsComboChanged( int index );
+                void onPageButtonClicked();
                 void onAlignReferenceChanged( int index );
                 void onRotationSpinChanged( double value );
                 void onSidebarContextMenu( const QPoint& pos );
@@ -213,6 +214,7 @@ namespace glabels
                 void applySidebarStyle();
                 void updateChromeVisibility();
                 void syncUnitsCombo();
+                void syncPageButton();
                 void syncRotationSpin();
 
                 QWidget* createWelcomePage();
@@ -283,6 +285,7 @@ namespace glabels
 
                 QComboBox*      mZoomCombo;
                 QComboBox*      mUnitsCombo;
+                QToolButton*    mPageButton{ nullptr };
                 QComboBox*      mAlignRefCombo;
                 QDoubleSpinBox* mRotationSpin;
                 QSpinBox*       mMergeRecordSpin;
@@ -339,6 +342,7 @@ namespace glabels
                 QAction*  editDeleteAction;
                 QAction*  editSelectAllAction;
                 QAction*  editUnSelectAllAction;
+                QAction*  editPageSetupAction;
                 QAction*  editPreferencesAction;
                 QAction*  editShortcutsAction;
 

@@ -137,8 +137,10 @@ namespace glabels
                 mTree->sortItems( 0, Qt::AscendingOrder );
 
                 mSequenceEdit = new QKeySequenceEdit();
-#if QT_VERSION >= QT_VERSION_CHECK(6,4,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
                 mSequenceEdit->setMaximumSequenceLength( 1 );
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(6,4,0)
                 mSequenceEdit->setClearButtonEnabled( true );
 #endif
                 mClearButton = new QPushButton( tr("Clear") );
@@ -252,6 +254,15 @@ namespace glabels
                         return;
                 }
                 auto* action = qobject_cast<QAction*>( item->data( 0, ActionRole ).value<QObject*>() );
+#if QT_VERSION < QT_VERSION_CHECK(6,5,0)
+                // No setMaximumSequenceLength() before Qt 6.5: keep only the first chord.
+                if ( mSequenceEdit->keySequence().count() > 1 )
+                {
+                        mBlocked = true;
+                        mSequenceEdit->setKeySequence( QKeySequence( mSequenceEdit->keySequence()[0] ) );
+                        mBlocked = false;
+                }
+#endif
                 mPending[action] = mSequenceEdit->keySequence();
                 refreshItem( item );
                 updateConflictLabel();

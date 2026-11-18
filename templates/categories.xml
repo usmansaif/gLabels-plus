@@ -15,5 +15,6 @@
   <Category id="foldable"         _name="Foldable cards"/>
   <Category id="photo"            _name="Photo products"/>
   <Category id="filing"           _name="Filing labels"/>
+  <Category id="barcode-label"    _name="Barcode labels"/>
 
 </Glabels-categories>

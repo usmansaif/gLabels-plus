@@ -77,7 +77,11 @@ namespace glabels
                 mTitleLabel = new QLabel();
                 headerText->addWidget( mTitleLabel );
 
-                QString description = tr("A program to create labels and business cards.");
+                QString description = tr("A professional label and business card designer. "
+                                         "Create barcode, address, shipping and product labels, "
+                                         "name badges, CD/DVD labels and business cards, with "
+                                         "mail merge and over 1,800 ready-made templates from "
+                                         "70+ brands, for sheet and thermal roll printers.");
                 auto* tagline = new QLabel( description );
                 tagline->setObjectName( "abTagline" );
                 tagline->setWordWrap( true );
@@ -122,7 +126,7 @@ namespace glabels
                 creditsLayout->setContentsMargins( 0, 0, 0, 0 );
                 creditsLayout->setSpacing( 12 );
                 creditsLayout->addWidget( createPerson( tr("Author"), "Jaye Evins", "evins@snaught.com" ) );
-                creditsLayout->addWidget( createPerson( tr("Contributor"), "Usman Saif",
+                creditsLayout->addWidget( createPerson( tr("Maintainer"), "Usman Saif",
                                                         "usman.saif22@gmail.com", "usmansaif.com" ) );
                 bodyLayout->addWidget( createCard( tr("Credits"), credits ) );
 

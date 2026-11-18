@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+
+<Glabels-templates>
+
+  <!-- =================================================================== -->
+  <!-- Generic barcode labels for thermal roll printers (Zebra, TSC,       -->
+  <!-- Xprinter, Godex, ...). One label per page; width is across the     -->
+  <!-- print head, height is along the feed direction.                    -->
+  <!-- =================================================================== -->
+
+  <!-- 30mm x 15mm (1.18" x 0.59") -->
+  <Template brand="Barcode Labels" part="30 × 15 mm" _description="Mini / Jewelry Tag"
+	    size="roll" roll_width="34mm" width="30mm" height="15mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="30mm" height="15mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 38mm x 25mm (1.50" x 0.98") -->
+  <Template brand="Barcode Labels" part="38 × 25 mm" _description="Compact Retail &amp; Stock"
+	    size="roll" roll_width="42mm" width="38mm" height="25mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="38mm" height="25mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 38.1mm x 25.4mm (1.50" x 1.00") -->
+  <Template brand="Barcode Labels" part="38.1 × 25.4 mm" _description="Compact Retail &amp; Logistics"
+	    size="roll" roll_width="42.1mm" width="38.1mm" height="25.4mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="38.1mm" height="25.4mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 40mm x 30mm (1.57" x 1.18") -->
+  <Template brand="Barcode Labels" part="40 × 30 mm" _description="Healthcare &amp; Asset Tag"
+	    size="roll" roll_width="44mm" width="40mm" height="30mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="40mm" height="30mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 50mm x 25mm (1.97" x 0.98") -->
+  <Template brand="Barcode Labels" part="50 × 25 mm" _description="Standard Retail / MRP"
+	    size="roll" roll_width="54mm" width="50mm" height="25mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="50mm" height="25mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 50.8mm x 25.4mm (2.00" x 1.00") -->
+  <Template brand="Barcode Labels" part="50.8 × 25.4 mm" _description="Compact Barcode Label"
+	    size="roll" roll_width="54.8mm" width="50.8mm" height="25.4mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="50.8mm" height="25.4mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 50mm x 30mm (1.97" x 1.18") -->
+  <Template brand="Barcode Labels" part="50 × 30 mm" _description="Product / Shelf Label"
+	    size="roll" roll_width="54mm" width="50mm" height="30mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="50mm" height="30mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 50mm x 50mm (1.97" x 1.97") -->
+  <Template brand="Barcode Labels" part="50 × 50 mm" _description="Square Retail / Product"
+	    size="roll" roll_width="54mm" width="50mm" height="50mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="square-label"/>
+    <Label-rectangle id="0" width="50mm" height="50mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 52mm x 38mm (2.05" x 1.50") -->
+  <Template brand="Barcode Labels" part="52 × 38 mm" _description="Compact Shelf / Bin ID"
+	    size="roll" roll_width="56mm" width="52mm" height="38mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="52mm" height="38mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 57mm x 32mm (2.24" x 1.26") -->
+  <Template brand="Barcode Labels" part="57 × 32 mm" _description="Small Retail &amp; Logistics"
+	    size="roll" roll_width="61mm" width="57mm" height="32mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="57mm" height="32mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 60mm x 40mm (2.36" x 1.57") -->
+  <Template brand="Barcode Labels" part="60 × 40 mm" _description="Mid-Size Warehouse / Retail"
+	    size="roll" roll_width="64mm" width="60mm" height="40mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="60mm" height="40mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 76mm x 38mm (2.99" x 1.50") -->
+  <Template brand="Barcode Labels" part="76 × 38 mm" _description="Courier &amp; Warehouse"
+	    size="roll" roll_width="80mm" width="76mm" height="38mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="76mm" height="38mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 76mm x 50mm (2.99" x 1.97") -->
+  <Template brand="Barcode Labels" part="76 × 50 mm" _description="Stock Control &amp; Packing"
+	    size="roll" roll_width="80mm" width="76mm" height="50mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="76mm" height="50mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 76mm x 51mm (2.99" x 2.01") -->
+  <Template brand="Barcode Labels" part="76 × 51 mm" _description="Inventory / Warehouse"
+	    size="roll" roll_width="80mm" width="76mm" height="51mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="76mm" height="51mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 80mm x 50mm (3.15" x 1.97") -->
+  <Template brand="Barcode Labels" part="80 × 50 mm" _description="Wide Product &amp; Box ID"
+	    size="roll" roll_width="84mm" width="80mm" height="50mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="80mm" height="50mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 89mm x 28mm (3.50" x 1.10") -->
+  <Template brand="Barcode Labels" part="89 × 28 mm" _description="Address / Dymo 30252"
+	    size="roll" roll_width="93mm" width="89mm" height="28mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="89mm" height="28mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 100mm x 50mm (3.94" x 1.97") -->
+  <Template brand="Barcode Labels" part="100 × 50 mm" _description="Box / Tray Marking"
+	    size="roll" roll_width="104mm" width="100mm" height="50mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="100mm" height="50mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 100mm x 100mm (3.94" x 3.94") -->
+  <Template brand="Barcode Labels" part="100 × 100 mm" _description="Pallet / Warehouse Tracking"
+	    size="roll" roll_width="104mm" width="100mm" height="100mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="square-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="100mm" height="100mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 100mm x 150mm (3.94" x 5.91") -->
+  <Template brand="Barcode Labels" part="100 × 150 mm" _description="Shipping &amp; Courier (4×6)"
+	    size="roll" roll_width="104mm" width="100mm" height="150mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="100mm" height="150mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 101.6mm x 76.2mm (4.00" x 3.00") -->
+  <Template brand="Barcode Labels" part="101.6 × 76.2 mm" _description="Outer Box Logistics"
+	    size="roll" roll_width="105.6mm" width="101.6mm" height="76.2mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="101.6mm" height="76.2mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 101.6mm x 101.6mm (4.00" x 4.00") -->
+  <Template brand="Barcode Labels" part="101.6 × 101.6 mm" _description="Pallet / Location Square"
+	    size="roll" roll_width="105.6mm" width="101.6mm" height="101.6mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="square-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="101.6mm" height="101.6mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 101.6mm x 152.4mm (4.00" x 6.00") -->
+  <Template brand="Barcode Labels" part="101.6 × 152.4 mm" _description="Exact 4×6″ Zebra Shipping"
+	    size="roll" roll_width="105.6mm" width="101.6mm" height="152.4mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="101.6mm" height="152.4mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 102mm x 38mm (4.02" x 1.50") -->
+  <Template brand="Barcode Labels" part="102 × 38 mm" _description="Long Barcode / ID Strip"
+	    size="roll" roll_width="106mm" width="102mm" height="38mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Label-rectangle id="0" width="102mm" height="38mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+  <!-- 102mm x 50mm (4.02" x 1.97") -->
+  <Template brand="Barcode Labels" part="102 × 50 mm" _description="Carton &amp; Inventory"
+	    size="roll" roll_width="106mm" width="102mm" height="50mm" >
+    <Meta category="label"/>
+    <Meta category="barcode-label"/>
+    <Meta category="rectangle-label"/>
+    <Meta category="mail"/>
+    <Label-rectangle id="0" width="102mm" height="50mm" round="2mm" x_waste="0" y_waste="0">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm" /> <!-- Safe area -->
+      <Layout nx="1" ny="1" x0="0" y0="0" dx="0" dy="0"/>
+    </Label-rectangle>
+  </Template>
+
+</Glabels-templates>

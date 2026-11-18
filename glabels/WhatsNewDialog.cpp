@@ -101,6 +101,18 @@ namespace glabels
                 };
 
                 const QList<Section> sections = {
+                        { tr("Latest additions"), {
+                                tr("<b>Page selector</b> in the toolbar, next to Units: click it to choose or change "
+                                   "the page (product) at any time (also <b>Edit &gt; Page Setup</b>, Ctrl+Shift+P). "
+                                   "Objects keep their positions and sizes, and the change can be undone in one step."),
+                                tr("<b>24 new barcode label sizes</b> for thermal roll printers (Zebra, TSC, Xprinter, ...), "
+                                   "from 30 &times; 15 mm jewelry tags to 4 &times; 6&Prime; shipping labels. "
+                                   "Find them under the brand <i>Barcode Labels</i>."),
+                                tr("New <b>Barcode labels</b> category in the product chooser to show only those sizes."),
+                                tr("<b>Startup splash screen</b> with loading progress."),
+                                tr("The main window now <b>opens maximized</b> at startup."),
+                                tr("The <b>gLabels Plus icon</b> now appears on every window and dialog."),
+                        } },
                         { tr("Designing labels"), {
                                 tr("<b>Rulers</b> along the top and left of the label. Click the units corner to switch units."),
                                 tr("<b>Objects panel</b> lists every object from top-most to bottom-most. "

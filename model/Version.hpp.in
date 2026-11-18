@@ -38,9 +38,9 @@ namespace glabels::model
                 const QString WEBSITE = "https://@WEBSITE@";
                 const QString BUG_WEBSITE = "@BUG_WEBSITE@";
 
-                const int     MAJOR   = @glabels-qt_VERSION_MAJOR@;
-                const int     MINOR   = @glabels-qt_VERSION_MINOR@;
-                const int     MICRO   = @glabels-qt_VERSION_PATCH@;
+                const int     MAJOR   = @CMAKE_PROJECT_VERSION_MAJOR@;
+                const int     MINOR   = @CMAKE_PROJECT_VERSION_MINOR@;
+                const int     MICRO   = @CMAKE_PROJECT_VERSION_PATCH@;
 
                 const QString STRING  = "@VERSION_STRING@";
                 const QString LONG_STRING  = "@LONG_VERSION_STRING@";

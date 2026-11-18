@@ -92,8 +92,11 @@ install_deps() {
                 libfontconfig1-dev libfreetype6-dev libxcb-cursor0 file
             # Qt 6 packages only exist on Debian 12+/Ubuntu 22.04+
             if apt-cache show qt6-base-dev >/dev/null 2>&1; then
+                # Ubuntu 24.04+/Debian 13 name it qt6-svg-dev; 22.04/Debian 12 use libqt6svg6-dev
+                local svg_pkg=libqt6svg6-dev
+                if apt-cache show qt6-svg-dev >/dev/null 2>&1; then svg_pkg=qt6-svg-dev; fi
                 $SUDO apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
-                    qt6-l10n-tools libqt6svg6-dev
+                    qt6-l10n-tools "$svg_pkg"
             else
                 warn "this distro has no Qt 6 packages; use --install-qt 6.5.3"
             fi

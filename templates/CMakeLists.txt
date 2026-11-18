@@ -11,6 +11,7 @@ set (template_files
   avery-iso-templates.xml
   avery-other-templates.xml
   avery-us-templates.xml
+  barcode-labels-templates.xml
   begalabel-templates.xml
   brother-other-templates.xml
   cablelabel-templates.xml

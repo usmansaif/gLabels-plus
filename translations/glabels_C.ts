@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About gLabels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;License</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Website</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Color name</name>
     <message>
         <source>Light Scarlet Red</source>
@@ -513,153 +494,6 @@
     </message>
 </context>
 <context>
-    <name>PreferencesDialog</name>
-    <message>
-        <source>gLabels - Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Locale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Units</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Points</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Centimeters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Millimeters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Inches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Picas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Spacing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Top left corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Appearance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Dark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color scheme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use a light appearance for user interface.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use a dark appearance for user interface.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Automatically adjust appearance based on system color scheme.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Startup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Browse...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Inherit current working directory from parent process.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Startup in user&apos;s home directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Startup in user&apos;s docments directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User defined startup directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Parent working directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Other:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Icon style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Flat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vector</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PrintView</name>
     <message>
         <source>Copies:</source>
@@ -813,16 +647,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select another product for this gLabels project.</source>
+        <source>Select another product for this gLabels Plus project.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ReportBugDialog</name>
-    <message>
-        <source>gLabels - Report a Bug</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Copy</source>
         <translation type="unfinished"></translation>
@@ -835,141 +665,26 @@
         <source>&amp;Launch Issue Tracker</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>SelectProductDialog</name>
     <message>
-        <source>gLabels - Select Product</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filter by paper size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ISO sizes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>US sizes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filter by category</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search entire product database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Recent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select from recently used products.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Product information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vendor:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Part #:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Page size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Layout:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select</source>
+        <source>gLabels Plus - Report a Bug</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>StartupView</name>
+    <name>Template</name>
     <message>
-        <source>Welcome to gLabels.  Let&apos;s get started:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a new blank gLabels project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open a recent gLabels project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Recent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Browse...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open an existing gLabels project</source>
+        <source>Roll, %1 %2 wide</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TemplateDesignerApplyPage</name>
     <message>
-        <source>You have completed the gLabels Product Template Designer.  If you wish to accept and save your product template, click &quot;Save.&quot;</source>
+        <source>Otherwise, you may click &quot;Cancel&quot; to abandon your design or &quot;Back&quot; to review or continue editing this product template.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Otherwise, you may click &quot;Cancel&quot; to abandon your design or &quot;Back&quot; to review or continue editing this product template.</source>
+        <source>You have completed the gLabels Plus Product Template Designer.  If you wish to accept and save your product template, click &quot;Save.&quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1150,6 +865,10 @@
     </message>
     <message>
         <source>Page size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1352,15 +1071,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A program to create labels and business cards.</source>
+        <source>About gLabels Plus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</source>
+        <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</source>
+        <source>Copy version information to the clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read the full GNU General Public License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintainer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A professional label and business card designer. Create barcode, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge and over 1,800 ready-made templates from 70+ brands, for sheet and thermal roll printers.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1420,10 +1183,6 @@
 <context>
     <name>glabels::File</name>
     <message>
-        <source>gLabels - Open Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>glabels files (*.glabels);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1436,10 +1195,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels - Save Project As</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Label As</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1449,6 +1204,14 @@
     </message>
     <message>
         <source>Do you want to replace it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus - Open Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus - Save Project As</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1468,6 +1231,34 @@
     </message>
     <message>
         <source>Drop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X: %1  Y: %2 %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length: %1 %2  Angle: %3°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W: %1  H: %2 %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter to apply, Esc to cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Enter or click outside to apply, Esc to cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Barcode Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1502,15 +1293,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create a new gLabels project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open an existing gLabels project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1518,15 +1301,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save current gLabels project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save &amp;As...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save current gLabels project to a different name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1874,15 +1649,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open gLabels manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>About gLabels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2031,6 +1798,354 @@
         <source>Preferences...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch page. Right-click to change button style.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new gLabels Plus project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open an existing gLabels Plus project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current gLabels Plus project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current gLabels Plus project to a different name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard Shortcuts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View and customize keyboard shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View &amp;&amp; Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change visibility of the &quot;View &amp;&amp; Zoom&quot; toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change visibility of the &quot;Arrange&quot; toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change visibility of the &quot;Merge Preview&quot; toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object Properties Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide the object properties panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide the list of objects (layers)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rulers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide horizontal and vertical rulers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units in Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide measurement units next to values in the properties panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bring Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Raise selection one step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send Backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lower selection one step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Text In Place</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit the text or barcode data of the selected object directly on the label (or double-click it)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Relative to Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align objects to the outer edges of the whole selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Relative to Last Selected Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align objects to the object that was selected last (it does not move)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align Relative to Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align objects to the edges or center of the label (canvas)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview Merge Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show actual merge records on the label instead of field names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open gLabels Plus manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About gLabels Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom level (type a value and press Enter)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Units: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measurement units used throughout gLabels Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inches (in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Millimeters (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centimeters (cm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points (pt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Picas (pc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Align to: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference used by the alignment buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align to the outer edges of all selected objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align to the object you selected last (Ctrl+click to add objects)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align to the edges or center of the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation angle of the selected object(s), about their center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge record shown on the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons and Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons Only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Large Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra Large Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pointer position on the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruler units (click to change)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> of %1 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> (no merge data) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>  Page: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page changed to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a page (product template) for a new label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paper: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to change the page. Objects keep their positions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page Setup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose or change the page (product) without moving any objects</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -2174,10 +2289,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>gLabels - Select image file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Set image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2213,11 +2324,544 @@
         <source>Use substitution field</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>gLabels Plus - Select image file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::ObjectListView</name>
+    <message>
+        <source>Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked objects cannot be selected or moved on the canvas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects from top-most to bottom-most.
+Click the lock column to lock or unlock an object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Barcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Barcode: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked (click to unlock)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocked (click to lock)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::PreferencesDialog</name>
     <message>
         <source>Select startup directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus - Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find a setting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type a word such as &quot;grid&quot;, &quot;dark&quot; or &quot;mm&quot; to find the right page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset all preferences to their original values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Changes are applied immediately.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Where gLabels Plus starts looking for files, and your recent files list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The folder shown first when you open or save a project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder gLabels Plus was started from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inherit the working folder of the program or shortcut that launched gLabels Plus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My home folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My Documents folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another folder:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus remembers the last %1 projects you opened (File &gt; Open Recent).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Recent Files List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose how sizes and positions are measured and displayed everywhere in gLabels Plus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measurement units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Millimeters (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metric. Common for A4 sheets and most of the world.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centimeters (cm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metric, in larger steps.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inches (in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imperial. Common for US Letter sheets.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points (pt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Typographic unit: 72 points = 1 inch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Picas (pc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Typographic unit: 6 picas = 1 inch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show unit names next to values in the Object Properties panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Example: &quot;25.40 mm&quot; instead of &quot;25.40&quot;. Turn off for a more compact panel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO (A4, A5, ...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>US (Letter, Legal, ...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferred paper sizes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Used as the default when designing your own product templates.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How the label canvas looks and behaves while you design.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvas guides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show markup (safe area and margin lines)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show rulers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can also toggle these from the View menu or the View toolbar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore the default grid spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spacing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid starts at:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top-left corner of the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center of the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Round, elliptical and CD labels always use the center.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The whole selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The last selected object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align objects relative to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;The label&quot; lets you align even a single object to an edge or the center of the label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light or dark colors, and the style of icons.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark text on a light background.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light text on a dark background; easier on the eyes in dim rooms.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as my system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Follow the operating system&apos;s light/dark setting automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Requires a newer version of Qt.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat (colorful)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vector (monochrome outlines)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window Layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make more room for your label by adjusting the page buttons and toolbars.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons and text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The page buttons (Edit, Properties, Merge, Variables, Print) are at the bottom left. Right-click them for these options. Toolbars can be dragged to any edge of the window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons with text beside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons with text below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbar buttons:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Showing text makes buttons easier to recognize while you learn gLabels Plus. Choose which toolbars and panels are visible from View &gt; Toolbars and View &gt; Panels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default options for the Print page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print label outlines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print crop marks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draws the edge of every label. Useful for test prints on plain paper.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draws small marks at the page edges showing where to cut.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On the Print page you can click a label in the preview to choose where printing starts, which is handy for partially used sheets. Shift+click sets the last label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Customize keyboard shortcuts for menu commands.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Assign your own key combinations to commands, or restore the defaults.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Customize Shortcuts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Handy keys in the editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrow keys: nudge selected objects (hold Shift for bigger steps)
+F2 or Enter: edit the selected text or barcode in place
+Double-click: edit text or barcode in place
+Esc: deselect all
+Ctrl+] / Ctrl+[: bring forward / send backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom (%1 px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Example: a common 2.625 × 1 inch address label is shown as &lt;b&gt;%1 × %2 %3&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a project window first, then use Edit &gt; Keyboard Shortcuts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset all preferences to their original values?
+
+Your recent files, favorites and keyboard shortcuts are kept.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::Preview</name>
+    <message>
+        <source>Label %1 — click to start printing here, Shift+click to set the last label</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2244,15 +2888,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF files (*.pdf);;All files (*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 already exists.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to overwrite it?</source>
+        <source>Click a label to choose where printing starts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2278,10 +2914,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>To submit a bug report, click on the button below.  This will open a web browser to the gLabels github issue tracking page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Be sure to include a detailed description of the problem and how to recreate it.  Attach any screenshots and/or example glabels project files that may illustrate the problem.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2289,15 +2921,261 @@
         <source>Before submitting a report, look through the existing issues for similar or related bugs.  If the issue has already been reported, please consider contributing to its report instead.  Otherwise, create a new issue report. Please paste the following information into the issue description.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>To submit a bug report, click on the button below.  This will open a web browser to the gLabels Plus github issue tracking page.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::SelectProductDialog</name>
     <message>
-        <source>List View</source>
+        <source>gLabels Plus - Select Product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Grid View</source>
+        <source>Choose a product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick the label, card or sheet you will print on.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search brand, part #, description or size (e.g. avery 5160, 2x4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type one or more words. Partial words and sizes like 2x4 or 50 x 25 also work.
+Ctrl+F to focus, Down to move into the results, Enter to choose.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recently used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paper size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A4, A5 and other ISO paper sizes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>US</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>US Letter, Legal and other US paper sizes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rolls, custom and other paper sizes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tick categories to narrow the results. None ticked shows all categories.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear search and filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a product to see its details.
+
+Double-click a product, or press Enter, to choose it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Part #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Also sold as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t find your product?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a custom product template...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filters apply when browsing all products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 recently used product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 recently used products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;No recently used products yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Products you create labels with will appear here.&lt;/p&gt;&lt;p&gt;&lt;a href=&apos;all&apos;&gt;Browse all products&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;No favorites yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a product and click &lt;i&gt;Add to favorites&lt;/i&gt;,&lt;br&gt;or right-click any product.&lt;/p&gt;&lt;p&gt;&lt;a href=&apos;all&apos;&gt;Browse all products&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;No products match.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Try fewer or shorter words, or a size such as 2x4.&lt;/p&gt;&lt;p&gt;&lt;a href=&apos;clear&apos;&gt;Clear search and filters&lt;/a&gt; &amp;nbsp;·&amp;nbsp; &lt;a href=&apos;designer&apos;&gt;Create a custom template&lt;/a&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>★ Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>☆ Add to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::ShortcutsDialog</name>
+    <message>
+        <source>Keyboard Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a command, then press the new key combination. Changes take effect when you click OK.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search commands or shortcuts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the shortcut from this command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore this command&apos;s original shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcut:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: %1 is also used by: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2305,6 +3183,138 @@
     <name>glabels::SimplePreview</name>
     <message>
         <source>Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::SplashScreen</name>
+    <message>
+        <source>Starting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Professional Label &amp; Business Card Designer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VERSION %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Based on gLabels · GPL v3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing workspace...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading fonts and resources...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing label editor...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Setting up print engine...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finalizing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintainer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::StartupView</name>
+    <message>
+        <source>Design and print labels, business cards and badges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick a label or card product and start designing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse for an existing gLabels Plus project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Product template designer...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a template for a product that isn&apos;t listed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent projects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No recent projects yet.
+
+Projects you open or save will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What&apos;s New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (file not found)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enhanced with new features and a refreshed interface.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintainer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2320,6 +3330,10 @@
     </message>
     <message>
         <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2383,7 +3397,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Welcome to the gLabels Product Template Designer.</source>
+        <source>Welcome to the gLabels Plus Product Template Designer.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2440,6 +3454,26 @@
     </message>
     <message>
         <source>Roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inches (in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Millimeters (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centimeters (cm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points (pt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Picas (pc)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2499,6 +3533,17 @@
     </message>
 </context>
 <context>
+    <name>glabels::TemplatePicker</name>
+    <message>
+        <source>Remove from Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>glabels::VariablesView</name>
     <message>
         <source>Variables</source>
@@ -2530,6 +3575,161 @@
     </message>
     <message>
         <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::WhatsNewDialog</name>
+    <message>
+        <source>What&apos;s New in gLabels Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What&apos;s New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1 — highlights of the latest features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Designing labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Rulers&lt;/b&gt; along the top and left of the label. Click the units corner to switch units.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Objects panel&lt;/b&gt; lists every object from top-most to bottom-most. Click the lock column to &lt;b&gt;lock&lt;/b&gt; an object so it can&apos;t be selected or moved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Edit text in place&lt;/b&gt;: double-click a text or barcode object (or press Enter/F2) to type directly on the label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Live position and size&lt;/b&gt; tooltip follows the cursor while you move, resize or draw objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Bring Forward / Send Backward&lt;/b&gt; moves objects one layer at a time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Rotation box&lt;/b&gt; in the toolbar sets an exact angle for the selected objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Align to&lt;/b&gt; the whole selection, the last selected object, or the label itself.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hold &lt;b&gt;Shift&lt;/b&gt; with the arrow keys to nudge objects in larger steps.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mail merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Merge preview&lt;/b&gt; shows real records on the label instead of field names, with First / Previous / Next / Last buttons to step through them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Products and templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Redesigned product chooser&lt;/b&gt;: search by brand, part number, description or size (e.g. &lt;i&gt;avery 5160&lt;/i&gt;, &lt;i&gt;2x4&lt;/i&gt;), with brand, category and size filters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Grid and list views&lt;/b&gt;, plus &lt;b&gt;favorites&lt;/b&gt; and &lt;b&gt;recently used&lt;/b&gt; products.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Also sold as&lt;/b&gt;: see equivalent part numbers from other brands.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The product template designer uses your preferred units and supports roll labels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Click a label&lt;/b&gt; in the print preview to choose where printing starts; Shift+click to choose the last label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default &lt;b&gt;label outlines&lt;/b&gt; and &lt;b&gt;crop marks&lt;/b&gt; can be set in Preferences.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;New welcome screen&lt;/b&gt; with quick actions and recent projects (right-click a project to remove it from the list).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Redesigned Preferences&lt;/b&gt; with a search box and sections for general, appearance, editor and printing options.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Light and dark color schemes&lt;/b&gt; and a choice of icon styles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Custom keyboard shortcuts&lt;/b&gt; for every menu command (Edit &amp;gt; Keyboard Shortcuts).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide &lt;b&gt;toolbars and panels&lt;/b&gt;, and choose icon size and text style for the page buttons and toolbars.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Units selector&lt;/b&gt; in the toolbar, and a zoom box that accepts typed values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New &lt;b&gt;About&lt;/b&gt; dialog with one-click copy of version information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refreshed application icon and a new set of toolbar icons.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Latest additions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;24 new barcode label sizes&lt;/b&gt; for thermal roll printers (Zebra, TSC, Xprinter, ...), from 30 &amp;times; 15 mm jewelry tags to 4 &amp;times; 6&amp;Prime; shipping labels. Find them under the brand &lt;i&gt;Barcode Labels&lt;/i&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New &lt;b&gt;Barcode labels&lt;/b&gt; category in the product chooser to show only those sizes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The main window now &lt;b&gt;opens maximized&lt;/b&gt; at startup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The &lt;b&gt;gLabels Plus icon&lt;/b&gt; now appears on every window and dialog.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Startup splash screen&lt;/b&gt; with loading progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Page selector&lt;/b&gt; in the toolbar, next to Units: click it to choose or change the page (product) at any time (also &lt;b&gt;Edit &amp;gt; Page Setup&lt;/b&gt;, Ctrl+Shift+P). Objects keep their positions and sizes, and the change can be undone in one step.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2995,15 +4195,39 @@
 <context>
     <name>main</name>
     <message>
-        <source>gLabels Label Designer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>gLabels project files to open, optionally.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>More detailed version information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus Label Designer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus project files to open, optionally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading label templates...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing merge sources...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing barcode backends...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applying appearance...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing workspace...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -31,6 +31,7 @@
 #include "PrintView.hpp"
 #include "PropertiesView.hpp"
 #include "Ruler.hpp"
+#include "SelectProductDialog.hpp"
 #include "ShortcutsDialog.hpp"
 #include "StartupView.hpp"
 #include "VariablesView.hpp"
@@ -78,7 +79,7 @@ namespace glabels
         ///
         MainWindow::MainWindow()
         {
-                setWindowIcon( QIcon::fromTheme( "glabels" ) );
+                setWindowIcon( QApplication::windowIcon() );
 
                 setDockOptions( QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks );
 
@@ -267,6 +268,7 @@ namespace glabels
 
                 onPreviewRecordChanged();
                 syncRotationSpin();
+                syncPageButton();
                 updateChromeVisibility();
         }
 
@@ -425,6 +427,12 @@ namespace glabels
                 editUnSelectAllAction->setIcon( QIcon::fromTheme( "edit-unselect-all" ) );
                 editUnSelectAllAction->setStatusTip( tr("Remove all selections") );
                 connect( editUnSelectAllAction, SIGNAL(triggered()), this, SLOT(editUnSelectAll()) );
+
+                editPageSetupAction = new QAction( tr("Page Setup..."), this );
+                editPageSetupAction->setIcon( QIcon::fromTheme( "document-page-setup" ) );
+                editPageSetupAction->setShortcut( QKeySequence( "Ctrl+Shift+P" ) );
+                editPageSetupAction->setStatusTip( tr("Choose or change the page (product) without moving any objects") );
+                connect( editPageSetupAction, &QAction::triggered, this, &MainWindow::onPageButtonClicked );
 
                 editPreferencesAction = new QAction( tr("Preferences..."), this );
                 editPreferencesAction->setIcon( QIcon::fromTheme( "edit-preferences" ) );
@@ -785,6 +793,8 @@ namespace glabels
                 editMenu->addAction( editSelectAllAction );
                 editMenu->addAction( editUnSelectAllAction );
                 editMenu->addSeparator();
+                editMenu->addAction( editPageSetupAction );
+                editMenu->addSeparator();
                 editMenu->addAction( editShortcutsAction );
                 editMenu->addAction( editPreferencesAction );
 
@@ -979,6 +989,15 @@ namespace glabels
                 connect( mUnitsCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onUnitsComboChanged );
                 viewToolBar->addWidget( mUnitsCombo );
                 syncUnitsCombo();
+
+                viewToolBar->addWidget( new QLabel( tr("  Page: ") ) );
+                mPageButton = new QToolButton();
+                mPageButton->setObjectName( "pageButton" );
+                mPageButton->setToolButtonStyle( Qt::ToolButtonTextOnly );
+                mPageButton->setAutoRaise( false );
+                connect( mPageButton, &QToolButton::clicked, this, &MainWindow::onPageButtonClicked );
+                viewToolBar->addWidget( mPageButton );
+                syncPageButton();
                 addToolBar( Qt::TopToolBarArea, viewToolBar );
 
                 /* Arrange: alignment, order, rotation */
@@ -1133,7 +1152,7 @@ namespace glabels
                         { editCutAction, "edit.cut" }, { editCopyAction, "edit.copy" },
                         { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" },
                         { editSelectAllAction, "edit.selectAll" }, { editUnSelectAllAction, "edit.unselectAll" },
-                        { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
+                        { editPageSetupAction, "edit.pageSetup" }, { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
                         { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" },
                         { viewRulersAction, "view.rulers" }, { viewPropertiesUnitsAction, "view.propertiesUnits" },
                         { viewPropertiesDockAction, "view.propertiesPanel" }, { viewObjectListDockAction, "view.objectsPanel" },
@@ -1568,6 +1587,7 @@ namespace glabels
                 editDeleteAction->setEnabled( isEditorPage && hasSelection );
                 editSelectAllAction->setEnabled( isEditorPage );
                 editUnSelectAllAction->setEnabled( isEditorPage && hasSelection );
+                editPageSetupAction->setEnabled( true );
                 editPreferencesAction->setEnabled( true );
                 editShortcutsAction->setEnabled( true );
 
@@ -2189,6 +2209,74 @@ namespace glabels
 
 
         ///
+        /// Page button clicked: choose a page (product) for a new label, or change
+        /// the current label's page while leaving every object exactly where it is
+        ///
+        void MainWindow::onPageButtonClicked()
+        {
+                if ( !mModel )
+                {
+                        File::newLabel( this );
+                        return;
+                }
+
+                SelectProductDialog dialog( this );
+                dialog.exec();
+
+                auto tmplate = dialog.tmplate();
+                if ( tmplate.isNull() || tmplate == mModel->tmplate() )
+                {
+                        return;
+                }
+
+                // Only the template is swapped: object positions, sizes and the
+                // label rotation are left untouched. Undoable in one step.
+                mUndoRedoModel->checkpoint( tr("Change Page") );
+                mModel->setTmplate( tmplate );
+
+                statusBar()->showMessage( tr("Page changed to %1").arg( tmplate.name() ), 4000 );
+        }
+
+
+        ///
+        /// Sync page button with current model's template
+        ///
+        void MainWindow::syncPageButton()
+        {
+                if ( !mPageButton )
+                {
+                        return;
+                }
+
+                if ( !mModel || mModel->tmplate().isNull() )
+                {
+                        mPageButton->setText( tr("Choose page...") + QString::fromUtf8( "  \u25BE" ) );
+                        mPageButton->setToolTip( tr("Choose a page (product template) for a new label") );
+                        return;
+                }
+
+                const auto& tmplate = mModel->tmplate();
+                auto units = model::Settings::units();
+
+                QString name = mPageButton->fontMetrics().elidedText( tmplate.name(), Qt::ElideRight, 220 );
+                mPageButton->setText( name + QString::fromUtf8( "  \u25BE" ) );
+
+                QString tip = QString( "<b>%1</b>" ).arg( tmplate.name().toHtmlEscaped() );
+                if ( !tmplate.description().isEmpty() )
+                {
+                        tip += "<br>" + tmplate.description().toHtmlEscaped();
+                }
+                if ( auto* frame = tmplate.frame() )
+                {
+                        tip += "<br>" + tr("Label size: %1").arg( frame->sizeDescription( units ).toHtmlEscaped() );
+                }
+                tip += "<br>" + tr("Paper: %1").arg( tmplate.paperDescription( units ).toHtmlEscaped() );
+                tip += "<br><br><i>" + tr("Click to change the page. Objects keep their positions.") + "</i>";
+                mPageButton->setToolTip( tip );
+        }
+
+
+        ///
         /// Sync units combo with settings
         ///
         void MainWindow::syncUnitsCombo()
@@ -2786,6 +2874,7 @@ namespace glabels
         void MainWindow::onLabelChanged()
         {
                 syncRotationSpin();
+                syncPageButton();
         }
 
 
@@ -2816,6 +2905,7 @@ namespace glabels
                 }
                 mAlignRefCombo->setCurrentIndex( mAlignRefCombo->findData( ref ) );
                 mSyncing = false;
+                syncPageButton();
 
                 mLabelEditor->setGridVisible( model::Settings::showGrid() );
                 mLabelEditor->setMarkupVisible( model::Settings::showMarkup() );

@@ -41,6 +41,7 @@ set (glabels_sources
   SelectProductDialog.cpp
   ShortcutsDialog.cpp
   SimplePreview.cpp
+  SplashScreen.cpp
   StartupView.cpp
   TemplateDesigner.cpp
   TemplatePicker.cpp
@@ -79,6 +80,7 @@ set (glabels_qobject_headers
   SelectProductDialog.hpp
   ShortcutsDialog.hpp
   SimplePreview.hpp
+  SplashScreen.hpp
   StartupView.hpp
   TemplateDesigner.hpp
   TemplatePicker.hpp

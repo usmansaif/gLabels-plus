@@ -20,6 +20,7 @@
 
 
 #include "MainWindow.hpp"
+#include "SplashScreen.hpp"
 
 #include "AppearanceModel.hpp"
 
@@ -38,6 +39,7 @@
 #include <QDebug>
 #include <QIcon>
 #include <QLibraryInfo>
+#include <QList>
 #include <QLocale>
 #include <QTextStream>
 #include <QTranslator>
@@ -52,6 +54,20 @@ int main( int argc, char **argv )
         QCoreApplication::setApplicationName( glabels::model::Version::APPLICATION_NAME );
         QCoreApplication::setApplicationVersion( glabels::model::Version::LONG_STRING );
         QApplication::setDesktopFileName( glabels::model::Version::DESKTOP_FILE_NAME );
+
+        // gLabels Plus app icon for every window and dialog (main windows, dialogs,
+        // message boxes, wizards, splash, ...): Qt uses the application icon for
+        // any top-level window that doesn't set its own.
+        {
+                QIcon appIcon;
+                for ( const char* size : { "16x16", "22x22", "32x32", "48x48", "128x128" } )
+                {
+                        appIcon.addFile( QString( ":icons/glabels-flat/%1/apps/glabels.svg" ).arg( size ) );
+                }
+                appIcon.addFile( ":icons/glabels-flat/scalable/apps/glabels.svg" );
+                appIcon.addFile( ":images/glabels-logo.png" );
+                QApplication::setWindowIcon( appIcon );
+        }
 
 
         //
@@ -104,10 +120,17 @@ int main( int argc, char **argv )
         //
         // Initialize subsystems
         //
+        glabels::SplashScreen splash;
+        splash.show();
+        splash.setProgress( 5, QCoreApplication::translate( "main", "Loading settings..." ) );
         glabels::model::Settings::init();
+        splash.setProgress( 20, QCoreApplication::translate( "main", "Loading label templates..." ) );
         glabels::model::Db::init();
+        splash.setProgress( 65, QCoreApplication::translate( "main", "Initializing merge sources..." ) );
         glabels::merge::Factory::init();
+        splash.setProgress( 75, QCoreApplication::translate( "main", "Initializing barcode backends..." ) );
         glabels::barcode::Backends::init();
+        splash.setProgress( 85, QCoreApplication::translate( "main", "Applying appearance..." ) );
         glabels::AppearanceModel::init();
 
 
@@ -124,7 +147,8 @@ int main( int argc, char **argv )
         //
         // Open each file in its own main window
         //
-        bool openedFiles = false;
+        splash.setProgress( 92, QCoreApplication::translate( "main", "Preparing workspace..." ) );
+        QList<glabels::MainWindow*> windows;
         for ( QString filename : parser.positionalArguments() )
         {
                 glabels::model::Model *model = glabels::model::XmlLabelParser::readFile( filename );
@@ -132,8 +156,7 @@ int main( int argc, char **argv )
                 {
                         auto *newWindow = new glabels::MainWindow();
                         newWindow->setModel( model );
-                        newWindow->show();
-                        openedFiles = true;
+                        windows << newWindow;
 
                         glabels::model::Settings::addToRecentFileList( model->fileName() );
                 }
@@ -143,11 +166,17 @@ int main( int argc, char **argv )
         //
         // Launch main window
         //
-        if ( !openedFiles )
+        if ( windows.isEmpty() )
         {
-                auto *mainWindow = new glabels::MainWindow();
-                mainWindow->show();
+                windows << new glabels::MainWindow();
         }
+
+        splash.finishLoading();
+        for ( auto* window : windows )
+        {
+                window->showMaximized();
+        }
+        splash.finish( windows.first() );
 
 
         return app.exec();
