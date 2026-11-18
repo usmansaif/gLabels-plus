@@ -27,6 +27,7 @@
 #include "model/ModelObject.hpp"
 #include "model/Region.hpp"
 
+#include <QLabel>
 #include <QPainter>
 #include <QPointer>
 #include <QScrollArea>
@@ -173,6 +174,9 @@ namespace glabels
                 void handleResizeMotion( model::Distance xWorld,
                                          model::Distance yWorld );
 
+                void showDragInfo( const QPoint& pos );
+                void hideDragInfo();
+
                 void drawBgLayer( QPainter* painter );
                 void drawGridLayer( QPainter* painter );
                 void drawMarkupLayer( QPainter* painter );
@@ -260,6 +264,9 @@ namespace glabels
                 QPointer<model::ModelObject> mTextEditObject;
                 bool                         mTextEditIsBarcode{ false };
                 bool                         mTextEditEnding{ false };
+
+                /* Position/size readout that follows the cursor while dragging */
+                QLabel*                      mDragInfo{ nullptr };
 
         };
 

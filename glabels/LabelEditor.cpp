@@ -857,6 +857,11 @@ namespace glabels
                                 break;
 
                         }
+
+                        if ( mState == ArrowMove || mState == ArrowResize || mState == CreateDrag )
+                        {
+                                showDragInfo( event->pos() );
+                        }
                 }
         }
 
@@ -884,6 +889,8 @@ namespace glabels
 
                         if ( event->button() & Qt::LeftButton )
                         {
+                                hideDragInfo();
+
                                 //
                                 // LEFT BUTTON Release
                                 //
@@ -1101,6 +1108,115 @@ namespace glabels
                 p0 += QPointF( mResizeObject->x0().pt(), mResizeObject->y0().pt() );
                 mResizeObject->setPosition( model::Distance::pt(p0.x()),
                                             model::Distance::pt(p0.y()) );
+        }
+
+
+        ///
+        /// Show position (move) or size (resize/create) next to the cursor while dragging
+        ///
+        void
+        LabelEditor::showDragInfo( const QPoint& pos )
+        {
+                QString text;
+                model::Units units = model::Settings::units();
+                int digits = units.resolutionDigits();
+                auto fmt = [&]( model::Distance d ) {
+                        return QString::number( d.inUnits( units ), 'f', digits );
+                };
+
+                model::ModelObject* object = nullptr;
+                if ( mState == ArrowMove )
+                {
+                        // Top-left corner of the whole selection
+                        bool first = true;
+                        model::Distance x, y;
+                        for ( auto* o : mModel->getSelection() )
+                        {
+                                model::Region r = o->getExtent();
+                                model::Distance rx = min( r.x1(), r.x2() );
+                                model::Distance ry = min( r.y1(), r.y2() );
+                                if ( first || rx < x ) x = rx;
+                                if ( first || ry < y ) y = ry;
+                                first = false;
+                        }
+                        if ( first )
+                        {
+                                return;
+                        }
+                        text = tr("X: %1  Y: %2 %3").arg( fmt(x), fmt(y), units.toIdString() );
+                }
+                else
+                {
+                        object = (mState == ArrowResize) ? mResizeObject : mCreateObject;
+                        if ( !object )
+                        {
+                                return;
+                        }
+                        if ( dynamic_cast<model::ModelLineObject*>( object ) )
+                        {
+                                double w = object->w().pt();
+                                double h = object->h().pt();
+                                double angle = qRadiansToDegrees( std::atan2( -h, w ) );
+                                text = tr("Length: %1 %2  Angle: %3°")
+                                        .arg( fmt( model::Distance::pt( std::hypot( w, h ) ) ),
+                                              units.toIdString(),
+                                              QString::number( angle, 'f', 1 ) );
+                        }
+                        else
+                        {
+                                text = tr("W: %1  H: %2 %3")
+                                        .arg( fmt( object->w() ), fmt( object->h() ), units.toIdString() );
+                        }
+                }
+
+                if ( !mDragInfo )
+                {
+                        mDragInfo = new QLabel( this );
+                        mDragInfo->setAttribute( Qt::WA_TransparentForMouseEvents );
+                        mDragInfo->setFocusPolicy( Qt::NoFocus );
+                }
+                if ( !mDragInfo->isVisible() )
+                {
+                        // Refresh colors each drag so they follow light/dark theme changes
+                        mDragInfo->setStyleSheet( QString( "QLabel { background: %1; color: %2; border: 1px solid %3;"
+                                                           " border-radius: 3px; padding: 2px 6px; }" )
+                                                  .arg( palette().color( QPalette::ToolTipBase ).name(),
+                                                        palette().color( QPalette::ToolTipText ).name(),
+                                                        palette().color( QPalette::Mid ).name() ) );
+                }
+
+                mDragInfo->setText( text );
+                mDragInfo->adjustSize();
+
+                // Below-right of the cursor; flip to the other side near the visible edges
+                QRect visible = visibleRegion().boundingRect();
+                QSize size = mDragInfo->size();
+                int x = pos.x() + 16;
+                int y = pos.y() + 20;
+                if ( x + size.width() > visible.right() )
+                {
+                        x = pos.x() - size.width() - 8;
+                }
+                if ( y + size.height() > visible.bottom() )
+                {
+                        y = pos.y() - size.height() - 8;
+                }
+                x = std::max( x, visible.left() );
+                y = std::max( y, visible.top() );
+
+                mDragInfo->move( x, y );
+                mDragInfo->raise();
+                mDragInfo->show();
+        }
+
+
+        void
+        LabelEditor::hideDragInfo()
+        {
+                if ( mDragInfo )
+                {
+                        mDragInfo->hide();
+                }
         }
 
 
