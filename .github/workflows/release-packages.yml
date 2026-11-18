@@ -63,7 +63,7 @@ jobs:
 
     - name: Build packages
       shell: bash
-      run: ./release.sh --qt "$QT_ROOT_DIR"
+      run: bash ./release.sh --qt "$QT_ROOT_DIR"
 
     - name: Upload packages (workflow artifact)
       uses: actions/upload-artifact@v4
