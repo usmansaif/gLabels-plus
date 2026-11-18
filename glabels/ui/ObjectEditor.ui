@@ -363,7 +363,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QFontComboBox" name="textFontFamilyCombo"/>
+             <widget class="glabels::FontPicker" name="textFontFamilyCombo"/>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_4">
@@ -1520,6 +1520,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>glabels::FontPicker</class>
+   <extends>QFontComboBox</extends>
+   <header>FontPicker.hpp</header>
+  </customwidget>
   <customwidget>
    <class>glabels::ColorButton</class>
    <extends>QPushButton</extends>

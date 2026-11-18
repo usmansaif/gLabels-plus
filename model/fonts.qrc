@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/fonts">
+    <file alias="NotoNastaliqUrdu-Regular.ttf">fonts/NotoNastaliqUrdu-Regular.ttf</file>
+    <file alias="NotoNastaliqUrdu-Bold.ttf">fonts/NotoNastaliqUrdu-Bold.ttf</file>
+  </qresource>
+</RCC>

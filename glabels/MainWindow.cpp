@@ -44,6 +44,10 @@
 #include "model/ModelTextObject.hpp"
 
 #include <QApplication>
+#include <QGuiApplication>
+#include <QScreen>
+#include <QShowEvent>
+#include <QTimer>
 #include <QClipboard>
 #include <QDebug>
 #include <QStyle>
@@ -225,8 +229,37 @@ namespace glabels
 
                 readSettings();
 
-                // Always open maximized (applies to every window, including new ones)
+                // Always open maximized (applies to every window, including new ones).
+                // Size the window to the screen first so that even a window manager that ignores
+                // the maximize hint shows a full-size window.
+                if ( auto* scr = QGuiApplication::primaryScreen() )
+                {
+                        setGeometry( scr->availableGeometry() );
+                }
                 setWindowState( windowState() | Qt::WindowMaximized );
+        }
+
+
+        ///
+        /// Re-assert the maximized state once the window is mapped (some X11 window managers
+        /// drop a maximize request that arrives before the window is managed, e.g. behind a splash)
+        ///
+        void MainWindow::showEvent( QShowEvent* event )
+        {
+                QMainWindow::showEvent( event );
+                if ( !mMaximizeChecked )
+                {
+                        mMaximizeChecked = true;
+                        for ( int delay : { 0, 250, 750 } )
+                        {
+                                QTimer::singleShot( delay, this, [this]() {
+                                        if ( !isMaximized() && !isFullScreen() && !isMinimized() )
+                                        {
+                                                showMaximized();
+                                        }
+                                } );
+                        }
+                }
         }
 
 
@@ -426,6 +459,14 @@ namespace glabels
                 editDeleteAction->setStatusTip( tr("Delete the selected objects") );
                 connect( editDeleteAction, SIGNAL(triggered()), this, SLOT(editDelete()) );
 
+                // Single-key alternative for Delete (E for erase); follows the Delete action's enabled state
+                editDeleteQuickAction = new QAction( tr("Delete (Quick Key)"), this );
+                editDeleteQuickAction->setShortcut( QKeySequence( Qt::Key_E ) );
+                editDeleteQuickAction->setStatusTip( tr("Delete the selected objects with a single key") );
+                editDeleteQuickAction->setProperty( "quickKeyFor", QVariant::fromValue<QObject*>( editDeleteAction ) );
+                connect( editDeleteQuickAction, &QAction::triggered, this, &MainWindow::editDelete );
+                connect( editDeleteAction, &QAction::enabledChanged, editDeleteQuickAction, &QAction::setEnabled );
+
                 editSelectAllAction = new QAction( tr("Select &All"), this );
                 editSelectAllAction->setIcon( QIcon::fromTheme( "edit-select-all" ) );
                 editSelectAllAction->setShortcut( QKeySequence::SelectAll );
@@ -542,36 +583,43 @@ namespace glabels
                 /* Object actions */
                 objectsArrowModeAction = new QAction( tr("Select Mode"), this );
                 objectsArrowModeAction->setIcon( QIcon::fromTheme( "glabels-arrow" ) );
+                objectsArrowModeAction->setShortcut( QKeySequence( Qt::Key_V ) );
                 objectsArrowModeAction->setStatusTip( tr("Select, move and modify objects") );
                 connect( objectsArrowModeAction, SIGNAL(triggered()), this, SLOT(objectsArrowMode()) );
 
                 objectsCreateTextAction = new QAction( tr("Text"), this );
                 objectsCreateTextAction->setIcon( QIcon::fromTheme( "glabels-text" ) );
+                objectsCreateTextAction->setShortcut( QKeySequence( Qt::Key_T ) );
                 objectsCreateTextAction->setStatusTip( tr("Create text object") );
                 connect( objectsCreateTextAction, SIGNAL(triggered()), this, SLOT(objectsCreateText()) );
 
                 objectsCreateBoxAction = new QAction( tr("Box"), this );
                 objectsCreateBoxAction->setIcon( QIcon::fromTheme( "glabels-box" ) );
+                objectsCreateBoxAction->setShortcut( QKeySequence( Qt::Key_R ) );
                 objectsCreateBoxAction->setStatusTip( tr("Create box object") );
                 connect( objectsCreateBoxAction, SIGNAL(triggered()), this, SLOT(objectsCreateBox()) );
 
                 objectsCreateLineAction = new QAction( tr("Line"), this );
                 objectsCreateLineAction->setIcon( QIcon::fromTheme( "glabels-line" ) );
+                objectsCreateLineAction->setShortcut( QKeySequence( Qt::Key_L ) );
                 objectsCreateLineAction->setStatusTip( tr("Create line object") );
                 connect( objectsCreateLineAction, SIGNAL(triggered()), this, SLOT(objectsCreateLine()) );
 
                 objectsCreateEllipseAction = new QAction( tr("Ellipse"), this );
                 objectsCreateEllipseAction->setIcon( QIcon::fromTheme( "glabels-ellipse" ) );
+                objectsCreateEllipseAction->setShortcut( QKeySequence( Qt::Key_O ) );
                 objectsCreateEllipseAction->setStatusTip( tr("Create ellipse/circle object") );
                 connect( objectsCreateEllipseAction, SIGNAL(triggered()), this, SLOT(objectsCreateEllipse()) );
 
                 objectsCreateImageAction = new QAction( tr("Image"), this );
                 objectsCreateImageAction->setIcon( QIcon::fromTheme( "glabels-image" ) );
+                objectsCreateImageAction->setShortcut( QKeySequence( Qt::Key_I ) );
                 objectsCreateImageAction->setStatusTip( tr("Create image object") );
                 connect( objectsCreateImageAction, SIGNAL(triggered()), this, SLOT(objectsCreateImage()) );
 
                 objectsCreateBarcodeAction = new QAction( tr("Barcode"), this );
                 objectsCreateBarcodeAction->setIcon( QIcon::fromTheme( "glabels-barcode" ) );
+                objectsCreateBarcodeAction->setShortcut( QKeySequence( Qt::Key_B ) );
                 objectsCreateBarcodeAction->setStatusTip( tr("Create barcode object") );
                 connect( objectsCreateBarcodeAction, SIGNAL(triggered()), this, SLOT(objectsCreateBarcode()) );
 
@@ -1160,7 +1208,7 @@ namespace glabels
                         { fileCloseAction, "file.close" }, { fileExitAction, "file.exit" },
                         { editUndoAction, "edit.undo" }, { editRedoAction, "edit.redo" },
                         { editCutAction, "edit.cut" }, { editCopyAction, "edit.copy" },
-                        { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" },
+                        { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" }, { editDeleteQuickAction, "edit.deleteQuick" },
                         { editSelectAllAction, "edit.selectAll" }, { editUnSelectAllAction, "edit.unselectAll" },
                         { editPageSetupAction, "edit.pageSetup" }, { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
                         { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" },
@@ -1192,6 +1240,54 @@ namespace glabels
                 {
                         ShortcutsDialog::registerAction( entry.first, entry.second );
                         addAction( entry.first ); // keep shortcuts active even if toolbar/menu hidden
+                        connect( entry.first, &QAction::changed, this, &MainWindow::updateShortcutToolTips );
+                }
+                updateShortcutToolTips();
+        }
+
+
+        ///
+        /// Show each command's keyboard shortcut(s) in its tooltip, e.g. "Text (T)"
+        ///
+        void MainWindow::updateShortcutToolTips()
+        {
+                QHash<QAction*,QStringList> keys;
+                for ( auto* action : actions() )
+                {
+                        if ( action->objectName().isEmpty() )
+                        {
+                                continue;
+                        }
+                        auto* target = qobject_cast<QAction*>( action->property( "quickKeyFor" ).value<QObject*>() );
+                        if ( !target )
+                        {
+                                target = action;
+                        }
+                        for ( const auto& seq : action->shortcuts() )
+                        {
+                                if ( !seq.isEmpty() )
+                                {
+                                        keys[target] << seq.toString( QKeySequence::NativeText );
+                                }
+                        }
+                }
+
+                for ( auto* action : actions() )
+                {
+                        if ( action->objectName().isEmpty() || action->property( "quickKeyFor" ).isValid() )
+                        {
+                                continue;
+                        }
+                        QString tip = ShortcutsDialog::cleanText( action );
+                        const QStringList& list = keys.value( action );
+                        if ( !list.isEmpty() )
+                        {
+                                tip += QString( "  (%1)" ).arg( list.join( ", " ) );
+                        }
+                        if ( action->toolTip() != tip )
+                        {
+                                action->setToolTip( tip ); // emits changed(); the second pass is a no-op
+                        }
                 }
         }
 
@@ -1723,10 +1819,9 @@ namespace glabels
                 QByteArray state        = settings.value( "state" ).toByteArray();
                 settings.endGroup();
 
-                if ( !geometry.isEmpty() )
-                {
-                        restoreGeometry( geometry );
-                }
+                // Windows always open maximized, so the saved geometry is not restored: on X11 a stale
+                // "normal" size could win over the maximize request and leave a small window.
+                Q_UNUSED( geometry );
                 if ( !state.isEmpty() )
                 {
                         restoreState( state, STATE_VERSION );

@@ -1,0 +1,107 @@
+# gLabels Plus
+
+> gLabels Plus is a free, open-source (GPL v3) label and business card designer for Linux, Windows and macOS. It makes barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge from CSV, over 1,800 templates from 70+ brands and 24 thermal roll printer presets. Latest version: 5.0 (2026-11-19). Maintainer: Usman Saif (https://usmansaif.com). Based on gLabels by Jaye Evins.
+
+## Key facts
+- Price: free, no account, no trial, no watermark
+- License: GNU GPL v3 or later
+- Platforms: Linux (AppImage, .deb, .rpm, .tar.gz), Windows 10/11 (.exe installer, portable .zip), macOS (.dmg)
+- Works offline; files are stored locally (Documents/gLabels Plus Projects)
+- Built with Qt 6 and C++20
+- Source code: https://github.com/usmansaif/gLabels-plus
+- Downloads: https://github.com/usmansaif/gLabels-plus/releases
+- Single-key tool shortcuts: V = Select, T = Text, R = Box, L = Line, O = Ellipse, I = Image, B = Barcode, E = Erase (delete) the selection
+- Urdu: Noto Nastaliq Urdu (regular and bold) is built in; Urdu labels display and print in true Nastaliq on every platform
+- Custom barcode label printing solutions for businesses: contact the maintainer at https://usmansaif.com/en/contact
+
+## Pages
+- [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source label designer for Linux, Windows and macOS. Make barcode, QR, shipping and product labels with mail merge and 1,800+ templates.
+- [Features](https://usmansaif.github.io/gLabels-plus/features.html): All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.
+- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS. Or build from source in three commands.
+- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.0 release notes: single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
+- [Barcode Labels](https://usmansaif.github.io/gLabels-plus/barcode-labels.html): 24 free barcode label templates for Zebra, TSC, Xprinter and Godex thermal printers, from 30 × 15 mm and 50 × 25 mm to 4 × 6 inch shipping labels.
+- [FAQ](https://usmansaif.github.io/gLabels-plus/faq.html): Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.
+- [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
+
+## What's new in 5.0
+- Single-key tool shortcuts: Pick any drawing tool with one key, no menus needed.
+- Quick font search: Type part of a font name (mono, sans) in the Family box and pick from matches shown in their own typeface.
+- Urdu labels in Nastaliq: Noto Nastaliq Urdu (regular and bold) is built in, so Urdu text is shaped and printed in true Nastaliq on every computer, even without the font installed.
+- Projects: Keep each business or client's labels together in one folder that's easy to back up or share.
+- Page selector: Change the page (product) at any time. Objects keep their positions and sizes, and one Undo reverts it.
+- 24 barcode label sizes: Thermal roll presets for Zebra, TSC, Xprinter and Godex, from 30 × 15 mm jewelry tags to 4 × 6″ shipping labels.
+- Startup splash screen with loading progress
+- Windows always open maximized
+- gLabels Plus icon on every window and dialog
+
+## Barcode label presets (thermal roll printers)
+- 30 × 15 mm (1.18 × 0.59 in): Mini / Jewelry Tag
+- 38 × 25 mm (1.50 × 0.98 in): Compact Retail & Stock
+- 38.1 × 25.4 mm (1.50 × 1.00 in): Compact Retail & Logistics
+- 40 × 30 mm (1.57 × 1.18 in): Healthcare & Asset Tag
+- 50 × 25 mm (1.97 × 0.98 in): Standard Retail / MRP
+- 50.8 × 25.4 mm (2.00 × 1.00 in): Compact Barcode Label
+- 50 × 30 mm (1.97 × 1.18 in): Product / Shelf Label
+- 50 × 50 mm (1.97 × 1.97 in): Square Retail / Product
+- 52 × 38 mm (2.05 × 1.50 in): Compact Shelf / Bin ID
+- 57 × 32 mm (2.24 × 1.26 in): Small Retail & Logistics
+- 60 × 40 mm (2.36 × 1.57 in): Mid-Size Warehouse / Retail
+- 76 × 38 mm (2.99 × 1.50 in): Courier & Warehouse
+- 76 × 50 mm (2.99 × 1.97 in): Stock Control & Packing
+- 76 × 51 mm (3.00 × 2.00 in): Inventory / Warehouse
+- 80 × 50 mm (3.15 × 1.97 in): Wide Product & Box ID
+- 89 × 28 mm (3.50 × 1.10 in): Address / Dymo 30252
+- 100 × 50 mm (3.94 × 1.97 in): Box / Tray Marking
+- 100 × 100 mm (3.94 × 3.94 in): Pallet / Warehouse Tracking
+- 100 × 150 mm (3.94 × 5.91 in): Shipping & Courier (4×6)
+- 101.6 × 76.2 mm (4.00 × 3.00 in): Outer Box Logistics
+- 101.6 × 101.6 mm (4.00 × 4.00 in): Pallet / Location Square
+- 101.6 × 152.4 mm (4.00 × 6.00 in): Exact 4×6″ Zebra Shipping
+- 102 × 38 mm (4.02 × 1.50 in): Long Barcode / ID Strip
+- 102 × 50 mm (4.02 × 1.97 in): Carton & Inventory
+
+## FAQ
+### What is gLabels Plus?
+gLabels Plus is a free, open-source label and business card designer for Linux, Windows and macOS. It designs barcode, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge and over 1,800 ready-made templates. It is maintained by Usman Saif and built on gLabels by Jaye Evins.
+
+### Is gLabels Plus really free?
+Yes. gLabels Plus is free and open source under the GNU General Public License v3 or later. There is no trial period, no watermark and no account, and you may use it for business labels.
+
+### Which operating systems does gLabels Plus support?
+gLabels Plus runs on Linux (AppImage, .deb, .rpm, .tar.gz), Windows 10 and 11 (installer and portable .zip) and macOS (.dmg). It works fully offline.
+
+### Does gLabels Plus work with thermal label printers like Zebra, TSC or Xprinter?
+Yes. If your operating system can print to the printer, gLabels Plus can. It includes 24 barcode label presets for thermal roll printers, from 30 × 15 mm to 4 × 6 inch shipping labels, and you can define your own roll sizes.
+
+### Can I print Urdu labels with gLabels Plus?
+Yes. gLabels Plus has the Noto Nastaliq Urdu font (regular and bold) built in, so Urdu text is shaped correctly in Nastaliq style on screen, in PDF and on paper, on Linux, Windows and macOS, even if the font is not installed. Urdu, English and numbers can be mixed on the same label, merged from a CSV file and printed next to barcodes.
+
+### Can you build a customized barcode label printing solution for my business?
+Yes. Usman Saif, the maintainer, builds customized barcode label printing solutions: label designs and templates, printing labels from your inventory, POS or ERP data, thermal printer setup for Zebra, TSC, Xprinter and Godex, and bilingual English and Urdu labels. Get in touch at usmansaif.com/en/contact.
+
+### Can gLabels Plus print Avery labels?
+Yes. gLabels Plus includes over 1,800 product templates from more than 70 brands, including Avery, Herma, Zweckform, Brother, Dymo, Uline and Worldlabel. Search by part number, for example avery 5160, in the product chooser.
+
+### Can I make barcodes and QR codes?
+Yes. gLabels Plus creates barcodes and QR codes, including EAN, UPC, Code 128, Code 39, DataMatrix and QR, using its built-in glbarcode++ library and optional GNU Barcode, Zint and libqrencode back ends.
+
+### How do I print labels from a spreadsheet (mail merge)?
+Save the spreadsheet as CSV, open the Merge page in gLabels Plus and choose the file. Insert merge fields into text or barcode objects, check the live merge preview, and print. Each record becomes one label.
+
+### How is gLabels Plus different from gLabels?
+gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, an objects panel with locking, and a refreshed interface. It opens existing .glabels files.
+
+### My label sheet isn't listed. What can I do?
+Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it.
+
+### Where are my labels saved?
+On your own computer. Project labels are stored in Documents/gLabels Plus Projects, one folder per project, so you can back them up or share them like any other files. Nothing is uploaded.
+
+### What keyboard shortcuts does gLabels Plus have?
+Single keys pick tools: V Select, T Text, R Box, L Line, O Ellipse, I Image, B Barcode and E to erase the selection. Every menu command can also be given a custom shortcut in Edit > Keyboard Shortcuts.
+
+### How can I support gLabels Plus?
+Email the maintainer, Usman Saif, to donate or sponsor a feature, star the project on GitHub, report bugs, translate the app or contribute product templates.
+
+### How do I report a bug or request a feature?
+Open an issue on GitHub at github.com/usmansaif/gLabels-plus/issues. Pull requests, translations and new product templates are welcome.

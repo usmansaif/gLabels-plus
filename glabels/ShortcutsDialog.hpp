@@ -62,11 +62,13 @@ namespace glabels
                 void onFilterChanged( const QString& text );
                 void onAccepted();
 
+        public:
+                static QString cleanText( const QAction* action );
+
         private:
                 QTreeWidgetItem* itemForAction( QAction* action ) const;
                 void refreshItem( QTreeWidgetItem* item );
                 void updateConflictLabel();
-                static QString cleanText( const QAction* action );
 
                 QList<QAction*>               mActions;
                 QHash<QAction*, QKeySequence> mPending;

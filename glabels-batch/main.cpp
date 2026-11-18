@@ -20,6 +20,7 @@
 
 
 #include "model/FileUtil.hpp"
+#include "model/BuiltInFonts.hpp"
 #include "model/Db.hpp"
 #include "model/Model.hpp"
 #include "model/PageRenderer.hpp"
@@ -184,6 +185,7 @@ int main( int argc, char **argv )
         // Initialize subsystems
         //
         glabels::model::Settings::init();
+        glabels::model::BuiltInFonts::init();
         glabels::model::Db::init();
         glabels::merge::Factory::init();
         glabels::barcode::Backends::init();

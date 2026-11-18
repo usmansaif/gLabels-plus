@@ -488,7 +488,7 @@ namespace glabels::model
                 font.setUnderline( mFontUnderlineFlag );
 
                 QTextOption textOption;
-                textOption.setAlignment( mTextHAlign );
+                textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
                 textOption.setWrapMode( mTextWrapMode );
 
                 QFontMetricsF fontMetrics( font );
@@ -612,7 +612,7 @@ namespace glabels::model
                 font.setUnderline( mFontUnderlineFlag );
 
                 QTextOption textOption;
-                textOption.setAlignment( mTextHAlign );
+                textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
                 textOption.setWrapMode( mTextWrapMode );
 
                 QFontMetricsF fontMetrics( font );
@@ -733,7 +733,7 @@ namespace glabels::model
                 font.setUnderline( mFontUnderlineFlag );
 
                 QTextOption textOption;
-                textOption.setAlignment( mTextHAlign );
+                textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
                 textOption.setWrapMode( mTextWrapMode );
 
                 QFontMetricsF fontMetrics( font );
@@ -823,7 +823,7 @@ namespace glabels::model
                 font.setUnderline( mFontUnderlineFlag );
 
                 QTextOption textOption;
-                textOption.setAlignment( mTextHAlign );
+                textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
                 textOption.setWrapMode( mTextWrapMode );
 
                 QTextDocument document( mText.expand( record, variables ) );

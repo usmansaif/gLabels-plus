@@ -1288,6 +1288,17 @@
     </message>
 </context>
 <context>
+    <name>glabels::FontPicker</name>
+    <message>
+        <source>Type to search fonts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font family. Type part of a name to search, then press Enter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>glabels::LabelEditor</name>
     <message>
         <source>Move</source>
@@ -2224,6 +2235,14 @@
     </message>
     <message>
         <source>Save changes to label &quot;%1&quot; before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete (Quick Key)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete the selected objects with a single key</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3818,10 +3837,6 @@ Click &quot;New label...&quot; to add one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version %1 — highlights of the latest features</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Designing labels</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3967,6 +3982,22 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Windows now &lt;b&gt;always open maximized&lt;/b&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1: highlights of the latest features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Single-key tool shortcuts&lt;/b&gt;: press &lt;b&gt;V&lt;/b&gt; for Select, &lt;b&gt;T&lt;/b&gt; for Text, &lt;b&gt;R&lt;/b&gt; for Box, &lt;b&gt;L&lt;/b&gt; for Line, &lt;b&gt;O&lt;/b&gt; for Ellipse, &lt;b&gt;I&lt;/b&gt; for Image, &lt;b&gt;B&lt;/b&gt; for Barcode and &lt;b&gt;E&lt;/b&gt; to erase (delete) the selection. Hover over a toolbar button to see its key; change them in Edit &amp;gt; Keyboard Shortcuts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Quick font search&lt;/b&gt;: type any part of a font name in the Family box (e.g. &lt;i&gt;mono&lt;/i&gt; or &lt;i&gt;sans&lt;/i&gt;) to see matching fonts, each shown in its own typeface. Press Enter or click a match to apply it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Urdu labels&lt;/b&gt;: the &lt;b&gt;Noto Nastaliq Urdu&lt;/b&gt; font (regular and bold) is built in, so Urdu text is shaped, displayed and printed in true Nastaliq on every computer, even if the font isn&apos;t installed. Type &lt;i&gt;urdu&lt;/i&gt; in the Family box to pick it. The Left, Center and Right buttons now align right-to-left text exactly as shown.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

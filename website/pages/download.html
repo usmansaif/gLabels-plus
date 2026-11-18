@@ -1,0 +1,122 @@
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Download</p>
+      <h1>Download gLabels Plus {{version}}</h1>
+      <p class="answer">gLabels Plus {{version}} is a free download for Linux, Windows and macOS. Choose AppImage, .deb or .rpm on Linux, the installer or portable .zip on Windows, or the .dmg on macOS. No account is needed and the app works offline.</p>
+      <p class="byline">By <a href="https://usmansaif.com" rel="author">Usman Saif</a>, maintainer · Updated <time datetime="2026-11-19">{{updated_human}}</time></p>
+    </div>
+  </section>
+
+  <!-- 02 Download -->
+  <section class="section section-alt" id="download">
+    <div class="wrap">
+      <h2 id="platforms">Choose your platform</h2>
+      <p class="sub">Free for personal and commercial use under the GPL v3. Works with Avery, Herma, Brother, Dymo, Zebra and many other <a href="barcode-labels.html">label products</a>.</p>
+
+      <div class="cards cards-3 dl">
+        <article class="card dl-card">
+          <div class="os">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12.5 2c-2 0-3.3 1.7-3.3 4.4 0 1.3.3 2.2-.3 3.3-.7 1.2-2.5 3-2.9 5.6-.2 1.3.2 2.3.2 2.3l-1.4 1c-.6.5-.4 1.6.8 1.9 1 .3 2.5.4 3.4 1 .7.5 1.8.6 2.4-.2.3-.4 1.7-.4 2.2 0 .7.8 1.8.7 2.5.2.9-.6 2.3-.7 3.3-1 1.2-.3 1.4-1.4.8-1.9l-1.3-1s.4-1 .2-2.3c-.4-2.6-2.2-4.4-2.9-5.6-.6-1.1-.3-2-.3-3.3C15.9 3.7 14.5 2 12.5 2z"/></svg>
+            <h3>Linux</h3>
+          </div>
+          <ul class="meta">
+            <li>AppImage, .deb, .rpm, .tar.gz</li>
+            <li>Qt 6 bundled, x86_64</li>
+            <li>Any modern 64-bit distribution</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="https://github.com/usmansaif/gLabels-plus/releases/latest" target="_blank" rel="noopener">Download for Linux</a>
+        </article>
+        <article class="card dl-card">
+          <div class="os">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M3 5.5 10 4.5v7H3zM11 4.3 21 3v8.5H11zM3 12.5h7v7l-7-1zM11 12.5h10V21l-10-1.4z"/></svg>
+            <h3>Windows</h3>
+          </div>
+          <ul class="meta">
+            <li>.exe installer and portable .zip</li>
+            <li>Windows 10 and 11, 64-bit</li>
+            <li>No admin rights for portable</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="https://github.com/usmansaif/gLabels-plus/releases/latest" target="_blank" rel="noopener">Download for Windows</a>
+        </article>
+        <article class="card dl-card">
+          <div class="os">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.5-1-2.5-4zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>
+            <h3>macOS</h3>
+          </div>
+          <ul class="meta">
+            <li>.dmg and .tar.gz</li>
+            <li>Any macOS version supported by Qt 6</li>
+            <li>Built natively for your Mac</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="https://github.com/usmansaif/gLabels-plus/releases/latest" target="_blank" rel="noopener">Download for macOS</a>
+        </article>
+      </div>
+
+      <section class="source" id="build" aria-labelledby="build-h">
+        <h2 id="build-h">How do I build gLabels Plus from source?</h2>
+        <p class="sub">On Linux, macOS or Windows (Git Bash), install CMake 3.22+, a C++20 compiler and Qt 6.2+, then run:</p>
+        <div class="term">
+          <div class="term-bar"><span></span><span></span><span></span><b>Terminal</b><button class="copy" type="button">Copy</button></div>
+          <pre><code>git clone https://github.com/usmansaif/gLabels-plus.git
+cd gLabels-plus
+./build.sh --deps          # install build dependencies (first time only)
+./build.sh                 # configure and build (Release)
+./build/glabels/glabels-qt # run</code></pre>
+        </div>
+        <p>Platform guides: <a href="https://github.com/usmansaif/gLabels-plus/blob/master/dev-docs/BUILD-INSTRUCTIONS-LINUX.md">Linux</a> ·
+          <a href="https://github.com/usmansaif/gLabels-plus/blob/master/dev-docs/BUILD-INSTRUCTIONS-WINDOWS.md">Windows</a> ·
+          <a href="https://github.com/usmansaif/gLabels-plus/blob/master/dev-docs/BUILD-INSTRUCTIONS-MACOS.md">macOS</a></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="after-h">
+    <div class="wrap narrow">
+      <h2 id="after-h">After installing</h2>
+      <ol class="steps">
+        <li><b>Open gLabels Plus</b> and click <b>New label...</b> on the welcome screen.</li>
+        <li><b>Pick your product</b>: search a part number such as <i>avery 5160</i>, or choose a <a href="barcode-labels.html">barcode label size</a>.</li>
+        <li><b>Add objects</b> with single keys: <kbd>T</kbd> Text, <kbd>B</kbd> Barcode, <kbd>I</kbd> Image.</li>
+        <li><b>Print</b> from the Print page, or merge a CSV file to print one label per row.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 Specs -->
+  <section class="section section-alt" id="specs">
+    <div class="wrap">
+      <p class="eyebrow">Specifications</p>
+      <h2>Specs at a glance</h2>
+      <div class="cards cards-3 specs">
+        <article class="card">
+          <h3>System requirements</h3>
+          <dl>
+            <dt>Linux</dt><dd>64-bit, any modern distribution</dd>
+            <dt>Windows</dt><dd>10 / 11, 64-bit</dd>
+            <dt>macOS</dt><dd>Versions supported by Qt 6</dd>
+            <dt>Printers</dt><dd>Any printer your OS can print to: laser, inkjet, thermal roll</dd>
+          </dl>
+        </article>
+        <article class="card">
+          <h3>Technology</h3>
+          <dl>
+            <dt>Framework</dt><dd>Qt 6, C++20</dd>
+            <dt>Barcodes</dt><dd>glbarcode++, optional GNU Barcode, Zint, libqrencode</dd>
+            <dt>File format</dt><dd><code>.glabels</code> (XML, gzip)</dd>
+            <dt>Merge sources</dt><dd>CSV and delimited text</dd>
+          </dl>
+        </article>
+        <article class="card">
+          <h3>Licence &amp; support</h3>
+          <dl>
+            <dt>Version</dt><dd>5.0</dd>
+            <dt>Licence</dt><dd>GNU GPL v3 or later</dd>
+            <dt>Price</dt><dd>Free, no trial, no account</dd>
+            <dt>Maintainer</dt><dd><a href="https://usmansaif.com" target="_blank" rel="noopener">Usman Saif</a></dd>
+            <dt>Support</dt><dd><a href="https://github.com/usmansaif/gLabels-plus/issues" target="_blank" rel="noopener">GitHub Issues</a></dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+

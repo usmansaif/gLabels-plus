@@ -50,6 +50,7 @@ set (glabels_sources
   UndoRedoModel.cpp
   VariablesView.cpp
   WhatsNewDialog.cpp
+  FontPicker.cpp
 )
 
 set (glabels_qobject_headers
@@ -88,6 +89,7 @@ set (glabels_qobject_headers
   UndoRedoModel.hpp
   VariablesView.hpp
   WhatsNewDialog.hpp
+  FontPicker.hpp
 )
 
 set (glabels_forms

@@ -18,6 +18,7 @@ configure_file (Version.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/Version.hpp @ONLY)
 configure_file (Config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/Config.hpp @ONLY)
 
 set (Model_sources
+  BuiltInFonts.cpp
   Category.cpp
   ColorNode.cpp
   DataCache.cpp
@@ -90,12 +91,16 @@ set (Model_qobject_headers
 
 qt6_wrap_cpp (Model_moc_sources ${Model_qobject_headers})
 
+# Built-in fonts (Noto Nastaliq Urdu, SIL Open Font License 1.1)
+qt6_add_resources (Model_qrc_sources fonts.qrc)
+
 #=====================================
 # Target
 #=====================================
 add_library (Model STATIC
   ${Model_sources}
   ${Model_moc_sources}
+  ${Model_qrc_sources}
 )
 
 target_compile_features (Model
@@ -111,6 +116,7 @@ target_link_libraries (Model
   Barcode
   Merge
   Qt6::Core
+  Qt6::Gui
   Qt6::PrintSupport
   Qt6::Xml
   Qt6::Svg

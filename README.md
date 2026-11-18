@@ -17,6 +17,7 @@ Jaye Evins. It adds a refreshed interface, faster ways to work, and new barcode 
 | **Maintainer** | [Usman Saif](https://usmansaif.com) |
 | **Original author** | Jaye Evins (gLabels) |
 | **License** | GPL v3 or later |
+| **Website** | <https://usmansaif.github.io/gLabels-plus/> |
 | **Repository** | <https://github.com/usmansaif/gLabels-plus> |
 
 *******************************************************************************
@@ -83,6 +84,10 @@ The new **Barcode labels** category is shown here.
 - **Rotation box** in the toolbar for exact angles.
 - **Align to** the selection, the last selected object, or the label itself.
 - Hold **Shift** with the arrow keys to nudge in larger steps.
+- **Single-key tools**: V Select, T Text, R Box, L Line, O Ellipse, I Image, B Barcode, and
+  E to erase (delete) the selection. Hover a toolbar button to see its key.
+- **Quick font search**: type part of a font name in the Family box to filter the list, with each
+  match shown in its own typeface.
 
 ### Projects
 - **Group labels by business or client.** Each project has its own list of labels on the
@@ -125,6 +130,11 @@ The new **Barcode labels** category is shown here.
 
 ## What's new in this release
 
+- **Single-key tool shortcuts**: press **V** Select, **T** Text, **R** Box, **L** Line, **O** Ellipse,
+  **I** Image, **B** Barcode and **E** to erase the selection. Toolbar tooltips show each key, and
+  you can change them in **Edit > Keyboard Shortcuts**.
+- **Quick font search**: type any part of a font name in the Family box to see matching fonts,
+  previewed in their own typeface.
 - **Projects**: keep each business or client's labels together. Create a project on the welcome
   screen (or **File > New Project**), then add as many labels to it as you need.
 - **Page selector** in the toolbar, next to Units, and **Edit > Page Setup...** (Ctrl+Shift+P).
@@ -249,9 +259,21 @@ Useful `build.sh` options:
 
 Detailed, platform-specific instructions:
 
-- [Linux](docs/BUILD-INSTRUCTIONS-LINUX.md)
-- [Windows](docs/BUILD-INSTRUCTIONS-WINDOWS.md)
-- [macOS](docs/BUILD-INSTRUCTIONS-MACOS.md)
+- [Linux](dev-docs/BUILD-INSTRUCTIONS-LINUX.md)
+- [Windows](dev-docs/BUILD-INSTRUCTIONS-WINDOWS.md)
+- [macOS](dev-docs/BUILD-INSTRUCTIONS-MACOS.md)
+
+*******************************************************************************
+
+## Website
+
+The project website is generated into `docs/` (served by GitHub Pages) from the page sources in
+`website/pages/`. After editing a page, or the shared data in `website/build.py` (FAQ, barcode
+presets, release notes), rebuild it with:
+
+```bash
+python3 website/build.py
+```
 
 *******************************************************************************
 
@@ -260,8 +282,8 @@ Detailed, platform-specific instructions:
 Bug reports, feature ideas and pull requests are welcome. Open an issue at
 <https://github.com/usmansaif/gLabels-plus/issues>.
 
-See also [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md), [docs/CODING-STYLE.md](docs/CODING-STYLE.md)
-and, for new product templates, [docs/PRODUCT-TEMPLATES.md](docs/PRODUCT-TEMPLATES.md).
+See also [dev-docs/CONTRIBUTING.md](dev-docs/CONTRIBUTING.md), [dev-docs/CODING-STYLE.md](dev-docs/CODING-STYLE.md)
+and, for new product templates, [dev-docs/PRODUCT-TEMPLATES.md](dev-docs/PRODUCT-TEMPLATES.md).
 
 *******************************************************************************
 

@@ -92,6 +92,7 @@ namespace glabels
                 /////////////////////////////////////
         protected:
                 void closeEvent( QCloseEvent *event ) override;
+                void showEvent( QShowEvent* event ) override;
                 bool eventFilter( QObject* watched, QEvent* event ) override;
                 QMenu* createPopupMenu() override;
 
@@ -212,6 +213,7 @@ namespace glabels
                 void createStatusBar();
                 void createDocks();
                 void registerShortcuts();
+                void updateShortcutToolTips();
                 void applySidebarStyle();
                 void updateChromeVisibility();
                 void syncUnitsCombo();
@@ -292,6 +294,7 @@ namespace glabels
                 QSpinBox*       mMergeRecordSpin;
                 QLabel*         mMergeRecordCountLabel;
                 bool            mSyncing{ false };
+                bool            mMaximizeChecked{ false };
 
                 QToolBar*            mContents;
                 QToolButton*         mWelcomeButton{ nullptr };
@@ -342,6 +345,7 @@ namespace glabels
                 QAction*  editCopyAction;
                 QAction*  editPasteAction;
                 QAction*  editDeleteAction;
+                QAction*  editDeleteQuickAction;
                 QAction*  editSelectAllAction;
                 QAction*  editUnSelectAllAction;
                 QAction*  editPageSetupAction;

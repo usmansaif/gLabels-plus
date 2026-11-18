@@ -24,6 +24,7 @@
 
 #include "AppearanceModel.hpp"
 
+#include "model/BuiltInFonts.hpp"
 #include "model/Db.hpp"
 #include "model/FileUtil.hpp"
 #include "model/Model.hpp"
@@ -124,6 +125,7 @@ int main( int argc, char **argv )
         splash.show();
         splash.setProgress( 5, QCoreApplication::translate( "main", "Loading settings..." ) );
         glabels::model::Settings::init();
+        glabels::model::BuiltInFonts::init();
         splash.setProgress( 20, QCoreApplication::translate( "main", "Loading label templates..." ) );
         glabels::model::Db::init();
         splash.setProgress( 65, QCoreApplication::translate( "main", "Initializing merge sources..." ) );

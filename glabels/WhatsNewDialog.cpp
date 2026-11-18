@@ -49,7 +49,7 @@ namespace glabels
                 titleFont.setBold( true );
                 title->setFont( titleFont );
 
-                auto* subtitle = new QLabel( tr("Version %1 — highlights of the latest features")
+                auto* subtitle = new QLabel( tr("Version %1: highlights of the latest features")
                                              .arg( model::Version::STRING ) );
                 subtitle->setStyleSheet( "color: palette(placeholder-text);" );
 
@@ -102,6 +102,17 @@ namespace glabels
 
                 const QList<Section> sections = {
                         { tr("Latest additions"), {
+                                tr("<b>Single-key tool shortcuts</b>: press <b>V</b> for Select, <b>T</b> for Text, "
+                                   "<b>R</b> for Box, <b>L</b> for Line, <b>O</b> for Ellipse, <b>I</b> for Image, "
+                                   "<b>B</b> for Barcode and <b>E</b> to erase (delete) the selection. "
+                                   "Hover over a toolbar button to see its key; change them in Edit &gt; Keyboard Shortcuts."),
+                                tr("<b>Quick font search</b>: type any part of a font name in the Family box "
+                                   "(e.g. <i>mono</i> or <i>sans</i>) to see matching fonts, each shown in its own typeface. "
+                                   "Press Enter or click a match to apply it."),
+                                tr("<b>Urdu labels</b>: the <b>Noto Nastaliq Urdu</b> font (regular and bold) is built in, "
+                                   "so Urdu text is shaped, displayed and printed in true Nastaliq on every computer, "
+                                   "even if the font isn't installed. Type <i>urdu</i> in the Family box to pick it. "
+                                   "The Left, Center and Right buttons now align right-to-left text exactly as shown."),
                                 tr("<b>Projects</b> keep each business or client's labels together. "
                                    "Create a project on the welcome screen (or File &gt; New Project), "
                                    "then add labels to it with <b>New label...</b>. Each project is a folder "

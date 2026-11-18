@@ -252,7 +252,7 @@ namespace glabels
                         default:                        wrapIndex = 2; break;
                         }
 
-                        textFontFamilyCombo->setCurrentText( mObject->fontFamily() );
+                        textFontFamilyCombo->setFamily( mObject->fontFamily() );
                         textFontSizeSpin->setValue( mObject->fontSize() );
                         textFontBoldToggle->setChecked( mObject->fontWeight() == QFont::Bold );
                         textFontItalicToggle->setChecked( mObject->fontItalicFlag() );
@@ -734,7 +734,7 @@ namespace glabels
                         default: wrapMode = QTextOption::NoWrap;       break;
                         }
 
-                        mObject->setFontFamily( textFontFamilyCombo->currentText() );
+                        mObject->setFontFamily( textFontFamilyCombo->family() );
                         mObject->setFontSize( textFontSizeSpin->value() );
                         mObject->setFontWeight( textFontBoldToggle->isChecked() ? QFont::Bold : QFont::Normal );
                         mObject->setFontItalicFlag( textFontItalicToggle->isChecked() );
