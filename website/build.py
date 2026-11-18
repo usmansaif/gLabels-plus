@@ -70,11 +70,20 @@ PRESETS = [
 
 # Keyboard tool shortcuts (key, tool)
 TOOL_KEYS = [("V", "Select"), ("T", "Text"), ("R", "Box"), ("L", "Line"), ("O", "Ellipse"),
-             ("I", "Image"), ("B", "Barcode"), ("E", "Erase (delete) the selection")]
+             ("I", "Image"), ("B", "Barcode"), ("M", "Measure"), ("E", "Erase (delete) the selection")]
 
 # Latest additions, shown as highlight cards on whats-new.html.
 # icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app.
 LATEST = [
+    dict(icon="guides", title="Smart guides and snapping",
+         summary="While you move or resize, red lines show the distance to the nearest object or label edge in your chosen units (mm, inches, points...). Objects snap to other objects' edges and centers and to the label's edges and center.",
+         how="Just drag an object · hold <kbd>Ctrl</kbd> while dragging to turn snapping off"),
+    dict(icon="ruler", title="Measure tool",
+         summary="Measure anywhere on the label: between objects, to the label edge, or any two points. Shows the length, plus width × height for diagonal lines.",
+         how="Press <kbd>M</kbd> or the ruler button · <kbd>Shift</kbd> keeps the line straight · <kbd>Esc</kbd> clears it"),
+    dict(icon="layers", title="Layer groups and names",
+         summary="Name your objects and organize them into collapsible groups in the Objects panel. Select a group to move, align or lock all of it at once.",
+         how="<kbd>Ctrl</kbd>+<kbd>G</kbd> to group · double-click or <kbd>F2</kbd> to rename · toolbar at the top of the Objects panel"),
     dict(icon="keyboard", title="Single-key tool shortcuts", wide=True, keys=True,
          summary="Pick any drawing tool with one key, no menus needed.",
          how="Hover a toolbar button to see its key · change them in <b>Edit &gt; Keyboard Shortcuts</b>"),
@@ -95,6 +104,9 @@ LATEST = [
          how="Product chooser &gt; <b>Barcode labels</b> category"),
 ]
 LATEST_MINOR = [
+    "Objects panel toolbar and right-click menu: rename, lock, duplicate, group, reorder and delete",
+    "Duplicate objects in one click",
+    "Readable selected rows on the welcome screen",
     "Startup splash screen with loading progress",
     "Windows always open maximized",
     "gLabels Plus icon on every window and dialog",
@@ -107,6 +119,9 @@ ICONS = {
     "page": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
     "language": '<path d="M4 5h9M8.5 3v2M6 5c0 4 2.5 7 6 8M11 5c0 3.5-2.5 7-7 9"/><path d="m13 21 4-9 4 9M14.5 18h5"/>',
     "barcode": '<path d="M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/>',
+    "guides": '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="14" y="13" width="6" height="7" rx="1"/><path d="M11 7.5h9M17 3v7M4 16.5h6M7 14v5"/>',
+    "ruler": '<rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/>',
+    "layers": '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
 }
 
 
@@ -121,6 +136,9 @@ RELEASE_NOTES = [
     ("Designing labels", [
         "<b>Rulers</b> along the top and left of the label. Click the units corner to switch units.",
         "<b>Objects panel</b> lists every object from top-most to bottom-most. Click the lock column to <b>lock</b> an object so it can't be selected or moved.",
+        "<b>Name objects</b> and organize them into <b>layer groups</b> (<b>Ctrl+G</b>). A toolbar at the top of the Objects panel renames, locks, duplicates, groups, reorders and deletes the selection.",
+        "<b>Smart guides</b> show red distance lines to nearby objects and the label edge while you move or resize, and objects snap to edges and centers (hold Ctrl to turn snapping off).",
+        "<b>Measure tool</b> (<b>M</b>): drag between any two points to measure, in your chosen units.",
         "<b>Edit text in place</b>: double-click a text or barcode object (or press Enter/F2) to type directly on the label.",
         "<b>Live position and size</b> tooltip follows the cursor while you move, resize or draw objects.",
         "<b>Bring Forward / Send Backward</b> moves objects one layer at a time.",
@@ -177,7 +195,7 @@ FAQ = [
     ("How do I print labels from a spreadsheet (mail merge)?",
      "Save the spreadsheet as CSV, open the Merge page in gLabels Plus and choose the file. Insert merge fields into text or barcode objects, check the live merge preview, and print. Each record becomes one label."),
     ("How is gLabels Plus different from gLabels?",
-     "gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, an objects panel with locking, and a refreshed interface. It opens existing .glabels files."),
+     "gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, smart guides with snapping, a measure tool, an objects panel with layer names, groups and locking, and a refreshed interface. It opens existing .glabels files."),
     ("My label sheet isn't listed. What can I do?",
      "Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it."),
     ("Where are my labels saved?",
@@ -383,6 +401,7 @@ def software_app(extra=None):
             "1,800+ label templates from 70+ brands", "24 thermal roll barcode label presets",
             "Projects to group labels by client", "Single-key tool shortcuts",
             "Quick font search", "Rulers, alignment and object locking",
+            "Smart distance guides and snapping", "Measure tool", "Layer groups and names",
             "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",
             "Works offline, no account", "Light and dark themes",
         ],

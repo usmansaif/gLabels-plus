@@ -10,7 +10,7 @@
 - Built with Qt 6 and C++20
 - Source code: https://github.com/usmansaif/gLabels-plus
 - Downloads: https://github.com/usmansaif/gLabels-plus/releases
-- Single-key tool shortcuts: V = Select, T = Text, R = Box, L = Line, O = Ellipse, I = Image, B = Barcode, E = Erase (delete) the selection
+- Single-key tool shortcuts: V = Select, T = Text, R = Box, L = Line, O = Ellipse, I = Image, B = Barcode, M = Measure, E = Erase (delete) the selection
 - Urdu: Noto Nastaliq Urdu (regular and bold) is built in; Urdu labels display and print in true Nastaliq on every platform
 - Custom barcode label printing solutions for businesses: contact the maintainer at https://usmansaif.com/en/contact
 
@@ -24,12 +24,18 @@
 - [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
 
 ## What's new in 5.0
+- Smart guides and snapping: While you move or resize, red lines show the distance to the nearest object or label edge in your chosen units (mm, inches, points...). Objects snap to other objects' edges and centers and to the label's edges and center.
+- Measure tool: Measure anywhere on the label: between objects, to the label edge, or any two points. Shows the length, plus width × height for diagonal lines.
+- Layer groups and names: Name your objects and organize them into collapsible groups in the Objects panel. Select a group to move, align or lock all of it at once.
 - Single-key tool shortcuts: Pick any drawing tool with one key, no menus needed.
 - Quick font search: Type part of a font name (mono, sans) in the Family box and pick from matches shown in their own typeface.
 - Urdu labels in Nastaliq: Noto Nastaliq Urdu (regular and bold) is built in, so Urdu text is shaped and printed in true Nastaliq on every computer, even without the font installed.
 - Projects: Keep each business or client's labels together in one folder that's easy to back up or share.
 - Page selector: Change the page (product) at any time. Objects keep their positions and sizes, and one Undo reverts it.
 - 24 barcode label sizes: Thermal roll presets for Zebra, TSC, Xprinter and Godex, from 30 × 15 mm jewelry tags to 4 × 6″ shipping labels.
+- Objects panel toolbar and right-click menu: rename, lock, duplicate, group, reorder and delete
+- Duplicate objects in one click
+- Readable selected rows on the welcome screen
 - Startup splash screen with loading progress
 - Windows always open maximized
 - gLabels Plus icon on every window and dialog
@@ -95,7 +101,7 @@ Yes. gLabels Plus creates barcodes and QR codes, including EAN, UPC, Code 128, C
 Save the spreadsheet as CSV, open the Merge page in gLabels Plus and choose the file. Insert merge fields into text or barcode objects, check the live merge preview, and print. Each record becomes one label.
 
 ### How is gLabels Plus different from gLabels?
-gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, an objects panel with locking, and a refreshed interface. It opens existing .glabels files.
+gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, smart guides with snapping, a measure tool, an objects panel with layer names, groups and locking, and a refreshed interface. It opens existing .glabels files.
 
 ### My label sheet isn't listed. What can I do?
 Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it.
