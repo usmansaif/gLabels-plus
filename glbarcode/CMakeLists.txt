@@ -8,6 +8,7 @@ set (GLBARCODE_SOURCES
   Barcode.cpp
   Barcode1dBase.cpp
   Barcode2dBase.cpp
+  BarcodeCode128.cpp
   BarcodeCode39.cpp
   BarcodeCode39Ext.cpp
   BarcodeUpcBase.cpp

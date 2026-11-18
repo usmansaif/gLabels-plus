@@ -275,8 +275,9 @@ namespace glbarcode
 
                 if ( showText() )
                 {
-                        std::string starredText = "*" + displayText + "*";
-                        addText( xQuiet + width/2, height + (hTextArea+0.7*textSize)/2, textSize, starredText );
+                        // Print just the data: the start/stop "*" characters are part of the
+                        // symbol, not of the data, and only confuse people reading the label
+                        addText( xQuiet + width/2, height + (hTextArea+0.7*textSize)/2, textSize, displayText );
                 }
 
                 /* Overwrite requested size with actual size. */

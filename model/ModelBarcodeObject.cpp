@@ -71,7 +71,9 @@ namespace glabels::model
 
                 mBcStyle        = barcode::Backends::defaultStyle();
                 mBcTextFlag     = mBcStyle.canText();
-                mBcChecksumFlag = mBcStyle.canChecksum();
+                // Optional check digits are off by default: most scanners don't verify
+                // them and report them as part of the data
+                mBcChecksumFlag = mBcStyle.canChecksum() && !mBcStyle.checksumOptional();
                 mBcFormatDigits = mBcStyle.preferedN();
                 mBcData         = "";
                 mBcColorNode    = ColorNode( Qt::black );

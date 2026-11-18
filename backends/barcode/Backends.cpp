@@ -42,6 +42,11 @@ namespace glabels::barcode
 
         Backends::Backends()
         {
+                // First style is the default for new barcode objects.  Code 128's
+                // check character is mandatory (scanners verify it, never show it).
+                registerStyle( "code128", "", tr("Code 128"),
+                               true, true, true, false, "1234567890", true, 10 );
+
                 registerStyle( "code39", "", tr("Code 39"),
                                true, true, true, true, "1234567890", true, 10 );
 

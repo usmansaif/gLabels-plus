@@ -22,6 +22,7 @@
 #include "Factory.hpp"
 
 #include "BarcodeCepnet.hpp"
+#include "BarcodeCode128.hpp"
 #include "BarcodeCode39.hpp"
 #include "BarcodeCode39Ext.hpp"
 #include "BarcodeDataMatrix.hpp"
@@ -47,6 +48,7 @@ namespace glbarcode
                 /*
                  * Register built-in types.
                  */
+                internalRegisterType( "code128",     &BarcodeCode128::create );
                 internalRegisterType( "code39",      &BarcodeCode39::create );
                 internalRegisterType( "code39ext",   &BarcodeCode39Ext::create );
                 internalRegisterType( "upc-a",       &BarcodeUpcA::create );

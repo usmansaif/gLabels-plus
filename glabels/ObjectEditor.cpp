@@ -776,8 +776,14 @@ namespace glabels
                                 ||  (bcStyle.canText() && !bcStyle.textOptional());
                         barcodeShowTextCheck->setChecked( textFlag );
 
-                        // May need to adjust current checksum flag, if style changed
-                        bool csFlag = (barcodeChecksumCheck->isChecked() && bcStyle.canChecksum())
+                        // Checksum flag: on a style change start from that style's default
+                        // (on only when the check digit is mandatory, because an optional
+                        // one is read back as data by most scanners); otherwise keep the
+                        // user's choice
+                        bool styleChanged = !( bcStyle.id() == mObject->bcStyle().id() &&
+                                               bcStyle.backendId() == mObject->bcStyle().backendId() );
+                        bool wanted = styleChanged ? false : barcodeChecksumCheck->isChecked();
+                        bool csFlag = (wanted && bcStyle.canChecksum())
                                 ||  (bcStyle.canChecksum() && !bcStyle.checksumOptional());
                         barcodeChecksumCheck->setChecked( csFlag );
 

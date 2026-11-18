@@ -744,9 +744,9 @@ void TestXmlLabel::parser_3Barcode()
         {
                 QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "zint::qr" ) );
         }
-        else // No suitable backend, it will default to the builtin code39
+        else // No suitable backend, it will fall back to the default style
         {
-                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "code39" ) );
+                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), Backends::defaultStyle().fullId() );
         }
 
         modelBarcodeObject = dynamic_cast<ModelBarcodeObject*>( model->objectList()[3] );
@@ -755,9 +755,9 @@ void TestXmlLabel::parser_3Barcode()
         {
                 QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "gnu-barcode::upc-a+2" ) );
         }
-        else // No suitable backend, it will default to the builtin code39
+        else // No suitable backend, it will fall back to the default style
         {
-                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "code39" ) );
+                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), Backends::defaultStyle().fullId() );
         }
 
         modelBarcodeObject = dynamic_cast<ModelBarcodeObject*>( model->objectList()[4] );
@@ -766,9 +766,9 @@ void TestXmlLabel::parser_3Barcode()
         {
                 QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "zint::gs1-128" ) );
         }
-        else // No suitable backend, it will default to the builtin code39
+        else // No suitable backend, it will fall back to the default style
         {
-                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), QString( "code39" ) );
+                QCOMPARE( modelBarcodeObject->bcStyle().fullId(), Backends::defaultStyle().fullId() );
         }
 
 
