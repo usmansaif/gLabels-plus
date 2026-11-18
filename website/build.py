@@ -162,6 +162,10 @@ FAQ = [
      "gLabels Plus runs on Linux (AppImage, .deb, .rpm, .tar.gz), Windows 10 and 11 (installer and portable .zip) and macOS (.dmg). It works fully offline."),
     ("Does gLabels Plus work with thermal label printers like Zebra, TSC or Xprinter?",
      "Yes. If your operating system can print to the printer, gLabels Plus can. It includes 24 barcode label presets for thermal roll printers, from 30 × 15 mm to 4 × 6 inch shipping labels, and you can define your own roll sizes."),
+    ("Is gLabels Plus a free alternative to BarTender, ZebraDesigner or Avery Design & Print?",
+     "Yes, for designing and printing barcode, product, address and shipping labels. gLabels Plus is free and open source, works offline on Windows, Linux and macOS, needs no account, and prints to any printer your computer can print to, including Zebra, TSC, Xprinter and Godex thermal printers. Avery sheet templates are built in, so you can design Avery labels without an internet connection. It prints through the normal printer driver and does not output printer languages such as ZPL."),
+    ("Can I generate bulk barcodes from a CSV file?",
+     "Yes. Add a barcode object, set its data to a column from your CSV file, and gLabels Plus prints one label per row, each with its own barcode and text. Check the records in the live merge preview before printing, or print from scripts with glabels-batch-qt."),
     ("Can I print Urdu labels with gLabels Plus?",
      "Yes. gLabels Plus has the Noto Nastaliq Urdu font (regular and bold) built in, so Urdu text is shaped correctly in Nastaliq style on screen, in PDF and on paper, on Linux, Windows and macOS, even if the font is not installed. Urdu, English and numbers can be mixed on the same label, merged from a CSV file and printed next to barcodes."),
     ("Can you build a customized barcode label printing solution for my business?",
@@ -186,6 +190,8 @@ FAQ = [
      "Open an issue on GitHub at github.com/usmansaif/gLabels-plus/issues. Pull requests, translations and new product templates are welcome."),
 ]
 
+FAQ_HOME = 6   # questions shown (and marked up as FAQPage) on the home page
+
 NAV = [("features.html", "Features"), ("download.html", "Download"), ("whats-new.html", "What's New"),
        ("faq.html", "FAQ"), ("donate.html", "Donate")]
 
@@ -197,18 +203,18 @@ NAV = [("features.html", "Features"), ("download.html", "Download"), ("whats-new
 PAGES = {
     "index": dict(
         file="index.html", label="Home",
-        title="gLabels Plus: Free Label Designer for Linux, Windows, macOS",
-        description="Free, open-source label designer for Linux, Windows and macOS. Make barcode, QR, shipping and product labels with mail merge and 1,800+ templates.",
+        title="gLabels Plus: Free Barcode & Thermal Label Designer",
+        description="Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.",
     ),
     "features": dict(
         file="features.html", label="Features",
-        title="Features: Barcodes, Mail Merge, 1,800+ Templates | gLabels Plus",
+        title="gLabels Plus Features: Barcodes, CSV Merge, 1,800+ Templates",
         description="All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.",
     ),
     "download": dict(
         file="download.html", label="Download",
-        title="Download gLabels Plus 5.0 for Linux, Windows and macOS (Free)",
-        description="Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS. Or build from source in three commands.",
+        title="Download gLabels Plus 5.0 Free for Linux, Windows and macOS",
+        description="Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.",
     ),
     "whats-new": dict(
         file="whats-new.html", label="What's New",
@@ -325,7 +331,7 @@ PLACEHOLDERS = {
     "{{presets_teaser}}": lambda: preset_cards([PRESETS[i] for i in (4, 7, 12, 18)]),
     "{{preset_table}}": preset_table,
     "{{faq_all}}": lambda: faq_html(FAQ),
-    "{{faq_home}}": lambda: faq_html(FAQ[:4]),
+    "{{faq_home}}": lambda: faq_html(FAQ[:FAQ_HOME]),
     "{{release_notes}}": release_notes_html,
     "{{whats_new_teaser}}": whats_new_teaser,
     "{{tool_keys}}": tool_keys_html,
@@ -348,7 +354,7 @@ def software_app(extra=None):
         "name": NAME,
         "alternateName": ["gLabels+", "glabels-plus"],
         "description": "Free, open-source label and business card designer for Linux, Windows and macOS with barcodes, QR codes, mail merge, 1,800+ templates and thermal printer presets.",
-        "applicationCategory": "DesignApplication",
+        "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Label design software",
         "operatingSystem": "Linux, Windows 10, Windows 11, macOS",
         "softwareVersion": VERSION,
@@ -371,13 +377,14 @@ def software_app(extra=None):
                       "url": "https://github.com/j-evins/glabels-qt"},
         "codeRepository": REPO_URL,
         "programmingLanguage": "C++",
-        "keywords": "label designer, label maker, barcode label software, QR code labels, mail merge labels, Avery templates, thermal label printer, Zebra labels, free label software, open source",
+        "keywords": "free barcode label designer, open source thermal printer software, offline label maker, free BarTender alternative, ZebraDesigner alternative, Avery Design and Print offline alternative, bulk barcode generator from CSV, 4x6 shipping label software, 50x25 mm MRP barcode labels, Xprinter TSC Godex label software, Urdu Nastaliq labels, QR code labels, mail merge labels",
         "featureList": [
-            "Barcodes and QR codes", "Mail merge from CSV with live preview",
+            "Barcodes and QR codes", "Bulk barcodes from CSV with live merge preview",
             "1,800+ label templates from 70+ brands", "24 thermal roll barcode label presets",
             "Projects to group labels by client", "Single-key tool shortcuts",
             "Quick font search", "Rulers, alignment and object locking",
-            "Print to PDF, crop marks and mirror printing", "Light and dark themes",
+            "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",
+            "Works offline, no account", "Light and dark themes",
         ],
     }
     if extra:
@@ -417,7 +424,7 @@ def schema_for(key, page):
         breadcrumb(page),
     ]
     if key == "index":
-        graph += [webpage(page), software_app(), faq_schema(FAQ[:4])]
+        graph += [webpage(page), software_app(), faq_schema(FAQ[:FAQ_HOME])]
     elif key == "features":
         graph += [webpage(page), software_app()]
     elif key == "download":
@@ -592,6 +599,7 @@ def head(key, page):
   <meta name="twitter:title" content="{esc(page["title"])}">
   <meta name="twitter:description" content="{esc(page["description"])}">
   <meta name="twitter:image" content="{OG_IMAGE}">
+  <meta name="twitter:image:alt" content="gLabels Plus label editor designing a product label with a barcode">
   <link rel="stylesheet" href="assets/style.css">
 {ld}</head>'''
 

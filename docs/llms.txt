@@ -15,9 +15,9 @@
 - Custom barcode label printing solutions for businesses: contact the maintainer at https://usmansaif.com/en/contact
 
 ## Pages
-- [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source label designer for Linux, Windows and macOS. Make barcode, QR, shipping and product labels with mail merge and 1,800+ templates.
+- [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.
 - [Features](https://usmansaif.github.io/gLabels-plus/features.html): All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.
-- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS. Or build from source in three commands.
+- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
 - [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.0 release notes: single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
 - [Barcode Labels](https://usmansaif.github.io/gLabels-plus/barcode-labels.html): 24 free barcode label templates for Zebra, TSC, Xprinter and Godex thermal printers, from 30 × 15 mm and 50 × 25 mm to 4 × 6 inch shipping labels.
 - [FAQ](https://usmansaif.github.io/gLabels-plus/faq.html): Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.
@@ -72,6 +72,12 @@ gLabels Plus runs on Linux (AppImage, .deb, .rpm, .tar.gz), Windows 10 and 11 (i
 
 ### Does gLabels Plus work with thermal label printers like Zebra, TSC or Xprinter?
 Yes. If your operating system can print to the printer, gLabels Plus can. It includes 24 barcode label presets for thermal roll printers, from 30 × 15 mm to 4 × 6 inch shipping labels, and you can define your own roll sizes.
+
+### Is gLabels Plus a free alternative to BarTender, ZebraDesigner or Avery Design & Print?
+Yes, for designing and printing barcode, product, address and shipping labels. gLabels Plus is free and open source, works offline on Windows, Linux and macOS, needs no account, and prints to any printer your computer can print to, including Zebra, TSC, Xprinter and Godex thermal printers. Avery sheet templates are built in, so you can design Avery labels without an internet connection. It prints through the normal printer driver and does not output printer languages such as ZPL.
+
+### Can I generate bulk barcodes from a CSV file?
+Yes. Add a barcode object, set its data to a column from your CSV file, and gLabels Plus prints one label per row, each with its own barcode and text. Check the records in the live merge preview before printing, or print from scripts with glabels-batch-qt.
 
 ### Can I print Urdu labels with gLabels Plus?
 Yes. gLabels Plus has the Noto Nastaliq Urdu font (regular and bold) built in, so Urdu text is shaped correctly in Nastaliq style on screen, in PDF and on paper, on Linux, Windows and macOS, even if the font is not installed. Urdu, English and numbers can be mixed on the same label, merged from a CSV file and printed next to barcodes.

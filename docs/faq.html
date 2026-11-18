@@ -27,6 +27,7 @@
   <meta name="twitter:title" content="gLabels Plus FAQ: Free Label Designer Questions Answered">
   <meta name="twitter:description" content="Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.">
   <meta name="twitter:image" content="https://usmansaif.github.io/gLabels-plus/images/screenshots/editor.png">
+  <meta name="twitter:image:alt" content="gLabels Plus label editor designing a product label with a barcode">
   <link rel="stylesheet" href="assets/style.css">
   <script type="application/ld+json">
 {
@@ -37,7 +38,7 @@
    "@id": "https://usmansaif.github.io/gLabels-plus/#website",
    "url": "https://usmansaif.github.io/gLabels-plus/",
    "name": "gLabels Plus",
-   "description": "Free, open-source label designer for Linux, Windows and macOS. Make barcode, QR, shipping and product labels with mail merge and 1,800+ templates.",
+   "description": "Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://usmansaif.github.io/gLabels-plus/#maintainer"
@@ -129,6 +130,22 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Yes. If your operating system can print to the printer, gLabels Plus can. It includes 24 barcode label presets for thermal roll printers, from 30 × 15 mm to 4 × 6 inch shipping labels, and you can define your own roll sizes."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is gLabels Plus a free alternative to BarTender, ZebraDesigner or Avery Design & Print?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, for designing and printing barcode, product, address and shipping labels. gLabels Plus is free and open source, works offline on Windows, Linux and macOS, needs no account, and prints to any printer your computer can print to, including Zebra, TSC, Xprinter and Godex thermal printers. Avery sheet templates are built in, so you can design Avery labels without an internet connection. It prints through the normal printer driver and does not output printer languages such as ZPL."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I generate bulk barcodes from a CSV file?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Add a barcode object, set its data to a column from your CSV file, and gLabels Plus prints one label per row, each with its own barcode and text. Check the records in the live merge preview before printing, or print from scripts with glabels-batch-qt."
      }
     },
     {
@@ -283,6 +300,14 @@
         <details>
           <summary><h3>Does gLabels Plus work with thermal label printers like Zebra, TSC or Xprinter?</h3></summary>
           <p>Yes. If your operating system can print to the printer, gLabels Plus can. It includes 24 barcode label presets for thermal roll printers, from 30 × 15 mm to 4 × 6 inch shipping labels, and you can define your own roll sizes.</p>
+        </details>
+        <details>
+          <summary><h3>Is gLabels Plus a free alternative to BarTender, ZebraDesigner or Avery Design &amp; Print?</h3></summary>
+          <p>Yes, for designing and printing barcode, product, address and shipping labels. gLabels Plus is free and open source, works offline on Windows, Linux and macOS, needs no account, and prints to any printer your computer can print to, including Zebra, TSC, Xprinter and Godex thermal printers. Avery sheet templates are built in, so you can design Avery labels without an internet connection. It prints through the normal printer driver and does not output printer languages such as ZPL.</p>
+        </details>
+        <details>
+          <summary><h3>Can I generate bulk barcodes from a CSV file?</h3></summary>
+          <p>Yes. Add a barcode object, set its data to a column from your CSV file, and gLabels Plus prints one label per row, each with its own barcode and text. Check the records in the live merge preview before printing, or print from scripts with glabels-batch-qt.</p>
         </details>
         <details>
           <summary><h3>Can I print Urdu labels with gLabels Plus?</h3></summary>

@@ -498,3 +498,15 @@ td:nth-child(2) { color: var(--muted); font-variant-numeric: tabular-nums; }
   .wrap { padding: 0 20px; }
 }
 @media (max-width: 560px) { .wrap { padding: 0 16px; } }
+
+/* Why switch: benefits + comparison table */
+.why-list { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 28px; }
+.glance .hl-jump { margin: 20px 0 0; }
+.compare th, .compare td { white-space: normal; min-width: 128px; vertical-align: top; }
+.compare tbody th { font-weight: 600; color: var(--text); background: transparent; text-transform: none; letter-spacing: 0; font-size: .95rem; }
+.compare td:first-child { font-weight: 400; }
+.compare td:nth-child(2) { color: var(--text); font-weight: 600; background: var(--accent-soft); }
+.compare td:not(:nth-child(2)) { color: var(--muted); }
+.fine { color: var(--muted); font-size: .82rem; margin: 14px 0 0; max-width: 820px; }
+@media (max-width: 820px) { .why-list { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .compare th, .compare td { min-width: 104px; padding: 10px 12px; } }
