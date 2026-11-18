@@ -159,8 +159,10 @@ jobs:
       if: startsWith( matrix.os, 'ubuntu-latest' )
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
+        sudo apt-get update
         sudo apt-get -y install xwayland-run
-        sudo apt-get -y install comparepdf
+        # comparepdf is not packaged on newer Ubuntu images; fall back to diff-pdf
+        sudo apt-get -y install comparepdf || sudo apt-get -y install diff-pdf-nox || sudo apt-get -y install diff-pdf || echo "::warning::No PDF compare tool available; render output will not be compared"
 
     - name: Install render test dependencies (Windows)
       if: startsWith( matrix.os, 'windows' )
@@ -182,6 +184,11 @@ jobs:
         TEST_DIR: ${{ github.workspace }}/test-data
       run: |
         set +e
+        cmp-pdf() {
+          if command -v comparepdf >/dev/null; then comparepdf -ca -v2 "$1" "$2";
+          elif command -v diff-pdf >/dev/null; then diff-pdf -v "$1" "$2";
+          else echo "No PDF compare tool; skipped comparing $2"; fi
+        }
         run-x() { xvfb-run -a "$@"; }
         run-w() { wlheadless-run -c weston --log=/dev/null -- "$@"; }
         #
@@ -197,16 +204,16 @@ jobs:
         #
         echo "-----------------------------------"
         run-x ./glabels-batch/glabels-batch-qt -o simple-shapes-x.pdf "$TEST_DIR/simple-shapes.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-shapes.pdf" simple-shapes-x.pdf
+        cmp-pdf "$TEST_DIR/simple-shapes.pdf" simple-shapes-x.pdf
         echo "-----------------------------------"
         run-x ./glabels-batch/glabels-batch-qt -o simple-code39-x.pdf "$TEST_DIR/simple-code39.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-code39.pdf" simple-code39-x.pdf
+        cmp-pdf "$TEST_DIR/simple-code39.pdf" simple-code39-x.pdf
         echo "-----------------------------------"
         run-x ./glabels-batch/glabels-batch-qt -o simple-text-liberation-sans-x.pdf "$TEST_DIR/simple-text-liberation-sans.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-text-liberation-sans.pdf" simple-text-liberation-sans-x.pdf
+        cmp-pdf "$TEST_DIR/simple-text-liberation-sans.pdf" simple-text-liberation-sans-x.pdf
         echo "-----------------------------------"
         run-x ./glabels-batch/glabels-batch-qt -o simple-text-liberation-serif-x.pdf "$TEST_DIR/simple-text-liberation-serif.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-text-liberation-serif.pdf" simple-text-liberation-serif-x.pdf
+        cmp-pdf "$TEST_DIR/simple-text-liberation-serif.pdf" simple-text-liberation-serif-x.pdf
         echo "-----------------------------------"
         #
         #
@@ -221,16 +228,16 @@ jobs:
         #
         echo "-----------------------------------"
         run-w ./glabels-batch/glabels-batch-qt -o simple-shapes-w.pdf "$TEST_DIR/simple-shapes.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-shapes.pdf" simple-shapes-w.pdf
+        cmp-pdf "$TEST_DIR/simple-shapes.pdf" simple-shapes-w.pdf
         echo "-----------------------------------"
         run-w ./glabels-batch/glabels-batch-qt -o simple-code39-w.pdf "$TEST_DIR/simple-code39.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-code39.pdf" simple-code39-w.pdf
+        cmp-pdf "$TEST_DIR/simple-code39.pdf" simple-code39-w.pdf
         echo "-----------------------------------"
         run-w ./glabels-batch/glabels-batch-qt -o simple-text-liberation-sans-w.pdf "$TEST_DIR/simple-text-liberation-sans.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-text-liberation-sans.pdf" simple-text-liberation-sans-w.pdf
+        cmp-pdf "$TEST_DIR/simple-text-liberation-sans.pdf" simple-text-liberation-sans-w.pdf
         echo "-----------------------------------"
         run-w ./glabels-batch/glabels-batch-qt -o simple-text-liberation-serif-w.pdf "$TEST_DIR/simple-text-liberation-serif.glabels"
-        comparepdf -ca -v2 "$TEST_DIR/simple-text-liberation-serif.pdf" simple-text-liberation-serif-w.pdf
+        cmp-pdf "$TEST_DIR/simple-text-liberation-serif.pdf" simple-text-liberation-serif-w.pdf
         echo "-----------------------------------"
 
     - name: Render tests (Windows)
