@@ -188,6 +188,16 @@ namespace glabels::model
 
         QString Template::paperDescription( Units units ) const
         {
+                // "roll" is a pseudo paper ID (like "other"); it is not in the paper database
+                if ( mIsRoll || mPaperId == "roll" )
+                {
+                        Distance w = (mRollWidth > Distance(0)) ? mRollWidth : mPageWidth;
+                        QString wStr = (units.toEnum() == Units::IN)
+                                ? StrUtil::formatFraction( w.in() )
+                                : QString::number( w.inUnits(units), 'g', 5 );
+                        return tr("Roll, %1 %2 wide").arg( wStr, units.toTrName() );
+                }
+
                 if ( mPaperId == "other" )
                 {
                         if ( units.toEnum() == Units::IN )

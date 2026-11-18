@@ -359,6 +359,13 @@ namespace glabels::model
                         else if ( !child.isComment() )
                         {
                                 qWarning() << "Unexpected" << node.tagName() << "child:" << tagName;
+                                continue;
+                        }
+
+                        if ( !list.isEmpty() && list.last() &&
+                             XmlUtil::getBoolAttr( child.toElement(), "locked", false ) )
+                        {
+                                list.last()->setLocked( true );
                         }
                 }
 

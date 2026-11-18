@@ -27,6 +27,8 @@
 #include "TextNode.hpp"
 
 #include <QDebug>
+#include <cmath>
+#include <QtMath>
 #include <QFont>
 
 
@@ -113,6 +115,7 @@ namespace glabels::model
                 mW               = object->mW;
                 mH               = object->mH;
                 mLockAspectRatio = object->mLockAspectRatio;
+                mLocked          = object->mLocked;
 
                 mShadowState     = object->mShadowState;
                 mShadowX         = object->mShadowX;
@@ -278,6 +281,83 @@ namespace glabels::model
                 if ( mLockAspectRatio != value )
                 {
                         mLockAspectRatio = value;
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Locked Property Getter
+        ///
+        bool ModelObject::isLocked() const
+        {
+                return mLocked;
+        }
+
+
+        ///
+        /// Locked Property Setter
+        ///
+        void ModelObject::setLocked( bool value )
+        {
+                if ( mLocked != value )
+                {
+                        mLocked = value;
+                        if ( mLocked )
+                        {
+                                mSelectedFlag = false;
+                        }
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Rotation Property Getter
+        ///
+        /// The matrix is treated as S * R(theta), where S = diag(1, +/-1) captures any flip.
+        ///
+        double ModelObject::rotation() const
+        {
+                double theta = qRadiansToDegrees( std::atan2( mMatrix.m12(), mMatrix.m11() ) );
+                theta = std::fmod( theta, 360.0 );
+                if ( theta < 0 )
+                {
+                        theta += 360.0;
+                }
+                if ( std::fabs( theta - 360.0 ) < 1e-6 || std::fabs( theta ) < 1e-6 )
+                {
+                        theta = 0.0;
+                }
+                return theta;
+        }
+
+
+        ///
+        /// Rotation Property Setter (rotates about the object's center)
+        ///
+        void ModelObject::setRotation( double thetaDegs )
+        {
+                double det = mMatrix.m11()*mMatrix.m22() - mMatrix.m12()*mMatrix.m21();
+                double sy  = (det < 0) ? -1.0 : 1.0;
+
+                // Center of object in label coordinates, before change
+                QPointF c0 = mMatrix.map( QPointF( mW.pt()/2, mH.pt()/2 ) );
+
+                QTransform r;
+                r.rotate( thetaDegs );
+                QTransform m = QTransform::fromScale( 1, sy ) * r;
+
+                if ( m != mMatrix )
+                {
+                        mMatrix = m;
+
+                        // Keep center fixed
+                        QPointF c1 = mMatrix.map( QPointF( mW.pt()/2, mH.pt()/2 ) );
+                        mX0 += Distance::pt( c0.x() - c1.x() );
+                        mY0 += Distance::pt( c0.y() - c1.y() );
+
+                        emit moved();
                         emit changed();
                 }
         }

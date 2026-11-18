@@ -500,5 +500,81 @@
 	<file>icons/mimetypes/scalable/x-glabels-project.svg</file>
 
 
+
+	<!-- additional 16x16 action icons (all themes) -->
+	<file>icons/glabels-flat/16x16/actions/glabels-appearance.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-favorite.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-general.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-go-first.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-go-last.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-go-next.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-go-previous.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-grid.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-keyboard.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-lock.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-markup.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-order-lower.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-order-raise.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-rulers.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-unlock.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-appearance.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-favorite.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-general.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-go-first.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-go-last.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-go-next.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-go-previous.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-grid.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-keyboard.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-lock.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-markup.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-order-lower.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-order-raise.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-rulers.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-unlock.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-appearance.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-favorite.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-general.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-go-first.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-go-last.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-go-next.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-go-previous.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-grid.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-keyboard.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-lock.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-markup.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-order-lower.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-order-raise.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-rulers.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-unlock.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-appearance.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-favorite.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-general.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-go-first.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-go-last.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-go-next.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-go-previous.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-grid.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-keyboard.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-lock.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-markup.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-order-lower.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-order-raise.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-rulers.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-unlock.svg</file>
+
+	<file>icons/glabels-flat/16x16/actions/glabels-edit-undo.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-edit-redo.svg</file>
+	<file>icons/glabels-flat/16x16/actions/glabels-edit-delete.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-edit-undo.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-edit-redo.svg</file>
+	<file>icons/glabels-flat-dark/16x16/actions/glabels-edit-delete.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-edit-undo.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-edit-redo.svg</file>
+	<file>icons/glabels-vector/16x16/actions/glabels-edit-delete.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-edit-undo.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-edit-redo.svg</file>
+	<file>icons/glabels-vector-dark/16x16/actions/glabels-edit-delete.svg</file>
+
 </qresource>
 </RCC>

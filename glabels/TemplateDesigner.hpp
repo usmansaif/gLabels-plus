@@ -38,6 +38,7 @@
 #include "ui_TemplateDesignerApplyPage.h"
 
 #include "model/Template.hpp"
+#include "model/Units.hpp"
 
 #include <QWizard>
 #include <QWizardPage>
@@ -91,12 +92,15 @@ namespace glabels
                 void printTestSheet();
                 void loadFromTemplate( const model::Template& tmplate );
                 bool isBasedOnCopy();
+                const model::Units& units() const;
+                void setUnits( const model::Units& units );
 
 
                 /////////////////////////////////
-                // Private methods
+                // Private data
                 /////////////////////////////////
         private:
+                model::Units mUnits;
                 bool mIsBasedOnCopy{false};
                 bool mIsTemplatePathBased{false};
                 bool mIsTemplateContinuousBased{false};
@@ -154,6 +158,7 @@ namespace glabels
 
         private slots:
                 void onComboChanged();
+                void onUnitsComboChanged();
         };
 
 

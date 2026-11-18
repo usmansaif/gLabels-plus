@@ -30,4 +30,7 @@ private slots:
         void initTestCase();
         void model();
         void saveRestore();
+        void zOrderSteps();
+        void alignReferences();
+        void lockAndRotation();
 };

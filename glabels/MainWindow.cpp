@@ -26,21 +26,34 @@
 #include "LabelEditor.hpp"
 #include "MergeView.hpp"
 #include "ObjectEditor.hpp"
+#include "ObjectListView.hpp"
 #include "PreferencesDialog.hpp"
 #include "PrintView.hpp"
 #include "PropertiesView.hpp"
+#include "Ruler.hpp"
+#include "ShortcutsDialog.hpp"
 #include "StartupView.hpp"
 #include "VariablesView.hpp"
 
 #include "model/Db.hpp"
 #include "model/Model.hpp"
+#include "model/ModelBarcodeObject.hpp"
+#include "model/ModelObject.hpp"
+#include "model/ModelTextObject.hpp"
 
+#include <QApplication>
 #include <QClipboard>
 #include <QDebug>
+#include <QStyle>
 #include <QFrame>
+#include <QGridLayout>
+#include <QLineEdit>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QSettings>
 #include <QStatusBar>
+
+#include <algorithm>
 
 
 namespace
@@ -67,6 +80,8 @@ namespace glabels
         {
                 setWindowIcon( QIcon::fromTheme( "glabels" ) );
 
+                setDockOptions( QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks );
+
                 createActions();
                 createMenus();
                 createToolBars();
@@ -80,14 +95,35 @@ namespace glabels
                 QWidget* variablesPage = createVariablesPage();
                 QWidget* printPage = createPrintPage();
 
+                // A QStackedWidget's minimum size is the largest minimum of *all* its pages.
+                // Wrap the form-style pages in scroll areas so that they can never force the
+                // main window to be larger than the screen (which also stops the window manager
+                // from offering maximize/resize).
+                auto scrollable = []( QWidget* content ) -> QWidget* {
+                        auto* area = new QScrollArea();
+                        area->setFrameShape( QFrame::NoFrame );
+                        area->setWidgetResizable( true );
+                        area->setWidget( content );
+                        return area;
+                };
+                propertiesPage = scrollable( propertiesPage );
+                mergePage      = scrollable( mergePage );
+                variablesPage  = scrollable( variablesPage );
+                printPage      = scrollable( printPage );
+
                 // Table of contents widget
                 mContents = new QToolBar();
-                mContents->setOrientation( Qt::Vertical );
-                mContents->setIconSize( QSize(48,48) );
-                mContents->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                          QSizePolicy::Preferred );
+                mContents->setObjectName( "sidebar" );
+                mContents->setWindowTitle( tr("Pages") );
+                mContents->setOrientation( Qt::Horizontal );
+                mContents->setMovable( false );
+                mContents->setFloatable( false );
+                mContents->setAllowedAreas( Qt::BottomToolBarArea );
                 mContents->setAutoFillBackground( true );
                 mContents->setBackgroundRole( QPalette::AlternateBase );
+                mContents->setContextMenuPolicy( Qt::CustomContextMenu );
+                mContents->setToolTip( tr("Switch page. Right-click to change button style.") );
+                connect( mContents, &QWidget::customContextMenuRequested, this, &MainWindow::onSidebarContextMenu );
 
                 // Table of contents button group
                 auto group = new QButtonGroup( this );
@@ -103,8 +139,6 @@ namespace glabels
                 mWelcomeButton->setText( tr("Welcome") );
                 mWelcomeButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mWelcomeButton->setCheckable( true );
-                mWelcomeButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                               QSizePolicy::Preferred );
                 mWelcomeAction = mContents->addWidget( mWelcomeButton );
                 group->addButton( mWelcomeButton );
 
@@ -115,8 +149,6 @@ namespace glabels
                 mEditorButton->setText( tr("Edit") );
                 mEditorButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mEditorButton->setCheckable( true );
-                mEditorButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                              QSizePolicy::Preferred );
                 mEditorAction = mContents->addWidget( mEditorButton );
                 group->addButton( mEditorButton );
 
@@ -127,8 +159,6 @@ namespace glabels
                 mPropertiesButton->setText( tr("Properties") );
                 mPropertiesButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mPropertiesButton->setCheckable( true );
-                mPropertiesButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                                  QSizePolicy::Preferred );
                 mPropertiesAction = mContents->addWidget( mPropertiesButton );
                 group->addButton( mPropertiesButton );
 
@@ -139,8 +169,6 @@ namespace glabels
                 mMergeButton->setText( tr("Merge") );
                 mMergeButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mMergeButton->setCheckable( true );
-                mMergeButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                             QSizePolicy::Preferred );
                 mMergeAction = mContents->addWidget( mMergeButton );
                 group->addButton( mMergeButton );
 
@@ -151,8 +179,6 @@ namespace glabels
                 mVariablesButton->setText( tr("Variables") );
                 mVariablesButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mVariablesButton->setCheckable( true );
-                mVariablesButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                             QSizePolicy::Preferred );
                 mVariablesAction = mContents->addWidget( mVariablesButton );
                 group->addButton( mVariablesButton );
 
@@ -163,8 +189,6 @@ namespace glabels
                 mPrintButton->setText( tr("Print") );
                 mPrintButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mPrintButton->setCheckable( true );
-                mPrintButton->setSizePolicy( QSizePolicy::MinimumExpanding,
-                                             QSizePolicy::Preferred );
                 mPrintAction = mContents->addWidget( mPrintButton );
                 group->addButton( mPrintButton );
 
@@ -172,16 +196,14 @@ namespace glabels
                 mWelcomeButton->setChecked( true );
                 mPages->setCurrentIndex( WELCOME_PAGE_INDEX );
 
-                // Create central widget
-                QWidget *centralWidget = new QWidget();
-                auto *hLayout = new QHBoxLayout();
-                hLayout->setContentsMargins( 0, 0, 0, 0 );
-                hLayout->addWidget( mContents );
-                hLayout->addWidget( mPages );
-                hLayout->setStretch( 0, 0 );
-                hLayout->setStretch( 1, 1 );
-                centralWidget->setLayout( hLayout );
-                setCentralWidget( centralWidget );
+                // Page switcher lives at the bottom-left of the window, above the status bar
+                addToolBar( Qt::BottomToolBarArea, mContents );
+                setCentralWidget( mPages );
+
+                applySidebarStyle();
+
+                createDocks();
+                registerShortcuts();
 
                 manageActions();
                 setTitle();
@@ -193,13 +215,11 @@ namespace glabels
                 connect( mVariablesButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mPrintButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mLabelEditor, SIGNAL(zoomChanged()), this, SLOT(onZoomChanged()) );
+                connect( mLabelEditor, SIGNAL(previewRecordChanged()), this, SLOT(onPreviewRecordChanged()) );
                 connect( model::Settings::instance(), SIGNAL(changed()), this, SLOT(onSettingsChanged()) );
                 connect( QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
-#if 0
-                connect( mLabelEditor, SIGNAL(pointerMoved(model::Point)),
-                         this, SLOT(onPointerMoved(modelPoint)) );
-                connect( mLabelEditor, SIGNAL(pointerExited()), this, SLOT(onPointerExit()) );
-#endif
+                connect( mLabelEditor, &LabelEditor::pointerMoved, this, &MainWindow::onPointerMoved );
+                connect( mLabelEditor, &LabelEditor::pointerExited, this, &MainWindow::onPointerExit );
 
                 readSettings();
         }
@@ -222,9 +242,12 @@ namespace glabels
                 mModel.reset( model );
                 mUndoRedoModel = std::make_unique<UndoRedoModel>( mModel.get() );
 
+                mModel->setAlignReference( model::Model::AlignReference( model::Settings::alignReference() ) );
+
                 mPropertiesView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mLabelEditor->setModel( mModel.get(), mUndoRedoModel.get() );
                 mObjectEditor->setModel( mModel.get(), mUndoRedoModel.get() );
+                mObjectListView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mMergeView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mVariablesView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mPrintView->setModel( mModel.get() );
@@ -241,6 +264,10 @@ namespace glabels
                 connect( mModel.get(), SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()) );
                 connect( mModel.get(), SIGNAL(changed()), this, SLOT(onLabelChanged()) );
                 connect( mUndoRedoModel.get(), SIGNAL(changed()), this, SLOT(onUndoRedoChanged()) );
+
+                onPreviewRecordChanged();
+                syncRotationSpin();
+                updateChromeVisibility();
         }
 
 
@@ -279,13 +306,13 @@ namespace glabels
                 fileNewAction = new QAction( tr("&New..."), this );
                 fileNewAction->setIcon( QIcon::fromTheme( "glabels-file-new" ) );
                 fileNewAction->setShortcut( QKeySequence::New );
-                fileNewAction->setStatusTip( tr("Create a new gLabels project") );
+                fileNewAction->setStatusTip( tr("Create a new gLabels Plus project") );
                 connect( fileNewAction, SIGNAL(triggered()), this, SLOT(fileNew()) );
 
                 fileOpenAction = new QAction( tr("&Open..."), this );
                 fileOpenAction->setIcon( QIcon::fromTheme( "glabels-file-open" ) );
                 fileOpenAction->setShortcut( QKeySequence::Open );
-                fileOpenAction->setStatusTip( tr("Open an existing gLabels project") );
+                fileOpenAction->setStatusTip( tr("Open an existing gLabels Plus project") );
                 connect( fileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()) );
 
                 for ( int i = 0; i < model::Settings::maxRecentFiles(); i++ )
@@ -300,13 +327,13 @@ namespace glabels
                 fileSaveAction = new QAction( tr("&Save"), this );
                 fileSaveAction->setIcon( QIcon::fromTheme( "glabels-file-save" ) );
                 fileSaveAction->setShortcut( QKeySequence::Save );
-                fileSaveAction->setStatusTip( tr("Save current gLabels project") );
+                fileSaveAction->setStatusTip( tr("Save current gLabels Plus project") );
                 connect( fileSaveAction, SIGNAL(triggered()), this, SLOT(fileSave()) );
 
                 fileSaveAsAction = new QAction( tr("Save &As..."), this );
                 fileSaveAsAction->setIcon( QIcon::fromTheme( "glabels-file-save-as" ) );
                 fileSaveAsAction->setShortcut( QKeySequence::SaveAs );
-                fileSaveAsAction->setStatusTip( tr("Save current gLabels project to a different name") );
+                fileSaveAsAction->setStatusTip( tr("Save current gLabels Plus project to a different name") );
                 connect( fileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()) );
 
                 fileShowEditorPageAction = new QAction( tr("&Edit") , this );
@@ -353,13 +380,13 @@ namespace glabels
 
                 /* Edit actions */
                 editUndoAction = new QAction( tr("Undo"), this );
-                editUndoAction->setIcon( QIcon::fromTheme( "edit-undo" ) );
+                editUndoAction->setIcon( QIcon::fromTheme( "edit-undo", QIcon::fromTheme( "glabels-edit-undo" ) ) );
                 editUndoAction->setShortcut( QKeySequence::Undo );
                 editUndoAction->setStatusTip( tr("Undo") );
                 connect( editUndoAction, SIGNAL(triggered()), this, SLOT(editUndo()) );
 
                 editRedoAction = new QAction( tr("Redo"), this );
-                editRedoAction->setIcon( QIcon::fromTheme( "edit-redo" ) );
+                editRedoAction->setIcon( QIcon::fromTheme( "edit-redo", QIcon::fromTheme( "glabels-edit-redo" ) ) );
                 editRedoAction->setShortcut( QKeySequence::Redo );
                 editRedoAction->setStatusTip( tr("Redo") );
                 connect( editRedoAction, SIGNAL(triggered()), this, SLOT(editRedo()) );
@@ -383,7 +410,7 @@ namespace glabels
                 connect( editPasteAction, SIGNAL(triggered()), this, SLOT(editPaste()) );
 
                 editDeleteAction = new QAction( tr("&Delete"), this );
-                editDeleteAction->setIcon( QIcon::fromTheme( "edit-delete" ) );
+                editDeleteAction->setIcon( QIcon::fromTheme( "edit-delete", QIcon::fromTheme( "glabels-edit-delete" ) ) );
                 editDeleteAction->setShortcut( QKeySequence::Delete );
                 editDeleteAction->setStatusTip( tr("Delete the selected objects") );
                 connect( editDeleteAction, SIGNAL(triggered()), this, SLOT(editDelete()) );
@@ -405,6 +432,11 @@ namespace glabels
                 editPreferencesAction->setStatusTip( tr("Configure the application") );
                 connect( editPreferencesAction, SIGNAL(triggered()), this, SLOT(editPreferences()) );
 
+                editShortcutsAction = new QAction( tr("Keyboard Shortcuts..."), this );
+                editShortcutsAction->setIcon( QIcon::fromTheme( "glabels-keyboard" ) );
+                editShortcutsAction->setStatusTip( tr("View and customize keyboard shortcuts") );
+                connect( editShortcutsAction, SIGNAL(triggered()), this, SLOT(editShortcuts()) );
+
 
                 /* View actions */
                 viewFileToolBarAction = new QAction( tr("Quick Access"), this );
@@ -418,12 +450,51 @@ namespace glabels
                 connect( viewEditorToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewEditorToolBar(bool)) );
 
 
+                viewViewToolBarAction = new QAction( tr("View && Zoom"), this );
+                viewViewToolBarAction->setCheckable( true );
+                viewViewToolBarAction->setStatusTip( tr("Change visibility of the \"View && Zoom\" toolbar") );
+                connect( viewViewToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewToolBarToggled(bool)) );
+
+                viewArrangeToolBarAction = new QAction( tr("Arrange"), this );
+                viewArrangeToolBarAction->setCheckable( true );
+                viewArrangeToolBarAction->setStatusTip( tr("Change visibility of the \"Arrange\" toolbar") );
+                connect( viewArrangeToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewToolBarToggled(bool)) );
+
+                viewMergeToolBarAction = new QAction( tr("Merge Preview"), this );
+                viewMergeToolBarAction->setCheckable( true );
+                viewMergeToolBarAction->setStatusTip( tr("Change visibility of the \"Merge Preview\" toolbar") );
+                connect( viewMergeToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewToolBarToggled(bool)) );
+
+                viewPropertiesDockAction = new QAction( tr("Object Properties Panel"), this );
+                viewPropertiesDockAction->setCheckable( true );
+                viewPropertiesDockAction->setIcon( QIcon::fromTheme( "glabels-object-properties" ) );
+                viewPropertiesDockAction->setStatusTip( tr("Show or hide the object properties panel") );
+                connect( viewPropertiesDockAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
+
+                viewObjectListDockAction = new QAction( tr("Objects Panel"), this );
+                viewObjectListDockAction->setCheckable( true );
+                viewObjectListDockAction->setStatusTip( tr("Show or hide the list of objects (layers)") );
+                connect( viewObjectListDockAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
+
+                viewRulersAction = new QAction( tr("Rulers"), this );
+                viewRulersAction->setCheckable( true );
+                viewRulersAction->setIcon( QIcon::fromTheme( "glabels-rulers" ) );
+                viewRulersAction->setStatusTip( tr("Show or hide horizontal and vertical rulers") );
+                connect( viewRulersAction, SIGNAL(toggled(bool)), this, SLOT(viewRulers(bool)) );
+
+                viewPropertiesUnitsAction = new QAction( tr("Units in Properties"), this );
+                viewPropertiesUnitsAction->setCheckable( true );
+                viewPropertiesUnitsAction->setStatusTip( tr("Show or hide measurement units next to values in the properties panel") );
+                connect( viewPropertiesUnitsAction, SIGNAL(toggled(bool)), this, SLOT(viewPropertiesUnits(bool)) );
+
                 viewGridAction = new QAction( tr("Grid"), this );
+                viewGridAction->setIcon( QIcon::fromTheme( "glabels-grid" ) );
                 viewGridAction->setCheckable( true );
                 viewGridAction->setStatusTip( tr("Change visibility of the grid in current window") );
                 connect( viewGridAction, SIGNAL(toggled(bool)), this, SLOT(viewGrid(bool)) );
 
                 viewMarkupAction = new QAction( tr("Markup"), this );
+                viewMarkupAction->setIcon( QIcon::fromTheme( "glabels-markup" ) );
                 viewMarkupAction->setCheckable( true );
                 viewMarkupAction->setStatusTip( tr("Change visibility of markup lines in current window") );
                 connect( viewMarkupAction, SIGNAL(toggled(bool)), this, SLOT(viewMarkup(bool)) );
@@ -497,6 +568,78 @@ namespace glabels
                 objectsOrderLowerAction->setStatusTip( tr("Lower selection to bottom") );
                 connect( objectsOrderLowerAction, SIGNAL(triggered()), this, SLOT(objectsOrderLower()) );
 
+                objectsOrderRaiseOneAction = new QAction( tr("Bring Forward"), this );
+                objectsOrderRaiseOneAction->setIcon( QIcon::fromTheme( "glabels-order-raise" ) );
+                objectsOrderRaiseOneAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_BracketRight ) );
+                objectsOrderRaiseOneAction->setStatusTip( tr("Raise selection one step") );
+                connect( objectsOrderRaiseOneAction, SIGNAL(triggered()), this, SLOT(objectsOrderRaiseOne()) );
+
+                objectsOrderLowerOneAction = new QAction( tr("Send Backward"), this );
+                objectsOrderLowerOneAction->setIcon( QIcon::fromTheme( "glabels-order-lower" ) );
+                objectsOrderLowerOneAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_BracketLeft ) );
+                objectsOrderLowerOneAction->setStatusTip( tr("Lower selection one step") );
+                connect( objectsOrderLowerOneAction, SIGNAL(triggered()), this, SLOT(objectsOrderLowerOne()) );
+
+                objectsOrderRaiseAction->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_BracketRight ) );
+                objectsOrderLowerAction->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_BracketLeft ) );
+
+                objectsEditTextAction = new QAction( tr("Edit Text In Place"), this );
+                objectsEditTextAction->setIcon( QIcon::fromTheme( "glabels-text" ) );
+                objectsEditTextAction->setShortcut( QKeySequence( Qt::Key_F2 ) );
+                objectsEditTextAction->setStatusTip( tr("Edit the text or barcode data of the selected object directly on the label (or double-click it)") );
+                connect( objectsEditTextAction, SIGNAL(triggered()), this, SLOT(objectsEditText()) );
+
+                /* Alignment reference */
+                alignRefGroup = new QActionGroup( this );
+                alignRefGroup->setExclusive( true );
+
+                alignRefSelectionAction = new QAction( tr("Align Relative to Selection"), this );
+                alignRefSelectionAction->setCheckable( true );
+                alignRefSelectionAction->setData( int(model::Model::ALIGN_TO_SELECTION) );
+                alignRefSelectionAction->setStatusTip( tr("Align objects to the outer edges of the whole selection") );
+                alignRefGroup->addAction( alignRefSelectionAction );
+
+                alignRefKeyAction = new QAction( tr("Align Relative to Last Selected Object"), this );
+                alignRefKeyAction->setCheckable( true );
+                alignRefKeyAction->setData( int(model::Model::ALIGN_TO_KEY_OBJECT) );
+                alignRefKeyAction->setStatusTip( tr("Align objects to the object that was selected last (it does not move)") );
+                alignRefGroup->addAction( alignRefKeyAction );
+
+                alignRefLabelAction = new QAction( tr("Align Relative to Label"), this );
+                alignRefLabelAction->setCheckable( true );
+                alignRefLabelAction->setData( int(model::Model::ALIGN_TO_LABEL) );
+                alignRefLabelAction->setStatusTip( tr("Align objects to the edges or center of the label (canvas)") );
+                alignRefGroup->addAction( alignRefLabelAction );
+
+                connect( alignRefGroup, &QActionGroup::triggered, this, [this]( QAction* a ) {
+                        onAlignReferenceChanged( a->data().toInt() );
+                } );
+
+                /* Merge preview */
+                mergePreviewAction = new QAction( tr("Preview Merge Data"), this );
+                mergePreviewAction->setIcon( QIcon::fromTheme( "glabels-merge" ) );
+                mergePreviewAction->setCheckable( true );
+                mergePreviewAction->setStatusTip( tr("Show actual merge records on the label instead of field names") );
+                connect( mergePreviewAction, SIGNAL(toggled(bool)), this, SLOT(mergePreviewToggled(bool)) );
+
+                mergeFirstAction = new QAction( tr("First Record"), this );
+                mergeFirstAction->setIcon( QIcon::fromTheme( "glabels-go-first" ) );
+                connect( mergeFirstAction, SIGNAL(triggered()), this, SLOT(mergePreviewFirst()) );
+
+                mergePreviousAction = new QAction( tr("Previous Record"), this );
+                mergePreviousAction->setIcon( QIcon::fromTheme( "glabels-go-previous" ) );
+                mergePreviousAction->setShortcut( QKeySequence( Qt::ALT | Qt::Key_PageUp ) );
+                connect( mergePreviousAction, SIGNAL(triggered()), this, SLOT(mergePreviewPrevious()) );
+
+                mergeNextAction = new QAction( tr("Next Record"), this );
+                mergeNextAction->setIcon( QIcon::fromTheme( "glabels-go-next" ) );
+                mergeNextAction->setShortcut( QKeySequence( Qt::ALT | Qt::Key_PageDown ) );
+                connect( mergeNextAction, SIGNAL(triggered()), this, SLOT(mergePreviewNext()) );
+
+                mergeLastAction = new QAction( tr("Last Record"), this );
+                mergeLastAction->setIcon( QIcon::fromTheme( "glabels-go-last" ) );
+                connect( mergeLastAction, SIGNAL(triggered()), this, SLOT(mergePreviewLast()) );
+
                 objectsXformRotateLeftAction = new QAction( tr("Rotate Left"), this );
                 objectsXformRotateLeftAction->setIcon( QIcon::fromTheme( "glabels-rotate-left" ) );
                 objectsXformRotateLeftAction->setStatusTip( tr("Rotate object(s) 90 degrees counter-clockwise") );
@@ -567,7 +710,7 @@ namespace glabels
                 helpContentsAction = new QAction( tr("&User Manual..."), this );
                 helpContentsAction->setIcon( QIcon::fromTheme( "help-contents" ) );
                 helpContentsAction->setShortcut( QKeySequence::HelpContents );
-                helpContentsAction->setStatusTip( tr("Open gLabels manual") );
+                helpContentsAction->setStatusTip( tr("Open gLabels Plus manual") );
                 connect( helpContentsAction, SIGNAL(triggered()), this, SLOT(helpContents()) );
 
                 helpReportBugAction = new QAction( tr("&Report Bug..."), this );
@@ -576,7 +719,7 @@ namespace glabels
 
                 helpAboutAction = new QAction( tr("&About..."), this );
                 helpAboutAction->setIcon( QIcon::fromTheme( "help-about" ) );
-                helpAboutAction->setStatusTip( tr("About gLabels") );
+                helpAboutAction->setStatusTip( tr("About gLabels Plus") );
                 connect( helpAboutAction, SIGNAL(triggered()), this, SLOT(helpAbout()) );
 
 
@@ -597,7 +740,7 @@ namespace glabels
                 connect( contextPasteAction, SIGNAL(triggered()), this, SLOT(editContextPaste()) );
 
                 contextDeleteAction = new QAction( tr("&Delete"), this );
-                contextDeleteAction->setIcon( QIcon::fromTheme( "edit-delete" ) );
+                contextDeleteAction->setIcon( QIcon::fromTheme( "edit-delete", QIcon::fromTheme( "glabels-edit-delete" ) ) );
                 contextDeleteAction->setStatusTip( tr("Delete the selected objects") );
                 connect( contextDeleteAction, SIGNAL(triggered()), this, SLOT(editDelete()) );
         }
@@ -642,15 +785,32 @@ namespace glabels
                 editMenu->addAction( editSelectAllAction );
                 editMenu->addAction( editUnSelectAllAction );
                 editMenu->addSeparator();
+                editMenu->addAction( editShortcutsAction );
                 editMenu->addAction( editPreferencesAction );
 
                 viewMenu = menuBar()->addMenu( tr("&View") );
                 viewToolBarsMenu = viewMenu->addMenu( tr("Toolbars") );
                 viewToolBarsMenu->addAction( viewFileToolBarAction );
                 viewToolBarsMenu->addAction( viewEditorToolBarAction );
+                viewToolBarsMenu->addAction( viewViewToolBarAction );
+                viewToolBarsMenu->addAction( viewArrangeToolBarAction );
+                viewToolBarsMenu->addAction( viewMergeToolBarAction );
+                auto* viewPanelsMenu = viewMenu->addMenu( tr("Panels") );
+                viewPanelsMenu->addAction( viewPropertiesDockAction );
+                viewPanelsMenu->addAction( viewObjectListDockAction );
                 viewMenu->addSeparator();
                 viewMenu->addAction( viewGridAction );
                 viewMenu->addAction( viewMarkupAction );
+                viewMenu->addAction( viewRulersAction );
+                viewMenu->addAction( viewPropertiesUnitsAction );
+                viewMenu->addSeparator();
+                auto* viewMergeMenu = viewMenu->addMenu( QIcon::fromTheme( "glabels-merge" ), tr("Merge Preview") );
+                viewMergeMenu->addAction( mergePreviewAction );
+                viewMergeMenu->addSeparator();
+                viewMergeMenu->addAction( mergeFirstAction );
+                viewMergeMenu->addAction( mergePreviousAction );
+                viewMergeMenu->addAction( mergeNextAction );
+                viewMergeMenu->addAction( mergeLastAction );
                 viewMenu->addSeparator();
                 viewMenu->addAction( viewZoomInAction );
                 viewMenu->addAction( viewZoomOutAction );
@@ -666,9 +826,12 @@ namespace glabels
                 objectsCreateMenu->addAction( objectsCreateEllipseAction );
                 objectsCreateMenu->addAction( objectsCreateImageAction );
                 objectsCreateMenu->addAction( objectsCreateBarcodeAction );
+                objectsMenu->addAction( objectsEditTextAction );
                 objectsMenu->addSeparator();
                 objectsOrderMenu = objectsMenu->addMenu( tr("&Order") );
                 objectsOrderMenu->addAction( objectsOrderRaiseAction );
+                objectsOrderMenu->addAction( objectsOrderRaiseOneAction );
+                objectsOrderMenu->addAction( objectsOrderLowerOneAction );
                 objectsOrderMenu->addAction( objectsOrderLowerAction );
                 objectsXformMenu = objectsMenu->addMenu( tr("&Rotate/Flip") );
                 objectsXformMenu->addAction( objectsXformRotateLeftAction );
@@ -683,6 +846,10 @@ namespace glabels
                 objectsAlignMenu->addAction( objectsAlignTopAction );
                 objectsAlignMenu->addAction( objectsAlignVCenterAction );
                 objectsAlignMenu->addAction( objectsAlignBottomAction );
+                objectsAlignMenu->addSeparator();
+                objectsAlignMenu->addAction( alignRefSelectionAction );
+                objectsAlignMenu->addAction( alignRefKeyAction );
+                objectsAlignMenu->addAction( alignRefLabelAction );
                 objectsCenterMenu = objectsMenu->addMenu( tr("Center") );
                 objectsCenterMenu->addAction( objectsCenterHorizAction );
                 objectsCenterMenu->addAction( objectsCenterVertAction );
@@ -694,8 +861,12 @@ namespace glabels
                 helpMenu->addAction( helpAboutAction );
 
                 contextMenu = new QMenu();
+                contextMenu->addAction( objectsEditTextAction );
+                contextMenu->addSeparator();
                 contextOrderMenu = contextMenu->addMenu( tr("&Order") );
                 contextOrderMenu->addAction( objectsOrderRaiseAction );
+                contextOrderMenu->addAction( objectsOrderRaiseOneAction );
+                contextOrderMenu->addAction( objectsOrderLowerOneAction );
                 contextOrderMenu->addAction( objectsOrderLowerAction );
                 contextXformMenu = contextMenu->addMenu( tr("&Rotate/Flip") );
                 contextXformMenu->addAction( objectsXformRotateLeftAction );
@@ -710,6 +881,10 @@ namespace glabels
                 contextAlignMenu->addAction( objectsAlignTopAction );
                 contextAlignMenu->addAction( objectsAlignVCenterAction );
                 contextAlignMenu->addAction( objectsAlignBottomAction );
+                contextAlignMenu->addSeparator();
+                contextAlignMenu->addAction( alignRefSelectionAction );
+                contextAlignMenu->addAction( alignRefKeyAction );
+                contextAlignMenu->addAction( alignRefLabelAction );
                 contextCenterMenu = contextMenu->addMenu( tr("Center") );
                 contextCenterMenu->addAction( objectsCenterHorizAction );
                 contextCenterMenu->addAction( objectsCenterVertAction );
@@ -730,17 +905,23 @@ namespace glabels
         ///
         void MainWindow::createToolBars()
         {
+                auto style = model::Settings::toolbarButtonStyle();
+
+                /* Quick access */
                 fileToolBar = addToolBar( tr("Quick Access Toolbar") );
-                connect( fileToolBar, SIGNAL(visibilityChanged(bool)), viewFileToolBarAction, SLOT(setChecked(bool)) );
+                fileToolBar->setObjectName( "fileToolBar" );
+                fileToolBar->setToolButtonStyle( style );
                 fileToolBar->addAction( fileNewAction );
                 fileToolBar->addAction( fileOpenAction );
                 fileToolBar->addAction( fileSaveAction );
+                fileToolBar->addSeparator();
+                fileToolBar->addAction( editUndoAction );
+                fileToolBar->addAction( editRedoAction );
 
-                zoomInfoLabel = new QLabel( " 999% " );
-                zoomInfoLabel->setAlignment( Qt::AlignHCenter|Qt::AlignVCenter );
-                zoomInfoLabel->setMinimumSize( zoomInfoLabel->sizeHint() );
-
+                /* Editor: tools and clipboard */
                 editorToolBar = new QToolBar( tr("&Editor") );
+                editorToolBar->setObjectName( "editorToolBar" );
+                editorToolBar->setToolButtonStyle( style );
                 editorToolBar->addAction( objectsArrowModeAction );
                 editorToolBar->addSeparator();
                 editorToolBar->addAction( objectsCreateTextAction );
@@ -753,13 +934,404 @@ namespace glabels
                 editorToolBar->addAction( editCutAction );
                 editorToolBar->addAction( editCopyAction );
                 editorToolBar->addAction( editPasteAction );
-                editorToolBar->addSeparator();
-                editorToolBar->addAction( viewZoomInAction );
-                editorToolBar->addAction( viewZoomOutAction );
-                editorToolBar->addAction( viewZoom1To1Action );
-                editorToolBar->addAction( viewZoomToFitAction );
-                editorToolBar->addWidget( zoomInfoLabel );
-                editorToolBar->addSeparator();
+                editorToolBar->addAction( editDeleteAction );
+                addToolBar( Qt::LeftToolBarArea, editorToolBar );
+
+                /* View: grid/markup/rulers, zoom and units */
+                viewToolBar = new QToolBar( tr("View && Zoom") );
+                viewToolBar->setObjectName( "viewToolBar" );
+                viewToolBar->setToolButtonStyle( style );
+                viewToolBar->addAction( viewGridAction );
+                viewToolBar->addAction( viewMarkupAction );
+                viewToolBar->addAction( viewRulersAction );
+                viewToolBar->addSeparator();
+                viewToolBar->addAction( viewZoomOutAction );
+
+                mZoomCombo = new QComboBox();
+                mZoomCombo->setEditable( true );
+                mZoomCombo->setInsertPolicy( QComboBox::NoInsert );
+                mZoomCombo->setToolTip( tr("Zoom level (type a value and press Enter)") );
+                mZoomCombo->setSizeAdjustPolicy( QComboBox::AdjustToContents );
+                for ( double z : LabelEditor::standardZoomLevels() )
+                {
+                        mZoomCombo->addItem( QString( "%1%" ).arg( 100*z, 0, 'f', 0 ), z );
+                }
+                mZoomCombo->addItem( tr("Fit"), -1.0 );
+                mZoomCombo->setMinimumContentsLength( 5 );
+                connect( mZoomCombo, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::onZoomComboActivated );
+                connect( mZoomCombo->lineEdit(), &QLineEdit::returnPressed, this, &MainWindow::onZoomComboActivated );
+                viewToolBar->addWidget( mZoomCombo );
+
+                viewToolBar->addAction( viewZoomInAction );
+                viewToolBar->addAction( viewZoom1To1Action );
+                viewToolBar->addAction( viewZoomToFitAction );
+                viewToolBar->addSeparator();
+
+                auto* unitsLabel = new QLabel( tr(" Units: ") );
+                viewToolBar->addWidget( unitsLabel );
+                mUnitsCombo = new QComboBox();
+                mUnitsCombo->setToolTip( tr("Measurement units used throughout gLabels Plus") );
+                mUnitsCombo->addItem( tr("Inches (in)"),      "in" );
+                mUnitsCombo->addItem( tr("Millimeters (mm)"), "mm" );
+                mUnitsCombo->addItem( tr("Centimeters (cm)"), "cm" );
+                mUnitsCombo->addItem( tr("Points (pt)"),      "pt" );
+                mUnitsCombo->addItem( tr("Picas (pc)"),       "pc" );
+                connect( mUnitsCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onUnitsComboChanged );
+                viewToolBar->addWidget( mUnitsCombo );
+                syncUnitsCombo();
+                addToolBar( Qt::TopToolBarArea, viewToolBar );
+
+                /* Arrange: alignment, order, rotation */
+                addToolBarBreak( Qt::TopToolBarArea );
+                arrangeToolBar = new QToolBar( tr("Arrange") );
+                arrangeToolBar->setObjectName( "arrangeToolBar" );
+                arrangeToolBar->setToolButtonStyle( style );
+
+                arrangeToolBar->addWidget( new QLabel( tr(" Align to: ") ) );
+                mAlignRefCombo = new QComboBox();
+                mAlignRefCombo->setToolTip( tr("Reference used by the alignment buttons") );
+                mAlignRefCombo->addItem( tr("Selection"),          int(model::Model::ALIGN_TO_SELECTION) );
+                mAlignRefCombo->addItem( tr("Last Selected"),      int(model::Model::ALIGN_TO_KEY_OBJECT) );
+                mAlignRefCombo->addItem( tr("Label"),              int(model::Model::ALIGN_TO_LABEL) );
+                mAlignRefCombo->setItemData( 0, tr("Align to the outer edges of all selected objects"), Qt::ToolTipRole );
+                mAlignRefCombo->setItemData( 1, tr("Align to the object you selected last (Ctrl+click to add objects)"), Qt::ToolTipRole );
+                mAlignRefCombo->setItemData( 2, tr("Align to the edges or center of the label"), Qt::ToolTipRole );
+                connect( mAlignRefCombo, QOverload<int>::of(&QComboBox::activated), this, [this]( int i ) {
+                        onAlignReferenceChanged( mAlignRefCombo->itemData( i ).toInt() );
+                } );
+                arrangeToolBar->addWidget( mAlignRefCombo );
+
+                arrangeToolBar->addAction( objectsAlignLeftAction );
+                arrangeToolBar->addAction( objectsAlignHCenterAction );
+                arrangeToolBar->addAction( objectsAlignRightAction );
+                arrangeToolBar->addAction( objectsAlignTopAction );
+                arrangeToolBar->addAction( objectsAlignVCenterAction );
+                arrangeToolBar->addAction( objectsAlignBottomAction );
+                arrangeToolBar->addSeparator();
+                arrangeToolBar->addAction( objectsCenterHorizAction );
+                arrangeToolBar->addAction( objectsCenterVertAction );
+                arrangeToolBar->addAction( objectsCenterAction );
+                arrangeToolBar->addSeparator();
+                arrangeToolBar->addAction( objectsOrderRaiseAction );
+                arrangeToolBar->addAction( objectsOrderRaiseOneAction );
+                arrangeToolBar->addAction( objectsOrderLowerOneAction );
+                arrangeToolBar->addAction( objectsOrderLowerAction );
+                arrangeToolBar->addSeparator();
+                arrangeToolBar->addAction( objectsXformRotateLeftAction );
+                arrangeToolBar->addAction( objectsXformRotateRightAction );
+                arrangeToolBar->addAction( objectsXformFlipHorizAction );
+                arrangeToolBar->addAction( objectsXformFlipVertAction );
+
+                mRotationSpin = new QDoubleSpinBox();
+                mRotationSpin->setRange( 0.0, 359.9 );
+                mRotationSpin->setDecimals( 1 );
+                mRotationSpin->setSingleStep( 15.0 );
+                mRotationSpin->setWrapping( true );
+                mRotationSpin->setSuffix( QString::fromUtf8( "\u00B0" ) );
+                mRotationSpin->setKeyboardTracking( false );
+                mRotationSpin->setToolTip( tr("Rotation angle of the selected object(s), about their center") );
+                connect( mRotationSpin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::onRotationSpinChanged );
+                arrangeToolBar->addWidget( mRotationSpin );
+                addToolBar( Qt::TopToolBarArea, arrangeToolBar );
+
+                /* Merge preview */
+                mergeToolBar = new QToolBar( tr("Merge Preview") );
+                mergeToolBar->setObjectName( "mergeToolBar" );
+                mergeToolBar->setToolButtonStyle( style );
+                mergeToolBar->addAction( mergePreviewAction );
+                mergeToolBar->addAction( mergeFirstAction );
+                mergeToolBar->addAction( mergePreviousAction );
+                mMergeRecordSpin = new QSpinBox();
+                mMergeRecordSpin->setToolTip( tr("Merge record shown on the label") );
+                mMergeRecordSpin->setPrefix( tr("Record ") );
+                mMergeRecordSpin->setKeyboardTracking( false );
+                connect( mMergeRecordSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::onMergeRecordSpinChanged );
+                mergeToolBar->addWidget( mMergeRecordSpin );
+                mMergeRecordCountLabel = new QLabel();
+                mergeToolBar->addWidget( mMergeRecordCountLabel );
+                mergeToolBar->addAction( mergeNextAction );
+                mergeToolBar->addAction( mergeLastAction );
+                addToolBar( Qt::TopToolBarArea, mergeToolBar );
+
+                for ( auto* tb : { fileToolBar, editorToolBar, viewToolBar, arrangeToolBar, mergeToolBar } )
+                {
+                        // Every toolbar can be dragged (by its handle) to any edge of the window
+                        tb->setMovable( true );
+                        tb->setFloatable( true );
+                        tb->setAllowedAreas( Qt::AllToolBarAreas );
+                        tb->toggleViewAction()->setVisible( false ); // we manage visibility ourselves
+                        tb->installEventFilter( this );
+                }
+        }
+
+
+        ///
+        /// Create dock panels
+        ///
+        void MainWindow::createDocks()
+        {
+                // Object properties
+                auto* propertiesScroll = new QScrollArea();
+                propertiesScroll->setWidgetResizable( true );
+                propertiesScroll->setFrameShape( QFrame::NoFrame );
+                propertiesScroll->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+                mObjectEditor->setMinimumWidth( 300 );
+                mObjectEditor->setMaximumWidth( QWIDGETSIZE_MAX );
+                propertiesScroll->setWidget( mObjectEditor );
+                // Never let the dock get narrower than the editor, so nothing is cut off on the right
+                propertiesScroll->setMinimumWidth( qMax( 300, mObjectEditor->minimumSizeHint().width() ) +
+                                                   style()->pixelMetric( QStyle::PM_ScrollBarExtent ) + 4 );
+
+                mPropertiesDock = new QDockWidget( tr("Object Properties"), this );
+                mPropertiesDock->setObjectName( "propertiesDock" );
+                mPropertiesDock->setWidget( propertiesScroll );
+                mPropertiesDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
+                mPropertiesDock->setFeatures( QDockWidget::DockWidgetClosable |
+                                              QDockWidget::DockWidgetMovable |
+                                              QDockWidget::DockWidgetFloatable );
+                addDockWidget( Qt::RightDockWidgetArea, mPropertiesDock );
+
+                // Object list
+                mObjectListView = new ObjectListView();
+                mObjectListView->addToolBarActions( { objectsOrderRaiseAction, objectsOrderRaiseOneAction,
+                                                      objectsOrderLowerOneAction, objectsOrderLowerAction,
+                                                      nullptr, editDeleteAction } );
+
+                mObjectListDock = new QDockWidget( tr("Objects"), this );
+                mObjectListDock->setObjectName( "objectListDock" );
+                mObjectListDock->setWidget( mObjectListView );
+                mObjectListDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
+                mObjectListDock->setFeatures( QDockWidget::DockWidgetClosable |
+                                              QDockWidget::DockWidgetMovable |
+                                              QDockWidget::DockWidgetFloatable );
+                addDockWidget( Qt::RightDockWidgetArea, mObjectListDock );
+                splitDockWidget( mPropertiesDock, mObjectListDock, Qt::Vertical );
+                resizeDocks( { mPropertiesDock, mObjectListDock }, { 3, 1 }, Qt::Vertical );
+                resizeDocks( { mPropertiesDock }, { 400 }, Qt::Horizontal );
+
+                for ( auto* dock : { mPropertiesDock, mObjectListDock } )
+                {
+                        dock->toggleViewAction()->setVisible( false );
+                        dock->installEventFilter( this );
+                }
+        }
+
+
+        ///
+        /// Assign ids to actions (for user-customizable shortcuts) and apply saved shortcuts
+        ///
+        void MainWindow::registerShortcuts()
+        {
+                const QList<QPair<QAction*,QString>> table = {
+                        { fileNewAction, "file.new" }, { fileOpenAction, "file.open" },
+                        { fileSaveAction, "file.save" }, { fileSaveAsAction, "file.saveAs" },
+                        { fileShowEditorPageAction, "file.showEditor" }, { fileShowPropertiesPageAction, "file.showProperties" },
+                        { fileShowMergePageAction, "file.showMerge" }, { fileShowVariablesPageAction, "file.showVariables" },
+                        { fileShowPrintPageAction, "file.showPrint" }, { fileTemplateDesignerAction, "file.templateDesigner" },
+                        { fileCloseAction, "file.close" }, { fileExitAction, "file.exit" },
+                        { editUndoAction, "edit.undo" }, { editRedoAction, "edit.redo" },
+                        { editCutAction, "edit.cut" }, { editCopyAction, "edit.copy" },
+                        { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" },
+                        { editSelectAllAction, "edit.selectAll" }, { editUnSelectAllAction, "edit.unselectAll" },
+                        { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
+                        { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" },
+                        { viewRulersAction, "view.rulers" }, { viewPropertiesUnitsAction, "view.propertiesUnits" },
+                        { viewPropertiesDockAction, "view.propertiesPanel" }, { viewObjectListDockAction, "view.objectsPanel" },
+                        { viewZoomInAction, "view.zoomIn" }, { viewZoomOutAction, "view.zoomOut" },
+                        { viewZoom1To1Action, "view.zoom1to1" }, { viewZoomToFitAction, "view.zoomToFit" },
+                        { mergePreviewAction, "merge.preview" }, { mergeFirstAction, "merge.first" },
+                        { mergePreviousAction, "merge.previous" }, { mergeNextAction, "merge.next" },
+                        { mergeLastAction, "merge.last" },
+                        { objectsArrowModeAction, "objects.select" }, { objectsCreateTextAction, "objects.createText" },
+                        { objectsCreateBoxAction, "objects.createBox" }, { objectsCreateLineAction, "objects.createLine" },
+                        { objectsCreateEllipseAction, "objects.createEllipse" }, { objectsCreateImageAction, "objects.createImage" },
+                        { objectsCreateBarcodeAction, "objects.createBarcode" }, { objectsEditTextAction, "objects.editText" },
+                        { objectsOrderRaiseAction, "objects.bringToFront" }, { objectsOrderLowerAction, "objects.sendToBack" },
+                        { objectsOrderRaiseOneAction, "objects.bringForward" }, { objectsOrderLowerOneAction, "objects.sendBackward" },
+                        { objectsXformRotateLeftAction, "objects.rotateLeft" }, { objectsXformRotateRightAction, "objects.rotateRight" },
+                        { objectsXformFlipHorizAction, "objects.flipHoriz" }, { objectsXformFlipVertAction, "objects.flipVert" },
+                        { objectsAlignLeftAction, "objects.alignLeft" }, { objectsAlignHCenterAction, "objects.alignHCenter" },
+                        { objectsAlignRightAction, "objects.alignRight" }, { objectsAlignTopAction, "objects.alignTop" },
+                        { objectsAlignVCenterAction, "objects.alignVCenter" }, { objectsAlignBottomAction, "objects.alignBottom" },
+                        { objectsCenterHorizAction, "objects.centerHoriz" }, { objectsCenterVertAction, "objects.centerVert" },
+                        { objectsCenterAction, "objects.center" },
+                        { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
+                        { helpAboutAction, "help.about" },
+                };
+
+                for ( auto& entry : table )
+                {
+                        ShortcutsDialog::registerAction( entry.first, entry.second );
+                        addAction( entry.first ); // keep shortcuts active even if toolbar/menu hidden
+                }
+        }
+
+
+        ///
+        /// Apply sidebar (table of contents) style from settings
+        ///
+        void MainWindow::applySidebarStyle()
+        {
+                static const char* appliedProp = "appliedSidebarStyle";
+                int iconSize = model::Settings::sidebarIconSize();
+                QString styleKey = QString( "%1/%2" ).arg( int(model::Settings::sidebarStyle()) ).arg( iconSize );
+                QString previousKey = mContents->property( appliedProp ).toString();
+                mContents->setProperty( appliedProp, styleKey );
+                mContents->setIconSize( QSize( iconSize, iconSize ) );
+
+                Qt::ToolButtonStyle style = Qt::ToolButtonTextUnderIcon;
+                switch ( model::Settings::sidebarStyle() )
+                {
+                case model::Settings::SIDEBAR_ICONS_ONLY: style = Qt::ToolButtonIconOnly; break;
+                case model::Settings::SIDEBAR_TEXT_ONLY:  style = Qt::ToolButtonTextOnly; break;
+                default:                                  style = Qt::ToolButtonTextUnderIcon; break;
+                }
+
+                // Page switcher at the bottom-left: a row of equal-width cells, icon over caption
+                mContents->setContentsMargins( 4, 2, 4, 2 );
+                if ( mContents->layout() )
+                {
+                        mContents->layout()->setSpacing( 2 );
+                        mContents->layout()->setContentsMargins( 0, 0, 0, 0 );
+                }
+
+                const QList<QToolButton*> buttons = { mWelcomeButton, mEditorButton, mPropertiesButton,
+                                                      mMergeButton, mVariablesButton, mPrintButton };
+                int cellWidth = 0;
+                for ( auto* button : buttons )
+                {
+                        button->setToolButtonStyle( style );
+                        button->setIconSize( QSize( iconSize, iconSize ) );
+                        button->setFont( font() );
+                        button->setAutoRaise( true );
+                        button->setToolTip( button->text() );
+                        button->setMinimumWidth( 0 );
+                        cellWidth = std::max( cellWidth, button->sizeHint().width() );
+                }
+                if ( style != Qt::ToolButtonIconOnly )
+                {
+                        cellWidth = std::max( cellWidth, iconSize + 40 );
+                }
+                for ( auto* button : buttons )
+                {
+                        button->setMinimumWidth( cellWidth );
+                }
+
+                auto tbStyle = model::Settings::toolbarButtonStyle();
+                for ( auto* tb : { fileToolBar, editorToolBar, viewToolBar, arrangeToolBar, mergeToolBar } )
+                {
+                        tb->setToolButtonStyle( tbStyle );
+                }
+
+                if ( !previousKey.isEmpty() && previousKey != styleKey )
+                {
+                        mContents->updateGeometry();
+                }
+        }
+
+
+        ///
+        /// Sidebar context menu
+        ///
+        void MainWindow::onSidebarContextMenu( const QPoint& pos )
+        {
+                QMenu menu;
+
+                auto* styleGroup = new QActionGroup( &menu );
+                auto addStyle = [&]( const QString& text, model::Settings::SidebarStyle st ) {
+                        auto* a = menu.addAction( text );
+                        a->setCheckable( true );
+                        a->setChecked( model::Settings::sidebarStyle() == st );
+                        styleGroup->addAction( a );
+                        connect( a, &QAction::triggered, this, [st]{ model::Settings::setSidebarStyle( st ); } );
+                };
+                addStyle( tr("Icons and Text"), model::Settings::SIDEBAR_ICONS_AND_TEXT );
+                addStyle( tr("Icons Only"),     model::Settings::SIDEBAR_ICONS_ONLY );
+                addStyle( tr("Text Only"),      model::Settings::SIDEBAR_TEXT_ONLY );
+
+                menu.addSeparator();
+
+                auto* sizeGroup = new QActionGroup( &menu );
+                auto addSize = [&]( const QString& text, int size ) {
+                        auto* a = menu.addAction( text );
+                        a->setCheckable( true );
+                        a->setChecked( model::Settings::sidebarIconSize() == size );
+                        sizeGroup->addAction( a );
+                        connect( a, &QAction::triggered, this, [size]{ model::Settings::setSidebarIconSize( size ); } );
+                };
+                addSize( tr("Small Icons"),  16 );
+                addSize( tr("Medium Icons"), 22 );
+                addSize( tr("Large Icons"),  32 );
+                addSize( tr("Extra Large Icons"), 48 );
+
+                menu.exec( mContents->mapToGlobal( pos ) );
+        }
+
+
+        ///
+        /// Toolbar/dock context menu
+        ///
+        QMenu* MainWindow::createPopupMenu()
+        {
+                auto* menu = new QMenu( this );
+                menu->addAction( viewFileToolBarAction );
+                menu->addAction( viewEditorToolBarAction );
+                menu->addAction( viewViewToolBarAction );
+                menu->addAction( viewArrangeToolBarAction );
+                menu->addAction( viewMergeToolBarAction );
+                menu->addSeparator();
+                menu->addAction( viewPropertiesDockAction );
+                menu->addAction( viewObjectListDockAction );
+                return menu;
+        }
+
+
+        ///
+        /// Event filter: track dock widgets closed by their title-bar button
+        ///
+        bool MainWindow::eventFilter( QObject* watched, QEvent* event )
+        {
+                if ( event->type() == QEvent::Close )
+                {
+                        if ( watched == mPropertiesDock )
+                        {
+                                viewPropertiesDockAction->setChecked( false );
+                        }
+                        else if ( watched == mObjectListDock )
+                        {
+                                viewObjectListDockAction->setChecked( false );
+                        }
+                }
+                return QMainWindow::eventFilter( watched, event );
+        }
+
+
+        ///
+        /// Show toolbars and panels according to user preference and current page
+        ///
+        void MainWindow::updateChromeVisibility()
+        {
+                bool isEditor = mModel && mEditorButton && mEditorButton->isChecked();
+
+                fileToolBar->setVisible( viewFileToolBarAction->isChecked() );
+                editorToolBar->setVisible( isEditor && viewEditorToolBarAction->isChecked() );
+                viewToolBar->setVisible( isEditor && viewViewToolBarAction->isChecked() );
+                arrangeToolBar->setVisible( isEditor && viewArrangeToolBarAction->isChecked() );
+                mergeToolBar->setVisible( isEditor && viewMergeToolBarAction->isChecked() );
+
+                if ( mPropertiesDock )
+                {
+                        mPropertiesDock->setVisible( isEditor && viewPropertiesDockAction->isChecked() );
+                        mObjectListDock->setVisible( isEditor && viewObjectListDockAction->isChecked() );
+                }
+
+                bool rulers = viewRulersAction->isChecked();
+                if ( mHRuler )
+                {
+                        mHRuler->setVisible( rulers );
+                        mVRuler->setVisible( rulers );
+                        mRulerCorner->setVisible( rulers );
+                }
         }
 
 
@@ -768,7 +1340,11 @@ namespace glabels
         ///
         void MainWindow::createStatusBar()
         {
-                statusBar();
+                cursorInfoLabel = new QLabel();
+                cursorInfoLabel->setMinimumWidth( 160 );
+                cursorInfoLabel->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
+                cursorInfoLabel->setToolTip( tr("Pointer position on the label") );
+                statusBar()->addPermanentWidget( cursorInfoLabel );
         }
 
 
@@ -802,25 +1378,59 @@ namespace glabels
                 QWidget* page = new QWidget;
 
                 mLabelEditorScrollArea = new QScrollArea();
-                mLabelEditorScrollArea->setMinimumSize( 640, 450 );
                 mLabelEditorScrollArea->setWidgetResizable( true );
+                mLabelEditorScrollArea->setMinimumSize( 320, 240 );
 
                 mLabelEditor = new LabelEditor( mLabelEditorScrollArea );
                 mObjectEditor = new ObjectEditor();
 
                 mLabelEditorScrollArea->setWidget( mLabelEditor );
 
-                auto* editorVLayout = new QVBoxLayout;
-                editorVLayout->setContentsMargins( 0, 0, 0, 0 );
-                editorVLayout->addWidget( editorToolBar );
-                editorVLayout->addWidget( mLabelEditorScrollArea );
+                // Rulers
+                mHRuler = new Ruler( Qt::Horizontal, mLabelEditor );
+                mVRuler = new Ruler( Qt::Vertical, mLabelEditor );
 
-                auto* editorHLayout = new QHBoxLayout;
-                editorHLayout->setContentsMargins( 0, 0, 0, 0 );
-                editorHLayout->addLayout( editorVLayout );
-                editorHLayout->addWidget( mObjectEditor );
+                auto* cornerButton = new QToolButton();
+                cornerButton->setAutoRaise( true );
+                cornerButton->setPopupMode( QToolButton::InstantPopup );
+                cornerButton->setFixedSize( mVRuler->sizeHint().width(), mHRuler->sizeHint().height() );
+                cornerButton->setToolTip( tr("Ruler units (click to change)") );
+                QFont cornerFont = cornerButton->font();
+                cornerFont.setPixelSize( 9 );
+                cornerButton->setFont( cornerFont );
+                cornerButton->setText( model::Settings::units().toIdString() );
+                auto* unitsMenu = new QMenu( cornerButton );
+                for ( auto id : { "in", "mm", "cm", "pt", "pc" } )
+                {
+                        auto* a = unitsMenu->addAction( id );
+                        connect( a, &QAction::triggered, this, [id]{ model::Settings::setUnits( model::Units( QString(id) ) ); } );
+                }
+                cornerButton->setMenu( unitsMenu );
+                connect( model::Settings::instance(), &model::Settings::changed, cornerButton, [cornerButton]{
+                        cornerButton->setText( model::Settings::units().toIdString() );
+                } );
+                mRulerCorner = cornerButton;
 
-                page->setLayout( editorHLayout );
+                auto updateRulers = [this]{ mHRuler->update(); mVRuler->update(); };
+                connect( mLabelEditor, &LabelEditor::viewChanged, this, updateRulers );
+                connect( mLabelEditorScrollArea->horizontalScrollBar(), &QScrollBar::valueChanged, this, updateRulers );
+                connect( mLabelEditorScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, updateRulers );
+                connect( mLabelEditor, &LabelEditor::pointerMoved, mHRuler, &Ruler::setPointer );
+                connect( mLabelEditor, &LabelEditor::pointerMoved, mVRuler, &Ruler::setPointer );
+                connect( mLabelEditor, &LabelEditor::pointerExited, mHRuler, &Ruler::clearPointer );
+                connect( mLabelEditor, &LabelEditor::pointerExited, mVRuler, &Ruler::clearPointer );
+
+                auto* grid = new QGridLayout;
+                grid->setContentsMargins( 0, 0, 0, 0 );
+                grid->setSpacing( 0 );
+                grid->addWidget( mRulerCorner, 0, 0 );
+                grid->addWidget( mHRuler, 0, 1 );
+                grid->addWidget( mVRuler, 1, 0 );
+                grid->addWidget( mLabelEditorScrollArea, 1, 1 );
+                grid->setRowStretch( 1, 1 );
+                grid->setColumnStretch( 1, 1 );
+
+                page->setLayout( grid );
 
                 return page;
         }
@@ -959,12 +1569,25 @@ namespace glabels
                 editSelectAllAction->setEnabled( isEditorPage );
                 editUnSelectAllAction->setEnabled( isEditorPage && hasSelection );
                 editPreferencesAction->setEnabled( true );
+                editShortcutsAction->setEnabled( true );
 
                 // View actions
                 viewFileToolBarAction->setEnabled( true );
                 viewEditorToolBarAction->setEnabled( true );
                 viewGridAction->setEnabled( isEditorPage );
                 viewMarkupAction->setEnabled( isEditorPage );
+                viewRulersAction->setEnabled( isEditorPage );
+                mZoomCombo->setEnabled( isEditorPage );
+
+                int nRecords = (hasModel && mLabelEditor) ? mLabelEditor->nPreviewRecords() : 0;
+                int iRecord  = (hasModel && mLabelEditor) ? mLabelEditor->previewRecord() : -1;
+                bool previewing = iRecord >= 0;
+                mergePreviewAction->setEnabled( isEditorPage && nRecords > 0 );
+                mergeFirstAction->setEnabled( isEditorPage && previewing && iRecord > 0 );
+                mergePreviousAction->setEnabled( isEditorPage && previewing && iRecord > 0 );
+                mergeNextAction->setEnabled( isEditorPage && previewing && iRecord < nRecords-1 );
+                mergeLastAction->setEnabled( isEditorPage && previewing && iRecord < nRecords-1 );
+                mMergeRecordSpin->setEnabled( isEditorPage && previewing );
                 viewZoomInAction->setEnabled( isEditorPage );
                 viewZoomOutAction->setEnabled( isEditorPage );
                 viewZoom1To1Action->setEnabled( isEditorPage );
@@ -982,18 +1605,33 @@ namespace glabels
                 objectsOrderMenu->setEnabled( isEditorPage && hasSelection );
                 objectsOrderRaiseAction->setEnabled( isEditorPage && hasSelection );
                 objectsOrderLowerAction->setEnabled( isEditorPage && hasSelection );
+                objectsOrderRaiseOneAction->setEnabled( isEditorPage && hasSelection );
+                objectsOrderLowerOneAction->setEnabled( isEditorPage && hasSelection );
+                {
+                        bool canEditText = false;
+                        if ( hasModel && mModel->isSelectionAtomic() )
+                        {
+                                auto* object = mModel->getFirstSelectedObject();
+                                canEditText = dynamic_cast<model::ModelTextObject*>( object ) ||
+                                              dynamic_cast<model::ModelBarcodeObject*>( object );
+                        }
+                        objectsEditTextAction->setEnabled( isEditorPage && canEditText );
+                }
+                mRotationSpin->setEnabled( isEditorPage && hasSelection );
                 objectsXformMenu->setEnabled( isEditorPage && hasSelection );
                 objectsXformRotateLeftAction->setEnabled( isEditorPage && hasSelection );
                 objectsXformRotateRightAction->setEnabled( isEditorPage && hasSelection );
                 objectsXformFlipHorizAction->setEnabled( isEditorPage && hasSelection );
                 objectsXformFlipVertAction->setEnabled( isEditorPage && hasSelection );
-                objectsAlignMenu->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignLeftAction->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignRightAction->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignHCenterAction->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignTopAction->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignBottomAction->setEnabled( isEditorPage && hasMultiSelection );
-                objectsAlignVCenterAction->setEnabled( isEditorPage && hasMultiSelection );
+                bool canAlign = isEditorPage && hasModel && mModel->canAlignSelection();
+                Q_UNUSED( hasMultiSelection );
+                objectsAlignMenu->setEnabled( isEditorPage && hasSelection );
+                objectsAlignLeftAction->setEnabled( canAlign );
+                objectsAlignRightAction->setEnabled( canAlign );
+                objectsAlignHCenterAction->setEnabled( canAlign );
+                objectsAlignTopAction->setEnabled( canAlign );
+                objectsAlignBottomAction->setEnabled( canAlign );
+                objectsAlignVCenterAction->setEnabled( canAlign );
                 objectsCenterMenu->setEnabled( isEditorPage && hasSelection );
                 objectsCenterHorizAction->setEnabled( isEditorPage && hasSelection );
                 objectsCenterVertAction->setEnabled( isEditorPage && hasSelection );
@@ -1019,17 +1657,17 @@ namespace glabels
         {
                 if ( !mModel )
                 {
-                        setWindowTitle( "gLabels" );
+                        setWindowTitle( "gLabels Plus" );
                 }
                 else
                 {
                         if ( mModel->isModified() )
                         {
-                                setWindowTitle( "gLabels - " + mModel->shortName() + " " + tr("(modified)") );
+                                setWindowTitle( "gLabels Plus - " + mModel->shortName() + " " + tr("(modified)") );
                         }
                         else
                         {
-                                setWindowTitle( "gLabels - " + mModel->shortName()  );
+                                setWindowTitle( "gLabels Plus - " + mModel->shortName()  );
                         }
                 }
         }
@@ -1044,20 +1682,51 @@ namespace glabels
 
                 settings.beginGroup( "MainWindow" );
                 bool showFileToolBar    = settings.value( "showFileToolBar",    true ).toBool();
-                bool showEditorToolBar  = settings.value( "showEditToolBar",    true ).toBool();
-                bool showGrid           = settings.value( "showGrid",           true ).toBool();
-                bool showMarkup         = settings.value( "showMarkup",         true ).toBool();
+                bool showEditorToolBar  = settings.value( "showEditorToolBar",
+                                                          settings.value( "showEditToolBar", true ) ).toBool();
+                bool showViewToolBar    = settings.value( "showViewToolBar",    true ).toBool();
+                bool showArrangeToolBar = settings.value( "showArrangeToolBar", true ).toBool();
+                bool showMergeToolBar   = settings.value( "showMergeToolBar",   true ).toBool();
+                bool showPropertiesDock = settings.value( "showPropertiesDock", true ).toBool();
+                bool showObjectListDock = settings.value( "showObjectListDock", true ).toBool();
+                QByteArray geometry     = settings.value( "geometry" ).toByteArray();
+                QByteArray state        = settings.value( "state" ).toByteArray();
                 settings.endGroup();
 
-                viewFileToolBarAction   ->setChecked( showFileToolBar );
-                viewEditorToolBarAction ->setChecked( showEditorToolBar );
-                viewGridAction          ->setChecked( showGrid );
-                viewMarkupAction        ->setChecked( showMarkup );
+                if ( !geometry.isEmpty() )
+                {
+                        restoreGeometry( geometry );
+                }
+                if ( !state.isEmpty() )
+                {
+                        restoreState( state, STATE_VERSION );
+                }
 
-                fileToolBar   ->setVisible(       showFileToolBar );
-                editorToolBar ->setVisible(       showEditorToolBar );
-                mLabelEditor  ->setGridVisible(   showGrid );
-                mLabelEditor  ->setMarkupVisible( showMarkup );
+                mSyncing = true;
+                viewFileToolBarAction    ->setChecked( showFileToolBar );
+                viewEditorToolBarAction  ->setChecked( showEditorToolBar );
+                viewViewToolBarAction    ->setChecked( showViewToolBar );
+                viewArrangeToolBarAction ->setChecked( showArrangeToolBar );
+                viewMergeToolBarAction   ->setChecked( showMergeToolBar );
+                viewPropertiesDockAction ->setChecked( showPropertiesDock );
+                viewObjectListDockAction ->setChecked( showObjectListDock );
+                viewGridAction           ->setChecked( model::Settings::showGrid() );
+                viewMarkupAction         ->setChecked( model::Settings::showMarkup() );
+                viewRulersAction         ->setChecked( model::Settings::showRulers() );
+                viewPropertiesUnitsAction->setChecked( model::Settings::propertiesShowUnits() );
+                mSyncing = false;
+
+                mLabelEditor  ->setGridVisible(   model::Settings::showGrid() );
+                mLabelEditor  ->setMarkupVisible( model::Settings::showMarkup() );
+
+                int ref = model::Settings::alignReference();
+                for ( auto* a : alignRefGroup->actions() )
+                {
+                        a->setChecked( a->data().toInt() == ref );
+                }
+                mAlignRefCombo->setCurrentIndex( mAlignRefCombo->findData( ref ) );
+
+                updateChromeVisibility();
         }
 
 
@@ -1071,8 +1740,13 @@ namespace glabels
                 settings.beginGroup( "MainWindow" );
                 settings.setValue( "showFileToolBar",    viewFileToolBarAction->isChecked() );
                 settings.setValue( "showEditorToolBar",  viewEditorToolBarAction->isChecked() );
-                settings.setValue( "showGrid",           viewGridAction->isChecked() );
-                settings.setValue( "showMarkup",         viewMarkupAction->isChecked() );
+                settings.setValue( "showViewToolBar",    viewViewToolBarAction->isChecked() );
+                settings.setValue( "showArrangeToolBar", viewArrangeToolBarAction->isChecked() );
+                settings.setValue( "showMergeToolBar",   viewMergeToolBarAction->isChecked() );
+                settings.setValue( "showPropertiesDock", viewPropertiesDockAction->isChecked() );
+                settings.setValue( "showObjectListDock", viewObjectListDockAction->isChecked() );
+                settings.setValue( "geometry", saveGeometry() );
+                settings.setValue( "state",    saveState( STATE_VERSION ) );
                 settings.endGroup();
         }
 
@@ -1150,7 +1824,13 @@ namespace glabels
                                 mPages->setCurrentIndex( PRINT_PAGE_INDEX );
                         }
 
+                        if ( !mEditorButton->isChecked() && mLabelEditor->isTextEditActive() )
+                        {
+                                mLabelEditor->endTextEdit( true );
+                        }
+
                         manageActions();
+                        updateChromeVisibility();
                 }
         }
 
@@ -1391,7 +2071,7 @@ namespace glabels
         ///
         void MainWindow::viewFileToolBar( bool state )
         {
-                fileToolBar->setVisible( state );
+                updateChromeVisibility();
         }
 
 
@@ -1400,7 +2080,207 @@ namespace glabels
         ///
         void MainWindow::viewEditorToolBar( bool state )
         {
-                editorToolBar->setVisible( state );
+                updateChromeVisibility();
+        }
+
+
+        ///
+        /// View->Toolbars (other) Toggle Action
+        ///
+        void MainWindow::viewToolBarToggled( bool state )
+        {
+                updateChromeVisibility();
+        }
+
+
+        ///
+        /// View->Panels Toggle Action
+        ///
+        void MainWindow::viewDockToggled( bool state )
+        {
+                updateChromeVisibility();
+        }
+
+
+        ///
+        /// View->Rulers Toggle Action
+        ///
+        void MainWindow::viewRulers( bool state )
+        {
+                if ( !mSyncing )
+                {
+                        model::Settings::setShowRulers( state );
+                }
+                updateChromeVisibility();
+        }
+
+
+        ///
+        /// View->Units in Properties Toggle Action
+        ///
+        void MainWindow::viewPropertiesUnits( bool state )
+        {
+                if ( !mSyncing )
+                {
+                        model::Settings::setPropertiesShowUnits( state );
+                }
+        }
+
+
+        ///
+        /// Zoom combo: user picked or typed a zoom level
+        ///
+        void MainWindow::onZoomComboActivated()
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+
+                int i = mZoomCombo->currentIndex();
+                QString text = mZoomCombo->currentText().trimmed();
+
+                if ( i >= 0 && mZoomCombo->itemText( i ) == text )
+                {
+                        double z = mZoomCombo->itemData( i ).toDouble();
+                        if ( z < 0 )
+                        {
+                                mLabelEditor->zoomToFit();
+                        }
+                        else
+                        {
+                                mLabelEditor->setZoom( z );
+                        }
+                }
+                else
+                {
+                        text.remove( '%' );
+                        bool ok = false;
+                        double percent = QLocale().toDouble( text, &ok );
+                        if ( !ok )
+                        {
+                                percent = text.toDouble( &ok );
+                        }
+                        if ( ok && percent > 0 )
+                        {
+                                mLabelEditor->setZoom( percent / 100.0 );
+                        }
+                        else
+                        {
+                                onZoomChanged(); // restore display
+                        }
+                }
+
+                mLabelEditor->setFocus();
+        }
+
+
+        ///
+        /// Units combo changed
+        ///
+        void MainWindow::onUnitsComboChanged( int index )
+        {
+                if ( mSyncing || index < 0 )
+                {
+                        return;
+                }
+                model::Settings::setUnits( model::Units( mUnitsCombo->itemData( index ).toString() ) );
+        }
+
+
+        ///
+        /// Sync units combo with settings
+        ///
+        void MainWindow::syncUnitsCombo()
+        {
+                mSyncing = true;
+                int i = mUnitsCombo->findData( model::Settings::units().toIdString() );
+                if ( i >= 0 )
+                {
+                        mUnitsCombo->setCurrentIndex( i );
+                }
+                mSyncing = false;
+        }
+
+
+        ///
+        /// Alignment reference changed
+        ///
+        void MainWindow::onAlignReferenceChanged( int ref )
+        {
+                model::Settings::setAlignReference( ref );
+        }
+
+
+        ///
+        /// Rotation spin changed
+        ///
+        void MainWindow::onRotationSpinChanged( double value )
+        {
+                if ( mSyncing || !mModel || mModel->isSelectionEmpty() )
+                {
+                        return;
+                }
+                mUndoRedoModel->checkpoint( tr("Rotate") );
+                mModel->setSelectionRotation( value );
+        }
+
+
+        ///
+        /// Sync rotation spin with current selection
+        ///
+        void MainWindow::syncRotationSpin()
+        {
+                if ( !mRotationSpin )
+                {
+                        return;
+                }
+                mSyncing = true;
+                double theta = 0;
+                if ( mModel )
+                {
+                        if ( auto* object = mModel->getFirstSelectedObject() )
+                        {
+                                theta = object->rotation();
+                        }
+                }
+                if ( std::fabs( mRotationSpin->value() - theta ) > 0.05 )
+                {
+                        mRotationSpin->setValue( theta );
+                }
+                mSyncing = false;
+        }
+
+
+        ///
+        /// Edit->Keyboard Shortcuts Action
+        ///
+        void MainWindow::editShortcuts()
+        {
+                QList<QAction*> actions;
+                for ( auto* action : this->actions() )
+                {
+                        if ( !action->objectName().isEmpty() )
+                        {
+                                actions << action;
+                        }
+                }
+
+                ShortcutsDialog dialog( actions, this );
+                if ( dialog.exec() == QDialog::Accepted )
+                {
+                        // Apply to all other open windows
+                        for ( auto* widget : QApplication::topLevelWidgets() )
+                        {
+                                if ( auto* window = qobject_cast<MainWindow*>( widget ) )
+                                {
+                                        if ( window != this )
+                                        {
+                                                ShortcutsDialog::applySaved( window->actions() );
+                                        }
+                                }
+                        }
+                }
         }
 
 
@@ -1410,6 +2290,10 @@ namespace glabels
         void MainWindow::viewGrid( bool state )
         {
                 mLabelEditor->setGridVisible( state );
+                if ( !mSyncing )
+                {
+                        model::Settings::setShowGrid( state );
+                }
         }
 
 
@@ -1419,6 +2303,10 @@ namespace glabels
         void MainWindow::viewMarkup( bool state )
         {
                 mLabelEditor->setMarkupVisible( state );
+                if ( !mSyncing )
+                {
+                        model::Settings::setShowMarkup( state );
+                }
         }
 
 
@@ -1544,6 +2432,105 @@ namespace glabels
         {
                 mUndoRedoModel->checkpoint( tr("Send To Back") );
                 mModel->lowerSelectionToBottom();
+        }
+
+
+        ///
+        /// Objects->Order->Bring Forward Action
+        ///
+        void MainWindow::objectsOrderRaiseOne()
+        {
+                mUndoRedoModel->checkpoint( tr("Bring Forward") );
+                mModel->raiseSelection();
+        }
+
+
+        ///
+        /// Objects->Order->Send Backward Action
+        ///
+        void MainWindow::objectsOrderLowerOne()
+        {
+                mUndoRedoModel->checkpoint( tr("Send Backward") );
+                mModel->lowerSelection();
+        }
+
+
+        ///
+        /// Objects->Edit Text In Place Action
+        ///
+        void MainWindow::objectsEditText()
+        {
+                if ( mModel && mModel->isSelectionAtomic() )
+                {
+                        mLabelEditor->beginTextEdit( mModel->getFirstSelectedObject() );
+                }
+        }
+
+
+        ///
+        /// Merge preview toggled
+        ///
+        void MainWindow::mergePreviewToggled( bool state )
+        {
+                if ( mSyncing )
+                {
+                        return;
+                }
+                int current = mLabelEditor->previewRecord();
+                mLabelEditor->setPreviewRecord( state ? qMax( 0, current ) : -1 );
+        }
+
+
+        void MainWindow::mergePreviewFirst()
+        {
+                mLabelEditor->setPreviewRecord( 0 );
+        }
+
+
+        void MainWindow::mergePreviewPrevious()
+        {
+                mLabelEditor->setPreviewRecord( qMax( 0, mLabelEditor->previewRecord() - 1 ) );
+        }
+
+
+        void MainWindow::mergePreviewNext()
+        {
+                mLabelEditor->setPreviewRecord( mLabelEditor->previewRecord() + 1 );
+        }
+
+
+        void MainWindow::mergePreviewLast()
+        {
+                mLabelEditor->setPreviewRecord( mLabelEditor->nPreviewRecords() - 1 );
+        }
+
+
+        void MainWindow::onMergeRecordSpinChanged( int value )
+        {
+                if ( mSyncing )
+                {
+                        return;
+                }
+                mLabelEditor->setPreviewRecord( value - 1 );
+        }
+
+
+        ///
+        /// Preview record changed (or merge source changed)
+        ///
+        void MainWindow::onPreviewRecordChanged()
+        {
+                int n = mLabelEditor->nPreviewRecords();
+                int i = mLabelEditor->previewRecord();
+
+                mSyncing = true;
+                mergePreviewAction->setChecked( i >= 0 );
+                mMergeRecordSpin->setRange( n > 0 ? 1 : 0, qMax( n, 0 ) );
+                mMergeRecordSpin->setValue( i + 1 );
+                mMergeRecordCountLabel->setText( n > 0 ? tr(" of %1 ").arg( n ) : tr(" (no merge data) ") );
+                mSyncing = false;
+
+                manageActions();
         }
 
 
@@ -1730,7 +2717,11 @@ namespace glabels
         ///
         void MainWindow::onZoomChanged()
         {
-                zoomInfoLabel->setText( QString( " %1% " ).arg(100*mLabelEditor->zoom(), 0, 'f', 0) );
+                QString zoomText = QString( "%1%" ).arg( 100*mLabelEditor->zoom(), 0, 'f', 0 );
+                if ( mZoomCombo && !mZoomCombo->lineEdit()->hasFocus() )
+                {
+                        mZoomCombo->setEditText( zoomText );
+                }
 
                 viewZoomInAction->setEnabled( !mLabelEditor->isZoomMax() );
                 viewZoomOutAction->setEnabled( !mLabelEditor->isZoomMin() );
@@ -1742,10 +2733,12 @@ namespace glabels
         ///
         void MainWindow::onPointerMoved( model::Point p )
         {
-                /* TODO: set precision accordingly. */
                 auto units = model::Settings::units();
-                cursorInfoLabel->setText( QString( "%1, %2" ).arg( p.x().toString(units) )
-                                                             .arg( p.y().toString(units) ) );
+                int digits = units.resolutionDigits();
+                cursorInfoLabel->setText( QString( "X: %1  Y: %2 %3" )
+                                          .arg( p.x().inUnits(units), 0, 'f', digits )
+                                          .arg( p.y().inUnits(units), 0, 'f', digits )
+                                          .arg( units.toIdString() ) );
         }
 
 
@@ -1783,6 +2776,7 @@ namespace glabels
         void MainWindow::onSelectionChanged()
         {
                 manageActions();
+                syncRotationSpin();
         }
 
 
@@ -1791,7 +2785,7 @@ namespace glabels
         ///
         void MainWindow::onLabelChanged()
         {
-                // TODO
+                syncRotationSpin();
         }
 
 
@@ -1809,6 +2803,31 @@ namespace glabels
         ///
         void MainWindow::onSettingsChanged()
         {
+                mSyncing = true;
+                viewGridAction->setChecked( model::Settings::showGrid() );
+                viewMarkupAction->setChecked( model::Settings::showMarkup() );
+                viewRulersAction->setChecked( model::Settings::showRulers() );
+                viewPropertiesUnitsAction->setChecked( model::Settings::propertiesShowUnits() );
+
+                int ref = model::Settings::alignReference();
+                for ( auto* a : alignRefGroup->actions() )
+                {
+                        a->setChecked( a->data().toInt() == ref );
+                }
+                mAlignRefCombo->setCurrentIndex( mAlignRefCombo->findData( ref ) );
+                mSyncing = false;
+
+                mLabelEditor->setGridVisible( model::Settings::showGrid() );
+                mLabelEditor->setMarkupVisible( model::Settings::showMarkup() );
+
+                if ( mModel )
+                {
+                        mModel->setAlignReference( model::Model::AlignReference( ref ) );
+                }
+
+                syncUnitsCombo();
+                applySidebarStyle();
+                updateChromeVisibility();
                 manageActions();
         }
 

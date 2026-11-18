@@ -92,6 +92,7 @@ namespace glabels::model
         void Model::restore( const Model *savedModel )
         {
                 // Clear current object list
+                mKeyObject = nullptr;
                 qDeleteAll( mObjectList );
                 mObjectList.clear();
 
@@ -449,7 +450,7 @@ namespace glabels::model
                 {
                         it--;
                         ModelObject* object = *it;
-                        if ( object->isLocatedAt( scale, x, y ) )
+                        if ( !object->isLocked() && object->isLocatedAt( scale, x, y ) )
                         {
                                 return object;
                         }
@@ -538,7 +539,13 @@ namespace glabels::model
         ///
         void Model::selectObject( ModelObject* object )
         {
+                if ( object->isLocked() )
+                {
+                        return;
+                }
+
                 object->select();
+                mKeyObject = object;
 
                 emit selectionChanged();
         }
@@ -550,6 +557,10 @@ namespace glabels::model
         void Model::unselectObject( ModelObject* object )
         {
                 object->unselect();
+                if ( mKeyObject == object )
+                {
+                        mKeyObject = nullptr;
+                }
 
                 emit selectionChanged();
         }
@@ -562,7 +573,10 @@ namespace glabels::model
         {
                 for ( ModelObject* object : mObjectList )
                 {
-                        object->select();
+                        if ( !object->isLocked() )
+                        {
+                                object->select();
+                        }
                 }
 
                 emit selectionChanged();
@@ -578,6 +592,7 @@ namespace glabels::model
                 {
                         object->unselect();
                 }
+                mKeyObject = nullptr;
 
                 emit selectionChanged();
         }
@@ -597,7 +612,8 @@ namespace glabels::model
                 {
                         Region objectExtent = object->getExtent();
 
-                        if ( (objectExtent.x1() >= rX1) &&
+                        if ( !object->isLocked() &&
+                             (objectExtent.x1() >= rX1) &&
                              (objectExtent.x2() <= rX2) &&
                              (objectExtent.y1() >= rY1) &&
                              (objectExtent.y2() <= rY2) )
@@ -822,6 +838,103 @@ namespace glabels::model
 
 
         ///
+        /// Raise Selected Objects One Step
+        ///
+        void Model::raiseSelection()
+        {
+                // Walk from top to bottom, swapping each selected object with the
+                // unselected object directly above it.
+                bool changedFlag = false;
+                for ( int i = mObjectList.size() - 2; i >= 0; i-- )
+                {
+                        if ( mObjectList[i]->isSelected() && !mObjectList[i+1]->isSelected() )
+                        {
+                                mObjectList.swapItemsAt( i, i+1 );
+                                changedFlag = true;
+                        }
+                }
+
+                if ( changedFlag )
+                {
+                        setModified();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Lower Selected Objects One Step
+        ///
+        void Model::lowerSelection()
+        {
+                bool changedFlag = false;
+                for ( int i = 1; i < mObjectList.size(); i++ )
+                {
+                        if ( mObjectList[i]->isSelected() && !mObjectList[i-1]->isSelected() )
+                        {
+                                mObjectList.swapItemsAt( i, i-1 );
+                                changedFlag = true;
+                        }
+                }
+
+                if ( changedFlag )
+                {
+                        setModified();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Move object to a new z-order index (0 = bottom)
+        ///
+        void Model::moveObjectToIndex( ModelObject* object, int index )
+        {
+                int from = mObjectList.indexOf( object );
+                if ( from < 0 )
+                {
+                        return;
+                }
+                index = qBound( 0, index, int(mObjectList.size()) - 1 );
+                if ( from != index )
+                {
+                        mObjectList.move( from, index );
+                        setModified();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Lock/unlock object
+        ///
+        void Model::setObjectLocked( ModelObject* object, bool locked )
+        {
+                object->setLocked( locked );
+                emit selectionChanged();
+        }
+
+
+        ///
+        /// Set absolute rotation of selected objects
+        ///
+        void Model::setSelectionRotation( double thetaDegs )
+        {
+                for ( ModelObject* object : mObjectList )
+                {
+                        if ( object->isSelected() )
+                        {
+                                object->setRotation( thetaDegs );
+                        }
+                }
+
+                setModified();
+
+                emit changed();
+        }
+
+
+        ///
         /// Rotate Selected Objects
         ///
         void Model::rotateSelection( double thetaDegs )
@@ -897,241 +1010,193 @@ namespace glabels::model
 
 
         ///
-        /// Align Selected Objects To Their Left Edges
+        /// Set Alignment Reference
         ///
-        void Model::alignSelectionLeft()
+        void Model::setAlignReference( AlignReference ref )
         {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
-                {
-                        return;
-                }
-
-                QList<ModelObject*> selectedList = getSelection();
-
-                // Find left-most edge.
-                Distance x1_min = 7200; // Start with a very large value: 7200pts = 100in
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        if ( r.x1() < x1_min ) x1_min = r.x1();
-                }
-
-                // Now adjust the object positions to line up the left edges at left-most edge.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dx = x1_min - r.x1();
-                        object->setPositionRelative( dx, 0 );
-                }
-
-                setModified();
-
-                emit changed();
+                mAlignReference = ref;
         }
 
 
         ///
-        /// Align Selected Objects To Their Right Edges
+        /// Get Alignment Reference
         ///
-        void Model::alignSelectionRight()
+        Model::AlignReference Model::alignReference() const
         {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
-                {
-                        return;
-                }
-
-                QList<ModelObject*> selectedList = getSelection();
-
-                // Find right-most edge.
-                Distance x1_max = -7200; // Start with a very large negative value: 7200pts = 100in
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        if ( r.x1() > x1_max ) x1_max = r.x1();
-                }
-
-                // Now adjust the object positions to line up the right edges at right-most edge.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dx = x1_max - r.x1();
-                        object->setPositionRelative( dx, 0 );
-                }
-
-                setModified();
-
-                emit changed();
+                return mAlignReference;
         }
 
 
         ///
-        /// Align Selected Objects To Their Horizontal Centers
+        /// Key Object (most recently selected object)
         ///
-        void Model::alignSelectionHCenter()
+        ModelObject* Model::keyObject() const
         {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
+                if ( mKeyObject && mKeyObject->isSelected() )
+                {
+                        return mKeyObject.data();
+                }
+                return nullptr;
+        }
+
+
+        ///
+        /// Can selection be aligned using current alignment reference?
+        ///
+        bool Model::canAlignSelection()
+        {
+                if ( isSelectionEmpty() )
+                {
+                        return false;
+                }
+                if ( mAlignReference == ALIGN_TO_LABEL )
+                {
+                        return true;
+                }
+                return !isSelectionAtomic();
+        }
+
+
+        ///
+        /// Generic alignment of selection
+        ///
+        void Model::alignSelection( AlignEdge edge )
+        {
+                if ( !canAlignSelection() )
                 {
                         return;
                 }
 
                 QList<ModelObject*> selectedList = getSelection();
 
-                // Find average center of objects.
-                Distance xsum = 0;
-                int n = 0;
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        xsum += (r.x1() + r.x2()) / 2.0;
-                        n++;
-                }
-                Distance xavg = xsum / n;
+                bool horizontal = (edge == ALIGN_LEFT) || (edge == ALIGN_RIGHT) || (edge == ALIGN_HCENTER);
 
-                // Find object closest to average center of objects.
-                Distance xcenter = 7200; // Start with very large value.
-                Distance dxmin = fabs( xavg - xcenter );
-                for ( ModelObject* object : selectedList )
+                auto lo  = [&]( const Region& r ) { return horizontal ? r.x1() : r.y1(); };
+                auto hi  = [&]( const Region& r ) { return horizontal ? r.x2() : r.y2(); };
+                auto mid = [&]( const Region& r ) { return (lo(r) + hi(r)) / 2.0; };
+
+                auto value = [&]( const Region& r ) -> Distance
                 {
-                        Region r = object->getExtent();
-                        Distance dx = fabs( xavg - (r.x1() + r.x2())/2.0 );
-                        if ( dx < dxmin )
+                        switch ( edge )
                         {
-                                dxmin = dx;
-                                xcenter = (r.x1() + r.x2()) / 2.0;
+                        case ALIGN_LEFT:
+                        case ALIGN_TOP:
+                                return lo(r);
+                        case ALIGN_RIGHT:
+                        case ALIGN_BOTTOM:
+                                return hi(r);
+                        default:
+                                return mid(r);
+                        }
+                };
+
+                // Determine target coordinate
+                Distance target = 0;
+                ModelObject* key = keyObject();
+                AlignReference ref = mAlignReference;
+                if ( ref == ALIGN_TO_KEY_OBJECT && key == nullptr )
+                {
+                        ref = ALIGN_TO_SELECTION;
+                }
+
+                switch ( ref )
+                {
+                case ALIGN_TO_LABEL:
+                {
+                        Distance extent = horizontal ? w() : h();
+                        switch ( edge )
+                        {
+                        case ALIGN_LEFT:
+                        case ALIGN_TOP:
+                                target = 0;
+                                break;
+                        case ALIGN_RIGHT:
+                        case ALIGN_BOTTOM:
+                                target = extent;
+                                break;
+                        default:
+                                target = extent / 2.0;
+                                break;
+                        }
+                }
+                break;
+
+                case ALIGN_TO_KEY_OBJECT:
+                        target = value( key->getExtent() );
+                        break;
+
+                default:
+                {
+                        // ALIGN_TO_SELECTION
+                        if ( edge == ALIGN_LEFT || edge == ALIGN_TOP )
+                        {
+                                target = 7200;
+                                for ( auto* object : selectedList )
+                                {
+                                        target = min( target, lo( object->getExtent() ) );
+                                }
+                        }
+                        else if ( edge == ALIGN_RIGHT || edge == ALIGN_BOTTOM )
+                        {
+                                target = -7200;
+                                for ( auto* object : selectedList )
+                                {
+                                        target = max( target, hi( object->getExtent() ) );
+                                }
+                        }
+                        else
+                        {
+                                // Use center of object closest to average center
+                                Distance sum = 0;
+                                for ( auto* object : selectedList )
+                                {
+                                        sum += mid( object->getExtent() );
+                                }
+                                Distance avg = sum / selectedList.size();
+
+                                Distance dmin = 7200;
+                                target = avg;
+                                for ( auto* object : selectedList )
+                                {
+                                        Distance c = mid( object->getExtent() );
+                                        Distance d = fabs( avg - c );
+                                        if ( d < dmin )
+                                        {
+                                                dmin = d;
+                                                target = c;
+                                        }
+                                }
+                        }
+                }
+                break;
+                }
+
+                // Move objects
+                for ( auto* object : selectedList )
+                {
+                        Distance delta = target - value( object->getExtent() );
+                        if ( horizontal )
+                        {
+                                object->setPositionRelative( delta, 0 );
+                        }
+                        else
+                        {
+                                object->setPositionRelative( 0, delta );
                         }
                 }
 
-                // Now adjust the object positions to line up with the center of this object.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dx = xcenter - (r.x1() + r.x2())/2.0;
-                        object->setPositionRelative( dx, 0 );
-                }
-
                 setModified();
 
                 emit changed();
         }
 
 
-        ///
-        /// Align Selected Objects To Their Top Edges
-        ///
-        void Model::alignSelectionTop()
-        {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
-                {
-                        return;
-                }
-
-                QList<ModelObject*> selectedList = getSelection();
-
-                // Find top-most edge.
-                Distance y1_min = 7200; // Start with a very large value: 7200pts = 100in
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        if ( r.y1() < y1_min ) y1_min = r.y1();
-                }
-
-                // Now adjust the object positions to line up the top edges at top-most edge.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dy = y1_min - r.y1();
-                        object->setPositionRelative( 0, dy );
-                }
-
-                setModified();
-
-                emit changed();
-        }
-
-
-        ///
-        /// Align Selected Objects To Their Bottom Edges
-        ///
-        void Model::alignSelectionBottom()
-        {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
-                {
-                        return;
-                }
-
-                QList<ModelObject*> selectedList = getSelection();
-
-                // Find bottom-most edge.
-                Distance y1_max = -7200; // Start with a very large negative value: 7200pts = 100in
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        if ( r.y1() > y1_max ) y1_max = r.y1();
-                }
-
-                // Now adjust the object positions to line up the bottom edges at bottom-most edge.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dy = y1_max - r.y1();
-                        object->setPositionRelative( 0, dy );
-                }
-
-                setModified();
-
-                emit changed();
-        }
-
-
-        ///
-        /// Align Selected Objects To Their Vertical Centers Edges
-        ///
-        void Model::alignSelectionVCenter()
-        {
-                if ( isSelectionEmpty() || isSelectionAtomic() )
-                {
-                        return;
-                }
-
-                QList<ModelObject*> selectedList = getSelection();
-
-                // Find average center of objects.
-                Distance ysum = 0;
-                int n = 0;
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        ysum += (r.y1() + r.y2()) / 2.0;
-                        n++;
-                }
-                Distance yavg = ysum / n;
-
-                // Find object closest to average center of objects.
-                Distance ycenter = 7200; // Start with very large value.
-                Distance dymin = fabs( yavg - ycenter );
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dy = fabs( yavg - (r.y1() + r.y2())/2.0 );
-                        if ( dy < dymin )
-                        {
-                                dymin = dy;
-                                ycenter = (r.y1() + r.y2()) / 2.0;
-                        }
-                }
-
-                // Now adjust the object positions to line up with the center of this object.
-                for ( ModelObject* object : selectedList )
-                {
-                        Region r = object->getExtent();
-                        Distance dy = ycenter - (r.y1() + r.y2())/2.0;
-                        object->setPositionRelative( 0, dy );
-                }
-
-                setModified();
-
-                emit changed();
-        }
+        void Model::alignSelectionLeft()    { alignSelection( ALIGN_LEFT ); }
+        void Model::alignSelectionRight()   { alignSelection( ALIGN_RIGHT ); }
+        void Model::alignSelectionHCenter() { alignSelection( ALIGN_HCENTER ); }
+        void Model::alignSelectionTop()     { alignSelection( ALIGN_TOP ); }
+        void Model::alignSelectionBottom()  { alignSelection( ALIGN_BOTTOM ); }
+        void Model::alignSelectionVCenter() { alignSelection( ALIGN_VCENTER ); }
 
 
         ///
@@ -1472,7 +1537,11 @@ namespace glabels::model
         bool Model::canPaste()
         {
                 const QClipboard *clipboard = QApplication::clipboard();
-                const QMimeData *mimeData = clipboard->mimeData();
+                const QMimeData *mimeData = clipboard ? clipboard->mimeData() : nullptr;
+                if ( !mimeData )
+                {
+                        return false;
+                }
 
                 return  mimeData->hasFormat( MIME_TYPE ) ||
                         mimeData->hasUrls()              ||

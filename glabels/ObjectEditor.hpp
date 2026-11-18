@@ -62,6 +62,7 @@ namespace glabels
                 // Private methods
                 /////////////////////////////////
         private:
+                QString unitsSuffix() const;
                 void hidePages();
                 void loadImagePage();
                 void loadLineFillPage();

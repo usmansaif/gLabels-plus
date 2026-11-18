@@ -47,6 +47,15 @@ namespace glabels
 {
 
         ///
+        /// Units suffix for spin boxes (may be hidden by user preference)
+        ///
+        QString ObjectEditor::unitsSuffix() const
+        {
+                return model::Settings::propertiesShowUnits() ? " " + mUnits.toIdString() : QString();
+        }
+
+
+        ///
         /// Constructor
         ///
         ObjectEditor::ObjectEditor( QWidget *parent )
@@ -164,11 +173,11 @@ namespace glabels
 
                         posXSpin->setDecimals( mSpinDigits );
                         posXSpin->setSingleStep( mSpinStep );
-                        posXSpin->setSuffix( " " + mUnits.toIdString() );
+                        posXSpin->setSuffix( unitsSuffix() );
 
                         posYSpin->setDecimals( mSpinDigits );
                         posYSpin->setSingleStep( mSpinStep );
-                        posYSpin->setSuffix( " " + mUnits.toIdString() );
+                        posYSpin->setSuffix( unitsSuffix() );
 
                         posXSpin->setValue( mObject->x0().inUnits(mUnits) );
                         posYSpin->setValue( mObject->y0().inUnits(mUnits) );
@@ -186,11 +195,11 @@ namespace glabels
 
                         sizeWSpin->setDecimals( mSpinDigits );
                         sizeWSpin->setSingleStep( mSpinStep );
-                        sizeWSpin->setSuffix( " " + mUnits.toIdString() );
+                        sizeWSpin->setSuffix( unitsSuffix() );
 
                         sizeHSpin->setDecimals( mSpinDigits );
                         sizeHSpin->setSingleStep( mSpinStep );
-                        sizeHSpin->setSuffix( " " + mUnits.toIdString() );
+                        sizeHSpin->setSuffix( unitsSuffix() );
 
                         sizeWSpin->setValue( mObject->w().inUnits(mUnits) );
                         sizeHSpin->setValue( mObject->h().inUnits(mUnits) );
@@ -217,7 +226,7 @@ namespace glabels
 
                         sizeLineLengthSpin->setDecimals( mSpinDigits );
                         sizeLineLengthSpin->setSingleStep( mSpinStep );
-                        sizeLineLengthSpin->setSuffix( " " + mUnits.toIdString() );
+                        sizeLineLengthSpin->setSuffix( unitsSuffix() );
 
                         double w = mObject->w().inUnits(mUnits);
                         double h = mObject->h().inUnits(mUnits);
@@ -301,11 +310,11 @@ namespace glabels
 
                         shadowXSpin->setDecimals( mSpinDigits );
                         shadowXSpin->setSingleStep( mSpinStep );
-                        shadowXSpin->setSuffix( " " + mUnits.toIdString() );
+                        shadowXSpin->setSuffix( unitsSuffix() );
 
                         shadowYSpin->setDecimals( mSpinDigits );
                         shadowYSpin->setSingleStep( mSpinStep );
-                        shadowYSpin->setSuffix( " " + mUnits.toIdString() );
+                        shadowYSpin->setSuffix( unitsSuffix() );
 
                         shadowEnableCheck->setChecked( mObject->shadow() );
                         shadowXSpin->setValue( mObject->shadowX().inUnits(mUnits) );
@@ -611,7 +620,7 @@ namespace glabels
 
                 QString filename =
                         QFileDialog::getOpenFileName( this->window(),
-                                                      tr("gLabels - Select image file"),
+                                                      tr("gLabels Plus - Select image file"),
                                                       cwd, filters );
 
                 if ( !filename.isEmpty() )

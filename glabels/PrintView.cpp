@@ -26,8 +26,6 @@
 #include "model/Settings.hpp"
 
 #include <QDebug>
-#include <QFileDialog>
-#include <QMessageBox>
 #include <QPrinter>
 #include <QPrinterInfo>
 #include <QPrintDialog>
@@ -53,7 +51,71 @@ namespace glabels
 
                 setDestination( model::Settings::recentPrinter() );
 
+                // Long printer names must not force a wide minimum page size
+                destinationCombo->setSizeAdjustPolicy( QComboBox::AdjustToMinimumContentsLengthWithIcon );
+                destinationCombo->setMinimumContentsLength( 16 );
+
                 preview->setRenderer( &mRenderer );
+                preview->setToolTip( tr("Click a label to choose where printing starts") );
+                connect( preview, &Preview::labelClicked, this, &PrintView::onPreviewLabelClicked );
+
+                printOutlinesCheck->setChecked( model::Settings::printOutlines() );
+                printCropMarksCheck->setChecked( model::Settings::printCropMarks() );
+        }
+
+
+        ///
+        /// Label clicked in preview: set start (or, with Shift, last) position
+        ///
+        void PrintView::onPreviewLabelClicked( int index, Qt::KeyboardModifiers modifiers )
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+
+                int position = index + 1;
+                int nLabels  = mModel->frame()->nLabels();
+
+                if ( mModel->merge()->keys().empty() )
+                {
+                        // Switch to partial-sheet mode
+                        mBlocked = true;
+                        printRangePositionsRadio->setChecked( true );
+                        printRangeStartPositionSpin->setRange( 1, nLabels );
+                        printRangeLastPositionSpin->setRange( 1, nLabels );
+
+                        if ( modifiers & Qt::ShiftModifier )
+                        {
+                                int start = printRangeStartPositionSpin->value();
+                                if ( position < start )
+                                {
+                                        printRangeStartPositionSpin->setValue( position );
+                                        printRangeLastPositionSpin->setValue( start );
+                                }
+                                else
+                                {
+                                        printRangeLastPositionSpin->setValue( position );
+                                }
+                        }
+                        else
+                        {
+                                printRangeStartPositionSpin->setValue( position );
+                                if ( printRangeLastPositionSpin->value() < position )
+                                {
+                                        printRangeLastPositionSpin->setValue( nLabels );
+                                }
+                        }
+                        mBlocked = false;
+                }
+                else
+                {
+                        mBlocked = true;
+                        mergeStartPositionSpin->setValue( position );
+                        mBlocked = false;
+                }
+
+                onFormChanged();
         }
 
 
@@ -129,6 +191,7 @@ namespace glabels
                 printButton->setEnabled( canPrint );
                 printDescriptionLabel->setEnabled( canPrint );
                 systemDialogButton->setEnabled( canPrint );
+                systemDialogButton->setVisible( false ); // "Print" now always opens the system dialog
 
                 mRenderer.setIPage( pageSpin->value() - 1 ); // Update preview
         }
@@ -199,6 +262,8 @@ namespace glabels
 
                         mRenderer.setPrintOutlines( printOutlinesCheck->isChecked() );
                         mRenderer.setPrintCropMarks( printCropMarksCheck->isChecked() );
+                        model::Settings::setPrintOutlines( printOutlinesCheck->isChecked() );
+                        model::Settings::setPrintCropMarks( printCropMarksCheck->isChecked() );
                         mRenderer.setPrintReverse( printReverseCheck->isChecked() );
 
                         updateView();
@@ -213,51 +278,9 @@ namespace glabels
         ///
         void PrintView::onPrintButtonClicked()
         {
-                auto printerName = destinationCombo->currentText();
-                auto printerInfo = QPrinterInfo::printerInfo( printerName );
-                bool isPrinter = !printerInfo.isNull();
-
-                QPrinter printer( QPrinter::HighResolution );
-                printer.setColorMode( QPrinter::Color );
-
-                if ( isPrinter )
-                {
-                        printer.setPrinterName( printerName );
-                        mRenderer.print( &printer );
-                        model::Settings::setRecentPrinter( printerName );
-                }
-                else
-                {
-                        QString fileName =
-                                QFileDialog::getSaveFileName( this,
-                                                              tr("Print to file (PDF)"),
-                                                              defaultPdf(),
-                                                              tr("PDF files (*.pdf);;All files (*)"),
-                                                              nullptr,
-                                                              QFileDialog::DontConfirmOverwrite        );
-                        if ( !fileName.isEmpty() )
-                        {
-                                if ( QFileInfo::exists(fileName) )
-                                {
-                                        QMessageBox msgBox( this );
-                                        msgBox.setWindowTitle( tr("Print to file (PDF)") );
-                                        msgBox.setIcon( QMessageBox::Warning );
-                                        msgBox.setText( tr("%1 already exists.").arg(fileName) );
-                                        msgBox.setInformativeText( tr("Do you want to overwrite it?") );
-                                        msgBox.setStandardButtons( QMessageBox::Yes | QMessageBox::No );
-                                        msgBox.setDefaultButton( QMessageBox::No );
-
-                                        if ( msgBox.exec() == QMessageBox::No )
-                                        {
-                                                return;
-                                        }
-                                }
-
-                                printer.setOutputFileName( fileName );
-                                printer.setOutputFormat( QPrinter::PdfFormat );
-                                mRenderer.print( &printer );
-                        }
-                }
+                // Never write a file directly: always let the user confirm the job
+                // (printer, copies, page setup, or a file name) in the system print dialog.
+                onSystemDialogButtonClicked();
         }
 
 
@@ -268,9 +291,23 @@ namespace glabels
         {
                 QPrinter printer( QPrinter::HighResolution );
                 printer.setColorMode( QPrinter::Color );
-                printer.setPrinterName( destinationCombo->currentText() );
+
+                // Pre-select the destination chosen on the print page
+                auto printerName = destinationCombo->currentText();
+                if ( !QPrinterInfo::printerInfo( printerName ).isNull() )
+                {
+                        printer.setPrinterName( printerName );
+                }
+                else
+                {
+                        // "Print to file (PDF)": suggest a file name; nothing is written
+                        // unless the user confirms in the dialog
+                        printer.setOutputFormat( QPrinter::PdfFormat );
+                        printer.setOutputFileName( defaultPdf() );
+                }
 
                 QPrintDialog printDialog( &printer, this );
+                printDialog.setWindowTitle( tr("Print") );
                 printDialog.setOption( QAbstractPrintDialog::PrintToFile,        true );
                 printDialog.setOption( QAbstractPrintDialog::PrintSelection,     false );
                 printDialog.setOption( QAbstractPrintDialog::PrintPageRange,     false );

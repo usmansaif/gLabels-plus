@@ -7,7 +7,7 @@
   <launchable type="desktop-id">org.glabels.glabels-qt.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <name>gLabels</name>
+  <name>gLabels Plus</name>
   <summary>Create labels and business cards</summary>
   <summary xml:lang="de">Entwurf von Etiketten und Visitenkarten</summary>
   <summary xml:lang="es">Crear etiquetas y tarjetas de visita</summary>
@@ -18,13 +18,13 @@
   <summary xml:lang="pt_BR">Crie etiquetas e cartões de visita</summary>
   <summary xml:lang="uk">Створюйте етикетки та візитки</summary>
   <description>
-    <p>gLabels is a program for creating labels, business cards and media covers.
+    <p>gLabels Plus is a program for creating labels, business cards and media covers.
     It is designed to work with various laser/ink-jet peel-off label and business
     card sheets that you'll find at most office supply stores.</p>
-    <p>gLabels can be used to design address labels, name tags, price tags,
+    <p>gLabels Plus can be used to design address labels, name tags, price tags,
     cd/dvd labels, or just about anything else that is organized in a regular
     pattern on a sheet of paper. Labels (or cards) can contain text, images,
-    lines, shapes, and barcodes. gLabels also includes a document-merge feature
+    lines, shapes, and barcodes. gLabels Plus also includes a document-merge feature
     which lets you print a unique label for each record from an external data
     source, such as a CSV file.</p>
   </description>

@@ -68,6 +68,27 @@ namespace glabels
 
                 model::Template selectedTemplate() const;
 
+                /// Number of products currently shown / in total
+                int visibleCount() const;
+                int totalCount() const;
+
+                /// Select the first visible product (if any); returns true if one was selected
+                bool selectFirstVisible();
+
+                /// Favorite state of the selected product
+                bool isSelectedFavorite() const;
+                void setSelectedFavorite( bool favorite );
+
+                /// Does an item's search text match a (possibly fuzzy) search string?
+                static bool matches( const QString& searchText, const QString& searchString );
+
+        signals:
+                void favoritesChanged();
+
+        private slots:
+                void onContextMenu( const QPoint& pos );
+        public:
+
 
                 /////////////////////////////////
                 // Signals

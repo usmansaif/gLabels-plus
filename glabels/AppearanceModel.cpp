@@ -25,6 +25,7 @@
 #include <QDebug>
 #include <QPalette>
 #include <QSettings>
+#include <QProxyStyle>
 #include <QStyleFactory>
 #include <QStyleHints>
 
@@ -111,6 +112,50 @@ namespace
 }
 
 
+namespace
+{
+        ///
+        /// Application style: the chosen base style, but with no icons on dialog
+        /// action buttons (OK, Cancel, Save, Yes, No, ...) in dialogs and message boxes,
+        /// and with a short tooltip delay.
+        ///
+        class NoButtonIconsStyle : public QProxyStyle
+        {
+        public:
+                explicit NoButtonIconsStyle( QStyle* base ) : QProxyStyle( base ) {}
+
+                int styleHint( StyleHint hint, const QStyleOption* option = nullptr,
+                               const QWidget* widget = nullptr, QStyleHintReturn* ret = nullptr ) const override
+                {
+                        if ( hint == QStyle::SH_DialogButtonBox_ButtonsHaveIcons )
+                        {
+                                return 0;
+                        }
+                        if ( hint == QStyle::SH_ToolTip_WakeUpDelay )
+                        {
+                                // Show tooltips quickly on hover (Qt default is ~700 ms)
+                                return 150;
+                        }
+                        return QProxyStyle::styleHint( hint, option, widget, ret );
+                }
+        };
+
+        QStyle* createAppStyle( const QString& name )
+        {
+                return new NoButtonIconsStyle( QStyleFactory::create( name ) );
+        }
+
+        QString baseStyleName( QStyle* style )
+        {
+                if ( auto* proxy = qobject_cast<QProxyStyle*>( style ) )
+                {
+                        return proxy->baseStyle()->name();
+                }
+                return style->name();
+        }
+}
+
+
 namespace glabels
 {
 
@@ -128,17 +173,18 @@ namespace glabels
         AppearanceModel::AppearanceModel()
         {
 #if QT_VERSION >= QT_VERSION_CHECK(6,8,0)
-                auto styleName = QApplication::style()->name();
+                auto styleName = baseStyleName( QApplication::style() );
                 if ( ( styleName.compare( "windows", Qt::CaseInsensitive ) != 0 ) &&
                      ( styleName.compare( "macos",   Qt::CaseInsensitive ) != 0 ) &&
                      ( styleName.compare( "fusion",  Qt::CaseInsensitive ) != 0 ) )
                 {
 	                // Default to and hardcode to "fusion", if not one of the above
-	                QApplication::setStyle( QStyleFactory::create( "Fusion" ) );
+	                styleName = "Fusion";
                 }
+                QApplication::setStyle( createAppStyle( styleName ) );
 #else
                 // Hardcode style to "fusion"
-                QApplication::setStyle( QStyleFactory::create( "Fusion" ) );
+                QApplication::setStyle( createAppStyle( "Fusion" ) );
 #endif
 
                 setColorScheme( model::Settings::colorScheme(), model::Settings::iconStyle() );
@@ -234,7 +280,7 @@ namespace glabels
                         break;
                 }
 
-                auto styleName = QApplication::style()->name();
+                auto styleName = baseStyleName( QApplication::style() );
                 if ( styleName.compare( "fusion", Qt::CaseInsensitive ) == 0 )
                 {
 	                QApplication::setPalette( fusionLightPalette() );
@@ -270,7 +316,7 @@ namespace glabels
                         break;
                 }
 
-                auto styleName = QApplication::style()->name();
+                auto styleName = baseStyleName( QApplication::style() );
                 if ( styleName.compare( "fusion", Qt::CaseInsensitive ) == 0 )
                 {
 	                QApplication::setPalette( fusionDarkPalette() );
@@ -317,8 +363,7 @@ namespace glabels
         //
         void AppearanceModel::redrawAll()
         {
-                auto* currentStyle = QApplication::style();
-                QApplication::setStyle( QStyleFactory::create( currentStyle->name() ) );
+                QApplication::setStyle( createAppStyle( baseStyleName( QApplication::style() ) ) );
         }
 
 

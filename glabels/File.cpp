@@ -104,7 +104,7 @@ namespace glabels
 
                 QString fileName =
                         QFileDialog::getOpenFileName( window,
-                                                      tr("gLabels - Open Project"),
+                                                      tr("gLabels Plus - Open Project"),
                                                       cwd,
                                                       tr("glabels files (*.glabels);;All files (*)")
                                 );
@@ -227,7 +227,7 @@ namespace glabels
 
                 QString rawFileName =
                         QFileDialog::getSaveFileName( window,
-                                                      tr("gLabels - Save Project As"),
+                                                      tr("gLabels Plus - Save Project As"),
                                                       cwd,
                                                       tr("glabels files (*.glabels);;All files (*)"),
                                                       nullptr,

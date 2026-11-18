@@ -34,6 +34,7 @@
 #include <QMimeData>
 #include <QObject>
 #include <QPainter>
+#include <QPointer>
 
 
 namespace glabels::model
@@ -51,6 +52,10 @@ namespace glabels::model
         class Model : public QObject
         {
                 Q_OBJECT
+
+        public:
+                enum AlignReference { ALIGN_TO_SELECTION, ALIGN_TO_KEY_OBJECT, ALIGN_TO_LABEL };
+                enum AlignEdge { ALIGN_LEFT, ALIGN_RIGHT, ALIGN_HCENTER, ALIGN_TOP, ALIGN_BOTTOM, ALIGN_VCENTER };
 
 
                 /////////////////////////////////
@@ -173,6 +178,16 @@ namespace glabels::model
                 void deleteSelection();
                 void raiseSelectionToTop();
                 void lowerSelectionToBottom();
+                void raiseSelection();
+                void lowerSelection();
+                void moveObjectToIndex( ModelObject* object, int index );
+                void setObjectLocked( ModelObject* object, bool locked );
+                void setSelectionRotation( double thetaDegs );
+                void setAlignReference( AlignReference ref );
+                AlignReference alignReference() const;
+                ModelObject* keyObject() const;
+                bool canAlignSelection();
+                void alignSelection( AlignEdge edge );
                 void rotateSelection( double thetaDegs );
                 void rotateSelectionLeft();
                 void rotateSelectionRight();
@@ -249,6 +264,9 @@ namespace glabels::model
                 Variables                 mVariables;
 
                 QSharedPointer<merge::Merge> mMerge;
+
+                QPointer<ModelObject>     mKeyObject;
+                AlignReference            mAlignReference{ ALIGN_TO_SELECTION };
         };
 
 }

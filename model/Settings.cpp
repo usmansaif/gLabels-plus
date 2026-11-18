@@ -540,4 +540,116 @@ namespace glabels::model
                 mInstance->endGroup();
         }
 
+
+
+        //
+        // Generic helpers
+        //
+        QVariant Settings::getValue( const QString& group, const QString& key, const QVariant& defaultValue )
+        {
+                mInstance->beginGroup( group );
+                QVariant v = mInstance->value( key, defaultValue );
+                mInstance->endGroup();
+                return v;
+        }
+
+
+        void Settings::putValue( const QString& group, const QString& key, const QVariant& value )
+        {
+                mInstance->beginGroup( group );
+                bool changedFlag = mInstance->value( key ) != value;
+                mInstance->QSettings::setValue( key, value );
+                mInstance->endGroup();
+
+                if ( changedFlag )
+                {
+                        emit mInstance->changed();
+                }
+        }
+
+
+        bool Settings::showGrid() { return getValue( "Editor", "showGrid", true ).toBool(); }
+        void Settings::setShowGrid( bool value ) { putValue( "Editor", "showGrid", value ); }
+
+        bool Settings::showMarkup() { return getValue( "Editor", "showMarkup", true ).toBool(); }
+        void Settings::setShowMarkup( bool value ) { putValue( "Editor", "showMarkup", value ); }
+
+        bool Settings::showRulers() { return getValue( "Editor", "showRulers", true ).toBool(); }
+        void Settings::setShowRulers( bool value ) { putValue( "Editor", "showRulers", value ); }
+
+        bool Settings::propertiesShowUnits() { return getValue( "Editor", "propertiesShowUnits", true ).toBool(); }
+        void Settings::setPropertiesShowUnits( bool value ) { putValue( "Editor", "propertiesShowUnits", value ); }
+
+        int Settings::alignReference() { return getValue( "Editor", "alignReference", 0 ).toInt(); }
+        void Settings::setAlignReference( int value ) { putValue( "Editor", "alignReference", value ); }
+
+
+        Settings::SidebarStyle Settings::sidebarStyle()
+        {
+                int v = getValue( "Window", "sidebarStyle", int(SIDEBAR_ICONS_AND_TEXT) ).toInt();
+                if ( v < SIDEBAR_ICONS_AND_TEXT || v > SIDEBAR_TEXT_ONLY )
+                {
+                        v = SIDEBAR_ICONS_AND_TEXT;
+                }
+                return SidebarStyle( v );
+        }
+        void Settings::setSidebarStyle( SidebarStyle style ) { putValue( "Window", "sidebarStyle", int(style) ); }
+
+        int Settings::sidebarIconSize() { return qBound( 16, getValue( "Window", "sidebarIconSize", 32 ).toInt(), 64 ); }
+        void Settings::setSidebarIconSize( int size ) { putValue( "Window", "sidebarIconSize", qBound( 16, size, 64 ) ); }
+
+        Qt::ToolButtonStyle Settings::toolbarButtonStyle()
+        {
+                int v = getValue( "Window", "toolbarButtonStyle", int(Qt::ToolButtonIconOnly) ).toInt();
+                if ( v < Qt::ToolButtonIconOnly || v > Qt::ToolButtonTextUnderIcon )
+                {
+                        v = Qt::ToolButtonIconOnly;
+                }
+                return Qt::ToolButtonStyle( v );
+        }
+        void Settings::setToolbarButtonStyle( Qt::ToolButtonStyle style ) { putValue( "Window", "toolbarButtonStyle", int(style) ); }
+
+
+        QStringList Settings::favoriteTemplateList()
+        {
+                return getValue( "Templates", "favorites", QStringList() ).toStringList();
+        }
+
+        bool Settings::isFavoriteTemplate( const QString& name )
+        {
+                return favoriteTemplateList().contains( name );
+        }
+
+        void Settings::setFavoriteTemplate( const QString& name, bool favorite )
+        {
+                QStringList list = favoriteTemplateList();
+                list.removeAll( name );
+                if ( favorite )
+                {
+                        list.append( name );
+                }
+                putValue( "Templates", "favorites", list );
+        }
+
+
+        bool Settings::printOutlines() { return getValue( "Print", "outlines", false ).toBool(); }
+        void Settings::setPrintOutlines( bool value ) { putValue( "Print", "outlines", value ); }
+
+        bool Settings::printCropMarks() { return getValue( "Print", "cropMarks", false ).toBool(); }
+        void Settings::setPrintCropMarks( bool value ) { putValue( "Print", "cropMarks", value ); }
+
+
+        void Settings::resetToDefaults()
+        {
+                // Preferences groups only -- keep recent files, favorites, window state etc.
+                for ( const char* group : { "Locale", "Editor", "Window", "Print", "Appearance", "Startup", "Grid" } )
+                {
+                        mInstance->beginGroup( group );
+                        mInstance->remove( "" );
+                        mInstance->endGroup();
+                }
+
+                emit mInstance->changed();
+        }
+
 }

@@ -28,7 +28,9 @@
 #include "model/Region.hpp"
 
 #include <QPainter>
+#include <QPointer>
 #include <QScrollArea>
+#include <QTextEdit>
 #include <QWidget>
 
 
@@ -62,6 +64,8 @@ namespace glabels
                 void pointerMoved( model::Point p );
                 void pointerExited();
                 void modeChanged();
+                void viewChanged();
+                void previewRecordChanged();
 
 
                 /////////////////////////////////////
@@ -69,8 +73,14 @@ namespace glabels
                 /////////////////////////////////////
         public:
                 double zoom() const;
+                double scale() const;
                 bool markupVisible() const;
                 bool qridVisible() const;
+
+                /// Position of the label origin (0,0) in widget pixel coordinates
+                QPointF labelOriginPixels() const;
+                model::Distance labelWidth() const;
+                model::Distance labelHeight() const;
 
 
                 /////////////////////////////////////
@@ -98,6 +108,8 @@ namespace glabels
                 void zoomToFit();
                 bool isZoomMax() const;
                 bool isZoomMin() const;
+                void setZoom( double zoom );
+                static QList<double> standardZoomLevels();
         private:
                 void setZoomReal( double zoom, bool zoomToFitFlag );
 
@@ -116,13 +128,36 @@ namespace glabels
 
 
                 /////////////////////////////////////
+                // Merge record preview
+                /////////////////////////////////////
+        public:
+                int previewRecord() const;
+                int nPreviewRecords() const;
+                void setPreviewRecord( int index ); // -1 = show field names
+
+
+                /////////////////////////////////////
+                // In-place text editing
+                /////////////////////////////////////
+        public:
+                bool isTextEditActive() const;
+                void beginTextEdit( model::ModelObject* object );
+                void endTextEdit( bool commit );
+        private:
+                void positionTextEditor();
+
+
+                /////////////////////////////////////
                 // Event handlers
                 /////////////////////////////////////
         protected:
                 void resizeEvent( QResizeEvent* event ) override;
+                void wheelEvent( QWheelEvent* event ) override;
                 void mousePressEvent( QMouseEvent* event ) override;
                 void mouseMoveEvent( QMouseEvent* event ) override;
                 void mouseReleaseEvent( QMouseEvent* event ) override;
+                void mouseDoubleClickEvent( QMouseEvent* event ) override;
+                bool eventFilter( QObject* watched, QEvent* event ) override;
                 void leaveEvent( QEvent* event ) override;
                 void keyPressEvent( QKeyEvent* event ) override;
                 void paintEvent( QPaintEvent* event ) override;
@@ -153,6 +188,7 @@ namespace glabels
         private slots:
                 void onSettingsChanged();
                 void onModelSizeChanged();
+                void onMergeChanged();
 
 
                 /////////////////////////////////////
@@ -183,6 +219,7 @@ namespace glabels
                 UndoRedoModel*       mUndoRedoModel;
 
                 double               mZoom;
+                int                  mWheelAccum{ 0 };
                 bool                 mZoomToFitFlag;
                 double               mScale;
                 model::Distance      mX0;
@@ -215,6 +252,14 @@ namespace glabels
                 model::Distance      mCreateX0;
                 model::Distance      mCreateY0;
 
+                /* Merge record preview */
+                int                  mPreviewRecord{ -1 };
+
+                /* In-place text editing */
+                QPointer<QTextEdit>          mTextEditor;
+                QPointer<model::ModelObject> mTextEditObject;
+                bool                         mTextEditIsBarcode{ false };
+                bool                         mTextEditEnding{ false };
 
         };
 

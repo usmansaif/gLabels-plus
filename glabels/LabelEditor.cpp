@@ -39,8 +39,13 @@
 #include "model/Markup.hpp"
 #include "model/Settings.hpp"
 
+#include <QAbstractTextDocumentLayout>
 #include <QDebug>
+#include <QKeyEvent>
 #include <QMimeData>
+#include <QScrollBar>
+#include <QTextBlock>
+#include <QWheelEvent>
 #include <QMouseEvent>
 #include <QPalette>
 #include <QtMath>
@@ -122,6 +127,73 @@ namespace glabels
 
 
         ///
+        /// Scale property (pixels per point)
+        ///
+        double
+        LabelEditor::scale() const
+        {
+                return mScale;
+        }
+
+
+        ///
+        /// Label origin in widget pixels
+        ///
+        QPointF
+        LabelEditor::labelOriginPixels() const
+        {
+                return QPointF( mX0.pt()*mScale, mY0.pt()*mScale );
+        }
+
+
+        ///
+        /// Label size (as displayed, i.e. after any rotation)
+        ///
+        model::Distance
+        LabelEditor::labelWidth() const
+        {
+                return mModel ? mModel->w() : model::Distance(0);
+        }
+
+        model::Distance
+        LabelEditor::labelHeight() const
+        {
+                return mModel ? mModel->h() : model::Distance(0);
+        }
+
+
+        ///
+        /// Standard zoom levels (descending)
+        ///
+        QList<double>
+        LabelEditor::standardZoomLevels()
+        {
+                QList<double> list;
+                for ( int i = 0; i < nZoomLevels; i++ )
+                {
+                        list << zoomLevels[i];
+                }
+                return list;
+        }
+
+
+        ///
+        /// Set zoom to arbitrary value (clamped to supported range)
+        ///
+        void
+        LabelEditor::setZoom( double zoom )
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+                zoom = qMin( zoom, zoomLevels[0] );
+                zoom = qMax( zoom, zoomLevels[nZoomLevels-1] );
+                setZoomReal( zoom, false );
+        }
+
+
+        ///
         /// Markup visible? property
         ///
         bool
@@ -147,8 +219,11 @@ namespace glabels
         void
         LabelEditor::setModel( model::Model* model, UndoRedoModel* undoRedoModel )
         {
+                endTextEdit( false );
+
                 mModel = model;
                 mUndoRedoModel = undoRedoModel;
+                mPreviewRecord = -1;
 
                 if ( model )
                 {
@@ -157,6 +232,9 @@ namespace glabels
                         connect( model, SIGNAL(changed()), this, SLOT(update()) );
                         connect( model, SIGNAL(selectionChanged()), this, SLOT(update()) );
                         connect( model, SIGNAL(sizeChanged()), this, SLOT(onModelSizeChanged()) );
+                        connect( model, SIGNAL(mergeChanged()), this, SLOT(onMergeChanged()) );
+                        connect( model, SIGNAL(mergeSourceChanged()), this, SLOT(onMergeChanged()) );
+                        connect( model, SIGNAL(mergeSelectionChanged()), this, SLOT(onMergeChanged()) );
 
                         update();
                 }
@@ -307,9 +385,11 @@ namespace glabels
                 mX0 = (width()/mScale - mModel->w()) / 2;
                 mY0 = (height()/mScale - mModel->h()) / 2;
 
+                positionTextEditor();
                 update();
 
                 emit zoomChanged();
+                emit viewChanged();
         }
 
 
@@ -421,9 +501,85 @@ namespace glabels
                                 mX0 = (width()/mScale - mModel->w()) / 2;
                                 mY0 = (height()/mScale - mModel->h()) / 2;
 
+                                positionTextEditor();
                                 update();
+                                emit viewChanged();
                         }
                 }
+        }
+
+
+        ///
+        /// Mouse Wheel Event Handler
+        ///
+        /// Wheel scrolls the page (vertically; touchpads may also scroll sideways).
+        /// Shift+wheel scrolls horizontally.
+        /// Ctrl+wheel zooms in/out, keeping the point under the cursor fixed.
+        ///
+        void
+        LabelEditor::wheelEvent( QWheelEvent* event )
+        {
+                if ( !mModel )
+                {
+                        QWidget::wheelEvent( event );
+                        return;
+                }
+
+                auto mods = event->modifiers();
+
+                if ( !(mods & Qt::ControlModifier) )
+                {
+                        QPoint d = event->pixelDelta().isNull() ? event->angleDelta() / 120 * 40
+                                                                : event->pixelDelta();
+                        auto* h = mScrollArea->horizontalScrollBar();
+                        auto* v = mScrollArea->verticalScrollBar();
+                        if ( mods & Qt::ShiftModifier )
+                        {
+                                // Qt may report Shift+wheel on either axis
+                                int delta = d.x() != 0 ? d.x() : d.y();
+                                h->setValue( h->value() - delta );
+                        }
+                        else
+                        {
+                                h->setValue( h->value() - d.x() );
+                                v->setValue( v->value() - d.y() );
+                        }
+                        event->accept();
+                        return;
+                }
+
+                // Accumulate high-resolution wheel deltas into whole notches
+                QPoint angle = event->angleDelta();
+                mWheelAccum += angle.y() != 0 ? angle.y() : angle.x();
+                int steps = mWheelAccum / 120;
+                if ( steps == 0 )
+                {
+                        event->accept();
+                        return;
+                }
+                mWheelAccum -= steps * 120;
+
+                // Model point under the cursor before zooming
+                QPointF cursorPx = event->position();
+                double xModel = cursorPx.x() / mScale - mX0.pt();
+                double yModel = cursorPx.y() / mScale - mY0.pt();
+                QPoint  cursorInViewport = mScrollArea->viewport()->mapFromGlobal( event->globalPosition().toPoint() );
+
+                double newZoom = mZoom * qPow( 1.2, steps );
+                setZoom( newZoom );
+
+                // Resize now (rather than waiting for the scroll area's layout pass)
+                // so that the scroll bars can be positioned immediately.
+                QSize viewport = mScrollArea->viewport()->size();
+                resize( qMax( viewport.width(),  minimumWidth() ),
+                        qMax( viewport.height(), minimumHeight() ) );
+
+                double newPxX = (xModel + mX0.pt()) * mScale;
+                double newPxY = (yModel + mY0.pt()) * mScale;
+                mScrollArea->horizontalScrollBar()->setValue( qRound( newPxX - cursorInViewport.x() ) );
+                mScrollArea->verticalScrollBar()->setValue( qRound( newPxY - cursorInViewport.y() ) );
+
+                event->accept();
         }
 
 
@@ -433,6 +589,11 @@ namespace glabels
         void
         LabelEditor::mousePressEvent( QMouseEvent* event )
         {
+                if ( isTextEditActive() )
+                {
+                        endTextEdit( true );
+                }
+
                 if ( mModel )
                 {
                         /*
@@ -948,29 +1109,45 @@ namespace glabels
         void
         LabelEditor::keyPressEvent( QKeyEvent* event )
         {
-                if ( mState == IdleState )
+                if ( mState == IdleState && mModel )
                 {
+                        // Shift+arrow moves in larger steps
+                        model::Distance step = (event->modifiers() & Qt::ShiftModifier) ? 10*mStepSize : mStepSize;
+
                         switch (event->key())
                         {
 
                         case Qt::Key_Left:
                                 mUndoRedoModel->checkpoint( tr("Move") );
-                                mModel->moveSelection( -mStepSize, model::Distance(0) );
+                                mModel->moveSelection( -step, model::Distance(0) );
                                 break;
 
                         case Qt::Key_Up:
                                 mUndoRedoModel->checkpoint( tr("Move") );
-                                mModel->moveSelection( model::Distance(0), -mStepSize );
+                                mModel->moveSelection( model::Distance(0), -step );
                                 break;
 
                         case Qt::Key_Right:
                                 mUndoRedoModel->checkpoint( tr("Move") );
-                                mModel->moveSelection( mStepSize, model::Distance(0) );
+                                mModel->moveSelection( step, model::Distance(0) );
                                 break;
 
                         case Qt::Key_Down:
                                 mUndoRedoModel->checkpoint( tr("Move") );
-                                mModel->moveSelection( model::Distance(0), mStepSize );
+                                mModel->moveSelection( model::Distance(0), step );
+                                break;
+
+                        case Qt::Key_F2:
+                        case Qt::Key_Return:
+                        case Qt::Key_Enter:
+                                if ( mModel->isSelectionAtomic() )
+                                {
+                                        beginTextEdit( mModel->getFirstSelectedObject() );
+                                }
+                                break;
+
+                        case Qt::Key_Escape:
+                                mModel->unselectAll();
                                 break;
 
                         case Qt::Key_Delete:
@@ -1243,6 +1420,18 @@ namespace glabels
         void
         LabelEditor::drawObjectsLayer( QPainter* painter )
         {
+                auto* merge = mModel->merge();
+                if ( mPreviewRecord >= 0 && merge )
+                {
+                        auto records = merge->selectedRecords();
+                        if ( mPreviewRecord < records.size() )
+                        {
+                                model::Variables variables( mModel->constVariables() );
+                                mModel->draw( painter, false, records[mPreviewRecord], variables );
+                                return;
+                        }
+                }
+
                 mModel->draw( painter, true, merge::NullRecord(), model::Variables() );
         }
 
@@ -1361,9 +1550,333 @@ namespace glabels
                 mX0 = (width()/mScale - mModel->w()) / 2;
                 mY0 = (height()/mScale - mModel->h()) / 2;
 
+                positionTextEditor();
                 update();
 
                 emit zoomChanged();
+                emit viewChanged();
+        }
+
+
+        ///
+        /// Merge changed handler
+        ///
+        void LabelEditor::onMergeChanged()
+        {
+                int n = nPreviewRecords();
+                if ( mPreviewRecord >= n )
+                {
+                        mPreviewRecord = (n > 0) ? n-1 : -1;
+                }
+                update();
+                emit previewRecordChanged();
+        }
+
+
+        ///
+        /// Current preview record (-1 = none)
+        ///
+        int LabelEditor::previewRecord() const
+        {
+                return mPreviewRecord;
+        }
+
+
+        ///
+        /// Number of records available for preview
+        ///
+        int LabelEditor::nPreviewRecords() const
+        {
+                if ( mModel && mModel->merge() && !mModel->merge()->keys().isEmpty() )
+                {
+                        return mModel->merge()->selectedRecords().size();
+                }
+                return 0;
+        }
+
+
+        ///
+        /// Set preview record
+        ///
+        void LabelEditor::setPreviewRecord( int index )
+        {
+                int n = nPreviewRecords();
+                if ( index >= n )
+                {
+                        index = n - 1;
+                }
+                if ( index < -1 )
+                {
+                        index = -1;
+                }
+
+                if ( index != mPreviewRecord )
+                {
+                        mPreviewRecord = index;
+                        update();
+                        emit previewRecordChanged();
+                }
+        }
+
+
+        ///
+        /// Mouse double-click: edit text/barcode data in place
+        ///
+        void
+        LabelEditor::mouseDoubleClickEvent( QMouseEvent* event )
+        {
+                if ( !mModel || mState != IdleState || !(event->button() & Qt::LeftButton) )
+                {
+                        QWidget::mouseDoubleClickEvent( event );
+                        return;
+                }
+
+                QTransform transform;
+                transform.scale( mScale, mScale );
+                transform.translate( mX0.pt(), mY0.pt() );
+                QPointF pWorld = transform.inverted().map( event->pos() );
+
+                auto* object = mModel->objectAt( mScale,
+                                                 model::Distance::pt( pWorld.x() ),
+                                                 model::Distance::pt( pWorld.y() ) );
+                if ( object )
+                {
+                        beginTextEdit( object );
+                }
+        }
+
+
+        ///
+        /// Is an in-place text edit currently active?
+        ///
+        bool LabelEditor::isTextEditActive() const
+        {
+                return !mTextEditor.isNull();
+        }
+
+
+        ///
+        /// Begin in-place editing of object's text (text objects) or data (barcodes)
+        ///
+        void LabelEditor::beginTextEdit( model::ModelObject* object )
+        {
+                if ( !object || !mModel )
+                {
+                        return;
+                }
+
+                bool isText    = dynamic_cast<model::ModelTextObject*>( object ) != nullptr;
+                bool isBarcode = dynamic_cast<model::ModelBarcodeObject*>( object ) != nullptr;
+                if ( !isText && !isBarcode )
+                {
+                        return;
+                }
+
+                endTextEdit( true );
+
+                mModel->unselectAll();
+                mModel->selectObject( object );
+
+                mTextEditObject    = object;
+                mTextEditIsBarcode = isBarcode;
+
+                mTextEditor = new QTextEdit( this );
+                mTextEditor->setAcceptRichText( false );
+                mTextEditor->setFrameShape( QFrame::Box );
+                mTextEditor->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+                mTextEditor->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+                mTextEditor->document()->setDocumentMargin( 0 );
+                mTextEditor->setPlainText( isBarcode ? object->bcData() : object->text() );
+                mTextEditor->setToolTip( isBarcode ? tr("Enter to apply, Esc to cancel")
+                                                   : tr("Ctrl+Enter or click outside to apply, Esc to cancel") );
+
+                // Use a light background so the text stays readable on the white label in any theme
+                QPalette pal = mTextEditor->palette();
+                pal.setColor( QPalette::Base, QColor( 255, 255, 240 ) );
+                pal.setColor( QPalette::Text, isText ? object->textColorNode().color() : QColor( Qt::black ) );
+                mTextEditor->setPalette( pal );
+                mTextEditor->setStyleSheet( "QTextEdit { border: 1px dashed #3465a4; }" );
+
+                if ( isText )
+                {
+                        mTextEditor->setLineWrapMode( object->textWrapMode() == QTextOption::NoWrap
+                                                      ? QTextEdit::NoWrap : QTextEdit::WidgetWidth );
+                }
+                else
+                {
+                        mTextEditor->setLineWrapMode( QTextEdit::NoWrap );
+                }
+
+                mTextEditor->installEventFilter( this );
+
+                positionTextEditor();
+
+                mTextEditor->show();
+                mTextEditor->setFocus();
+                mTextEditor->selectAll();
+        }
+
+
+        ///
+        /// Place the in-place editor over its object (respecting zoom and rotation)
+        ///
+        void LabelEditor::positionTextEditor()
+        {
+                if ( !mTextEditor )
+                {
+                        return;
+                }
+                if ( !mTextEditObject )
+                {
+                        endTextEdit( false );
+                        return;
+                }
+
+                auto* object = mTextEditObject.data();
+
+                // Object center in label coordinates
+                QPointF c = object->matrix().map( QPointF( object->w().pt()/2, object->h().pt()/2 ) );
+                c += QPointF( object->x0().pt(), object->y0().pt() );
+
+                // Object center in widget pixels
+                QPointF cPix( (c.x() + mX0.pt()) * mScale, (c.y() + mY0.pt()) * mScale );
+
+                // Editor size: object's own (unrotated) size at current zoom, with sane minimums
+                double wPix = qMax( object->w().pt() * mScale, 60.0 );
+                double hPix = qMax( object->h().pt() * mScale, 24.0 );
+
+                // If the object is rotated by roughly 90/270 degrees, swap so the editor covers it
+                double theta = std::fmod( object->rotation(), 180.0 );
+                if ( theta > 45.0 && theta < 135.0 )
+                {
+                        std::swap( wPix, hPix );
+                }
+
+                if ( !mTextEditIsBarcode )
+                {
+                        QFont font( object->fontFamily() );
+                        font.setPixelSize( qMax( 1, int( object->fontSize() * mScale + 0.5 ) ) );
+                        font.setWeight( object->fontWeight() );
+                        font.setItalic( object->fontItalicFlag() );
+                        font.setUnderline( object->fontUnderlineFlag() );
+                        mTextEditor->setFont( font );
+
+                        // Horizontal alignment for all paragraphs
+                        QTextCursor cursor( mTextEditor->document() );
+                        cursor.select( QTextCursor::Document );
+                        QTextBlockFormat fmt;
+                        fmt.setAlignment( object->textHAlign() );
+                        fmt.setLineHeight( object->textLineSpacing()*100, QTextBlockFormat::ProportionalHeight );
+                        cursor.mergeBlockFormat( fmt );
+                }
+                else
+                {
+                        QFont font = this->font();
+                        font.setPixelSize( qBound( 10, int( hPix/3 ), 24 ) );
+                        mTextEditor->setFont( font );
+                        hPix = qMax( 24.0, mTextEditor->fontMetrics().height() * 1.6 );
+                }
+
+                // Grow to fit content height
+                double docH = mTextEditor->document()->size().height() + 4;
+                hPix = qMax( hPix, docH );
+
+                QRect r( int( cPix.x() - wPix/2 ), int( cPix.y() - hPix/2 ), int( wPix ), int( hPix ) );
+                mTextEditor->setGeometry( r );
+        }
+
+
+        ///
+        /// End in-place editing
+        ///
+        void LabelEditor::endTextEdit( bool commit )
+        {
+                if ( !mTextEditor || mTextEditEnding )
+                {
+                        return;
+                }
+                mTextEditEnding = true;
+
+                QTextEdit* editor = mTextEditor.data();
+                mTextEditor = nullptr;
+
+                if ( commit && mTextEditObject && mModel && mUndoRedoModel )
+                {
+                        QString newText = editor->toPlainText();
+                        auto* object = mTextEditObject.data();
+
+                        if ( mTextEditIsBarcode )
+                        {
+                                newText = newText.trimmed();
+                                if ( newText != object->bcData() )
+                                {
+                                        mUndoRedoModel->checkpoint( tr("Edit Barcode Data") );
+                                        object->setBcData( newText );
+                                }
+                        }
+                        else
+                        {
+                                if ( newText != object->text() )
+                                {
+                                        mUndoRedoModel->checkpoint( tr("Edit Text") );
+                                        object->setText( newText );
+                                }
+                        }
+                }
+
+                mTextEditObject = nullptr;
+
+                editor->removeEventFilter( this );
+                editor->hide();
+                editor->deleteLater();
+
+                mTextEditEnding = false;
+
+                setFocus();
+                update();
+        }
+
+
+        ///
+        /// Event filter for in-place editor
+        ///
+        bool LabelEditor::eventFilter( QObject* watched, QEvent* event )
+        {
+                if ( mTextEditor && watched == mTextEditor.data() )
+                {
+                        if ( event->type() == QEvent::KeyPress )
+                        {
+                                auto* keyEvent = static_cast<QKeyEvent*>( event );
+                                bool isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
+
+                                if ( keyEvent->key() == Qt::Key_Escape )
+                                {
+                                        endTextEdit( false );
+                                        return true;
+                                }
+                                if ( isEnter && ( mTextEditIsBarcode || (keyEvent->modifiers() & Qt::ControlModifier) ) )
+                                {
+                                        endTextEdit( true );
+                                        return true;
+                                }
+                        }
+                        else if ( event->type() == QEvent::KeyRelease )
+                        {
+                                // Content may have changed height
+                                QMetaObject::invokeMethod( this, [this]{ positionTextEditor(); }, Qt::QueuedConnection );
+                        }
+                        else if ( event->type() == QEvent::FocusOut )
+                        {
+                                auto* focusEvent = static_cast<QFocusEvent*>( event );
+                                if ( focusEvent->reason() != Qt::PopupFocusReason &&
+                                     focusEvent->reason() != Qt::ActiveWindowFocusReason )
+                                {
+                                        QMetaObject::invokeMethod( this, [this]{ endTextEdit( true ); }, Qt::QueuedConnection );
+                                }
+                        }
+                }
+
+                return QWidget::eventFilter( watched, event );
         }
 
 

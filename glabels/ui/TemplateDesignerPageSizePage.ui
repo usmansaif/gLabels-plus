@@ -116,6 +116,16 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="unitsLabel">
+         <property name="text">
+          <string>Units:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="unitsCombo"/>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -134,6 +144,7 @@
   <tabstop>wSpin</tabstop>
   <tabstop>hSpin</tabstop>
   <tabstop>rollWSpin</tabstop>
+  <tabstop>unitsCombo</tabstop>
  </tabstops>
  <resources/>
  <connections/>

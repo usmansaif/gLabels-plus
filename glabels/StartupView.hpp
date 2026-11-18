@@ -22,7 +22,14 @@
 #define StartupView_hpp
 
 
-#include "ui_StartupView.h"
+#include <QWidget>
+
+
+class QLabel;
+class QListWidget;
+class QListWidgetItem;
+class QStackedWidget;
+class QToolButton;
 
 
 namespace glabels
@@ -33,9 +40,9 @@ namespace glabels
 
 
         ///
-        /// Startup View Widget
+        /// Startup (Welcome) View Widget
         ///
-        class StartupView : public QWidget, public Ui_StartupView
+        class StartupView : public QWidget
         {
                 Q_OBJECT
 
@@ -48,12 +55,21 @@ namespace glabels
 
 
                 /////////////////////////////////
+                // Events
+                /////////////////////////////////
+        protected:
+                void changeEvent( QEvent* event ) override;
+
+
+                /////////////////////////////////
                 // Slots
                 /////////////////////////////////
         private slots:
                 void onNewProjectButtonClicked();
                 void onOpenProjectButtonClicked();
-                void onOpenRecentAction();
+                void onTemplateDesignerButtonClicked();
+                void onRecentItemActivated( QListWidgetItem* item );
+                void onRecentContextMenu( const QPoint& pos );
                 void onSettingsChanged();
                 void onAppearanceChanged();
 
@@ -62,14 +78,30 @@ namespace glabels
                 // Private methods
                 /////////////////////////////////
         private:
-                void loadRecentsMenu();
+                QToolButton* createActionCard( const QString& iconName,
+                                               const QString& title,
+                                               const QString& description );
+                void loadRecentList();
+                void updateStyle();
 
 
                 /////////////////////////////////
                 // Private data
                 /////////////////////////////////
         private:
-                MainWindow* mWindow;
+                MainWindow*     mWindow;
+
+                QLabel*         mLogoLabel;
+                QLabel*         mVersionLabel;
+                QLabel*         mFooterLabel{ nullptr };
+                QLabel*         mBannerLabel{ nullptr };
+                QToolButton*    mNewButton;
+                QToolButton*    mOpenButton;
+                QToolButton*    mDesignerButton;
+                QStackedWidget* mRecentStack;
+                QListWidget*    mRecentList;
+                QLabel*         mRecentEmptyLabel;
+                bool            mUpdatingStyle { false };
 
         };
 

@@ -147,6 +147,20 @@ namespace glabels::model
 
 
                 //
+                // Locked Property (locked objects cannot be selected/moved on the canvas)
+                //
+                bool isLocked() const;
+                void setLocked( bool value );
+
+
+                //
+                // Rotation Property (degrees, derived from transformation matrix)
+                //
+                double rotation() const;
+                void setRotation( double thetaDegs );
+
+
+                //
                 // Transformation Matrix Property
                 //
                 QTransform matrix() const;
@@ -447,6 +461,7 @@ namespace glabels::model
                 Distance          mW;
                 Distance          mH;
                 bool              mLockAspectRatio;
+                bool              mLocked{ false };
 
                 bool              mShadowState;
                 Distance          mShadowX;

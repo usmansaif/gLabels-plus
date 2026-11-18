@@ -21,6 +21,8 @@
 
 #include "ReportBugDialog.hpp"
 
+#include "DialogUtil.hpp"
+
 #include "model/Version.hpp"
 
 #include <QDebug>
@@ -38,13 +40,14 @@ namespace glabels
                 : QDialog(parent)
         {
                 setupUi( this );
+                DialogUtil::makeResizableWindow( this );
 
                 QString title = tr("How to Report a Bug");
                 titleLabel->setText( QString( "<span style='font-size:14pt;font-weight:bold;'>%1</span>" ).arg( title ) );
 
                 QString directionsP1 =
                         tr( "To submit a bug report, click on the button below.  This will open a "
-                            "web browser to the gLabels github issue tracking page." );
+                            "web browser to the gLabels Plus github issue tracking page." );
 
                 p1Label->setText( QString( "<p>%1</p>" ).arg( directionsP1 ) );
 

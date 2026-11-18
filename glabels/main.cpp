@@ -84,12 +84,12 @@ int main( int argc, char **argv )
         // Parse command line
         //
         QCommandLineParser parser;
-        parser.setApplicationDescription( QCoreApplication::translate( "main", "gLabels Label Designer" ) );
+        parser.setApplicationDescription( QCoreApplication::translate( "main", "gLabels Plus Label Designer" ) );
         parser.addHelpOption();
         parser.addVersionOption();
         parser.addOption( { { "V", "Version" }, QCoreApplication::translate( "main", "More detailed version information." ) } );
         parser.addPositionalArgument( "files",
-                                      QCoreApplication::translate( "main", "gLabels project files to open, optionally." ),
+                                      QCoreApplication::translate( "main", "gLabels Plus project files to open, optionally." ),
                                       "[files...]" );
         parser.process( app );
 

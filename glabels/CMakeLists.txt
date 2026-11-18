@@ -27,6 +27,7 @@ set (glabels_sources
   MiniPreviewPixmap.cpp
   NotebookUtil.cpp
   ObjectEditor.cpp
+  ObjectListView.cpp
   PaletteUtil.cpp
   PreferencesDialog.cpp
   PrinterMonitor.cpp
@@ -36,7 +37,9 @@ set (glabels_sources
   PreviewOverlayItem.cpp
   ReportBugDialog.cpp
   RollTemplatePath.cpp
+  Ruler.cpp
   SelectProductDialog.cpp
+  ShortcutsDialog.cpp
   SimplePreview.cpp
   StartupView.cpp
   TemplateDesigner.cpp
@@ -64,13 +67,16 @@ set (glabels_qobject_headers
   MergeTableModel.hpp
   MergeView.hpp
   ObjectEditor.hpp
+  ObjectListView.hpp
   PreferencesDialog.hpp
   PrinterMonitor.hpp
   PrintView.hpp
   PropertiesView.hpp
   Preview.hpp
   ReportBugDialog.hpp
+  Ruler.hpp
   SelectProductDialog.hpp
+  ShortcutsDialog.hpp
   SimplePreview.hpp
   StartupView.hpp
   TemplateDesigner.hpp
@@ -80,16 +86,12 @@ set (glabels_qobject_headers
 )
 
 set (glabels_forms
-  ui/AboutDialog.ui
   ui/EditVariableDialog.ui
   ui/MergeView.ui
   ui/ObjectEditor.ui
-  ui/PreferencesDialog.ui
   ui/PrintView.ui
   ui/PropertiesView.ui
   ui/ReportBugDialog.ui
-  ui/SelectProductDialog.ui
-  ui/StartupView.ui
   ui/TemplateDesignerIntroPage.ui
   ui/TemplateDesignerNamePage.ui
   ui/TemplateDesignerPageSizePage.ui

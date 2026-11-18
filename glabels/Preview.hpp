@@ -53,6 +53,14 @@ namespace glabels
                 /////////////////////////////////
         public:
                 void setRenderer( const model::PageRenderer* renderer );
+
+                /// Index (0-based) of label at a viewport position, or -1
+                int labelAt( const QPoint& viewportPos ) const;
+
+        signals:
+                /// Emitted when user clicks a label position on the sheet (0-based index)
+                void labelClicked( int index, Qt::KeyboardModifiers modifiers );
+
         private slots:
                 void onRendererChanged();
 
@@ -62,6 +70,8 @@ namespace glabels
                 /////////////////////////////////////
         protected:
                 void resizeEvent( QResizeEvent* event ) override;
+                void mousePressEvent( QMouseEvent* event ) override;
+                void mouseMoveEvent( QMouseEvent* event ) override;
 
 
                 /////////////////////////////////

@@ -21,6 +21,8 @@
 
 #include "TemplateDesigner.hpp"
 
+#include "DialogUtil.hpp"
+
 #include "SelectProductDialog.hpp"
 #include "model/Db.hpp"
 #include "model/Distance.hpp"
@@ -36,9 +38,11 @@
 #include "model/Settings.hpp"
 
 #include <QDebug>
+#include <QDoubleSpinBox>
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QSignalBlocker>
 #include <QVBoxLayout>
 
 #include <algorithm>
@@ -114,8 +118,10 @@ namespace glabels
         /// Constructor
         ///
         TemplateDesigner::TemplateDesigner( QWidget* parent )
-                : QWizard(parent)
+                : QWizard(parent), mUnits( model::Settings::units() )
         {
+                DialogUtil::makeResizableWindow( this );
+
                 setWindowTitle( tr("Product Template Designer") );
                 setPixmap( QWizard::LogoPixmap, QIcon::fromTheme( "glabels" ).pixmap( 48 ) );
                 setWizardStyle( QWizard::ModernStyle );
@@ -373,7 +379,7 @@ namespace glabels
         ///
         model::Template TemplateDesigner::buildTemplate()
         {
-                model::Units units = model::Settings::units();
+                model::Units units = mUnits;
 
                 QString brand = field( "name.brand" ).toString();
                 QString part = field( "name.part" ).toString();
@@ -447,7 +453,7 @@ namespace glabels
         ///
         void TemplateDesigner::addLayouts( model::Frame& frame )
         {
-                model::Units units = model::Settings::units();
+                model::Units units = mUnits;
 
                 if ( field( "nLayouts.one" ).toBool() )
                 {
@@ -521,13 +527,24 @@ namespace glabels
         {
                 mIsBasedOnCopy = true;
 
-                model::Units units = model::Settings::units();
+                model::Units units = mUnits;
 
                 setField( "name.brand",       tmplate.brand() );
                 setField( "name.part",        tmplate.part() + QString(" (%1)").arg( tr("Copy") ) );
                 setField( "name.description", tmplate.description() );
 
-                setField( "pageSize.pageSize", model::Db::lookupPaperNameFromId( tmplate.paperId() ) );
+                if ( tmplate.isRoll() )
+                {
+                        setField( "pageSize.pageSize", tr("Roll") );
+                }
+                else if ( tmplate.paperId() == "other" )
+                {
+                        setField( "pageSize.pageSize", tr("Other") );
+                }
+                else
+                {
+                        setField( "pageSize.pageSize", model::Db::lookupPaperNameFromId( tmplate.paperId() ) );
+                }
                 setField( "pageSize.w",        tmplate.pageWidth().inUnits( units ) );
                 setField( "pageSize.h",        tmplate.pageHeight().inUnits( units ) );
                 setField( "pageSize.rollW",    tmplate.rollWidth().inUnits( units ) );
@@ -622,12 +639,53 @@ namespace glabels
 
 
         ///
+        /// Units used by all distance fields of the wizard
+        ///
+        const model::Units& TemplateDesigner::units() const
+        {
+                return mUnits;
+        }
+
+
+        ///
+        /// Change wizard units, converting every distance field already entered
+        ///
+        void TemplateDesigner::setUnits( const model::Units& units )
+        {
+                if ( units.toEnum() == mUnits.toEnum() )
+                {
+                        return;
+                }
+
+                model::Units oldUnits = mUnits;
+                mUnits = units;
+
+                auto convert = [&]( double v ) { return model::Distance( v, oldUnits ).inUnits( units ); };
+
+                // Every QDoubleSpinBox in the wizard holds a distance
+                for ( auto* spin : findChildren<QDoubleSpinBox*>() )
+                {
+                        double value = spin->value();
+                        double min   = spin->minimum();
+                        double max   = spin->maximum();
+
+                        QSignalBlocker blocker( spin );
+                        spin->setSuffix( " " + units.toTrName() );
+                        spin->setDecimals( units.resolutionDigits() );
+                        spin->setSingleStep( units.resolution() );
+                        spin->setRange( convert( min ), convert( max ) );
+                        spin->setValue( convert( value ) );
+                }
+        }
+
+
+        ///
         /// Intro Page
         ///
         TemplateDesignerIntroPage::TemplateDesignerIntroPage( QWidget* parent ) : QWizardPage(parent)
         {
                 setTitle( tr("Welcome") );
-                setSubTitle( tr("Welcome to the gLabels Product Template Designer.") );
+                setSubTitle( tr("Welcome to the gLabels Plus Product Template Designer.") );
                 setPixmap( QWizard::WatermarkPixmap, QPixmap( ":images/TemplateDesigner/wizard-banner.png" ) );
 
                 QWidget* widget = new QWidget;
@@ -779,12 +837,21 @@ namespace glabels
                         hSpin->setValue( paper.height().inUnits( model::Settings::units() ) );
                 }
 
+                unitsCombo->addItem( tr("Inches (in)"),      "in" );
+                unitsCombo->addItem( tr("Millimeters (mm)"), "mm" );
+                unitsCombo->addItem( tr("Centimeters (cm)"), "cm" );
+                unitsCombo->addItem( tr("Points (pt)"),      "pt" );
+                unitsCombo->addItem( tr("Picas (pc)"),       "pc" );
+                unitsCombo->setCurrentIndex( unitsCombo->findData( model::Settings::units().toIdString() ) );
+
                 registerField( "pageSize.pageSize", pageSizeCombo, "currentText" );
                 registerField( "pageSize.w",        wSpin,         "value" );
                 registerField( "pageSize.h",        hSpin,         "value" );
                 registerField( "pageSize.rollW",    rollWSpin,     "value" );
 
                 connect( pageSizeCombo, &QComboBox::currentTextChanged, this, &TemplateDesignerPageSizePage::onComboChanged );
+                connect( unitsCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                         this, &TemplateDesignerPageSizePage::onUnitsComboChanged );
 
                 QVBoxLayout* layout = new QVBoxLayout;
                 layout->addWidget( widget );
@@ -794,6 +861,12 @@ namespace glabels
 
         void TemplateDesignerPageSizePage::initializePage()
         {
+                // Wizard units may have been set by a copied template; keep combo in sync
+                if ( auto td = dynamic_cast<TemplateDesigner*>( wizard() ) )
+                {
+                        QSignalBlocker blocker( unitsCombo );
+                        unitsCombo->setCurrentIndex( unitsCombo->findData( td->units().toIdString() ) );
+                }
         }
 
 
@@ -803,16 +876,37 @@ namespace glabels
         }
 
 
+        void TemplateDesignerPageSizePage::onUnitsComboChanged()
+        {
+                if ( auto td = dynamic_cast<TemplateDesigner*>( wizard() ) )
+                {
+                        model::Units units( unitsCombo->currentData().toString() );
+                        td->setUnits( units );
+
+                        double max = maxPageSize[ units.toEnum() ];
+                        wSpin->setMaximum( max );
+                        hSpin->setMaximum( max );
+                        rollWSpin->setMaximum( max );
+
+                        // Re-read standard paper sizes exactly, avoiding conversion rounding
+                        onComboChanged();
+                }
+        }
+
+
         void TemplateDesignerPageSizePage::onComboChanged()
         {
+                auto td = dynamic_cast<TemplateDesigner*>( wizard() );
+                model::Units units = td ? td->units() : model::Settings::units();
+
                 bool isOther = pageSizeCombo->currentText() == tr("Other");
                 bool isRoll  = pageSizeCombo->currentText() == tr("Roll");
 
                 if ( !isOther && !isRoll )
                 {
                         auto paper = model::Db::lookupPaperFromName( pageSizeCombo->currentText() );
-                        wSpin->setValue( paper.width().inUnits( model::Settings::units() ) );
-                        hSpin->setValue( paper.height().inUnits( model::Settings::units() ) );
+                        wSpin->setValue( paper.width().inUnits( units ) );
+                        hSpin->setValue( paper.height().inUnits( units ) );
                 }
 
                 if ( !isRoll )
@@ -939,13 +1033,13 @@ namespace glabels
                                 alreadyInitialized = true;
 
                                 // Set some realistic defaults
-                                wSpin->setValue( defaultRectW.inUnits( model::Settings::units() ) );
-                                hSpin->setValue( defaultRectH.inUnits( model::Settings::units() ) );
-                                rSpin->setValue( defaultRectR.inUnits( model::Settings::units() ) );
-                                xWasteSpin->setValue( defaultWaste.inUnits( model::Settings::units() ) );
-                                yWasteSpin->setValue( defaultWaste.inUnits( model::Settings::units() ) );
-                                xMarginSpin->setValue( defaultMargin.inUnits( model::Settings::units() ) );
-                                yMarginSpin->setValue( defaultMargin.inUnits( model::Settings::units() ) );
+                                wSpin->setValue( defaultRectW.inUnits( td->units() ) );
+                                hSpin->setValue( defaultRectH.inUnits( td->units() ) );
+                                rSpin->setValue( defaultRectR.inUnits( td->units() ) );
+                                xWasteSpin->setValue( defaultWaste.inUnits( td->units() ) );
+                                yWasteSpin->setValue( defaultWaste.inUnits( td->units() ) );
+                                xMarginSpin->setValue( defaultMargin.inUnits( td->units() ) );
+                                yMarginSpin->setValue( defaultMargin.inUnits( td->units() ) );
                         }
                 }
         }
@@ -1008,9 +1102,9 @@ namespace glabels
                                 alreadyInitialized = true;
 
                                 // Set some realistic defaults
-                                rSpin->setValue( defaultRoundR.inUnits( model::Settings::units() ) );
-                                wasteSpin->setValue( defaultWaste.inUnits( model::Settings::units() ) );
-                                marginSpin->setValue( defaultMargin.inUnits( model::Settings::units() ) );
+                                rSpin->setValue( defaultRoundR.inUnits( td->units() ) );
+                                wasteSpin->setValue( defaultWaste.inUnits( td->units() ) );
+                                marginSpin->setValue( defaultMargin.inUnits( td->units() ) );
                         }
                 }
         }
@@ -1079,10 +1173,10 @@ namespace glabels
                                 alreadyInitialized = true;
 
                                 // Set some realistic defaults
-                                wSpin->setValue( defaultEllipseW.inUnits( model::Settings::units() ) );
-                                hSpin->setValue( defaultEllipseH.inUnits( model::Settings::units() ) );
-                                wasteSpin->setValue( defaultWaste.inUnits( model::Settings::units() ) );
-                                marginSpin->setValue( defaultMargin.inUnits( model::Settings::units() ) );
+                                wSpin->setValue( defaultEllipseW.inUnits( td->units() ) );
+                                hSpin->setValue( defaultEllipseH.inUnits( td->units() ) );
+                                wasteSpin->setValue( defaultWaste.inUnits( td->units() ) );
+                                marginSpin->setValue( defaultMargin.inUnits( td->units() ) );
                         }
                 }
         }
@@ -1163,12 +1257,12 @@ namespace glabels
                                 alreadyInitialized = true;
 
                                 // Set some realistic defaults
-                                r1Spin->setValue( defaultCdR1.inUnits( model::Settings::units() ) );
-                                r2Spin->setValue( defaultCdR2.inUnits( model::Settings::units() ) );
-                                xClipSpin->setValue( defaultCdClip.inUnits( model::Settings::units() ) );
-                                yClipSpin->setValue( defaultCdClip.inUnits( model::Settings::units() ) );
-                                wasteSpin->setValue( defaultWaste.inUnits( model::Settings::units() ) );
-                                marginSpin->setValue( defaultMargin.inUnits( model::Settings::units() ) );
+                                r1Spin->setValue( defaultCdR1.inUnits( td->units() ) );
+                                r2Spin->setValue( defaultCdR2.inUnits( td->units() ) );
+                                xClipSpin->setValue( defaultCdClip.inUnits( td->units() ) );
+                                yClipSpin->setValue( defaultCdClip.inUnits( td->units() ) );
+                                wasteSpin->setValue( defaultWaste.inUnits( td->units() ) );
+                                marginSpin->setValue( defaultMargin.inUnits( td->units() ) );
                         }
                 }
         }

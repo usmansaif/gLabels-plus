@@ -22,7 +22,10 @@
 #define AboutDialog_hpp
 
 
-#include "ui_AboutDialog.h"
+#include <QDialog>
+
+
+class QLabel;
 
 
 namespace glabels
@@ -31,7 +34,7 @@ namespace glabels
         ///
         /// About Dialog Widget
         ///
-        class AboutDialog : public QDialog, public Ui_AboutDialog
+        class AboutDialog : public QDialog
         {
                 Q_OBJECT
 
@@ -49,6 +52,25 @@ namespace glabels
         private slots:
                 void onLicenseButtonClicked();
                 void onWebsiteButtonClicked();
+
+
+                /////////////////////////////////
+                // Private methods
+                /////////////////////////////////
+        private:
+                QWidget* createCard( const QString& title, QWidget* body );
+                QWidget* createPerson( const QString& role, const QString& name,
+                                       const QString& email, const QString& website = QString() );
+                void     applyStyle();
+                void     changeEvent( QEvent* event ) override;
+
+
+                /////////////////////////////////
+                // Private data
+                /////////////////////////////////
+        private:
+                QLabel*  mTitleLabel{ nullptr };
+                bool     mStyling{ false };
 
         };
 

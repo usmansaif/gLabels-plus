@@ -31,6 +31,8 @@
 #include "model/Region.hpp"
 #include "model/Settings.hpp"
 #include "model/Version.hpp"
+#include "model/XmlLabelCreator.hpp"
+#include "model/XmlLabelParser.hpp"
 
 #include "merge/Factory.hpp"
 #include "merge/Merge.hpp"
@@ -490,4 +492,146 @@ void TestModel::saveRestore()
         delete model;
         delete saved;
         delete modified;
+}
+
+
+namespace
+{
+        ModelBoxObject* makeBox( Model& model, double x, double y, double w, double h )
+        {
+                auto* box = new ModelBoxObject();
+                box->setPosition( Distance::pt( x ), Distance::pt( y ) );
+                box->setSize( Distance::pt( w ), Distance::pt( h ) );
+                box->setLineWidth( 0 );
+                model.addObject( box );
+                return box;
+        }
+
+        void setupLabel( Model& model )
+        {
+                Template tmplate( "Test Brand", "part", "desc", "testPaperId", 400, 400 );
+                FrameRect frame( 200, 100, 0, 0, 0, "rect1" );
+                tmplate.addFrame( frame );
+                model.setTmplate( tmplate );
+        }
+}
+
+
+void TestModel::zOrderSteps()
+{
+        Model model;
+        setupLabel( model );
+        auto* a = makeBox( model, 0, 0, 10, 10 );
+        auto* b = makeBox( model, 0, 0, 10, 10 );
+        auto* c = makeBox( model, 0, 0, 10, 10 );
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { a, b, c } ) );
+
+        model.selectObject( a );
+        model.raiseSelection();
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { b, a, c } ) );
+        model.raiseSelection();
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { b, c, a } ) );
+        model.raiseSelection(); // already on top: no change
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { b, c, a } ) );
+
+        model.lowerSelection();
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { b, a, c } ) );
+
+        // Multiple selection keeps relative order
+        model.unselectAll();
+        model.selectObject( a );
+        model.selectObject( c );
+        model.lowerSelection();
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { a, c, b } ) );
+
+        model.moveObjectToIndex( b, 0 );
+        QCOMPARE( model.objectList(), QList<ModelObject*>( { b, a, c } ) );
+}
+
+
+void TestModel::alignReferences()
+{
+        Model model;
+        setupLabel( model );
+        auto* a = makeBox( model, 10, 10, 20, 20 );   // x: 10..30
+        auto* b = makeBox( model, 50, 40, 40, 10 );   // x: 50..90
+
+        // Selection reference: right edges align to right-most edge (x2), not x1
+        model.selectObject( a );
+        model.selectObject( b );
+        model.setAlignReference( Model::ALIGN_TO_SELECTION );
+        model.alignSelectionRight();
+        QCOMPARE( a->getExtent().x2(), Distance::pt( 90 ) );
+        QCOMPARE( b->getExtent().x2(), Distance::pt( 90 ) );
+
+        model.alignSelectionBottom();
+        QCOMPARE( a->getExtent().y2(), Distance::pt( 50 ) );
+        QCOMPARE( b->getExtent().y2(), Distance::pt( 50 ) );
+
+        // Key object reference: last selected object stays put
+        a->setPosition( Distance::pt( 10 ), Distance::pt( 10 ) );
+        b->setPosition( Distance::pt( 50 ), Distance::pt( 40 ) );
+        model.unselectAll();
+        model.selectObject( b );
+        model.selectObject( a ); // a is key
+        QCOMPARE( model.keyObject(), a );
+        model.setAlignReference( Model::ALIGN_TO_KEY_OBJECT );
+        model.alignSelectionLeft();
+        QCOMPARE( a->x0(), Distance::pt( 10 ) );
+        QCOMPARE( b->x0(), Distance::pt( 10 ) );
+
+        // Label reference works with a single object
+        model.unselectAll();
+        model.selectObject( b );
+        model.setAlignReference( Model::ALIGN_TO_LABEL );
+        QVERIFY( model.canAlignSelection() );
+        model.alignSelectionRight();
+        QCOMPARE( b->getExtent().x2(), Distance::pt( 200 ) );
+        model.alignSelectionVCenter();
+        QCOMPARE( (b->getExtent().y1() + b->getExtent().y2())/2, Distance::pt( 50 ) );
+
+        model.setAlignReference( Model::ALIGN_TO_SELECTION );
+        QVERIFY( !model.canAlignSelection() ); // single object, selection reference
+}
+
+
+void TestModel::lockAndRotation()
+{
+        Model model;
+        setupLabel( model );
+        auto* a = makeBox( model, 10, 10, 20, 20 );
+        auto* b = makeBox( model, 50, 40, 40, 10 );
+
+        // Locked objects can't be selected or hit
+        model.setObjectLocked( a, true );
+        model.selectAll();
+        QVERIFY( !a->isSelected() );
+        QVERIFY( b->isSelected() );
+        QVERIFY( model.objectAt( 1.0, Distance::pt( 15 ), Distance::pt( 15 ) ) == nullptr );
+
+        // Lock survives serialization
+        auto buffer = XmlLabelCreator::serializeObjects( model.objectList(), &model );
+        auto objects = XmlLabelParser::deserializeObjects( buffer, &model );
+        QCOMPARE( objects.size(), 2 );
+        QVERIFY( objects[0]->isLocked() );
+        QVERIFY( !objects[1]->isLocked() );
+        qDeleteAll( objects );
+
+        // Rotation about center
+        model.unselectAll();
+        model.selectObject( b );
+        Region r0 = b->getExtent();
+        model.setSelectionRotation( 90 );
+        QCOMPARE( qRound( b->rotation() ), 90 );
+        Region r1 = b->getExtent();
+        QVERIFY( std::fabs( ((r0.x1()+r0.x2())/2 - (r1.x1()+r1.x2())/2).pt() ) < 1e-6 );
+        QVERIFY( std::fabs( ((r0.y1()+r0.y2())/2 - (r1.y1()+r1.y2())/2).pt() ) < 1e-6 );
+        model.setSelectionRotation( 0 );
+        QCOMPARE( b->rotation(), 0.0 );
+
+        // Flipped object keeps flip when rotation set
+        b->flipVert();
+        b->setRotation( 45 );
+        QCOMPARE( qRound( b->rotation() ), 45 );
+        QVERIFY( b->matrix().determinant() < 0 );
 }

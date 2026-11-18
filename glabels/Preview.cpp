@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsRectItem>
+#include <QMouseEvent>
 
 
 //
@@ -69,6 +70,66 @@ namespace glabels
 
                 setFrameStyle( QFrame::NoFrame );
                 setRenderHints( QPainter::Antialiasing );
+
+                setMouseTracking( true );
+                viewport()->setMouseTracking( true );
+        }
+
+
+        ///
+        /// Label index at viewport position
+        ///
+        int Preview::labelAt( const QPoint& viewportPos ) const
+        {
+                if ( !mModel )
+                {
+                        return -1;
+                }
+
+                QPointF p = mapToScene( viewportPos );
+                auto frame = mModel->tmplate().frame();
+                auto path  = frame->path();
+
+                int i = 0;
+                for ( model::Point origin : frame->getOrigins() )
+                {
+                        if ( path.contains( p - QPointF( origin.x().pt(), origin.y().pt() ) ) )
+                        {
+                                return i;
+                        }
+                        i++;
+                }
+                return -1;
+        }
+
+
+        ///
+        /// Mouse press: report clicked label
+        ///
+        void Preview::mousePressEvent( QMouseEvent* event )
+        {
+                if ( event->button() == Qt::LeftButton )
+                {
+                        int i = labelAt( event->pos() );
+                        if ( i >= 0 )
+                        {
+                                emit labelClicked( i, event->modifiers() );
+                                return;
+                        }
+                }
+                QGraphicsView::mousePressEvent( event );
+        }
+
+
+        ///
+        /// Mouse move: hint that labels are clickable
+        ///
+        void Preview::mouseMoveEvent( QMouseEvent* event )
+        {
+                int i = labelAt( event->pos() );
+                viewport()->setCursor( i >= 0 ? Qt::PointingHandCursor : Qt::ArrowCursor );
+                setToolTip( i >= 0 ? tr("Label %1 — click to start printing here, Shift+click to set the last label").arg( i+1 ) : QString() );
+                QGraphicsView::mouseMoveEvent( event );
         }
 
 

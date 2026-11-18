@@ -61,6 +61,7 @@ namespace glabels
                 void onModelChanged();
                 void updateView();
                 void onFormChanged();
+                void onPreviewLabelClicked( int index, Qt::KeyboardModifiers modifiers );
                 void onPrintButtonClicked();
                 void onSystemDialogButtonClicked();
 

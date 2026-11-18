@@ -389,6 +389,10 @@ namespace glabels::model
         {
                 XmlUtil::setLengthAttr( node, "x", object->x0() );
                 XmlUtil::setLengthAttr( node, "y", object->y0() );
+                if ( object->isLocked() )
+                {
+                        XmlUtil::setBoolAttr( node, "locked", true );
+                }
         }
 
 

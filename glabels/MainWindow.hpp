@@ -27,7 +27,13 @@
 #include <model/Model.hpp>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QCloseEvent>
+#include <QComboBox>
+#include <QDockWidget>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
+#include <QSplitter>
 #include <QLabel>
 #include <QListWidget>
 #include <QMainWindow>
@@ -48,6 +54,8 @@ namespace glabels
         class LabelEditor;
         class MergeView;
         class ObjectEditor;
+        class ObjectListView;
+        class Ruler;
         class PrintView;
         class PropertiesView;
         class StartupView;
@@ -84,6 +92,8 @@ namespace glabels
                 /////////////////////////////////////
         protected:
                 void closeEvent( QCloseEvent *event ) override;
+                bool eventFilter( QObject* watched, QEvent* event ) override;
+                QMenu* createPopupMenu() override;
 
 
                 /////////////////////////////////////
@@ -118,11 +128,21 @@ namespace glabels
                 void editSelectAll();
                 void editUnSelectAll();
                 void editPreferences();
+                void editShortcuts();
 
                 void viewFileToolBar( bool );
                 void viewEditorToolBar( bool );
                 void viewGrid( bool );
                 void viewMarkup( bool );
+                void viewRulers( bool );
+                void viewPropertiesUnits( bool );
+                void viewToolBarToggled( bool );
+                void viewDockToggled( bool );
+                void onZoomComboActivated();
+                void onUnitsComboChanged( int index );
+                void onAlignReferenceChanged( int index );
+                void onRotationSpinChanged( double value );
+                void onSidebarContextMenu( const QPoint& pos );
                 void viewZoomIn();
                 void viewZoomOut();
                 void viewZoom1To1();
@@ -137,6 +157,16 @@ namespace glabels
                 void objectsCreateBarcode();
                 void objectsOrderRaise();
                 void objectsOrderLower();
+                void objectsOrderRaiseOne();
+                void objectsOrderLowerOne();
+                void objectsEditText();
+                void mergePreviewToggled( bool );
+                void mergePreviewFirst();
+                void mergePreviewPrevious();
+                void mergePreviewNext();
+                void mergePreviewLast();
+                void onMergeRecordSpinChanged( int value );
+                void onPreviewRecordChanged();
                 void objectsXformRotateLeft();
                 void objectsXformRotateRight();
                 void objectsXformFlipHoriz();
@@ -178,6 +208,12 @@ namespace glabels
                 void createMenus();
                 void createToolBars();
                 void createStatusBar();
+                void createDocks();
+                void registerShortcuts();
+                void applySidebarStyle();
+                void updateChromeVisibility();
+                void syncUnitsCombo();
+                void syncRotationSpin();
 
                 QWidget* createWelcomePage();
                 QWidget* createEditorPage();
@@ -231,10 +267,31 @@ namespace glabels
 
                 QToolBar* fileToolBar;
                 QToolBar* editorToolBar;
+                QToolBar* viewToolBar;
+                QToolBar* arrangeToolBar;
+                QToolBar* mergeToolBar;
+
+                QDockWidget*    mPropertiesDock{ nullptr };
+                QDockWidget*    mObjectListDock{ nullptr };
+                ObjectListView* mObjectListView{ nullptr };
+
+                // Bump when the default toolbar/dock arrangement changes, so stale layouts are ignored
+                static const int STATE_VERSION = 2;
+                QWidget*        mRulerCorner{ nullptr };
+                Ruler*          mHRuler{ nullptr };
+                Ruler*          mVRuler{ nullptr };
+
+                QComboBox*      mZoomCombo;
+                QComboBox*      mUnitsCombo;
+                QComboBox*      mAlignRefCombo;
+                QDoubleSpinBox* mRotationSpin;
+                QSpinBox*       mMergeRecordSpin;
+                QLabel*         mMergeRecordCountLabel;
+                bool            mSyncing{ false };
 
                 QToolBar*            mContents;
-                QToolButton*         mWelcomeButton;
-                QToolButton*         mEditorButton;
+                QToolButton*         mWelcomeButton{ nullptr };
+                QToolButton*         mEditorButton{ nullptr };
                 QToolButton*         mPropertiesButton;
                 QToolButton*         mMergeButton;
                 QToolButton*         mVariablesButton;
@@ -257,7 +314,6 @@ namespace glabels
                 VariablesView*       mVariablesView;
                 PrintView*           mPrintView;
 
-                QLabel*   zoomInfoLabel;
                 QLabel*   cursorInfoLabel;
 
                 QAction*  fileNewAction;
@@ -284,11 +340,19 @@ namespace glabels
                 QAction*  editSelectAllAction;
                 QAction*  editUnSelectAllAction;
                 QAction*  editPreferencesAction;
+                QAction*  editShortcutsAction;
 
                 QAction*  viewFileToolBarAction;
                 QAction*  viewEditorToolBarAction;
                 QAction*  viewGridAction;
                 QAction*  viewMarkupAction;
+                QAction*  viewRulersAction;
+                QAction*  viewPropertiesUnitsAction;
+                QAction*  viewViewToolBarAction;
+                QAction*  viewArrangeToolBarAction;
+                QAction*  viewMergeToolBarAction;
+                QAction*  viewPropertiesDockAction;
+                QAction*  viewObjectListDockAction;
                 QAction*  viewZoomInAction;
                 QAction*  viewZoomOutAction;
                 QAction*  viewZoom1To1Action;
@@ -303,6 +367,18 @@ namespace glabels
                 QAction*  objectsCreateBarcodeAction;
                 QAction*  objectsOrderRaiseAction;
                 QAction*  objectsOrderLowerAction;
+                QAction*  objectsOrderRaiseOneAction;
+                QAction*  objectsOrderLowerOneAction;
+                QAction*  objectsEditTextAction;
+                QAction*  mergePreviewAction;
+                QAction*  mergeFirstAction;
+                QAction*  mergePreviousAction;
+                QAction*  mergeNextAction;
+                QAction*  mergeLastAction;
+                QActionGroup* alignRefGroup;
+                QAction*  alignRefSelectionAction;
+                QAction*  alignRefKeyAction;
+                QAction*  alignRefLabelAction;
                 QAction*  objectsXformRotateLeftAction;
                 QAction*  objectsXformRotateRightAction;
                 QAction*  objectsXformFlipHorizAction;

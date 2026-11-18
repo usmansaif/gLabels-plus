@@ -21,6 +21,8 @@
 
 #include "EditVariableDialog.hpp"
 
+#include "DialogUtil.hpp"
+
 #include "model/Settings.hpp"
 
 #include <QPushButton>
@@ -56,6 +58,7 @@ namespace glabels
                 : QDialog(parent)
         {
                 setupUi( this );
+                DialogUtil::makeResizableWindow( this );
 
                 QRegularExpression reIdentifier( "[a-zA-Z_][a-zA-Z_0-9]*" );
                 nameEdit->setValidator( new QRegularExpressionValidator( reIdentifier ) );

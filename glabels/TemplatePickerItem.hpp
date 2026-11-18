@@ -55,6 +55,12 @@ namespace glabels
         public:
                 void setMode( QListView::ViewMode mode );
 
+                /// Lower-case text used for searching (brand, part, description, sizes)
+                const QString& searchText() const;
+
+                bool isFavorite() const;
+                void setFavorite( bool favorite );
+
 
                 /////////////////////////////////
                 // Properties
@@ -67,7 +73,10 @@ namespace glabels
                 // Private Data
                 /////////////////////////////////
         private:
-                model::Template mTmplate;
+                model::Template     mTmplate;
+                QString             mSearchText;
+                bool                mFavorite{ false };
+                QListView::ViewMode mMode{ QListView::IconMode };
 
         };
 

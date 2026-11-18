@@ -47,6 +47,7 @@ namespace glabels::model
                 enum GridOrigin { ORIGIN_TL, ORIGIN_CENTER };
                 enum ColorScheme { LIGHT_COLOR_SCHEME, DARK_COLOR_SCHEME, SYSTEM_COLOR_SCHEME };
                 enum IconStyle { FLAT_ICON_STYLE, VECTOR_ICON_STYLE };
+                enum SidebarStyle { SIDEBAR_ICONS_AND_TEXT, SIDEBAR_ICONS_ONLY, SIDEBAR_TEXT_ONLY };
 
 
                 /////////////////////////////////
@@ -121,6 +122,52 @@ namespace glabels::model
 
                 static QString startupPath();
                 static void setStartupPath( const QString& path );
+
+                // Editor view
+                static bool showGrid();
+                static void setShowGrid( bool value );
+
+                static bool showMarkup();
+                static void setShowMarkup( bool value );
+
+                static bool showRulers();
+                static void setShowRulers( bool value );
+
+                static bool propertiesShowUnits();
+                static void setPropertiesShowUnits( bool value );
+
+                static int alignReference();
+                static void setAlignReference( int value );
+
+                // Window layout
+                static SidebarStyle sidebarStyle();
+                static void setSidebarStyle( SidebarStyle style );
+
+                static int sidebarIconSize();
+                static void setSidebarIconSize( int size );
+
+                static Qt::ToolButtonStyle toolbarButtonStyle();
+                static void setToolbarButtonStyle( Qt::ToolButtonStyle style );
+
+                // Templates
+                static QStringList favoriteTemplateList();
+                static bool isFavoriteTemplate( const QString& name );
+                static void setFavoriteTemplate( const QString& name, bool favorite );
+
+                // Printing defaults
+                static bool printOutlines();
+                static void setPrintOutlines( bool value );
+
+                static bool printCropMarks();
+                static void setPrintCropMarks( bool value );
+
+                // Reset all preferences to defaults
+                static void resetToDefaults();
+
+        private:
+                static QVariant getValue( const QString& group, const QString& key, const QVariant& defaultValue );
+                static void putValue( const QString& group, const QString& key, const QVariant& value );
+        public:
 
 
         private:
