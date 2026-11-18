@@ -85,6 +85,7 @@ namespace glabels
                 model::Model* model() const;
                 void setModel( model::Model* model );
                 bool isEmpty() const;
+                void closeDocument();
 
 
                 /////////////////////////////////////
@@ -187,6 +188,7 @@ namespace glabels
 
                 void helpContents();
                 void helpReportBug();
+                void helpWhatsNew();
                 void helpAbout();
 
                 void onContextMenuActivate( model::Point );
@@ -296,6 +298,7 @@ namespace glabels
                 QLabel*         mMergeRecordCountLabel;
                 bool            mSyncing{ false };
                 bool            mMaximizeChecked{ false };
+                bool            mCloseConfirmed{ false };   // save prompt already answered
 
                 QToolBar*            mContents;
                 QToolButton*         mWelcomeButton{ nullptr };
@@ -407,6 +410,7 @@ namespace glabels
 
                 QAction*  helpContentsAction;
                 QAction*  helpReportBugAction;
+                QAction*  helpWhatsNewAction;
                 QAction*  helpAboutAction;
 
                 QAction*  contextCutAction;

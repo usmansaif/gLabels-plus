@@ -36,6 +36,7 @@
 #include "ShortcutsDialog.hpp"
 #include "StartupView.hpp"
 #include "VariablesView.hpp"
+#include "WhatsNewDialog.hpp"
 
 #include "model/Db.hpp"
 #include "model/Model.hpp"
@@ -320,11 +321,56 @@ namespace glabels
 
 
         ///
+        /// Close the document shown in this window, without quitting.
+        ///
+        /// With other windows open, this window simply closes.  If it is the
+        /// last window, a fresh window with the welcome screen replaces it so
+        /// the application keeps running.
+        ///
+        void MainWindow::closeDocument()
+        {
+                bool otherWindows = false;
+                for ( QWidget* widget : QApplication::topLevelWidgets() )
+                {
+                        auto* window = qobject_cast<MainWindow*>( widget );
+                        if ( window && window != this && window->isVisible() )
+                        {
+                                otherWindows = true;
+                                break;
+                        }
+                }
+
+                if ( otherWindows )
+                {
+                        close();   // asks to save if needed
+                        return;
+                }
+
+                if ( isEmpty() )
+                {
+                        return;    // already just the welcome screen
+                }
+
+                if ( !isOkToClose() )
+                {
+                        return;    // user cancelled the save prompt
+                }
+
+                auto* welcome = new MainWindow();
+                welcome->show();
+
+                mCloseConfirmed = true;
+                setAttribute( Qt::WA_DeleteOnClose );   // free the closed document
+                close();
+        }
+
+
+        ///
         /// Close Event Handler
         ///
         void MainWindow::closeEvent( QCloseEvent *event )
         {
-                if ( isOkToClose() )
+                if ( mCloseConfirmed || isOkToClose() )
                 {
                         writeSettings();
                         event->accept();
@@ -412,7 +458,7 @@ namespace glabels
                 fileCloseAction = new QAction( tr("&Close"), this );
                 fileCloseAction->setIcon( QIcon::fromTheme( "window-close" ) );
                 fileCloseAction->setShortcut( QKeySequence::Close );
-                fileCloseAction->setStatusTip( tr("Close the current window") );
+                fileCloseAction->setStatusTip( tr("Close the current label (the application stays open)") );
                 connect( fileCloseAction, SIGNAL(triggered()), this, SLOT(fileClose()) );
 
                 fileExitAction = new QAction( tr("E&xit"), this );
@@ -425,37 +471,37 @@ namespace glabels
                 /* Edit actions */
                 editUndoAction = new QAction( tr("Undo"), this );
                 editUndoAction->setIcon( QIcon::fromTheme( "edit-undo", QIcon::fromTheme( "glabels-edit-undo" ) ) );
-                editUndoAction->setShortcut( QKeySequence::Undo );
+                editUndoAction->setShortcut( QKeySequence( tr("Ctrl+Z") ) );
                 editUndoAction->setStatusTip( tr("Undo") );
                 connect( editUndoAction, SIGNAL(triggered()), this, SLOT(editUndo()) );
 
                 editRedoAction = new QAction( tr("Redo"), this );
                 editRedoAction->setIcon( QIcon::fromTheme( "edit-redo", QIcon::fromTheme( "glabels-edit-redo" ) ) );
-                editRedoAction->setShortcut( QKeySequence::Redo );
+                editRedoAction->setShortcuts( { QKeySequence( tr("Ctrl+Y") ), QKeySequence( tr("Ctrl+Shift+Z") ) } );
                 editRedoAction->setStatusTip( tr("Redo") );
                 connect( editRedoAction, SIGNAL(triggered()), this, SLOT(editRedo()) );
 
                 editCutAction = new QAction( tr("Cut"), this );
                 editCutAction->setIcon( QIcon::fromTheme( "glabels-edit-cut" ) );
-                editCutAction->setShortcut( QKeySequence::Cut );
+                editCutAction->setShortcut( QKeySequence( tr("Ctrl+X") ) );   // not QKeySequence::Cut: it includes Shift+Del
                 editCutAction->setStatusTip( tr("Cut the selection") );
                 connect( editCutAction, SIGNAL(triggered()), this, SLOT(editCut()) );
 
                 editCopyAction = new QAction( tr("&Copy"), this );
                 editCopyAction->setIcon( QIcon::fromTheme( "glabels-edit-copy" ) );
-                editCopyAction->setShortcut( QKeySequence::Copy );
+                editCopyAction->setShortcut( QKeySequence( tr("Ctrl+C") ) );
                 editCopyAction->setStatusTip( tr("Copy the selection") );
                 connect( editCopyAction, SIGNAL(triggered()), this, SLOT(editCopy()) );
 
                 editPasteAction = new QAction( tr("&Paste"), this );
                 editPasteAction->setIcon( QIcon::fromTheme( "glabels-edit-paste" ) );
-                editPasteAction->setShortcut( QKeySequence::Paste );
+                editPasteAction->setShortcut( QKeySequence( tr("Ctrl+V") ) );
                 editPasteAction->setStatusTip( tr("Paste the clipboard") );
                 connect( editPasteAction, SIGNAL(triggered()), this, SLOT(editPaste()) );
 
                 editDeleteAction = new QAction( tr("&Delete"), this );
                 editDeleteAction->setIcon( QIcon::fromTheme( "edit-delete", QIcon::fromTheme( "glabels-edit-delete" ) ) );
-                editDeleteAction->setShortcut( QKeySequence::Delete );
+                editDeleteAction->setShortcuts( { QKeySequence( Qt::Key_Delete ), QKeySequence( Qt::SHIFT | Qt::Key_Delete ) } );
                 editDeleteAction->setStatusTip( tr("Delete the selected objects") );
                 connect( editDeleteAction, SIGNAL(triggered()), this, SLOT(editDelete()) );
 
@@ -789,6 +835,10 @@ namespace glabels
                 helpReportBugAction->setStatusTip( tr("Report a bug to the developers") );
                 connect( helpReportBugAction, SIGNAL(triggered()), this, SLOT(helpReportBug()) );
 
+                helpWhatsNewAction = new QAction( tr("What's &New..."), this );
+                helpWhatsNewAction->setStatusTip( tr("See the latest features in gLabels Plus") );
+                connect( helpWhatsNewAction, SIGNAL(triggered()), this, SLOT(helpWhatsNew()) );
+
                 helpAboutAction = new QAction( tr("&About..."), this );
                 helpAboutAction->setIcon( QIcon::fromTheme( "help-about" ) );
                 helpAboutAction->setStatusTip( tr("About gLabels Plus") );
@@ -934,6 +984,7 @@ namespace glabels
                 helpMenu = menuBar()->addMenu( tr("&Help") );
                 helpMenu->addAction( helpContentsAction );
                 helpMenu->addAction( helpReportBugAction );
+                helpMenu->addAction( helpWhatsNewAction );
                 helpMenu->addAction( helpAboutAction );
 
                 contextMenu = new QMenu();
@@ -1192,6 +1243,9 @@ namespace glabels
                                                       mObjectListView->duplicateAction(),
                                                       editDeleteAction } );
 
+                // Duplicate (Ctrl+D) goes in the Edit menu, right after Paste
+                editMenu->insertAction( editDeleteAction, mObjectListView->duplicateAction() );
+
                 // Layer groups are also reachable from the Objects menu (Ctrl+G / Ctrl+Shift+G)
                 objectsMenu->addSeparator();
                 objectsMenu->addAction( mObjectListView->groupAction() );
@@ -1247,7 +1301,7 @@ namespace glabels
                         { fileCloseAction, "file.close" }, { fileExitAction, "file.exit" },
                         { editUndoAction, "edit.undo" }, { editRedoAction, "edit.redo" },
                         { editCutAction, "edit.cut" }, { editCopyAction, "edit.copy" },
-                        { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" }, { editDeleteQuickAction, "edit.deleteQuick" },
+                        { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" }, { mObjectListView->duplicateAction(), "edit.duplicate" }, { editDeleteQuickAction, "edit.deleteQuick" },
                         { editSelectAllAction, "edit.selectAll" }, { editUnSelectAllAction, "edit.unselectAll" },
                         { editPageSetupAction, "edit.pageSetup" }, { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
                         { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" },
@@ -1272,7 +1326,7 @@ namespace glabels
                         { objectsCenterHorizAction, "objects.centerHoriz" }, { objectsCenterVertAction, "objects.centerVert" },
                         { objectsCenterAction, "objects.center" },
                         { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
-                        { helpAboutAction, "help.about" },
+                        { helpWhatsNewAction, "help.whatsNew" }, { helpAboutAction, "help.about" },
                 };
 
                 for ( auto& entry : table )
@@ -2944,6 +2998,16 @@ namespace glabels
         void MainWindow::helpReportBug()
         {
                 Help::displayReportBug( this );
+        }
+
+
+        ///
+        /// Help->What's New Action
+        ///
+        void MainWindow::helpWhatsNew()
+        {
+                WhatsNewDialog dialog( this );
+                dialog.exec();
         }
 
 

@@ -49,6 +49,7 @@
 #include <QMenu>
 #include <QScrollArea>
 #include <QStackedWidget>
+#include <QShortcut>
 #include <QToolButton>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -553,6 +554,18 @@ namespace glabels
                 connect( mProjectList, &QListWidget::itemSelectionChanged, this, &StartupView::onProjectSelectionChanged );
                 connect( mProjectList, &QWidget::customContextMenuRequested, this, &StartupView::onProjectContextMenu );
 
+                // Delete = move to Trash, Shift+Delete = delete permanently
+                auto* projectTrashKey = new QShortcut( QKeySequence( Qt::Key_Delete ), mProjectList );
+                projectTrashKey->setContext( Qt::WidgetShortcut );
+                connect( projectTrashKey, &QShortcut::activated, this, [this]{
+                        if ( !currentProject().isEmpty() ) trashProject( currentProject() );
+                } );
+                auto* projectDeleteKey = new QShortcut( QKeySequence( Qt::SHIFT | Qt::Key_Delete ), mProjectList );
+                projectDeleteKey->setContext( Qt::WidgetShortcut );
+                connect( projectDeleteKey, &QShortcut::activated, this, [this]{
+                        if ( !currentProject().isEmpty() ) deleteProject( currentProject() );
+                } );
+
                 mProjectsEmptyLabel = new QLabel( tr("No projects yet.\n\n"
                                                      "Create a project for each business or client,\n"
                                                      "then add its labels to it.") );
@@ -597,6 +610,24 @@ namespace glabels
                 connect( mProjectLabelList, &QListWidget::itemActivated, this, &StartupView::onProjectLabelActivated );
                 connect( mProjectLabelList, &QListWidget::itemDoubleClicked, this, &StartupView::onProjectLabelActivated );
                 connect( mProjectLabelList, &QWidget::customContextMenuRequested, this, &StartupView::onProjectLabelContextMenu );
+
+                // Delete = move to Trash, Shift+Delete = delete permanently
+                auto selectedLabel = [this]() -> QString {
+                        auto* item = mProjectLabelList->currentItem();
+                        return ( item && item->isSelected() ) ? item->data( Qt::UserRole ).toString() : QString();
+                };
+                auto* labelTrashKey = new QShortcut( QKeySequence( Qt::Key_Delete ), mProjectLabelList );
+                labelTrashKey->setContext( Qt::WidgetShortcut );
+                connect( labelTrashKey, &QShortcut::activated, this, [this, selectedLabel]{
+                        QString path = selectedLabel();
+                        if ( !path.isEmpty() ) trashLabel( path );
+                } );
+                auto* labelDeleteKey = new QShortcut( QKeySequence( Qt::SHIFT | Qt::Key_Delete ), mProjectLabelList );
+                labelDeleteKey->setContext( Qt::WidgetShortcut );
+                connect( labelDeleteKey, &QShortcut::activated, this, [this, selectedLabel]{
+                        QString path = selectedLabel();
+                        if ( !path.isEmpty() ) deleteLabel( path );
+                } );
 
                 mProjectLabelsEmptyLabel = new QLabel();
                 mProjectLabelsEmptyLabel->setObjectName( "startupEmpty" );
@@ -829,8 +860,10 @@ namespace glabels
                                 this, &StartupView::onOpenProjectFolder );
                 menu.addSeparator();
                 menu.addAction( tr("Rename..."), this, [this, project]{ renameProject( project ); } );
-                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash..."),
+                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash...\tDel"),
                                 this, [this, project]{ trashProject( project ); } );
+                menu.addAction( tr("Delete Permanently...\tShift+Del"),
+                                this, [this, project]{ deleteProject( project ); } );
                 menu.exec( mProjectList->viewport()->mapToGlobal( pos ) );
         }
 
@@ -857,8 +890,10 @@ namespace glabels
                         QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( filePath ).absolutePath() ) );
                 } );
                 menu.addSeparator();
-                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash..."),
+                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash...\tDel"),
                                 this, [this, filePath]{ trashLabel( filePath ); } );
+                menu.addAction( tr("Delete Permanently...\tShift+Del"),
+                                this, [this, filePath]{ deleteLabel( filePath ); } );
                 menu.exec( mProjectLabelList->viewport()->mapToGlobal( pos ) );
         }
 
@@ -914,6 +949,43 @@ namespace glabels
                 {
                         QMessageBox::warning( this, tr("Move Project to Trash"), error );
                         return;
+                }
+                QSettings().remove( "Projects/current" );
+                loadProjects();
+        }
+
+
+        void StartupView::deleteProject( const QString& project )
+        {
+                int n = Projects::labelCount( project );
+                QMessageBox box( QMessageBox::Warning, tr("Delete Project Permanently"),
+                                 tr("Permanently delete the project \"%1\"?").arg( project ),
+                                 QMessageBox::NoButton, this );
+                box.setInformativeText( ( n == 1 ? tr("Its folder and 1 label will be deleted.")
+                                                 : tr("Its folder and %1 labels will be deleted.").arg( n ) )
+                                        + " " + tr("This can't be undone.") );
+                auto* del = box.addButton( tr("Delete Permanently"), QMessageBox::DestructiveRole );
+                box.addButton( QMessageBox::Cancel );
+                box.setDefaultButton( QMessageBox::Cancel );
+                box.exec();
+                if ( box.clickedButton() != static_cast<QAbstractButton*>( del ) )
+                {
+                        return;
+                }
+
+                QString error;
+                if ( !Projects::deletePermanently( project, &error ) )
+                {
+                        QMessageBox::warning( this, tr("Delete Project Permanently"), error );
+                        return;
+                }
+                QString dir = Projects::rootDir().absoluteFilePath( project ) + "/";
+                for ( const auto& file : model::Settings::recentFileList() )
+                {
+                        if ( file.startsWith( dir ) )
+                        {
+                                model::Settings::removeFromRecentFileList( file );
+                        }
                 }
                 QSettings().remove( "Projects/current" );
                 loadProjects();
@@ -983,6 +1055,37 @@ namespace glabels
                 if ( !QFile::moveToTrash( filePath ) )
                 {
                         QMessageBox::warning( this, tr("Move Label to Trash"), tr("Couldn't move the label to the Trash.") );
+                        return;
+                }
+                model::Settings::removeFromRecentFileList( filePath );
+                loadProjects( currentProject() );
+        }
+
+
+        void StartupView::deleteLabel( const QString& filePath )
+        {
+                if ( Projects::isOpen( filePath ) )
+                {
+                        QMessageBox::information( this, tr("Delete Label Permanently"),
+                                                  tr("Close this label first, then delete it.") );
+                        return;
+                }
+                QString name = QFileInfo( filePath ).completeBaseName();
+                QMessageBox box( QMessageBox::Warning, tr("Delete Label Permanently"),
+                                 tr("Permanently delete the label \"%1\"?").arg( name ),
+                                 QMessageBox::NoButton, this );
+                box.setInformativeText( tr("This can't be undone.") );
+                auto* del = box.addButton( tr("Delete Permanently"), QMessageBox::DestructiveRole );
+                box.addButton( QMessageBox::Cancel );
+                box.setDefaultButton( QMessageBox::Cancel );
+                box.exec();
+                if ( box.clickedButton() != static_cast<QAbstractButton*>( del ) )
+                {
+                        return;
+                }
+                if ( !QFile::remove( filePath ) )
+                {
+                        QMessageBox::warning( this, tr("Delete Label Permanently"), tr("Couldn't delete the label file.") );
                         return;
                 }
                 model::Settings::removeFromRecentFileList( filePath );

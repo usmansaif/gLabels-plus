@@ -102,9 +102,11 @@ namespace glabels
                 QString currentProject() const;
                 void renameProject( const QString& project );
                 void trashProject( const QString& project );
+                void deleteProject( const QString& project );
                 void renameLabel( const QString& filePath );
                 void duplicateLabel( const QString& filePath );
                 void trashLabel( const QString& filePath );
+                void deleteLabel( const QString& filePath );
                 void watchProjectFolders();
                 void updateStyle();
 

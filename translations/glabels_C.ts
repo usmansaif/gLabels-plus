@@ -635,6 +635,11 @@
         <source>Project name (for example a business or client name):</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Couldn&apos;t delete the project folder. You can delete it yourself from:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PropertiesView</name>
@@ -1417,10 +1422,6 @@
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Close the current window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2253,6 +2254,42 @@
         <source>Measure distances on the label: drag between any two points (Shift = horizontal/vertical, Esc = clear)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>What&apos;s &amp;New...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>See the latest features in gLabels Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close the current label (the application stays open)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+V</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -2598,6 +2635,14 @@ Click the lock column to lock or unlock an object.</source>
     </message>
     <message>
         <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate the selected objects (Ctrl+D)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+D</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3579,10 +3624,6 @@ Click &quot;New label...&quot; to add one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Move to Trash...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Duplicate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3672,6 +3713,54 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>You can restore them from there.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to Trash...	Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Permanently...	Shift+Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Project Permanently</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permanently delete the project &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Its folder and 1 label will be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Its folder and %1 labels will be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This can&apos;t be undone.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Permanently</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Label Permanently</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close this label first, then delete it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permanently delete the label &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t delete the label file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4098,15 +4187,31 @@ Click &quot;New label...&quot; to add one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Single-key tool shortcuts&lt;/b&gt;: press &lt;b&gt;V&lt;/b&gt; for Select, &lt;b&gt;T&lt;/b&gt; for Text, &lt;b&gt;R&lt;/b&gt; for Box, &lt;b&gt;L&lt;/b&gt; for Line, &lt;b&gt;O&lt;/b&gt; for Ellipse, &lt;b&gt;I&lt;/b&gt; for Image, &lt;b&gt;B&lt;/b&gt; for Barcode and &lt;b&gt;E&lt;/b&gt; to erase (delete) the selection. Hover over a toolbar button to see its key; change them in Edit &amp;gt; Keyboard Shortcuts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Quick font search&lt;/b&gt;: type any part of a font name in the Family box (e.g. &lt;i&gt;mono&lt;/i&gt; or &lt;i&gt;sans&lt;/i&gt;) to see matching fonts, each shown in its own typeface. Press Enter or click a match to apply it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;b&gt;Urdu labels&lt;/b&gt;: the &lt;b&gt;Noto Nastaliq Urdu&lt;/b&gt; font (regular and bold) is built in, so Urdu text is shaped, displayed and printed in true Nastaliq on every computer, even if the font isn&apos;t installed. Type &lt;i&gt;urdu&lt;/i&gt; in the Family box to pick it. The Left, Center and Right buttons now align right-to-left text exactly as shown.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Smart guides&lt;/b&gt;: while you move or resize objects, red lines show the distance to the nearest object or the label edge, in your chosen units. Objects snap to other objects&apos; edges and centers and to the label; hold &lt;b&gt;Ctrl&lt;/b&gt; while dragging to turn snapping off.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Measure tool&lt;/b&gt;: press &lt;b&gt;M&lt;/b&gt; (or the ruler button) and drag between any two points to measure. The ends snap to object and label edges, &lt;b&gt;Shift&lt;/b&gt; keeps the line horizontal or vertical, and &lt;b&gt;Esc&lt;/b&gt; clears it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Layer names and groups&lt;/b&gt;: double-click an object in the Objects panel (or press F2) to name it, and press &lt;b&gt;Ctrl+G&lt;/b&gt; to put the selection into a collapsible group. Select a group to move, align or lock all of it at once; &lt;b&gt;Ctrl+Shift+G&lt;/b&gt; ungroups.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Objects panel toolbar&lt;/b&gt; at the top of the panel, plus a right-click menu: rename, lock, &lt;b&gt;duplicate&lt;/b&gt;, group, reorder and delete. Each button is enabled only when it applies.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Single-key tool shortcuts&lt;/b&gt;: press &lt;b&gt;V&lt;/b&gt; for Select, &lt;b&gt;T&lt;/b&gt; for Text, &lt;b&gt;R&lt;/b&gt; for Box, &lt;b&gt;L&lt;/b&gt; for Line, &lt;b&gt;O&lt;/b&gt; for Ellipse, &lt;b&gt;I&lt;/b&gt; for Image, &lt;b&gt;B&lt;/b&gt; for Barcode, &lt;b&gt;M&lt;/b&gt; to measure and &lt;b&gt;E&lt;/b&gt; to erase (delete) the selection. Hover over a toolbar button to see its key; change them in Edit &amp;gt; Keyboard Shortcuts.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

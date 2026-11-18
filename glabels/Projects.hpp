@@ -81,6 +81,7 @@ namespace glabels
                 static bool create( const QString& project, QString* error );
                 static bool rename( const QString& project, const QString& newName, QString* error );
                 static bool moveToTrash( const QString& project, QString* error );
+                static bool deletePermanently( const QString& project, QString* error );
 
                 /// Path for a new label called labelName in project (not created)
                 static QString labelPath( const QString& project, const QString& labelName );

@@ -102,9 +102,20 @@ namespace glabels
 
                 const QList<Section> sections = {
                         { tr("Latest additions"), {
+                                tr("<b>Smart guides</b>: while you move or resize objects, red lines show the distance "
+                                   "to the nearest object or the label edge, in your chosen units. Objects snap to other "
+                                   "objects' edges and centers and to the label; hold <b>Ctrl</b> while dragging to turn snapping off."),
+                                tr("<b>Measure tool</b>: press <b>M</b> (or the ruler button) and drag between any two points "
+                                   "to measure. The ends snap to object and label edges, <b>Shift</b> keeps the line "
+                                   "horizontal or vertical, and <b>Esc</b> clears it."),
+                                tr("<b>Layer names and groups</b>: double-click an object in the Objects panel (or press F2) "
+                                   "to name it, and press <b>Ctrl+G</b> to put the selection into a collapsible group. "
+                                   "Select a group to move, align or lock all of it at once; <b>Ctrl+Shift+G</b> ungroups."),
+                                tr("<b>Objects panel toolbar</b> at the top of the panel, plus a right-click menu: rename, lock, "
+                                   "<b>duplicate</b>, group, reorder and delete. Each button is enabled only when it applies."),
                                 tr("<b>Single-key tool shortcuts</b>: press <b>V</b> for Select, <b>T</b> for Text, "
                                    "<b>R</b> for Box, <b>L</b> for Line, <b>O</b> for Ellipse, <b>I</b> for Image, "
-                                   "<b>B</b> for Barcode and <b>E</b> to erase (delete) the selection. "
+                                   "<b>B</b> for Barcode, <b>M</b> to measure and <b>E</b> to erase (delete) the selection. "
                                    "Hover over a toolbar button to see its key; change them in Edit &gt; Keyboard Shortcuts."),
                                 tr("<b>Quick font search</b>: type any part of a font name in the Family box "
                                    "(e.g. <i>mono</i> or <i>sans</i>) to see matching fonts, each shown in its own typeface. "

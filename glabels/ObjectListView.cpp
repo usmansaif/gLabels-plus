@@ -65,7 +65,9 @@ namespace glabels
                 connect( mRenameAction, &QAction::triggered, this, &ObjectListView::renameCurrent );
 
                 mDuplicateAction = new QAction( QIcon::fromTheme( "glabels-edit-copy" ), tr("D&uplicate"), this );
-                mDuplicateAction->setToolTip( tr("Duplicate the selected objects") );
+                mDuplicateAction->setToolTip( tr("Duplicate the selected objects (Ctrl+D)") );
+                mDuplicateAction->setStatusTip( tr("Duplicate the selected objects") );
+                mDuplicateAction->setShortcut( QKeySequence( tr("Ctrl+D") ) );
                 connect( mDuplicateAction, &QAction::triggered, this, &ObjectListView::duplicateSelection );
 
                 mGroupAction = new QAction( QIcon::fromTheme( "glabels-group" ), tr("&Group"), this );

@@ -342,7 +342,7 @@ namespace glabels
         ///
         void File::close( MainWindow *window )
         {
-                window->close();
+                window->closeDocument();
         }
 
 

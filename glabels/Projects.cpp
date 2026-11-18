@@ -259,6 +259,24 @@ namespace glabels
         }
 
 
+        bool Projects::deletePermanently( const QString& project, QString* error )
+        {
+                if ( isOpen( path( project ) ) )
+                {
+                        *error = tr("Close the labels from \"%1\" that are open first.").arg( project );
+                        return false;
+                }
+                if ( !QDir( path( project ) ).removeRecursively() )
+                {
+                        *error = tr("Couldn't delete the project folder. "
+                                    "You can delete it yourself from:\n%1")
+                                 .arg( QDir::toNativeSeparators( path( project ) ) );
+                        return false;
+                }
+                return true;
+        }
+
+
         QString Projects::labelPath( const QString& project, const QString& labelName )
         {
                 return QDir( path( project ) ).absoluteFilePath( labelName + LABEL_SUFFIX );
