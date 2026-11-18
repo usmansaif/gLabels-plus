@@ -393,6 +393,14 @@ namespace glabels::model
                 {
                         XmlUtil::setBoolAttr( node, "locked", true );
                 }
+                if ( !object->name().isEmpty() )
+                {
+                        XmlUtil::setStringAttr( node, "name", object->name() );
+                }
+                if ( !object->group().isEmpty() )
+                {
+                        XmlUtil::setStringAttr( node, "group", object->group() );
+                }
         }
 
 

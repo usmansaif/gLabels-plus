@@ -126,6 +126,7 @@ namespace glabels
                 void createImageMode();
                 void createTextMode();
                 void createBarcodeMode();
+                void measureMode();
 
 
                 /////////////////////////////////////
@@ -184,6 +185,16 @@ namespace glabels
                 void drawFgLayer( QPainter* painter );
                 void drawHighlightLayer( QPainter* painter );
                 void drawSelectRegionLayer( QPainter* painter );
+                void drawGuidesLayer( QPainter* painter );
+                void drawMeasureLayer( QPainter* painter );
+
+                /* Smart guides and measuring */
+                QRectF        selectionExtent() const;
+                QList<QRectF> otherExtents() const;
+                QRectF        labelRect() const;
+                QPointF       snapMeasurePoint( const QPointF& p ) const;
+                QRectF        snapMoveBox( const QRectF& box );
+                QString       formatDistance( double pts ) const;
 
 
                 /////////////////////////////////////
@@ -205,7 +216,9 @@ namespace glabels
                         ArrowMove,
                         ArrowResize,
                         CreateIdle,
-                        CreateDrag
+                        CreateDrag,
+                        MeasureIdle,
+                        MeasureDrag
                 };
 
                 enum CreateType {
@@ -244,6 +257,14 @@ namespace glabels
                 /* ArrowMove state */
                 model::Distance      mMoveLastX;
                 model::Distance      mMoveLastY;
+                QPointF              mMoveStart;      // pointer at drag start (pt)
+                QRectF               mMoveStartBox;   // selection extent at drag start (pt)
+                QList<QLineF>        mAlignGuides;    // alignment lines to draw (pt)
+
+                /* Measure tool */
+                bool                 mMeasureVisible{ false };
+                QPointF              mMeasureP1;
+                QPointF              mMeasureP2;
 
                 /* ArrowResize state */
                 model::ModelObject*     mResizeObject;

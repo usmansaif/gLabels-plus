@@ -154,6 +154,20 @@ namespace glabels::model
 
 
                 //
+                // Name Property (optional user-given layer name; empty = automatic)
+                //
+                QString name() const;
+                void setName( const QString& value );
+
+
+                //
+                // Group Property (name of the layer group this object belongs to; empty = none)
+                //
+                QString group() const;
+                void setGroup( const QString& value );
+
+
+                //
                 // Rotation Property (degrees, derived from transformation matrix)
                 //
                 double rotation() const;
@@ -462,6 +476,8 @@ namespace glabels::model
                 Distance          mH;
                 bool              mLockAspectRatio;
                 bool              mLocked{ false };
+                QString           mName;
+                QString           mGroup;
 
                 bool              mShadowState;
                 Distance          mShadowX;

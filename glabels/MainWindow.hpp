@@ -152,6 +152,7 @@ namespace glabels
                 void viewZoomToFit();
 
                 void objectsArrowMode();
+                void objectsMeasureMode();
                 void objectsCreateText();
                 void objectsCreateBox();
                 void objectsCreateLine();
@@ -369,6 +370,7 @@ namespace glabels
                 QAction*  viewZoomToFitAction;
 
                 QAction*  objectsArrowModeAction;
+                QAction*  objectsMeasureModeAction;
                 QAction*  objectsCreateTextAction;
                 QAction*  objectsCreateBoxAction;
                 QAction*  objectsCreateLineAction;

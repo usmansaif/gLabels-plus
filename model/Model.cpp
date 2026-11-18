@@ -906,6 +906,88 @@ namespace glabels::model
 
 
         ///
+        /// Put objects into one layer group.  Members are kept together in the
+        /// stacking order, at the position of the top-most one.
+        ///
+        void Model::groupObjects( const QList<ModelObject*>& objects, const QString& groupName )
+        {
+                if ( objects.isEmpty() || groupName.trimmed().isEmpty() )
+                {
+                        return;
+                }
+
+                QList<ModelObject*> members;
+                QList<ModelObject*> others;
+                int below = 0;   // non-members that stay below the group
+                int topIndex = -1;
+                for ( int i = 0; i < mObjectList.size(); i++ )
+                {
+                        if ( objects.contains( mObjectList[i] ) )
+                        {
+                                topIndex = i;
+                        }
+                }
+                if ( topIndex < 0 )
+                {
+                        return;
+                }
+                for ( int i = 0; i < mObjectList.size(); i++ )
+                {
+                        ModelObject* object = mObjectList[i];
+                        if ( objects.contains( object ) )
+                        {
+                                members << object;
+                        }
+                        else
+                        {
+                                others << object;
+                                if ( i < topIndex )
+                                {
+                                        below++;
+                                }
+                        }
+                }
+
+                mObjectList = others.mid( 0, below ) + members + others.mid( below );
+
+                for ( ModelObject* object : members )
+                {
+                        object->blockSignals( true );
+                        object->setGroup( groupName );
+                        object->blockSignals( false );
+                }
+
+                setModified();
+                emit changed();
+        }
+
+
+        ///
+        /// Remove objects from their layer groups
+        ///
+        void Model::ungroupObjects( const QList<ModelObject*>& objects )
+        {
+                bool changedFlag = false;
+                for ( ModelObject* object : objects )
+                {
+                        if ( mObjectList.contains( object ) && !object->group().isEmpty() )
+                        {
+                                object->blockSignals( true );
+                                object->setGroup( QString() );
+                                object->blockSignals( false );
+                                changedFlag = true;
+                        }
+                }
+
+                if ( changedFlag )
+                {
+                        setModified();
+                        emit changed();
+                }
+        }
+
+
+        ///
         /// Lock/unlock object
         ///
         void Model::setObjectLocked( ModelObject* object, bool locked )

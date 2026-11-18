@@ -2245,6 +2245,14 @@
         <source>Delete the selected objects with a single key</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measure distances on the label: drag between any two points (Shift = horizontal/vertical, Esc = clear)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -2439,11 +2447,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Objects from top-most to bottom-most.
-Click the lock column to lock or unlock an object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2489,6 +2492,112 @@ Click the lock column to lock or unlock an object.</source>
     </message>
     <message>
         <source>Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects from top-most to bottom-most.
+Double-click a name (or press F2) to rename it.
+Click the lock column to lock or unlock an object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D&amp;uplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate the selected objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock or unlock the selected objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename the selected object or group (F2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Put the selected objects into a layer group (Ctrl+G)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>U&amp;ngroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the selected objects from their group (Ctrl+Shift+G)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group locked (click to unlock)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to lock the whole group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock the selected objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock the selected objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

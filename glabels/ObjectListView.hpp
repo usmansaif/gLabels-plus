@@ -24,6 +24,8 @@
 
 #include "model/Model.hpp"
 
+#include <QMenu>
+#include <QSet>
 #include <QTreeWidget>
 #include <QToolBar>
 #include <QWidget>
@@ -39,7 +41,9 @@ namespace glabels
         /// Object List ("Layers") panel
         ///
         /// Lists label objects from top-most to bottom-most, keeps selection in sync
-        /// with the editor and allows objects to be locked/unlocked.
+        /// with the editor, and lets objects be renamed, locked, duplicated and
+        /// organized into layer groups.  Actions live in a toolbar at the top of
+        /// the panel and are enabled according to the selection.
         ///
         class ObjectListView : public QWidget
         {
@@ -50,22 +54,53 @@ namespace glabels
 
                 void setModel( model::Model* model, UndoRedoModel* undoRedoModel );
                 void addToolBarActions( const QList<QAction*>& actions );
+                void setContextMenu( QMenu* menu );
+
+                QAction* lockAction() const { return mLockAction; }
+                QAction* renameAction() const { return mRenameAction; }
+                QAction* duplicateAction() const { return mDuplicateAction; }
+                QAction* groupAction() const { return mGroupAction; }
+                QAction* ungroupAction() const { return mUngroupAction; }
 
         private slots:
                 void rebuild();
                 void syncSelectionFromModel();
                 void onItemSelectionChanged();
                 void onItemClicked( QTreeWidgetItem* item, int column );
+                void onItemChanged( QTreeWidgetItem* item, int column );
+                void onContextMenuRequested( const QPoint& pos );
+
+                void toggleLock();
+                void renameCurrent();
+                void duplicateSelection();
+                void groupSelection();
+                void ungroupSelection();
 
         private:
                 static QString describe( const model::ModelObject* object );
                 static QIcon iconFor( const model::ModelObject* object );
+                static bool isGroupItem( const QTreeWidgetItem* item );
+
                 model::ModelObject* objectFor( QTreeWidgetItem* item ) const;
+                QList<model::ModelObject*> objectsFor( const QList<QTreeWidgetItem*>& items ) const;
+                QList<model::ModelObject*> selectedObjects() const;
+                QString nextGroupName() const;
+                void setLocked( const QList<model::ModelObject*>& objects, bool lock );
+                void updateActions();
 
                 model::Model*  mModel{ nullptr };
                 UndoRedoModel* mUndoRedoModel{ nullptr };
                 QTreeWidget*   mTree;
                 QToolBar*      mToolBar;
+                QMenu*         mContextMenu{ nullptr };
+
+                QAction*       mLockAction;
+                QAction*       mRenameAction;
+                QAction*       mDuplicateAction;
+                QAction*       mGroupAction;
+                QAction*       mUngroupAction;
+
+                QSet<QString>  mCollapsedGroups;
                 bool           mBlocked{ false };
         };
 

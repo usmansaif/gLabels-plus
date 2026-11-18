@@ -181,6 +181,8 @@ namespace glabels::model
                 void raiseSelection();
                 void lowerSelection();
                 void moveObjectToIndex( ModelObject* object, int index );
+                void groupObjects( const QList<ModelObject*>& objects, const QString& groupName );
+                void ungroupObjects( const QList<ModelObject*>& objects );
                 void setObjectLocked( ModelObject* object, bool locked );
                 void setSelectionRotation( double thetaDegs );
                 void setAlignReference( AlignReference ref );

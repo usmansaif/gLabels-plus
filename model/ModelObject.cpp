@@ -116,6 +116,8 @@ namespace glabels::model
                 mH               = object->mH;
                 mLockAspectRatio = object->mLockAspectRatio;
                 mLocked          = object->mLocked;
+                mName            = object->mName;
+                mGroup           = object->mGroup;
 
                 mShadowState     = object->mShadowState;
                 mShadowX         = object->mShadowX;
@@ -307,6 +309,52 @@ namespace glabels::model
                         {
                                 mSelectedFlag = false;
                         }
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Name Property Getter
+        ///
+        QString ModelObject::name() const
+        {
+                return mName;
+        }
+
+
+        ///
+        /// Name Property Setter
+        ///
+        void ModelObject::setName( const QString& value )
+        {
+                QString name = value.trimmed();
+                if ( mName != name )
+                {
+                        mName = name;
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// Group Property Getter
+        ///
+        QString ModelObject::group() const
+        {
+                return mGroup;
+        }
+
+
+        ///
+        /// Group Property Setter
+        ///
+        void ModelObject::setGroup( const QString& value )
+        {
+                QString group = value.trimmed();
+                if ( mGroup != group )
+                {
+                        mGroup = group;
                         emit changed();
                 }
         }

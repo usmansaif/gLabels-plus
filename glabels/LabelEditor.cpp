@@ -76,6 +76,10 @@ namespace
 
         const QColor  selectRegionFillColor( 192, 192, 255, 128 );
         const QColor  selectRegionOutlineColor( 0, 0, 255, 128 );
+
+        const QColor  guideColor( 242, 72, 34 );          // smart guides and measure tape
+        const QColor  guideTextColor( 255, 255, 255 );
+        const double  snapTolerancePixels = 5;
         const double  selectRegionOutlineWidthPixels = 3;
 }
 
@@ -402,6 +406,26 @@ namespace glabels
                 setCursor( Qt::ArrowCursor );
 
                 mState = IdleState;
+                mMeasureVisible = false;
+                update();
+        }
+
+
+        ///
+        /// Measure mode: drag anywhere to measure a distance
+        ///
+        void
+        LabelEditor::measureMode()
+        {
+                if ( isTextEditActive() )
+                {
+                        endTextEdit( true );
+                }
+                setCursor( Qt::CrossCursor );
+
+                mState = MeasureIdle;
+                mMeasureVisible = false;
+                update();
         }
 
 
@@ -415,6 +439,7 @@ namespace glabels
 
                 mCreateObjectType = Box;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -428,6 +453,7 @@ namespace glabels
 
                 mCreateObjectType = Ellipse;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -441,6 +467,7 @@ namespace glabels
 
                 mCreateObjectType = Image;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -454,6 +481,7 @@ namespace glabels
 
                 mCreateObjectType = Line;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -467,6 +495,7 @@ namespace glabels
 
                 mCreateObjectType = Text;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -480,6 +509,7 @@ namespace glabels
 
                 mCreateObjectType = Barcode;
                 mState = CreateIdle;
+                mMeasureVisible = false;
         }
 
 
@@ -667,6 +697,9 @@ namespace glabels
 
                                                 mMoveLastX = xWorld;
                                                 mMoveLastY = yWorld;
+                                                mMoveStart = QPointF( xWorld.pt(), yWorld.pt() );
+                                                mMoveStartBox = selectionExtent();
+                                                mAlignGuides.clear();
 
                                                 mState = ArrowMove;
                                         }
@@ -731,6 +764,19 @@ namespace glabels
                                         mCreateY0 = yWorld;
 
                                         mState = CreateDrag;
+                                }
+                                break;
+
+
+                                case MeasureIdle:
+                                case MeasureDrag:
+                                {
+                                        QPointF p = snapMeasurePoint( QPointF( xWorld.pt(), yWorld.pt() ) );
+                                        mMeasureP1 = p;
+                                        mMeasureP2 = p;
+                                        mMeasureVisible = true;
+                                        mState = MeasureDrag;
+                                        update();
                                 }
                                 break;
 
@@ -815,8 +861,31 @@ namespace glabels
 
                         case ArrowMove:
                                 mUndoRedoModel->checkpoint( tr("Move") );
-                                mModel->moveSelection( (xWorld - mMoveLastX),
-                                                       (yWorld - mMoveLastY) );
+                                if ( mMoveStartBox.isValid() )
+                                {
+                                        // Move to where the pointer says, then snap to
+                                        // other objects and the label (Ctrl = no snapping)
+                                        QRectF box = mMoveStartBox.translated( xWorld.pt() - mMoveStart.x(),
+                                                                               yWorld.pt() - mMoveStart.y() );
+                                        mAlignGuides.clear();
+                                        if ( !(event->modifiers() & Qt::ControlModifier) )
+                                        {
+                                                box = snapMoveBox( box );
+                                        }
+                                        QRectF current = selectionExtent();
+                                        double dx = box.left() - current.left();
+                                        double dy = box.top()  - current.top();
+                                        if ( dx != 0 || dy != 0 )
+                                        {
+                                                mModel->moveSelection( model::Distance::pt( dx ), model::Distance::pt( dy ) );
+                                        }
+                                        update();
+                                }
+                                else
+                                {
+                                        mModel->moveSelection( (xWorld - mMoveLastX),
+                                                               (yWorld - mMoveLastY) );
+                                }
                                 mMoveLastX = xWorld;
                                 mMoveLastY = yWorld;
                                 break;
@@ -827,7 +896,28 @@ namespace glabels
                                 break;
 
                         case CreateIdle:
+                        case MeasureIdle:
                                 break;
+
+                        case MeasureDrag:
+                        {
+                                QPointF p = snapMeasurePoint( QPointF( xWorld.pt(), yWorld.pt() ) );
+                                if ( event->modifiers() & Qt::ShiftModifier )
+                                {
+                                        // Constrain to horizontal or vertical
+                                        if ( qAbs( p.x() - mMeasureP1.x() ) >= qAbs( p.y() - mMeasureP1.y() ) )
+                                        {
+                                                p.setY( mMeasureP1.y() );
+                                        }
+                                        else
+                                        {
+                                                p.setX( mMeasureP1.x() );
+                                        }
+                                }
+                                mMeasureP2 = p;
+                                update();
+                        }
+                        break;
 
                         case CreateDrag:
                                 switch (mCreateObjectType)
@@ -899,6 +989,21 @@ namespace glabels
 
                                 case ArrowResize:
                                         mState = IdleState;
+                                        update();
+                                        break;
+
+                                case ArrowMove:
+                                        mAlignGuides.clear();
+                                        mState = IdleState;
+                                        update();
+                                        break;
+
+                                case MeasureDrag:
+                                        mState = MeasureIdle;   // keep the measurement on screen
+                                        update();
+                                        break;
+
+                                case MeasureIdle:
                                         break;
 
                                 case ArrowSelectRegion:
@@ -1225,6 +1330,27 @@ namespace glabels
         void
         LabelEditor::keyPressEvent( QKeyEvent* event )
         {
+                if ( mState == MeasureIdle || mState == MeasureDrag )
+                {
+                        if ( event->key() == Qt::Key_Escape )
+                        {
+                                if ( mMeasureVisible )
+                                {
+                                        mMeasureVisible = false;   // first Esc clears the measurement
+                                        mState = MeasureIdle;
+                                        update();
+                                }
+                                else
+                                {
+                                        arrowMode();               // second Esc leaves the tool
+                                        emit modeChanged();
+                                }
+                                return;
+                        }
+                        QWidget::keyPressEvent( event );
+                        return;
+                }
+
                 if ( mState == IdleState && mModel )
                 {
                         // Shift+arrow moves in larger steps
@@ -1316,6 +1442,8 @@ namespace glabels
                         drawFgLayer( &painter );
                         drawHighlightLayer( &painter );
                         drawSelectRegionLayer( &painter );
+                        drawGuidesLayer( &painter );
+                        drawMeasureLayer( &painter );
                 }
         }
 
@@ -1993,6 +2121,401 @@ namespace glabels
                 }
 
                 return QWidget::eventFilter( watched, event );
+        }
+
+
+
+        ///////////////////////////////////////////////////////////////////////
+        // Smart guides and measure tape
+        ///////////////////////////////////////////////////////////////////////
+
+        namespace
+        {
+                struct SnapLine
+                {
+                        double v;      // x (vertical line) or y (horizontal line), in points
+                        QRectF src;    // rectangle the line belongs to
+                };
+
+                void addSnapLines( QList<SnapLine>& xs, QList<SnapLine>& ys, const QRectF& r )
+                {
+                        xs << SnapLine{ r.left(), r } << SnapLine{ r.center().x(), r } << SnapLine{ r.right(), r };
+                        ys << SnapLine{ r.top(), r }  << SnapLine{ r.center().y(), r } << SnapLine{ r.bottom(), r };
+                }
+
+                /// Smallest correction that brings one of the features onto a snap line
+                bool bestSnap( const QList<SnapLine>& lines, const QList<double>& features,
+                               double tol, double& delta )
+                {
+                        bool found = false;
+                        for ( const auto& line : lines )
+                        {
+                                for ( double f : features )
+                                {
+                                        double d = line.v - f;
+                                        if ( qAbs( d ) <= tol && ( !found || qAbs( d ) < qAbs( delta ) ) )
+                                        {
+                                                delta = d;
+                                                found = true;
+                                        }
+                                }
+                        }
+                        return found;
+                }
+        }
+
+
+        ///
+        /// Bounding box of the selected objects, in points (null if nothing is selected)
+        ///
+        QRectF
+        LabelEditor::selectionExtent() const
+        {
+                QRectF box;
+                if ( mModel )
+                {
+                        for ( auto* object : mModel->objectList() )
+                        {
+                                if ( object->isSelected() )
+                                {
+                                        QRectF r = object->getExtent().rect().normalized();
+                                        box = box.isNull() ? r : box.united( r );
+                                }
+                        }
+                }
+                return box;
+        }
+
+
+        ///
+        /// Bounding boxes of the objects that are not selected, in points
+        ///
+        QList<QRectF>
+        LabelEditor::otherExtents() const
+        {
+                QList<QRectF> list;
+                if ( mModel )
+                {
+                        for ( auto* object : mModel->objectList() )
+                        {
+                                if ( !object->isSelected() )
+                                {
+                                        list << object->getExtent().rect().normalized();
+                                }
+                        }
+                }
+                return list;
+        }
+
+
+        QRectF
+        LabelEditor::labelRect() const
+        {
+                return QRectF( 0, 0, labelWidth().pt(), labelHeight().pt() );
+        }
+
+
+        ///
+        /// Snap a measure-tape end to nearby object edges/centers and label edges/center
+        ///
+        QPointF
+        LabelEditor::snapMeasurePoint( const QPointF& p ) const
+        {
+                QList<SnapLine> xs, ys;
+                addSnapLines( xs, ys, labelRect() );
+                if ( mModel )
+                {
+                        for ( auto* object : mModel->objectList() )
+                        {
+                                addSnapLines( xs, ys, object->getExtent().rect().normalized() );
+                        }
+                }
+
+                double tol = snapTolerancePixels / mScale;
+                QPointF out = p;
+                double d = 0;
+                if ( bestSnap( xs, { p.x() }, tol, d ) ) out.rx() += d;
+                d = 0;
+                if ( bestSnap( ys, { p.y() }, tol, d ) ) out.ry() += d;
+                return out;
+        }
+
+
+        ///
+        /// Snap a moving selection box to other objects and to the label, and
+        /// record the alignment lines that now match
+        ///
+        QRectF
+        LabelEditor::snapMoveBox( const QRectF& box )
+        {
+                QList<SnapLine> xs, ys;
+                addSnapLines( xs, ys, labelRect() );
+                for ( const auto& r : otherExtents() )
+                {
+                        addSnapLines( xs, ys, r );
+                }
+
+                double tol = snapTolerancePixels / mScale;
+                QRectF out = box;
+                double d = 0;
+                if ( bestSnap( xs, { box.left(), box.center().x(), box.right() }, tol, d ) )
+                {
+                        out.translate( d, 0 );
+                }
+                d = 0;
+                if ( bestSnap( ys, { box.top(), box.center().y(), box.bottom() }, tol, d ) )
+                {
+                        out.translate( 0, d );
+                }
+
+                const double eps = 0.01;
+                for ( const auto& line : xs )
+                {
+                        for ( double f : { out.left(), out.center().x(), out.right() } )
+                        {
+                                if ( qAbs( line.v - f ) < eps )
+                                {
+                                        mAlignGuides << QLineF( line.v, qMin( out.top(), line.src.top() ),
+                                                                line.v, qMax( out.bottom(), line.src.bottom() ) );
+                                }
+                        }
+                }
+                for ( const auto& line : ys )
+                {
+                        for ( double f : { out.top(), out.center().y(), out.bottom() } )
+                        {
+                                if ( qAbs( line.v - f ) < eps )
+                                {
+                                        mAlignGuides << QLineF( qMin( out.left(), line.src.left() ), line.v,
+                                                                qMax( out.right(), line.src.right() ), line.v );
+                                }
+                        }
+                }
+
+                return out;
+        }
+
+
+        ///
+        /// Distance in the measurement units chosen in Preferences
+        ///
+        QString
+        LabelEditor::formatDistance( double pts ) const
+        {
+                model::Units units = model::Settings::units();
+                return QString( "%1 %2" )
+                        .arg( QString::number( model::Distance::pt( pts ).inUnits( units ), 'f', units.resolutionDigits() ),
+                              units.toIdString() );
+        }
+
+
+        namespace
+        {
+                /// Small filled label with white text, centered on a pixel position
+                void drawPill( QPainter* painter, const QPointF& center, const QString& text )
+                {
+                        QFont font = painter->font();
+                        font.setPointSizeF( 8 );
+                        font.setBold( true );
+                        painter->setFont( font );
+
+                        QFontMetricsF fm( font );
+                        QSizeF size( fm.horizontalAdvance( text ) + 8, fm.height() + 2 );
+                        QRectF r( center.x() - size.width()/2, center.y() - size.height()/2,
+                                  size.width(), size.height() );
+
+                        painter->setPen( Qt::NoPen );
+                        painter->setBrush( guideColor );
+                        painter->drawRoundedRect( r, 3, 3 );
+                        painter->setPen( guideTextColor );
+                        painter->drawText( r, Qt::AlignCenter, text );
+                }
+
+                /// Dimension line with end ticks and its length label (pixel coordinates)
+                void drawDimension( QPainter* painter, const QPointF& a, const QPointF& b, const QString& text )
+                {
+                        QPen pen( guideColor, 1 );
+                        painter->setPen( pen );
+                        painter->drawLine( a, b );
+
+                        QLineF line( a, b );
+                        QLineF normal = line.normalVector();
+                        if ( normal.length() > 0 )
+                        {
+                                normal.setLength( 4 );
+                                QPointF n = normal.p2() - normal.p1();
+                                painter->drawLine( a - n, a + n );
+                                painter->drawLine( b - n, b + n );
+                        }
+
+                        drawPill( painter, line.center(), text );
+                }
+        }
+
+
+        ///
+        /// While moving or resizing: alignment lines and the distances from the
+        /// selection to the nearest object (or the label edge) on each side
+        ///
+        void
+        LabelEditor::drawGuidesLayer( QPainter* painter )
+        {
+                if ( mState != ArrowMove && mState != ArrowResize )
+                {
+                        return;
+                }
+                QRectF sel = selectionExtent();
+                if ( sel.isNull() )
+                {
+                        return;
+                }
+
+                QTransform toPx;
+                toPx.scale( mScale, mScale );
+                toPx.translate( mX0.pt(), mY0.pt() );
+
+                painter->save();
+                painter->resetTransform();
+                painter->setRenderHint( QPainter::Antialiasing, true );
+
+                // Alignment lines
+                if ( mState == ArrowMove )
+                {
+                        QPen pen( guideColor, 1 );
+                        painter->setPen( pen );
+                        for ( const auto& line : mAlignGuides )
+                        {
+                                painter->drawLine( toPx.map( line ) );
+                        }
+                }
+
+                // Distances on each side
+                const QRectF label = labelRect();
+                const auto others = otherExtents();
+                const double eps = 0.001;
+
+                struct Gap { bool found{ false }; double d{ 0 }; QPointF a; QPointF b; };
+                Gap left, right, top, bottom;
+
+                auto consider = [&]( Gap& g, double d, QPointF a, QPointF b )
+                {
+                        if ( d > eps && ( !g.found || d < g.d ) )
+                        {
+                                g = Gap{ true, d, a, b };
+                        }
+                };
+
+                // Label edges (only when the selection is inside the label on that axis)
+                double cy = sel.center().y();
+                double cx = sel.center().x();
+                if ( sel.left() >= label.left() && sel.right() <= label.right() )
+                {
+                        consider( left,  sel.left() - label.left(),   QPointF( label.left(), cy ),  QPointF( sel.left(), cy ) );
+                        consider( right, label.right() - sel.right(), QPointF( sel.right(), cy ),   QPointF( label.right(), cy ) );
+                }
+                if ( sel.top() >= label.top() && sel.bottom() <= label.bottom() )
+                {
+                        consider( top,    sel.top() - label.top(),       QPointF( cx, label.top() ), QPointF( cx, sel.top() ) );
+                        consider( bottom, label.bottom() - sel.bottom(), QPointF( cx, sel.bottom() ), QPointF( cx, label.bottom() ) );
+                }
+
+                // Nearest neighbouring objects that overlap the selection on the other axis
+                for ( const auto& r : others )
+                {
+                        bool overlapY = r.top() < sel.bottom() && r.bottom() > sel.top();
+                        bool overlapX = r.left() < sel.right() && r.right() > sel.left();
+                        if ( overlapY )
+                        {
+                                double y = ( qMax( r.top(), sel.top() ) + qMin( r.bottom(), sel.bottom() ) ) / 2;
+                                if ( r.right() <= sel.left() + eps )
+                                {
+                                        consider( left, sel.left() - r.right(), QPointF( r.right(), y ), QPointF( sel.left(), y ) );
+                                }
+                                if ( r.left() >= sel.right() - eps )
+                                {
+                                        consider( right, r.left() - sel.right(), QPointF( sel.right(), y ), QPointF( r.left(), y ) );
+                                }
+                        }
+                        if ( overlapX )
+                        {
+                                double x = ( qMax( r.left(), sel.left() ) + qMin( r.right(), sel.right() ) ) / 2;
+                                if ( r.bottom() <= sel.top() + eps )
+                                {
+                                        consider( top, sel.top() - r.bottom(), QPointF( x, r.bottom() ), QPointF( x, sel.top() ) );
+                                }
+                                if ( r.top() >= sel.bottom() - eps )
+                                {
+                                        consider( bottom, r.top() - sel.bottom(), QPointF( x, sel.bottom() ), QPointF( x, r.top() ) );
+                                }
+                        }
+                }
+
+                for ( const Gap* g : { &left, &right, &top, &bottom } )
+                {
+                        if ( g->found )
+                        {
+                                drawDimension( painter, toPx.map( g->a ), toPx.map( g->b ), formatDistance( g->d ) );
+                        }
+                }
+
+                painter->restore();
+        }
+
+
+        ///
+        /// Measure tape: the measured line, its length, and its width/height
+        /// when it is diagonal
+        ///
+        void
+        LabelEditor::drawMeasureLayer( QPainter* painter )
+        {
+                if ( !mMeasureVisible )
+                {
+                        return;
+                }
+
+                QTransform toPx;
+                toPx.scale( mScale, mScale );
+                toPx.translate( mX0.pt(), mY0.pt() );
+
+                QPointF a = toPx.map( mMeasureP1 );
+                QPointF b = toPx.map( mMeasureP2 );
+                double dx = qAbs( mMeasureP2.x() - mMeasureP1.x() );
+                double dy = qAbs( mMeasureP2.y() - mMeasureP1.y() );
+                double length = std::hypot( dx, dy );
+
+                painter->save();
+                painter->resetTransform();
+                painter->setRenderHint( QPainter::Antialiasing, true );
+
+                // Width/height legs for a diagonal measurement
+                bool diagonal = dx > 0.01 && dy > 0.01;
+                if ( diagonal )
+                {
+                        QPen dashed( guideColor, 1, Qt::DashLine );
+                        painter->setPen( dashed );
+                        QPointF corner( b.x(), a.y() );
+                        painter->drawLine( a, corner );
+                        painter->drawLine( corner, b );
+                }
+
+                QPen pen( guideColor, 1.5 );
+                painter->setPen( pen );
+                painter->drawLine( a, b );
+                painter->setBrush( guideColor );
+                painter->drawEllipse( a, 3, 3 );
+                painter->drawEllipse( b, 3, 3 );
+
+                QString text = formatDistance( length );
+                if ( diagonal )
+                {
+                        text += QString( "   W %1 × H %2" ).arg( formatDistance( dx ), formatDistance( dy ) );
+                }
+                QLineF line( a, b );
+                QPointF at = line.length() > 60 ? line.center() : b + QPointF( 0, -14 );
+                drawPill( painter, at, text );
+
+                painter->restore();
         }
 
 

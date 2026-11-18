@@ -337,7 +337,13 @@ namespace glabels
                         "  padding: 6px 4px; border-radius: 6px; }"
                         "#startupRecentList::item:hover, #startupProjectList::item:hover,"
                         "#startupProjectLabels::item:hover { background: palette(alternate-base); }"
-                        "#startupProjectList::item:selected {"
+                        // Every list needs an explicit selected style: once ::item is styled,
+                        // Qt keeps the highlighted (white) text but drops the highlight
+                        // background, which leaves selected rows unreadable.
+                        "#startupRecentList::item:selected, #startupProjectList::item:selected,"
+                        "#startupProjectLabels::item:selected,"
+                        "#startupRecentList::item:selected:hover, #startupProjectList::item:selected:hover,"
+                        "#startupProjectLabels::item:selected:hover {"
                         "  background: palette(highlight); color: palette(highlighted-text); }"
                         "#startupProjectTitle { font-weight: 600; font-size: 11pt; }"
                         "QToolButton#startupSmallButton {"

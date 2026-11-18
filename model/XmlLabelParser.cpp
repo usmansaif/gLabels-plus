@@ -367,6 +367,16 @@ namespace glabels::model
                         {
                                 list.last()->setLocked( true );
                         }
+                        if ( !list.isEmpty() && list.last() && child.isElement() &&
+                             child.toElement().hasAttribute( "name" ) )
+                        {
+                                list.last()->setName( XmlUtil::getStringAttr( child.toElement(), "name", "" ) );
+                        }
+                        if ( !list.isEmpty() && list.last() && child.isElement() &&
+                             child.toElement().hasAttribute( "group" ) )
+                        {
+                                list.last()->setGroup( XmlUtil::getStringAttr( child.toElement(), "group", "" ) );
+                        }
                 }
 
                 return list;

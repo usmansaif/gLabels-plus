@@ -587,6 +587,13 @@ namespace glabels
                 objectsArrowModeAction->setStatusTip( tr("Select, move and modify objects") );
                 connect( objectsArrowModeAction, SIGNAL(triggered()), this, SLOT(objectsArrowMode()) );
 
+                objectsMeasureModeAction = new QAction( tr("Measure"), this );
+                objectsMeasureModeAction->setIcon( QIcon::fromTheme( "glabels-measure" ) );
+                objectsMeasureModeAction->setShortcut( QKeySequence( Qt::Key_M ) );
+                objectsMeasureModeAction->setStatusTip( tr("Measure distances on the label: drag between any two points "
+                                                           "(Shift = horizontal/vertical, Esc = clear)") );
+                connect( objectsMeasureModeAction, SIGNAL(triggered()), this, SLOT(objectsMeasureMode()) );
+
                 objectsCreateTextAction = new QAction( tr("Text"), this );
                 objectsCreateTextAction->setIcon( QIcon::fromTheme( "glabels-text" ) );
                 objectsCreateTextAction->setShortcut( QKeySequence( Qt::Key_T ) );
@@ -887,6 +894,7 @@ namespace glabels
 
                 objectsMenu = menuBar()->addMenu( tr("&Objects") );
                 objectsMenu->addAction( objectsArrowModeAction );
+                objectsMenu->addAction( objectsMeasureModeAction );
                 objectsCreateMenu = objectsMenu->addMenu( tr("&Create") );
                 objectsCreateMenu->addAction( objectsCreateTextAction );
                 objectsCreateMenu->addAction( objectsCreateBoxAction );
@@ -991,6 +999,7 @@ namespace glabels
                 editorToolBar->setObjectName( "editorToolBar" );
                 editorToolBar->setToolButtonStyle( style );
                 editorToolBar->addAction( objectsArrowModeAction );
+                editorToolBar->addAction( objectsMeasureModeAction );
                 editorToolBar->addSeparator();
                 editorToolBar->addAction( objectsCreateTextAction );
                 editorToolBar->addAction( objectsCreateBoxAction );
@@ -1170,9 +1179,39 @@ namespace glabels
 
                 // Object list
                 mObjectListView = new ObjectListView();
+                // Toolbar at the top of the Objects pane; each action is enabled
+                // according to the current selection
                 mObjectListView->addToolBarActions( { objectsOrderRaiseAction, objectsOrderRaiseOneAction,
                                                       objectsOrderLowerOneAction, objectsOrderLowerAction,
-                                                      nullptr, editDeleteAction } );
+                                                      nullptr,
+                                                      mObjectListView->groupAction(),
+                                                      mObjectListView->ungroupAction(),
+                                                      nullptr,
+                                                      mObjectListView->renameAction(),
+                                                      mObjectListView->lockAction(),
+                                                      mObjectListView->duplicateAction(),
+                                                      editDeleteAction } );
+
+                // Layer groups are also reachable from the Objects menu (Ctrl+G / Ctrl+Shift+G)
+                objectsMenu->addSeparator();
+                objectsMenu->addAction( mObjectListView->groupAction() );
+                objectsMenu->addAction( mObjectListView->ungroupAction() );
+
+                // Right-click menu for the object list: same object actions as the
+                // canvas menu (paste here is the regular paste, not paste-at-cursor)
+                auto* objectListMenu = new QMenu( this );
+                objectListMenu->addAction( objectsEditTextAction );
+                objectListMenu->addSeparator();
+                objectListMenu->addMenu( contextOrderMenu );
+                objectListMenu->addMenu( contextXformMenu );
+                objectListMenu->addMenu( contextAlignMenu );
+                objectListMenu->addMenu( contextCenterMenu );
+                objectListMenu->addSeparator();
+                objectListMenu->addAction( editCutAction );
+                objectListMenu->addAction( editCopyAction );
+                objectListMenu->addAction( editPasteAction );
+                objectListMenu->addAction( editDeleteAction );
+                mObjectListView->setContextMenu( objectListMenu );
 
                 mObjectListDock = new QDockWidget( tr("Objects"), this );
                 mObjectListDock->setObjectName( "objectListDock" );
@@ -1219,7 +1258,7 @@ namespace glabels
                         { mergePreviewAction, "merge.preview" }, { mergeFirstAction, "merge.first" },
                         { mergePreviousAction, "merge.previous" }, { mergeNextAction, "merge.next" },
                         { mergeLastAction, "merge.last" },
-                        { objectsArrowModeAction, "objects.select" }, { objectsCreateTextAction, "objects.createText" },
+                        { objectsArrowModeAction, "objects.select" }, { objectsMeasureModeAction, "objects.measure" }, { objectsCreateTextAction, "objects.createText" },
                         { objectsCreateBoxAction, "objects.createBox" }, { objectsCreateLineAction, "objects.createLine" },
                         { objectsCreateEllipseAction, "objects.createEllipse" }, { objectsCreateImageAction, "objects.createImage" },
                         { objectsCreateBarcodeAction, "objects.createBarcode" }, { objectsEditTextAction, "objects.editText" },
@@ -1721,6 +1760,7 @@ namespace glabels
 
                 // Object actions
                 objectsArrowModeAction->setEnabled( isEditorPage );
+                objectsMeasureModeAction->setEnabled( isEditorPage );
                 objectsCreateMenu->setEnabled( isEditorPage );
                 objectsCreateTextAction->setEnabled( isEditorPage );
                 objectsCreateLineAction->setEnabled( isEditorPage );
@@ -2568,6 +2608,15 @@ namespace glabels
         void MainWindow::objectsArrowMode()
         {
                 mLabelEditor->arrowMode();
+        }
+
+
+        ///
+        /// Objects->Measure Mode Action
+        ///
+        void MainWindow::objectsMeasureMode()
+        {
+                mLabelEditor->measureMode();
         }
 
 
