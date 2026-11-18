@@ -24,6 +24,7 @@
 #include "AppearanceModel.hpp"
 #include "File.hpp"
 #include "MainWindow.hpp"
+#include "WhatsNewDialog.hpp"
 
 #include "model/Settings.hpp"
 #include "model/Version.hpp"
@@ -199,8 +200,12 @@ namespace glabels
                         if      ( link == "prefs" ) QMetaObject::invokeMethod( mWindow, "editPreferences" );
                         else if ( link == "keys" )  QMetaObject::invokeMethod( mWindow, "editShortcuts" );
                         else if ( link == "help" )  QMetaObject::invokeMethod( mWindow, "helpContents" );
+                        else if ( link == "whatsnew" )
+                        {
+                                WhatsNewDialog dialog( this );
+                                dialog.exec();
+                        }
                 } );
-                columnLayout->addWidget( footer );
 
                 //
                 // Contribution banner
@@ -208,14 +213,25 @@ namespace glabels
                 auto* banner = new QLabel();
                 mBannerLabel = banner;
                 banner->setObjectName( "startupBanner" );
-                banner->setAlignment( Qt::AlignCenter );
+                banner->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
                 banner->setWordWrap( true );
+                banner->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Preferred );
+                banner->setMinimumWidth( 260 );
+                banner->setMaximumWidth( 320 );
                 banner->setTextInteractionFlags( Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard );
                 banner->setToolTip( "https://usmansaif.com" );
                 connect( banner, &QLabel::linkActivated, this, []( const QString& link ) {
                         QDesktopServices::openUrl( QUrl( link ) );
                 } );
-                columnLayout->addWidget( banner );
+
+                //
+                // Bottom row: quick links on the left, banner in the bottom-right corner
+                //
+                auto* bottomRow = new QHBoxLayout();
+                bottomRow->setSpacing( 24 );
+                bottomRow->addWidget( footer, 1, Qt::AlignLeft | Qt::AlignBottom );
+                bottomRow->addWidget( banner, 0, Qt::AlignRight | Qt::AlignBottom );
+                columnLayout->addLayout( bottomRow );
 
                 updateStyle();
                 loadRecentList();
@@ -272,11 +288,11 @@ namespace glabels
                 mFooterLabel->setText(
                         QString( "<a %4 href='prefs'>%1</a> &nbsp;·&nbsp; "
                                  "<a %4 href='keys'>%2</a> &nbsp;·&nbsp; "
-                                 "<a %4 href='help'>%3</a>" )
-                        .arg( tr("Preferences"), tr("Keyboard shortcuts"), tr("Help"), link ) );
+                                 "<a %4 href='help'>%3</a> &nbsp;·&nbsp; "
+                                 "<a %4 href='whatsnew'>%5</a>" )
+                        .arg( tr("Preferences"), tr("Keyboard shortcuts"), tr("Help"), link, tr("What's New") ) );
                 mBannerLabel->setText(
-                        QString( "%1 &nbsp;<b>Usman Saif</b> &nbsp;·&nbsp; "
-                                 "<a %2 href='https://usmansaif.com'>usmansaif.com</a>" )
+                        QString( "%1<br><a %2 href='https://usmansaif.com'><b>Usman Saif</b></a>" )
                         .arg( tr("Enhanced with new features and a refreshed interface by"), link ) );
 
                 setStyleSheet(

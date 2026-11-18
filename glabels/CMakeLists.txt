@@ -47,6 +47,7 @@ set (glabels_sources
   TemplatePickerItem.cpp
   UndoRedoModel.cpp
   VariablesView.cpp
+  WhatsNewDialog.cpp
 )
 
 set (glabels_qobject_headers
@@ -83,6 +84,7 @@ set (glabels_qobject_headers
   TemplatePicker.hpp
   UndoRedoModel.hpp
   VariablesView.hpp
+  WhatsNewDialog.hpp
 )
 
 set (glabels_forms
