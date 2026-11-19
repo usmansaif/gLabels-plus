@@ -70,6 +70,19 @@ namespace glabels
 
 
         ///
+        /// Compact product pane (used inside the Print page)
+        ///
+        void PropertiesView::showAsProductPane()
+        {
+                titleLabel->setText( QString( "<span style='font-size:14pt;'>%1</span>" ).arg( tr("Product") ) );
+                orientationGroupBox->hide();
+                preview->hide();
+                line->hide();
+                setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
+        }
+
+
+        ///
         /// Settings changed handler
         ///
         void PropertiesView::onSettingsChanged()
@@ -235,6 +248,7 @@ namespace glabels
                         mUndoRedoModel->checkpoint( tr("Change Product") );
 
                         mModel->setTmplate( tmplate );
+                        model::Settings::addToRecentTemplateList( tmplate.name() );
 
                         // Don't rotate circular or round labels
                         auto frame = tmplate.frame();

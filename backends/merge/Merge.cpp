@@ -31,7 +31,9 @@ namespace glabels::merge
         Merge::Merge( const Merge* merge )
                 : mId(merge->mId),
                   mSource(merge->mSource),
-                  mRecordList(merge->mRecordList)
+                  mRawRecordList(merge->mRawRecordList),
+                  mRecordList(merge->mRecordList),
+                  mFields(merge->mFields)
         {
         }
 
@@ -62,14 +64,20 @@ namespace glabels::merge
                 mSource = source;
 
                 // Clear out any old records
+                mRawRecordList.clear();
                 mRecordList.clear();
 
                 open();
                 for ( Record record = readNextRecord(); !record.isEmpty(); record = readNextRecord() )
                 {
-                        mRecordList.push_back( record );
+                        mRawRecordList.push_back( record );
                 }
                 close();
+
+                for ( const auto& raw : mRawRecordList )
+                {
+                        mRecordList.push_back( mapRecord( raw ) );
+                }
 
                 emit sourceChanged();
         }
@@ -83,28 +91,38 @@ namespace glabels::merge
                 //  temporary map of original selections
                 QMap<QString,bool> origSelectionMap;
 
-                for ( auto& record : mRecordList )
+                QString pKey = sourcePrimaryKey();
+                for ( int i = 0; i < mRawRecordList.size(); i++ )
                 {
-                        origSelectionMap[ record[ primaryKey() ] ] = record.isSelected();
+                        bool selected = (i < mRecordList.size()) ? mRecordList[i].isSelected()
+                                                                 : mRawRecordList[i].isSelected();
+                        origSelectionMap[ mRawRecordList[i][ pKey ] ] = selected;
                 }
 
                 // Clear the original records
+                mRawRecordList.clear();
                 mRecordList.clear();
 
                 // Read the new records, preserve any original selections
                 open();
+                pKey = sourcePrimaryKey();
                 for ( Record record = readNextRecord(); !record.isEmpty(); record = readNextRecord() )
                 {
-                        auto key = record[ primaryKey() ];
+                        auto key = record[ pKey ];
                         auto it = origSelectionMap.find( key );
                         if ( it != origSelectionMap.end() )
                         {
                                 record.setSelected( it.value() );
                         }
 
-                        mRecordList.push_back( record );
+                        mRawRecordList.push_back( record );
                 }
                 close();
+
+                for ( const auto& raw : mRawRecordList )
+                {
+                        mRecordList.push_back( mapRecord( raw ) );
+                }
 
                 emit sourceChanged();
         }
@@ -116,6 +134,147 @@ namespace glabels::merge
         const QList<Record>& Merge::recordList( ) const
         {
                 return mRecordList;
+        }
+
+
+        ///
+        /// Variable names visible to the label
+        ///
+        QStringList Merge::keys() const
+        {
+                QStringList sKeys = sourceKeys();
+                if ( mFields.isEmpty() )
+                {
+                        return sKeys;
+                }
+
+                QStringList list;
+                for ( const auto& sKey : sKeys )
+                {
+                        bool found = false;
+                        for ( const auto& f : mFields )
+                        {
+                                if ( f.source == sKey )
+                                {
+                                        found = true;
+                                        if ( f.include && !list.contains( f.name ) )
+                                        {
+                                                list << f.name;
+                                        }
+                                        break;
+                                }
+                        }
+                        if ( !found && !list.contains( sKey ) )
+                        {
+                                list << sKey;   // column added to the source after mapping
+                        }
+                }
+                return list;
+        }
+
+
+        ///
+        /// Primary key (first visible variable)
+        ///
+        QString Merge::primaryKey() const
+        {
+                QStringList list = keys();
+                return list.isEmpty() ? QString() : list.first();
+        }
+
+
+        ///
+        /// Source column names
+        ///
+        QStringList Merge::sourceColumns() const
+        {
+                return sourceKeys();
+        }
+
+
+        ///
+        /// Field mapping
+        ///
+        QList<Field> Merge::fields() const
+        {
+                return mFields;
+        }
+
+
+        ///
+        /// Set field mapping
+        ///
+        void Merge::setFields( const QList<Field>& fields )
+        {
+                if ( fields == mFields )
+                {
+                        return;
+                }
+                mFields = fields;
+                rebuildRecords();
+                emit sourceChanged();
+        }
+
+
+        ///
+        /// Field info for variable name
+        ///
+        Field Merge::field( const QString& name ) const
+        {
+                for ( const auto& f : mFields )
+                {
+                        if ( f.name == name && f.include )
+                        {
+                                return f;
+                        }
+                }
+
+                Field f;
+                if ( keys().contains( name ) )
+                {
+                        f.source = name;
+                        f.name   = name;
+                }
+                return f;
+        }
+
+
+        ///
+        /// Field type for variable name
+        ///
+        QString Merge::fieldType( const QString& name ) const
+        {
+                return field( name ).type;
+        }
+
+
+        ///
+        /// Unselected record indices
+        ///
+        QList<int> Merge::unselectedIndices() const
+        {
+                QList<int> list;
+                for ( int i = 0; i < mRecordList.size(); i++ )
+                {
+                        if ( !mRecordList[i].isSelected() )
+                        {
+                                list << i;
+                        }
+                }
+                return list;
+        }
+
+
+        ///
+        /// Set unselected record indices (all others selected)
+        ///
+        void Merge::setUnselectedIndices( const QList<int>& indices )
+        {
+                for ( int i = 0; i < mRecordList.size(); i++ )
+                {
+                        mRecordList[i].setSelected( !indices.contains( i ) );
+                }
+                emit selectionChanged();
         }
 
 
@@ -193,6 +352,61 @@ namespace glabels::merge
                 }
 
                 return list;
+        }
+
+
+        ///
+        /// Map a raw record (keyed by source column) to variable names
+        ///
+        Record Merge::mapRecord( const Record& raw ) const
+        {
+                if ( mFields.isEmpty() )
+                {
+                        return raw;
+                }
+
+                Record record;
+                record.setSelected( raw.isSelected() );
+                for ( auto it = raw.constBegin(); it != raw.constEnd(); ++it )
+                {
+                        bool found = false;
+                        for ( const auto& f : mFields )
+                        {
+                                if ( f.source == it.key() )
+                                {
+                                        found = true;
+                                        if ( f.include )
+                                        {
+                                                record[ f.name ] = it.value();
+                                        }
+                                        break;
+                                }
+                        }
+                        if ( !found )
+                        {
+                                record[ it.key() ] = it.value();
+                        }
+                }
+                return record;
+        }
+
+
+        ///
+        /// Rebuild mapped records, keeping the current selection
+        ///
+        void Merge::rebuildRecords()
+        {
+                QList<Record> list;
+                for ( int i = 0; i < mRawRecordList.size(); i++ )
+                {
+                        Record record = mapRecord( mRawRecordList[i] );
+                        if ( i < mRecordList.size() )
+                        {
+                                record.setSelected( mRecordList[i].isSelected() );
+                        }
+                        list.push_back( record );
+                }
+                mRecordList = list;
         }
 
 }

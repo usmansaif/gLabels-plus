@@ -16,7 +16,8 @@
 #   -o, --out DIR        Output directory (default: dist)
 #   -f, --formats LIST   Comma-separated subset, e.g. appimage,deb  (default: all for this OS)
 #       --version VER    Package version (default: from the build, e.g. 5.0)
-#       --skip-build     Reuse an existing build-release directory
+#   -b, --build-dir DIR  Build directory (default: build-release)
+#       --skip-build     Reuse an existing build directory
 #   -h, --help           Show this help
 #
 set -euo pipefail
@@ -40,13 +41,14 @@ warn() { printf '\033[1;33mwarning:\033[0m %s\n' "$*" >&2; }
 die()  { printf '\033[1;31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
-usage() { sed -n '3,22p' "$0" | sed 's/^# \{0,1\}//'; exit 0; }
+usage() { sed -n '3,23p' "$0" | sed 's/^# \{0,1\}//'; exit 0; }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -q|--qt)       QT_ARG=(--qt "$2"); shift 2 ;;
         -o|--out)      OUT_DIR="$2"; shift 2 ;;
         -f|--formats)  FORMATS="$2"; shift 2 ;;
+        -b|--build-dir) BUILD_DIR="$2"; shift 2 ;;
         --version)     VERSION="$2"; shift 2 ;;
         --skip-build)  SKIP_BUILD=1; shift ;;
         -h|--help)     usage ;;
@@ -64,6 +66,7 @@ FORMATS="${FORMATS:-$ALL_FORMATS}"
 want() { [[ ",$FORMATS," == *",$1,"* ]]; }
 
 ARCH="$(uname -m)"
+[[ "$BUILD_DIR" = /* ]] || BUILD_DIR="$SRC_DIR/$BUILD_DIR"
 [[ "$OUT_DIR" = /* ]] || OUT_DIR="$SRC_DIR/$OUT_DIR"
 mkdir -p "$OUT_DIR"
 
@@ -170,7 +173,7 @@ Architecture: $debarch
 Maintainer: $MAINTAINER
 Homepage: $HOMEPAGE
 Installed-Size: $(du -sk "$PKGROOT" | cut -f1)
-Depends: libc6, libstdc++6, libgl1, libegl1, libfontconfig1, libfreetype6, libx11-6, libx11-xcb1, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libdbus-1-3, libglib2.0-0
+Depends: libc6 (>= 2.31), libstdc++6, libgl1, libegl1, libxcb-cursor0, libfontconfig1, libfreetype6, libx11-6, libx11-xcb1, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libdbus-1-3, libglib2.0-0
 Description: $SUMMARY
  gLabels is a program for creating labels and business cards.
  This package bundles its own copy of Qt.

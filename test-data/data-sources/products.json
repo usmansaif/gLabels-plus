@@ -1,0 +1,4 @@
+[
+  { "sku": "5012345678900", "name": "Green Tea", "price": 12.5, "photo": "images/tea.png" },
+  { "sku": "4006381333931", "name": "Black Coffee", "price": 21, "photo": "images/coffee.png" }
+]

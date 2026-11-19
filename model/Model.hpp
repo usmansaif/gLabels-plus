@@ -123,6 +123,10 @@ namespace glabels::model
                 merge::Merge* merge() const;
                 void setMerge( merge::Merge* merge );
 
+                /// Rename a variable everywhere it is used on the label (text, barcode
+                /// data, image files and colors).  Returns the number of objects changed.
+                int renameVariableReferences( const QString& oldName, const QString& newName );
+
 
                 /////////////////////////////////
                 // Manage objects

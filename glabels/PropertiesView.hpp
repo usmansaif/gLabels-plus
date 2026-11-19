@@ -56,6 +56,10 @@ namespace glabels
                 /////////////////////////////////
                 void setModel( model::Model* model, UndoRedoModel* undoRedoModel );
 
+                /// Compact layout for the Print page: product details and adjustable
+                /// parameters only (orientation lives in the bottom page bar)
+                void showAsProductPane();
+
 
                 /////////////////////////////////
                 // Slots

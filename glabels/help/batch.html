@@ -1,0 +1,34 @@
+<h1>Command-line printing</h1>
+<p class="lead"><code>glabels-batch-qt</code> prints a label file or exports it to PDF without opening the app. Use it in scripts, scheduled jobs, or from another program.</p>
+
+<h2>Usage</h2>
+<pre>glabels-batch-qt [options] FILE</pre>
+<p>FILE is a <code>.glabels</code> file. Use <code>-</code> to read the label from standard input.</p>
+
+<h2>Options</h2>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th width="32%">Option</th><th>Meaning</th></tr>
+<tr><td><code>-p, --printer &lt;printer&gt;</code></td><td>Send to this printer instead of a PDF file.</td></tr>
+<tr><td><code>-o, --output &lt;file&gt;</code></td><td>Output PDF file name (default <code>output.pdf</code>); <code>-</code> writes to standard output.</td></tr>
+<tr><td><code>-i, --input &lt;source&gt;</code></td><td>Use this merge file instead of the one saved in the label; <code>-</code> reads standard input.</td></tr>
+<tr><td><code>-s, --sheets &lt;n&gt;</code></td><td>Number of full sheets for labels without merge data (default 1).</td></tr>
+<tr><td><code>-c, --copies &lt;n&gt;</code></td><td>Copies of each record (default 1).</td></tr>
+<tr><td><code>-a, --collate</code></td><td>Collate merge copies.</td></tr>
+<tr><td><code>-g, --group</code></td><td>Start each merge group on a new page.</td></tr>
+<tr><td><code>-f, --first &lt;n&gt;</code></td><td>Start at label position n (default 1).</td></tr>
+<tr><td><code>-l, --outlines</code></td><td>Print label outlines.</td></tr>
+<tr><td><code>-m, --crop-marks</code></td><td>Print crop marks.</td></tr>
+<tr><td><code>-r, --reverse</code></td><td>Print a mirror image.</td></tr>
+<tr><td><code>-D, --define &lt;var&gt;=&lt;value&gt;</code></td><td>Set the starting value of a user variable.</td></tr>
+<tr><td><code>-v, --version</code>, <code>-h, --help</code></td><td>Show the version or help.</td></tr>
+</table>
+
+<h2>Examples</h2>
+<p>Export to PDF:</p>
+<pre>glabels-batch-qt -o labels.pdf address.glabels</pre>
+<p>Print today's orders to a label printer:</p>
+<pre>glabels-batch-qt -p Zebra_ZD420 -i orders-today.csv shipping.glabels</pre>
+<p>Continue serial numbers from 501, two sheets:</p>
+<pre>glabels-batch-qt -D serial=501 -s 2 -o tags.pdf asset-tags.glabels</pre>
+
+<note>On Linux, <code>glabels-batch-qt</code> needs a graphical session to read font information. On a server without a display, run it with <code>xvfb-run glabels-batch-qt ...</code>.</note>

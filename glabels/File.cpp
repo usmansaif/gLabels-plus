@@ -61,6 +61,7 @@ namespace glabels
                 {
                         auto* model = new model::Model();
                         model->setTmplate( tmplate );
+                        model::Settings::addToRecentTemplateList( tmplate.name() );
 
                         // Intelligently decide to rotate label by default
                         auto frame = tmplate.frame();
@@ -117,6 +118,7 @@ namespace glabels
 
                 auto* model = new model::Model();
                 model->setTmplate( tmplate );
+                model::Settings::addToRecentTemplateList( tmplate.name() );
                 auto frame = tmplate.frame();
                 model->setRotate( frame->h() > frame->w() );
 
@@ -207,8 +209,9 @@ namespace glabels
         ///
         /// Open file
         ///
-        void File::open( const QString& fileName, MainWindow *window )
+        MainWindow* File::open( const QString& fileName, MainWindow *window )
         {
+                MainWindow* result = nullptr;
                 if ( !fileName.isEmpty() )
                 {
                         model::Model *model = model::XmlLabelParser::readFile( fileName );
@@ -218,12 +221,14 @@ namespace glabels
                                 if ( window->isEmpty() )
                                 {
                                         window->setModel( model );
+                                        result = window;
                                 }
                                 else
                                 {
                                         auto *newWindow = new MainWindow();
                                         newWindow->setModel( model );
                                         newWindow->show();
+                                        result = newWindow;
                                 }
                                 model::Settings::addToRecentFileList( model->fileName() );
 
@@ -241,6 +246,8 @@ namespace glabels
                                 msgBox.exec();
                         }
                 }
+
+                return result;
         }
 
 

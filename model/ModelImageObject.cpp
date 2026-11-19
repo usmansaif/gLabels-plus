@@ -429,7 +429,7 @@ namespace glabels::model
                                 QString labelText = tr("No image");
                                 if ( mFilenameNode.isField() )
                                 {
-                                        labelText = QString( "${%1}" ).arg( mFilenameNode.data() );
+                                        labelText = QString( "{{%1}}" ).arg( mFilenameNode.data() );
                                 }
 
                                 // Determine font size for labelText
@@ -568,9 +568,21 @@ namespace glabels::model
                         QFileInfo fileInfo( fileName );
                         if ( fileInfo.isRelative() )
                         {
-                                // Look for image file relative to project file 1st then CWD 2nd
+                                // Look for image file relative to the label file 1st, the data
+                                // source file 2nd (image paths in a CSV are usually relative to
+                                // the CSV) and the CWD last
                                 auto* model = dynamic_cast<Model*>( parent() );
-                                QDir::setSearchPaths( "images", {model ? model->dirPath() : "", QDir::currentPath()} );
+                                QStringList paths;
+                                if ( model )
+                                {
+                                        paths << model->dirPath();
+                                        if ( model->merge() && !model->merge()->source().isEmpty() )
+                                        {
+                                                paths << QFileInfo( model->merge()->source() ).absolutePath();
+                                        }
+                                }
+                                paths << QDir::currentPath();
+                                QDir::setSearchPaths( "images", paths );
                                 fileInfo.setFile( QString("images:") + fileName );
                         }
 

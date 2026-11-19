@@ -1,0 +1,50 @@
+<h1>Troubleshooting and FAQ</h1>
+
+<h2>Printing</h2>
+<h3>The print is shifted or doesn't line up with the labels</h3>
+<p>Turn off <i>Fit to page</i> or scaling in the printer settings, check that the paper size matches (A4 or Letter), and print a test on plain paper with outlines. See <a href="printing.html">Getting the alignment right</a>.</p>
+<h3>Only part of the label prints, or the edges are cut off</h3>
+<p>Most printers can't print to the very edge of the paper. Keep text inside the markup lines (<b>View &gt; Markup</b>).</p>
+<h3>My thermal printer skips labels or prints across two labels</h3>
+<p>Make the driver's paper size exactly the label size and calibrate the printer's label sensor. See <a href="printing.html">Thermal and roll printers</a>.</p>
+<h3>How do I use a sheet that is partly used?</h3>
+<p>On the Print page, click the first free label in the preview. Printing starts there.</p>
+<h3>Can I make a PDF?</h3>
+<p>Yes. Choose <b>Print to file (PDF)</b> as the destination on the Print page.</p>
+
+<h2>Barcodes</h2>
+<h3>The barcode doesn't scan</h3>
+<p>Make it bigger, leave empty space on both sides, print in black on white, and check that the data suits the type. See <a href="barcodes.html">Getting barcodes to scan</a>.</p>
+<h3>I can't find QR Code or another barcode type</h3>
+<p>Some types come from optional libraries (Zint, GNU Barcode, libqrencode). Install a build of gLabels Plus that includes them.</p>
+
+<h2>Mail merge</h2>
+<h3>All my data shows up in one column</h3>
+<p>Choose the format that matches your file's separator (comma, semicolon or tab). Excel in many countries saves CSV files with semicolons.</p>
+<h3>The label prints ${NAME} instead of the name</h3>
+<p>The field name must exactly match the column heading, including upper and lower case, and the format must be one with <i>keys on line 1</i>.</p>
+<h3>Long names don't fit</h3>
+<p>Turn on <b>Allow printing to shrink text to fit object</b> in the Text tab, then check the longest records with Merge Preview.</p>
+
+<h2>Text and fonts</h2>
+<h3>The font looks different on another computer</h3>
+<p>That computer doesn't have the font installed. Install it there, or use a common font.</p>
+<h3>Urdu letters are not joined</h3>
+<p>Choose the built-in <b>Noto Nastaliq Urdu</b> font (type <i>urdu</i> in the Family box).</p>
+
+<h2>Products</h2>
+<h3>My label sheet isn't in the list</h3>
+<p>Search by size instead of part number, check <b>Also sold as</b>, or create it with the <a href="templates.html">Product Template Designer</a>.</p>
+<h3>I chose the wrong product</h3>
+<p>Click the page selector on the toolbar or press [[Ctrl+Shift+P]] to switch. Your objects are kept.</p>
+
+<h2>Files</h2>
+<h3>An image is missing when I open a label</h3>
+<p>The image file was moved or not copied with the label. Choose it again in the Image tab, and keep images in the same folder or project as the label.</p>
+
+<h2>Getting more help</h2>
+<ul>
+<li>Visit the <a href="https://usmansaif.github.io/gLabels-plus">gLabels Plus website</a>.</li>
+<li>Report a problem with <b>Help &gt; Report Bug</b>. Include your version ({{version}}) from <b>Help &gt; About</b>.</li>
+<li>See what changed in this version with <b>Help &gt; What's New</b>.</li>
+</ul>

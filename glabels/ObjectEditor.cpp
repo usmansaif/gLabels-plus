@@ -36,6 +36,15 @@
 #include "model/Size.hpp"
 
 #include "merge/Merge.hpp"
+#include "merge/DataSourceUtil.hpp"
+#include "VariableHighlighter.hpp"
+#include "VariableTypeIcon.hpp"
+#include "model/TextNode.hpp"
+
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QRegularExpression>
+#include <QToolButton>
 
 #include <QDebug>
 #include <QDir>
@@ -79,9 +88,35 @@ namespace glabels
                 barcodeColorButton->init( tr("Default"), QColor(0,0,0,255), QColor(0,0,0,255) );
                 shadowColorButton->init( tr("Default"), QColor(0,0,0,255), QColor(0,0,0,255) );
 
-                textInsertFieldButton->setText( tr("Insert substitution field") );
-                barcodeInsertFieldButton->setText( tr("Insert substitution field") );
-                imageFieldButton->setText( tr("Use substitution field") );
+                textInsertFieldButton->setText( tr("Insert Variable") );
+                barcodeInsertFieldButton->setText( tr("Insert Variable") );
+                imageFieldButton->setText( tr("Use Variable") );
+                imageFieldButton->setVisible( false );   // replaced by the Static | Variable switch
+
+                // {{Variable}} placeholders are shown as highlighted tags while editing
+                new VariableHighlighter( textEdit->document() );
+                new VariableHighlighter( barcodeDataEdit->document() );
+                textEdit->setAcceptRichText( false );
+                barcodeDataEdit->setAcceptRichText( false );
+
+                setupVariableModeControls();
+
+                // Quick action next to "Wrap mode": shrink/grow the text box to fit its text
+                auto* fitTextButton = new QToolButton( this );
+                fitTextButton->setObjectName( "textFitButton" );
+                fitTextButton->setIcon( QIcon::fromTheme( "glabels-zoom-to-fit" ) );
+                fitTextButton->setToolTip( tr("Fit box to text: resize the text box to the size of its text") );
+                fitTextButton->setAccessibleName( tr("Fit box to text") );
+                fitTextButton->setAutoRaise( true );
+                fitTextButton->setCursor( Qt::PointingHandCursor );
+                horizontalLayout_25->insertWidget( 1, fitTextButton );
+                connect( fitTextButton, &QToolButton::clicked, this, [this]{
+                        if ( mObject && mUndoRedoModel )
+                        {
+                                mUndoRedoModel->checkpoint( tr("Fit to Text") );
+                                mObject->setSize( mObject->naturalSize() );
+                        }
+                } );
 
                 setEnabled( false );
                 hidePages();
@@ -135,9 +170,11 @@ namespace glabels
 
                         model::TextNode filenameNode = mObject->filenameNode();
 
+                        updateImageModeUi( filenameNode.isField() );
+
                         if ( filenameNode.isField() )
                         {
-                                imageFilenameLineEdit->setText( QString("${%1}").arg(filenameNode.data()) );
+                                imageFilenameLineEdit->setText( QString("{{%1}}").arg(filenameNode.data()) );
                         }
                         else
                         {
@@ -263,7 +300,7 @@ namespace glabels
                         textWrapModeCombo->setCurrentIndex( wrapIndex );
                         textLineSpacingSpin->setValue( mObject->textLineSpacing() );
                         textAutoShrinkCheck->setChecked( mObject->textAutoShrink() );
-                        textEdit->setText( mObject->text() );
+                        textEdit->setPlainText( merge::DataSourceUtil::toDisplay( mObject->text() ) );
 
                         mBlocked = false;
                 }
@@ -295,7 +332,8 @@ namespace glabels
                         barcodeShowTextCheck->setChecked( textFlag );
                         barcodeChecksumCheck->setChecked( csFlag );
                         barcodeColorButton->setColorNode( mObject->bcColorNode() );
-                        barcodeDataEdit->setText( mObject->bcData() );
+                        barcodeDataEdit->setPlainText( merge::DataSourceUtil::toDisplay( mObject->bcData() ) );
+                        updateBarcodeModeUi( !singleVariableOf( mObject->bcData() ).isEmpty() );
 
                         mBlocked = false;
                 }
@@ -527,6 +565,16 @@ namespace glabels
                         textInsertFieldButton->setKeys( mModel->merge(), mModel->variables() );
                         barcodeInsertFieldButton->setKeys( mModel->merge(), mModel->variables() );
                         imageFieldButton->setKeys( mModel->merge(), mModel->variables() );
+
+                        fillVariableCombos();
+                        if ( dynamic_cast<model::ModelBarcodeObject*>( mObject ) )
+                        {
+                                loadBarcodePage();
+                        }
+                        if ( dynamic_cast<model::ModelImageObject*>( mObject ) )
+                        {
+                                loadImagePage();
+                        }
                 }
         }
 
@@ -540,6 +588,18 @@ namespace glabels
                         loadLineSizePage();
                         loadImagePage();
                         loadShadowPage();
+
+                        // External edits (in-place editing, variable renames)
+                        if ( dynamic_cast<model::ModelTextObject*>( mObject ) &&
+                             merge::DataSourceUtil::fromDisplay( textEdit->toPlainText() ) != mObject->text() )
+                        {
+                                loadTextPage();
+                        }
+                        if ( dynamic_cast<model::ModelBarcodeObject*>( mObject ) &&
+                             merge::DataSourceUtil::fromDisplay( barcodeDataEdit->toPlainText() ) != mObject->bcData() )
+                        {
+                                loadBarcodePage();
+                        }
                 }
         }
 
@@ -745,7 +805,7 @@ namespace glabels
                         mObject->setTextWrapMode( wrapMode );
                         mObject->setTextLineSpacing( textLineSpacingSpin->value() );
                         mObject->setTextAutoShrink( textAutoShrinkCheck->isChecked() );
-                        mObject->setText( textEdit->toPlainText() );
+                        mObject->setText( merge::DataSourceUtil::fromDisplay( textEdit->toPlainText() ) );
 
                         mBlocked = false;
                 }
@@ -754,7 +814,8 @@ namespace glabels
 
         void ObjectEditor::onTextInsertFieldKeySelected( QString key )
         {
-                textEdit->insertPlainText( "${" + key + "}" );
+                textEdit->insertPlainText( "{{" + key + "}}" );
+                textEdit->setFocus();
         }
 
 
@@ -791,7 +852,7 @@ namespace glabels
                         mObject->setBcTextFlag( textFlag );
                         mObject->setBcChecksumFlag( csFlag );
                         mObject->setBcColorNode( barcodeColorButton->colorNode() );
-                        mObject->setBcData( barcodeDataEdit->toPlainText() );
+                        mObject->setBcData( merge::DataSourceUtil::fromDisplay( barcodeDataEdit->toPlainText() ) );
 
                         mBlocked = false;
                 }
@@ -800,7 +861,8 @@ namespace glabels
 
         void ObjectEditor::onBarcodeInsertFieldKeySelected( QString key )
         {
-                barcodeDataEdit->insertPlainText( "${" + key + "}" );
+                barcodeDataEdit->insertPlainText( "{{" + key + "}}" );
+                barcodeDataEdit->setFocus();
         }
 
 
@@ -840,6 +902,311 @@ namespace glabels
                         qDebug() << "Form changed.";
 
                         mBlocked = false;
+                }
+        }
+
+
+        ///
+        /// Build the "Static | Variable" switches of the barcode and image pages
+        ///
+        void ObjectEditor::setupVariableModeControls()
+        {
+                auto makeSegment = [this]( QToolButton*& left, QToolButton*& right ) {
+                        auto* row = new QWidget();
+                        row->setObjectName( "modeSegment" );
+                        auto* layout = new QHBoxLayout( row );
+                        layout->setContentsMargins( 0, 0, 0, 0 );
+                        layout->setSpacing( 0 );
+                        left = new QToolButton();
+                        left->setText( tr("Static") );
+                        left->setCheckable( true );
+                        left->setObjectName( "segmentLeft" );
+                        right = new QToolButton();
+                        right->setText( tr("Variable") );
+                        right->setCheckable( true );
+                        right->setObjectName( "segmentRight" );
+                        auto* group = new QButtonGroup( row );
+                        group->setExclusive( true );
+                        group->addButton( left );
+                        group->addButton( right );
+                        layout->addWidget( left );
+                        layout->addWidget( right );
+                        layout->addStretch( 1 );
+                        row->setStyleSheet(
+                                "#modeSegment QToolButton { padding: 3px 14px; border: 1px solid palette(mid); }"
+                                "#modeSegment QToolButton#segmentLeft { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }"
+                                "#modeSegment QToolButton#segmentRight { border-left: none;"
+                                "  border-top-right-radius: 5px; border-bottom-right-radius: 5px; }"
+                                "#modeSegment QToolButton:checked { background: palette(highlight); color: palette(highlighted-text);"
+                                "  border-color: palette(highlight); }"
+                                "#modeSegment QToolButton:disabled { color: palette(placeholder-text); }" );
+                        return row;
+                };
+
+                auto makeVariableRow = [this]( QComboBox*& combo ) {
+                        auto* row = new QWidget();
+                        auto* layout = new QHBoxLayout( row );
+                        layout->setContentsMargins( 0, 0, 0, 0 );
+                        layout->addWidget( new QLabel( tr("Variable:") ) );
+                        combo = new QComboBox();
+                        combo->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+                        layout->addWidget( combo, 1 );
+                        return row;
+                };
+
+                // Barcode page: [Static|Variable] above the data editor
+                gridLayout_11->removeItem( gridLayout_10 );
+                gridLayout_11->addWidget( makeSegment( mBcStaticButton, mBcVariableButton ), 0, 0 );
+                mBcVariableRow = makeVariableRow( mBcVariableCombo );
+                gridLayout_11->addWidget( mBcVariableRow, 1, 0 );
+                gridLayout_11->addLayout( gridLayout_10, 2, 0 );
+                connect( mBcStaticButton, &QToolButton::clicked, this, &ObjectEditor::onBarcodeModeClicked );
+                connect( mBcVariableButton, &QToolButton::clicked, this, &ObjectEditor::onBarcodeModeClicked );
+                connect( mBcVariableCombo, QOverload<int>::of( &QComboBox::activated ),
+                         this, &ObjectEditor::onBarcodeVariableActivated );
+
+                // Image page: [Static|Variable] above the file name
+                gridLayout_5->removeItem( horizontalLayout_17 );
+                gridLayout_5->removeItem( horizontalLayout_27 );
+                gridLayout_5->addWidget( makeSegment( mImageStaticButton, mImageVariableButton ), 0, 0 );
+                mImageVariableRow = makeVariableRow( mImageVariableCombo );
+                gridLayout_5->addWidget( mImageVariableRow, 1, 0 );
+                gridLayout_5->addLayout( horizontalLayout_17, 2, 0 );
+                gridLayout_5->addLayout( horizontalLayout_27, 3, 0 );
+                connect( mImageStaticButton, &QToolButton::clicked, this, &ObjectEditor::onImageModeClicked );
+                connect( mImageVariableButton, &QToolButton::clicked, this, &ObjectEditor::onImageModeClicked );
+                connect( mImageVariableCombo, QOverload<int>::of( &QComboBox::activated ),
+                         this, &ObjectEditor::onImageVariableActivated );
+
+                updateBarcodeModeUi( false );
+                updateImageModeUi( false );
+        }
+
+
+        ///
+        /// Fill the variable dropdowns from the data source and custom variables
+        ///
+        void ObjectEditor::fillVariableCombos()
+        {
+                for ( QComboBox* combo : { mBcVariableCombo, mImageVariableCombo } )
+                {
+                        if ( !combo )
+                        {
+                                continue;
+                        }
+                        combo->clear();
+                        if ( !mModel )
+                        {
+                                continue;
+                        }
+                        if ( mModel->merge() )
+                        {
+                                for ( const auto& key : mModel->merge()->keys() )
+                                {
+                                        QString type = mModel->merge()->fieldType( key );
+                                        combo->addItem( VariableType::icon( type ), "{{" + key + "}}", key );
+                                }
+                        }
+                        for ( const auto& key : mModel->variables().keys() )
+                        {
+                                combo->addItem( QIcon::fromTheme( "glabels-variables" ), "{{" + key + "}}", key );
+                        }
+                }
+
+                bool any = mBcVariableCombo && mBcVariableCombo->count() > 0;
+                QString tip = any ? QString() : tr("Connect a data source or add a custom variable first");
+                for ( QToolButton* b : { mBcVariableButton, mImageVariableButton } )
+                {
+                        if ( b )
+                        {
+                                b->setToolTip( tip );
+                        }
+                }
+        }
+
+
+        ///
+        /// Name of the variable if rawText is exactly one "${name}" reference
+        ///
+        QString ObjectEditor::singleVariableOf( const QString& rawText ) const
+        {
+                static const QRegularExpression re( "^\\$\\{([^{}:]+)\\}$" );
+                auto m = re.match( rawText.trimmed() );
+                return m.hasMatch() ? m.captured( 1 ) : QString();
+        }
+
+
+        void ObjectEditor::updateBarcodeModeUi( bool variableMode )
+        {
+                if ( !mBcStaticButton )
+                {
+                        return;
+                }
+                bool any = mBcVariableCombo->count() > 0;
+                mBcStaticButton->setChecked( !variableMode );
+                mBcVariableButton->setChecked( variableMode );
+                mBcVariableButton->setEnabled( any || variableMode );
+                mBcVariableRow->setVisible( variableMode );
+                barcodeDataEdit->setVisible( !variableMode );
+                barcodeInsertFieldButton->setVisible( !variableMode );
+
+                if ( variableMode && mObject )
+                {
+                        QString name = singleVariableOf( mObject->bcData() );
+                        int i = mBcVariableCombo->findData( name );
+                        if ( i < 0 )
+                        {
+                                mBcVariableCombo->addItem( "{{" + name + "}}", name );   // unknown variable: keep showing it
+                                i = mBcVariableCombo->count() - 1;
+                        }
+                        mBcVariableCombo->setCurrentIndex( i );
+                }
+        }
+
+
+        void ObjectEditor::updateImageModeUi( bool variableMode )
+        {
+                if ( !mImageStaticButton )
+                {
+                        return;
+                }
+                bool any = mImageVariableCombo->count() > 0;
+                mImageStaticButton->setChecked( !variableMode );
+                mImageVariableButton->setChecked( variableMode );
+                mImageVariableButton->setEnabled( any || variableMode );
+                mImageVariableRow->setVisible( variableMode );
+                imageFilenameLineEdit->setVisible( !variableMode );
+                imageBrowseButton->setVisible( !variableMode );
+
+                if ( variableMode && mObject )
+                {
+                        QString name = mObject->filenameNode().data();
+                        int i = mImageVariableCombo->findData( name );
+                        if ( i < 0 )
+                        {
+                                mImageVariableCombo->addItem( "{{" + name + "}}", name );
+                                i = mImageVariableCombo->count() - 1;
+                        }
+                        mImageVariableCombo->setCurrentIndex( i );
+                }
+        }
+
+
+        ///
+        /// Barcode Static | Variable clicked
+        ///
+        void ObjectEditor::onBarcodeModeClicked()
+        {
+                if ( !mObject || mBlocked )
+                {
+                        return;
+                }
+                bool wantVariable = mBcVariableButton->isChecked();
+                QString current = singleVariableOf( mObject->bcData() );
+
+                if ( wantVariable && current.isEmpty() )
+                {
+                        if ( mBcVariableCombo->count() == 0 )
+                        {
+                                updateBarcodeModeUi( false );
+                                return;
+                        }
+                        // Prefer a barcode-typed variable
+                        int index = 0;
+                        for ( int i = 0; i < mBcVariableCombo->count(); i++ )
+                        {
+                                if ( mModel->merge() && mModel->merge()->fieldType( mBcVariableCombo->itemData( i ).toString() )
+                                     == merge::DataSourceUtil::TYPE_BARCODE )
+                                {
+                                        index = i;
+                                        break;
+                                }
+                        }
+                        mUndoRedoModel->checkpoint( tr("Barcode") );
+                        mObject->setBcData( "${" + mBcVariableCombo->itemData( index ).toString() + "}" );
+                }
+                else if ( !wantVariable && !current.isEmpty() )
+                {
+                        // Become static, starting from the value of the first record
+                        QString value;
+                        if ( mModel->merge() && !mModel->merge()->recordList().isEmpty() )
+                        {
+                                value = mModel->merge()->recordList().first().value( current );
+                        }
+                        mUndoRedoModel->checkpoint( tr("Barcode") );
+                        mObject->setBcData( value );
+                }
+                loadBarcodePage();
+        }
+
+
+        void ObjectEditor::onBarcodeVariableActivated( int index )
+        {
+                if ( !mObject || index < 0 )
+                {
+                        return;
+                }
+                QString name = mBcVariableCombo->itemData( index ).toString();
+                if ( singleVariableOf( mObject->bcData() ) != name )
+                {
+                        mUndoRedoModel->checkpoint( tr("Barcode") );
+                        mObject->setBcData( "${" + name + "}" );
+                        loadBarcodePage();
+                }
+        }
+
+
+        ///
+        /// Image Static | Variable clicked
+        ///
+        void ObjectEditor::onImageModeClicked()
+        {
+                if ( !mObject || mBlocked )
+                {
+                        return;
+                }
+                bool wantVariable = mImageVariableButton->isChecked();
+                bool isVariable = mObject->filenameNode().isField();
+
+                if ( wantVariable && !isVariable )
+                {
+                        if ( mImageVariableCombo->count() == 0 )
+                        {
+                                updateImageModeUi( false );
+                                return;
+                        }
+                        int index = 0;
+                        for ( int i = 0; i < mImageVariableCombo->count(); i++ )
+                        {
+                                if ( mModel->merge() && mModel->merge()->fieldType( mImageVariableCombo->itemData( i ).toString() )
+                                     == merge::DataSourceUtil::TYPE_IMAGE )
+                                {
+                                        index = i;
+                                        break;
+                                }
+                        }
+                        onImageKeySelected( mImageVariableCombo->itemData( index ).toString() );
+                }
+                else if ( !wantVariable && isVariable )
+                {
+                        mUndoRedoModel->checkpoint( tr("Set image") );
+                        mObject->setFilenameNode( model::TextNode( false, "" ) );
+                }
+                loadImagePage();
+        }
+
+
+        void ObjectEditor::onImageVariableActivated( int index )
+        {
+                if ( !mObject || index < 0 )
+                {
+                        return;
+                }
+                QString name = mImageVariableCombo->itemData( index ).toString();
+                if ( !( mObject->filenameNode().isField() && mObject->filenameNode().data() == name ) )
+                {
+                        onImageKeySelected( name );
+                        loadImagePage();
                 }
         }
 

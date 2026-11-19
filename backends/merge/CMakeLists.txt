@@ -17,6 +17,10 @@ set (merge_sources
   TextColonKeys.cpp
   TextSemicolon.cpp
   TextSemicolonKeys.cpp
+  TextAuto.cpp
+  TextAutoKeys.cpp
+  Json.cpp
+  DataSourceUtil.cpp
 )
 
 set (merge_qobject_headers

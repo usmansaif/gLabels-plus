@@ -500,6 +500,28 @@ namespace glabels::model
                         qWarning() << "XmlLabelCreator::createMergeNode(): Should not be reached!";
                         break;
                 }
+
+                // Unselected records (all records are selected by default)
+                QStringList unselected;
+                for ( int i : model->merge()->unselectedIndices() )
+                {
+                        unselected << QString::number( i );
+                }
+                if ( !unselected.isEmpty() )
+                {
+                        XmlUtil::setStringAttr( node, "unselected", unselected.join( "," ) );
+                }
+
+                // Variable mapping: <Field source="prod_sku" name="Product_SKU" type="barcode" include="true"/>
+                for ( const auto& f : model->merge()->fields() )
+                {
+                        QDomElement fieldNode = doc.createElement( "Field" );
+                        node.appendChild( fieldNode );
+                        XmlUtil::setStringAttr( fieldNode, "source", f.source );
+                        XmlUtil::setStringAttr( fieldNode, "name", f.name );
+                        XmlUtil::setStringAttr( fieldNode, "type", f.type );
+                        XmlUtil::setBoolAttr( fieldNode, "include", f.include );
+                }
         }
 
 

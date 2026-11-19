@@ -23,6 +23,7 @@
 
 #include "Cursors.hpp"
 #include "UndoRedoModel.hpp"
+#include "VariableHighlighter.hpp"
 
 #include "model/FrameCd.hpp"
 #include "model/FrameEllipse.hpp"
@@ -38,6 +39,10 @@
 #include "model/ModelTextObject.hpp"
 #include "model/Markup.hpp"
 #include "model/Settings.hpp"
+#include "model/TextNode.hpp"
+#include "model/Size.hpp"
+
+#include "merge/DataSourceUtil.hpp"
 
 #include <QAbstractTextDocumentLayout>
 #include <QDebug>
@@ -81,6 +86,12 @@ namespace
         const QColor  guideTextColor( 255, 255, 255 );
         const double  snapTolerancePixels = 5;
         const double  selectRegionOutlineWidthPixels = 3;
+}
+
+
+namespace
+{
+        const char* VARIABLE_MIME_TYPE = "application/x-glabels-variable";
 }
 
 
@@ -1453,7 +1464,8 @@ namespace glabels
         //
         void LabelEditor::dragEnterEvent( QDragEnterEvent *event )
         {
-                if ( event->mimeData()->hasUrls()   ||
+                if ( event->mimeData()->hasFormat( VARIABLE_MIME_TYPE ) ||
+                     event->mimeData()->hasUrls()   ||
                      event->mimeData()->hasImage()  ||
                      event->mimeData()->hasText() )
                 {
@@ -1471,7 +1483,8 @@ namespace glabels
         //
         void LabelEditor::dragMoveEvent( QDragMoveEvent *event )
         {
-                if ( event->mimeData()->hasUrls()   ||
+                if ( event->mimeData()->hasFormat( VARIABLE_MIME_TYPE ) ||
+                     event->mimeData()->hasUrls()   ||
                      event->mimeData()->hasImage()  ||
                      event->mimeData()->hasText() )
                 {
@@ -1502,7 +1515,21 @@ namespace glabels
                 auto yWorld = model::Distance::pt( pWorld.y() );
                 auto p = model::Point( xWorld, yWorld );
 
-                if ( event->mimeData()->hasUrls() )
+                if ( event->mimeData()->hasFormat( VARIABLE_MIME_TYPE ) )
+                {
+                        QStringList parts = QString::fromUtf8( event->mimeData()->data( VARIABLE_MIME_TYPE ) ).split( "\n" );
+                        if ( !parts.isEmpty() && !parts[0].isEmpty() )
+                        {
+                                addVariableObject( parts[0], parts.value( 1, "text" ), p );
+                                event->acceptProposedAction();
+                                setFocus();
+                        }
+                        else
+                        {
+                                event->ignore();
+                        }
+                }
+                else if ( event->mimeData()->hasUrls() )
                 {
                         mUndoRedoModel->checkpoint( tr("Drop") );
                         mModel->pasteAsUrls( event->mimeData(), p );
@@ -1524,6 +1551,93 @@ namespace glabels
                 {
                         event->ignore();
                 }
+        }
+
+
+        ///
+        /// Add object bound to a variable, centered on the label
+        ///
+        void LabelEditor::addVariableObject( const QString& name, const QString& type )
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+                // Center of the label; cascade so repeated adds don't stack exactly
+                double step = 10.0;
+                double cx = mModel->w().pt()/2;
+                double cy = mModel->h().pt()/2;
+                int n = 0;
+                bool occupied = true;
+                while ( occupied && n < 12 )
+                {
+                        occupied = false;
+                        for ( auto* object : mModel->objectList() )
+                        {
+                                double ox = object->x0().pt() + object->w().pt()/2;
+                                double oy = object->y0().pt() + object->h().pt()/2;
+                                if ( std::abs( ox - ( cx + n*step ) ) < 4 && std::abs( oy - ( cy + n*step ) ) < 4 )
+                                {
+                                        occupied = true;
+                                        n++;
+                                        break;
+                                }
+                        }
+                }
+                model::Point center( model::Distance::pt( cx + n*step ), model::Distance::pt( cy + n*step ) );
+                addVariableObject( name, type, center );
+        }
+
+
+        ///
+        /// Add object bound to a variable, centered on p
+        ///
+        void LabelEditor::addVariableObject( const QString& name, const QString& type, const model::Point& p )
+        {
+                if ( !mModel || !mUndoRedoModel || name.isEmpty() )
+                {
+                        return;
+                }
+
+                double labelW = mModel->w().pt();
+                double labelH = mModel->h().pt();
+
+                model::ModelObject* object = nullptr;
+                if ( type == merge::DataSourceUtil::TYPE_BARCODE )
+                {
+                        auto* barcode = new model::ModelBarcodeObject();
+                        barcode->setBcData( "${" + name + "}" );
+                        barcode->setSize( model::Distance::pt( std::min( 144.0, labelW*0.8 ) ),
+                                          model::Distance::pt( std::min( 54.0, labelH*0.45 ) ) );
+                        object = barcode;
+                }
+                else if ( type == merge::DataSourceUtil::TYPE_IMAGE )
+                {
+                        auto* image = new model::ModelImageObject();
+                        image->setFilenameNode( model::TextNode( true, name ) );
+                        double side = std::min( 72.0, std::min( labelW, labelH )*0.6 );
+                        image->setSize( model::Distance::pt( side ), model::Distance::pt( side ) );
+                        object = image;
+                }
+                else
+                {
+                        auto* text = new model::ModelTextObject();
+                        text->setText( "${" + name + "}" );
+                        text->setSize( text->naturalSize() );
+                        object = text;
+                }
+
+                // Center on p, but keep the object on the label
+                double w = object->w().pt();
+                double h = object->h().pt();
+                double x = qBound( 0.0, p.x().pt() - w/2, std::max( 0.0, labelW - w ) );
+                double y = qBound( 0.0, p.y().pt() - h/2, std::max( 0.0, labelH - h ) );
+                object->setPosition( model::Distance::pt( x ), model::Distance::pt( y ) );
+
+                mUndoRedoModel->checkpoint( tr("Add Variable") );
+                mModel->addObject( object );
+                mModel->unselectAll();
+                mModel->selectObject( object );
         }
 
 
@@ -1930,7 +2044,8 @@ namespace glabels
                 mTextEditor->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
                 mTextEditor->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
                 mTextEditor->document()->setDocumentMargin( 0 );
-                mTextEditor->setPlainText( isBarcode ? object->bcData() : object->text() );
+                mTextEditor->setPlainText( merge::DataSourceUtil::toDisplay( isBarcode ? object->bcData() : object->text() ) );
+                new VariableHighlighter( mTextEditor->document() );
                 mTextEditor->setToolTip( isBarcode ? tr("Enter to apply, Esc to cancel")
                                                    : tr("Ctrl+Enter or click outside to apply, Esc to cancel") );
 
@@ -2046,7 +2161,7 @@ namespace glabels
 
                 if ( commit && mTextEditObject && mModel && mUndoRedoModel )
                 {
-                        QString newText = editor->toPlainText();
+                        QString newText = merge::DataSourceUtil::fromDisplay( editor->toPlainText() );
                         auto* object = mTextEditObject.data();
 
                         if ( mTextEditIsBarcode )

@@ -22,6 +22,7 @@
 #include "Help.hpp"
 
 #include "AboutDialog.hpp"
+#include "HelpWindow.hpp"
 #include "ReportBugDialog.hpp"
 
 #include <QDebug>
@@ -33,9 +34,10 @@ namespace glabels
         ///
         /// Display Help Contents
         ///
-        void Help::displayContents( QWidget *parent )
+        void Help::displayContents( QWidget *parent, const QString& topic )
         {
-                qDebug() << "TODO: Help::displayContents";
+                Q_UNUSED( parent )
+                HelpWindow::showTopic( topic );
         }
 
 

@@ -1,0 +1,43 @@
+<h1>Barcodes and QR codes</h1>
+<p class="lead">gLabels Plus draws barcodes as sharp vector graphics, so they scan reliably at any size.</p>
+
+<h2>Adding a barcode</h2>
+<ol>
+<li>Press [[B]] (or click <b>Barcode</b> on the toolbar) and drag a rectangle on the label.</li>
+<li>Type the data to encode and press [[Enter]]. [[Esc]] cancels.</li>
+<li>In the <b>Barcode</b> tab of the properties panel, choose the barcode <b>type</b>.</li>
+</ol>
+<p>To change the data later, double-click the barcode or press [[F2]].</p>
+
+<h2>Choosing a barcode type</h2>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Use</th><th>Recommended type</th></tr>
+<tr><td>Stock codes, SKUs, serial numbers, anything with letters and digits</td><td><b>Code 128</b> (built in, compact, any keyboard character)</td></tr>
+<tr><td>Older scanners and industrial systems</td><td><b>Code 39</b> (upper-case letters, digits and - . $ / + % space)</td></tr>
+<tr><td>Retail products (supermarkets, shops)</td><td><b>EAN-13</b> (most of the world) or <b>UPC-A</b> (North America). Use the number assigned by GS1.</td></tr>
+<tr><td>Cartons of retail products</td><td><b>ITF-14</b> or <b>EAN-14</b></td></tr>
+<tr><td>Web addresses, phone numbers, Wi-Fi details, long text</td><td><b>QR Code</b></td></tr>
+<tr><td>Very small parts and electronics</td><td><b>Data Matrix</b></td></tr>
+<tr><td>Postal mail</td><td>POSTNET, USPS Intelligent Mail, or your country's postal code</td></tr>
+</table>
+<p>Which types are available depends on the barcode libraries your copy was built with. Code 128, Code 39, UPC-A, EAN-13, POSTNET, USPS Intelligent Mail and Data Matrix are always built in. Builds with <b>Zint</b>, <b>GNU Barcode</b> and <b>libqrencode</b> add dozens more, including QR Code, PDF417, Aztec, Codabar, Interleaved 2 of 5 and ISBN. The barcode type menu is grouped by library.</p>
+
+<h2>Barcode options</h2>
+<ul>
+<li><b>Show text</b>: print the human-readable text under the bars.</li>
+<li><b>Checksum</b>: add a check digit, for types where it is optional (for example Code 39). Types such as EAN and UPC always include one.</li>
+<li><b>Color</b>: the color of the bars. Black on a white label scans best.</li>
+</ul>
+
+<h2>Different barcode on every label</h2>
+<p>Click <b>Insert substitution field</b> in the Barcode tab and pick a merge column, for example <code>${SKU}</code>. Every row of your CSV file then prints with its own barcode. See <a href="merge.html">Mail merge</a>. For sequential serial numbers without a file, use a <a href="variables.html">counter variable</a>.</p>
+
+<h2>Getting barcodes to scan</h2>
+<ul>
+<li>Leave a <b>quiet zone</b> (empty margin) on both sides of 1D barcodes, at least 10 times the width of the narrowest bar.</li>
+<li>Don't squash a barcode too small. If bars merge together on a thermal printer, make the barcode wider.</li>
+<li>Thermal printers print best with barcodes running in the direction the label feeds through the printer.</li>
+<li>Check that the data is valid for the type: EAN-13 needs 12 or 13 digits, UPC-A needs 11 or 12.</li>
+<li>Test with a phone scanning app before printing a whole batch.</li>
+</ul>
+<note>If the data is not valid for the chosen type, the barcode is drawn as an empty frame or an error message instead of bars.</note>

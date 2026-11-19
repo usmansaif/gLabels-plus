@@ -61,11 +61,10 @@ int main( int argc, char **argv )
         // any top-level window that doesn't set its own.
         {
                 QIcon appIcon;
-                for ( const char* size : { "16x16", "22x22", "32x32", "48x48", "128x128" } )
+                for ( int size : { 16, 22, 24, 32, 48, 64, 128 } )
                 {
-                        appIcon.addFile( QString( ":icons/glabels-flat/%1/apps/glabels.svg" ).arg( size ) );
+                        appIcon.addFile( QString( ":icons/app/glabels-plus-%1.png" ).arg( size ) );
                 }
-                appIcon.addFile( ":icons/glabels-flat/scalable/apps/glabels.svg" );
                 appIcon.addFile( ":images/glabels-logo.png" );
                 QApplication::setWindowIcon( appIcon );
         }

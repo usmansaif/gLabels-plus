@@ -24,6 +24,8 @@
 
 #include "ui_MergeView.h"
 
+#include <QLabel>
+
 #include "model/Model.hpp"
 
 #include "merge/Merge.hpp"
@@ -59,11 +61,19 @@ namespace glabels
 
 
                 /////////////////////////////////
+                // Signals
+                /////////////////////////////////
+        signals:
+                void connectRequested();
+
+
+                /////////////////////////////////
                 // Slots
                 /////////////////////////////////
         private slots:
                 void onMergeChanged();
                 void onMergeSourceChanged();
+                void updateCount();
 
                 void onFormatComboActivated();
                 void onLocationBrowseButtonClicked();
@@ -95,6 +105,7 @@ namespace glabels
 
                 int  mOldFormatComboIndex;
 
+                QLabel* mCountLabel{ nullptr };
         };
 
 }

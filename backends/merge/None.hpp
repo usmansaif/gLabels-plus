@@ -61,8 +61,8 @@ namespace glabels::merge
                 // Implementation of virtual methods
                 /////////////////////////////////
         public:
-                QStringList keys() const override;
-                QString primaryKey() const override;
+                QStringList sourceKeys() const override;
+                QString sourcePrimaryKey() const override;
         protected:
                 void open() override;
                 void close() override;

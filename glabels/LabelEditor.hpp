@@ -137,6 +137,11 @@ namespace glabels
                 int nPreviewRecords() const;
                 void setPreviewRecord( int index ); // -1 = show field names
 
+                /// Add a text, barcode or image object bound to a data variable
+                /// (at the center of the label, or at p when given)
+                void addVariableObject( const QString& name, const QString& type );
+                void addVariableObject( const QString& name, const QString& type, const model::Point& p );
+
 
                 /////////////////////////////////////
                 // In-place text editing

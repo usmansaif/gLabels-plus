@@ -202,7 +202,7 @@ namespace glabels
         ///
         void PrintView::onFormChanged()
         {
-                if ( !mBlocked )
+                if ( !mBlocked && mModel )   // the constructor restores checkboxes before a model is set
                 {
                         mBlocked = true;
 

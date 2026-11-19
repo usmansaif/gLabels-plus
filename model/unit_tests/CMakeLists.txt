@@ -9,6 +9,14 @@ if (Qt6Test_FOUND)
   add_test (NAME SubstitutionField COMMAND TestSubstitutionField)
 
   #=======================================
+  # Test data source (merge) mapping, detection and helpers
+  #=======================================
+  qt6_wrap_cpp (TestDataSource_moc_sources TestDataSource.hpp)
+  add_executable (TestDataSource TestDataSource.cpp ${TestDataSource_moc_sources})
+  target_link_libraries (TestDataSource Model Qt6::Test)
+  add_test (NAME DataSource COMMAND TestDataSource)
+
+  #=======================================
   # Test XmlUtil class
   #=======================================
   qt6_wrap_cpp (TestXmlUtil_moc_sources TestXmlUtil.hpp)

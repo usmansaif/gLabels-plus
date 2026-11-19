@@ -58,7 +58,9 @@ namespace glabels
         class Ruler;
         class PrintView;
         class PropertiesView;
+        class RecentView;
         class StartupView;
+        class VariablesPanel;
         class VariablesView;
 
 
@@ -86,6 +88,11 @@ namespace glabels
                 void setModel( model::Model* model );
                 bool isEmpty() const;
                 void closeDocument();
+
+                void showPrintPage();
+                void showRecentPage();
+                void fileShowRecentScreen();
+                void showWelcomePage();
 
 
                 /////////////////////////////////////
@@ -172,6 +179,10 @@ namespace glabels
                 void mergePreviewLast();
                 void onMergeRecordSpinChanged( int value );
                 void onPreviewRecordChanged();
+                void dataConnectSource();
+                void dataReload();
+                void dataShowPlaceholders();
+                void onAddVariableRequested( const QString& name, const QString& type );
                 void objectsXformRotateLeft();
                 void objectsXformRotateRight();
                 void objectsXformFlipHoriz();
@@ -194,6 +205,8 @@ namespace glabels
                 void onContextMenuActivate( model::Point );
 
                 void onZoomChanged();
+                void onOrientationButtonClicked();
+                void updateOrientationButton();
                 void onPointerMoved( model::Point );
                 void onPointerExit();
 
@@ -254,7 +267,7 @@ namespace glabels
                 // owned by QMainWindow
                 /////////////////////////////////////
                 QMenu*    fileMenu;
-                QMenu*    fileRecentMenu;
+                QAction*  fileOpenRecentAction;
                 QMenu*    editMenu;
                 QMenu*    viewMenu;
                 QMenu*    viewToolBarsMenu;
@@ -282,6 +295,8 @@ namespace glabels
                 QDockWidget*    mPropertiesDock{ nullptr };
                 QDockWidget*    mObjectListDock{ nullptr };
                 ObjectListView* mObjectListView{ nullptr };
+                QDockWidget*    mVariablesDock{ nullptr };
+                VariablesPanel* mVariablesPanel{ nullptr };
 
                 // Bump when the default toolbar/dock arrangement changes, so stale layouts are ignored
                 static const int STATE_VERSION = 2;
@@ -304,19 +319,24 @@ namespace glabels
                 QToolButton*         mWelcomeButton{ nullptr };
                 QToolButton*         mEditorButton{ nullptr };
                 QToolButton*         mPropertiesButton;
+                QToolButton*         mOrientationButton{ nullptr };
                 QToolButton*         mMergeButton;
                 QToolButton*         mVariablesButton;
                 QToolButton*         mPrintButton;
+                QToolButton*         mRecentButton{ nullptr };
 
                 QAction*             mWelcomeAction;
                 QAction*             mEditorAction;
                 QAction*             mPropertiesAction;
+                QAction*             mOrientationAction{ nullptr };
                 QAction*             mMergeAction;
                 QAction*             mVariablesAction;
                 QAction*             mPrintAction;
+                QAction*             mRecentAction{ nullptr };
 
                 QStackedWidget*      mPages;
                 StartupView*         mWelcomeView;
+                RecentView*          mRecentView{ nullptr };
                 QScrollArea*         mLabelEditorScrollArea;
                 LabelEditor*         mLabelEditor;
                 ObjectEditor*        mObjectEditor;
@@ -386,6 +406,11 @@ namespace glabels
                 QAction*  objectsOrderLowerOneAction;
                 QAction*  objectsEditTextAction;
                 QAction*  mergePreviewAction;
+                QAction*  mergePlaceholdersAction;
+                QAction*  dataConnectAction;
+                QAction*  dataReloadAction;
+                QAction*  viewVariablesDockAction;
+                QMenu*    dataMenu;
                 QAction*  mergeFirstAction;
                 QAction*  mergePreviousAction;
                 QAction*  mergeNextAction;

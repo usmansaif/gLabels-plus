@@ -1,0 +1,42 @@
+<h1>Variables and counters</h1>
+<p class="lead">Variables are values you define yourself. They can stay the same, or count up on every label, which is perfect for serial numbers, ticket numbers and asset tags.</p>
+
+<h2>Creating a variable</h2>
+<ol>
+<li>Open the <b>Variables</b> page ([[Ctrl+4]]) and click <b>Add</b>.</li>
+<li>Enter a <b>Name</b>, for example <code>serial</code>. Names start with a letter or underscore and contain only letters, digits and underscores.</li>
+<li>Choose a <b>Type</b> and an initial <b>Value</b>.</li>
+<li>For numbers, choose how it <b>increments</b> and the <b>step size</b>.</li>
+</ol>
+<p>Use <b>Edit</b> and <b>Delete</b> to change or remove variables.</p>
+
+<h2>Types</h2>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Type</th><th>Example value</th><th>Notes</th></tr>
+<tr><td>String</td><td><code>Batch A</code></td><td>Text that stays the same on every label.</td></tr>
+<tr><td>Integer</td><td><code>1001</code></td><td>Whole numbers; can increment.</td></tr>
+<tr><td>Floating Point</td><td><code>0.5</code></td><td>Decimal numbers; can increment.</td></tr>
+<tr><td>Color</td><td><code>#0055AA</code></td><td>Use as the color of text, lines, fills or barcodes.</td></tr>
+</table>
+
+<h2>Increment</h2>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Setting</th><th>The value increases...</th></tr>
+<tr><td>Never</td><td>never; it is a constant.</td></tr>
+<tr><td>Per item</td><td>on every label printed.</td></tr>
+<tr><td>Per copy</td><td>after each copy of a merge record.</td></tr>
+<tr><td>Per page</td><td>once for each printed sheet.</td></tr>
+</table>
+
+<h2>Using a variable</h2>
+<p>Insert it like a merge field with <b>Insert substitution field</b>, for example <code>No. ${serial}</code>. In a barcode, <code>${serial}</code> gives each label a unique barcode.</p>
+
+<h2>Example: numbered asset tags</h2>
+<ol>
+<li>Add an Integer variable <code>tag</code> with value <code>1</code>, increment <b>Per item</b>, step <code>1</code>.</li>
+<li>Add text <code>ASSET-${tag:%05d}</code>. The <code>%05d</code> pads it to five digits: ASSET-00001, ASSET-00002...</li>
+<li>Add a Code 128 barcode with data <code>ASSET-${tag:%05d}</code>.</li>
+<li>On the Print page, print as many sheets as you need.</li>
+</ol>
+<tip>When printing from the command line you can set a variable's starting value with <code>--define tag=501</code>. See <a href="batch.html">Command-line printing</a>.</tip>
+<note>If a merge column and a variable have the same name, the merge column wins.</note>

@@ -34,7 +34,7 @@ namespace glabels
         namespace Help
         {
 
-                void displayContents( QWidget *parent );
+                void displayContents( QWidget *parent, const QString& topic = QString() );
                 void displayReportBug( QWidget *parent );
                 void displayAbout( QWidget *parent );
 

@@ -301,6 +301,11 @@ namespace glabels::model
                 mInstance->beginGroup( "Recent" );
 
                 QStringList list = mInstance->value( "templates" ).toStringList();
+                if ( !list.isEmpty() && list.first() == name )
+                {
+                        mInstance->endGroup();
+                        return;   // already the most recent: nothing changes
+                }
 
                 list.removeAll( name );
                 list.prepend( name );

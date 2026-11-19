@@ -31,6 +31,9 @@
 #include "merge/TextColonKeys.hpp"
 #include "merge/TextSemicolon.hpp"
 #include "merge/TextSemicolonKeys.hpp"
+#include "merge/TextAuto.hpp"
+#include "merge/TextAutoKeys.hpp"
+#include "merge/Json.hpp"
 
 #include "merge/Record.hpp"
 
@@ -67,6 +70,9 @@ void TestMerge::factory_data()
         QTest::newRow( "TextColonKeys" ) << TextColonKeys::id() << "Text: Colon Separated Values, keys on line 1" << Factory::FILE << index++;
         QTest::newRow( "TextSemicolon" ) << TextSemicolon::id() << "Text: Semicolon Separated Values" << Factory::FILE << index++;
         QTest::newRow( "TextSemicolonKeys" ) << TextSemicolonKeys::id() << "Text: Semicolon Separated Values, keys on line 1" << Factory::FILE << index++;
+        QTest::newRow( "TextAutoKeys" ) << TextAutoKeys::id() << "Text: Auto-detect delimiter, column names on line 1" << Factory::FILE << index++;
+        QTest::newRow( "TextAuto" ) << TextAuto::id() << "Text: Auto-detect delimiter, no column names" << Factory::FILE << index++;
+        QTest::newRow( "Json" ) << Json::id() << "JSON: array of objects" << Factory::FILE << index++;
 }
 
 

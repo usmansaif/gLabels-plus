@@ -21,6 +21,8 @@
 
 #include "FieldButton.hpp"
 
+#include "VariableTypeIcon.hpp"
+
 #include <QLineEdit>
 #include <QStandardItemModel>
 
@@ -51,28 +53,29 @@ namespace glabels
                 mMenu.clear();
 
                 // Add merge keys, if any
-                mMenu.addSection( tr("Merge fields") );
+                mMenu.addSection( tr("Data variables") );
                 for ( auto& key : merge->keys() )
                 {
-                        auto* action = mMenu.addAction( QString( "${%1}" ).arg( key ) );
+                        auto* action = mMenu.addAction( VariableType::icon( merge->fieldType( key ) ),
+                                                        QString( "{{%1}}" ).arg( key ) );
                         action->setData( key );
                 }
                 if ( merge->keys().empty() )
                 {
-                        auto* action = mMenu.addAction( "None" );
+                        auto* action = mMenu.addAction( tr("None (connect a data source)") );
                         action->setEnabled( false );
                 }
 
                 // Add variable keys, if any
-                mMenu.addSection( tr("Variables") );
+                mMenu.addSection( tr("Custom variables") );
                 for ( auto& key : variables.keys() )
                 {
-                        auto* action = mMenu.addAction( QString( "${%1}" ).arg( key ) );
+                        auto* action = mMenu.addAction( QString( "{{%1}}" ).arg( key ) );
                         action->setData( key );
                 }
                 if ( variables.keys().empty() )
                 {
-                        auto* action = mMenu.addAction( "None" );
+                        auto* action = mMenu.addAction( tr("None") );
                         action->setEnabled( false );
                 }
 

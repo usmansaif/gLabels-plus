@@ -205,7 +205,8 @@ namespace glabels::model
                 void update();
 
                 void drawTextInEditor( QPainter*     painter,
-                                       const QColor& color ) const;
+                                       const QColor& color,
+                                       bool          drawPills = true ) const;
 
                 void drawText( QPainter*            painter,
                                const QColor&        color,
@@ -234,6 +235,7 @@ namespace glabels::model
                 bool                  mTextAutoShrink;
 
                 QList<QTextLayout*>   mEditorLayouts;
+                QList<QList<QPair<int,int>>> mEditorPills;   // per layout: {start, length} of {{variable}} tokens
                 QPainterPath          mHoverPath;
 
         };

@@ -28,6 +28,8 @@
 #include "model/ModelObject.hpp"
 
 #include <QButtonGroup>
+#include <QComboBox>
+#include <QToolButton>
 
 
 namespace glabels
@@ -73,6 +75,12 @@ namespace glabels
                 void loadBarcodePage();
                 void loadShadowPage();
 
+                void setupVariableModeControls();
+                void fillVariableCombos();
+                void updateBarcodeModeUi( bool variableMode );
+                void updateImageModeUi( bool variableMode );
+                QString singleVariableOf( const QString& rawText ) const;
+
 
                 /////////////////////////////////
                 // Slots
@@ -99,6 +107,10 @@ namespace glabels
                 void onResetImageSize();
                 void onShadowControlsChanged();
                 void onChanged();
+                void onBarcodeModeClicked();
+                void onBarcodeVariableActivated( int index );
+                void onImageModeClicked();
+                void onImageVariableActivated( int index );
 
 
                 /////////////////////////////////
@@ -119,6 +131,16 @@ namespace glabels
                 QString                  mImageCwd;
 
                 bool                     mBlocked;
+
+                // Static | Variable switches for barcode data and image file
+                QToolButton*             mBcStaticButton{ nullptr };
+                QToolButton*             mBcVariableButton{ nullptr };
+                QComboBox*               mBcVariableCombo{ nullptr };
+                QWidget*                 mBcVariableRow{ nullptr };
+                QToolButton*             mImageStaticButton{ nullptr };
+                QToolButton*             mImageVariableButton{ nullptr };
+                QComboBox*               mImageVariableCombo{ nullptr };
+                QWidget*                 mImageVariableRow{ nullptr };
 
         };
 

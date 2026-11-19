@@ -235,7 +235,7 @@
      <item>
       <widget class="QGroupBox" name="mergeBox">
        <property name="title">
-        <string>Merge control</string>
+        <string>Data records</string>
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
@@ -313,7 +313,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Merge groups are contiguous</string>
+            <string>Record copies are contiguous</string>
            </property>
            <property name="icon">
             <iconset theme="glabels-merge-group-contiguous">
@@ -322,7 +322,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Merge groups start on a new page</string>
+            <string>Each record starts on a new page</string>
            </property>
            <property name="icon">
             <iconset theme="glabels-merge-group-page">

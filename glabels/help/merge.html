@@ -1,0 +1,49 @@
+<h1>Mail merge from CSV</h1>
+<p class="lead">Mail merge prints one label for every row of a spreadsheet: address labels, name badges, price tags or thousands of unique barcodes.</p>
+
+<h2>1. Prepare your data</h2>
+<ul>
+<li>In Excel, LibreOffice Calc or Google Sheets, put one record per row and give each column a heading in the first row, such as <code>NAME</code>, <code>PRICE</code>, <code>SKU</code>.</li>
+<li>Save or download the sheet as <b>CSV (comma separated values)</b>. Choose UTF-8 encoding if asked, so accented and Urdu characters are kept.</li>
+</ul>
+<tip>Column headings without spaces or punctuation (<code>FIRST_NAME</code> rather than <code>First name:</code>) are easiest to use in fields.</tip>
+
+<h2>2. Connect the file</h2>
+<ol>
+<li>Open the <b>Merge</b> page ([[Ctrl+3]]).</li>
+<li>Choose the <b>Format</b>. Pick a format ending in <i>keys on line 1</i> if your first row holds column headings.</li>
+<li>Click <b>Browse...</b> and choose your file. The records appear in the table.</li>
+<li>Untick any rows you don't want to print, or use <b>Select all</b> and <b>Unselect all</b>.</li>
+<li>If you change the file in your spreadsheet program, click <b>Reload</b>.</li>
+</ol>
+
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Format</th><th>Use for</th></tr>
+<tr><td>Comma Separated Values (CSV)</td><td>Most spreadsheet exports.</td></tr>
+<tr><td>Tab Separated Values (TSV)</td><td>Text copied from a spreadsheet, or data containing commas.</td></tr>
+<tr><td>Semicolon Separated Values</td><td>CSV files saved by Excel in countries that use a decimal comma.</td></tr>
+<tr><td>Colon Separated Values</td><td>Some system and database exports.</td></tr>
+</table>
+<p>Without <i>keys on line 1</i>, columns are named by number: <code>${1}</code>, <code>${2}</code> and so on.</p>
+
+<h2>3. Put fields on the label</h2>
+<ul>
+<li>In a text object, click <b>Insert substitution field</b> in the properties panel and pick a column. A field such as <code>${NAME}</code> is inserted. You can mix fields with ordinary text: <code>Price: ${PRICE}</code>.</li>
+<li>For a barcode, insert a field in the <b>Barcode data</b>. Every row prints its own barcode.</li>
+<li>For an image, use <b>Use substitution field</b> with a column of image file names.</li>
+</ul>
+<p>Fields can be formatted, given default values, or placed on their own line only when they have a value. See <a href="fields.html">Substitution field syntax</a>.</p>
+
+<h2>4. Preview real records</h2>
+<p>Turn on <b>View &gt; Merge Preview &gt; Preview Merge Data</b> to show real records on the label instead of field names. Step through records with <b>First</b>, <b>Previous</b> ([[Alt+PgUp]]), <b>Next</b> ([[Alt+PgDown]]) and <b>Last</b>, to check that long names fit.</p>
+
+<h2>5. Print</h2>
+<p>On the <a href="printing.html">Print page</a>, each selected record becomes one label. Set <b>Copies</b> to print each record several times, choose whether copies are <b>collated</b>, and whether each merge group starts on a new page.</p>
+
+<h2>Troubleshooting</h2>
+<ul>
+<li><b>All data appears in one column</b>: the wrong separator is selected. Try Semicolon or Tab.</li>
+<li><b>Field names are printed instead of values</b>: the name in <code>${...}</code> must match the column heading exactly, including upper and lower case.</li>
+<li><b>Strange characters</b>: save the CSV file as UTF-8.</li>
+<li><b>Leading zeros disappear</b> (for example in ZIP codes or barcodes): format the column as Text in your spreadsheet before saving as CSV.</li>
+</ul>

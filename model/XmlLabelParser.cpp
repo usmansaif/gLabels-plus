@@ -784,6 +784,43 @@ namespace glabels::model
                         break;
                 }
 
+                // Variable mapping
+                QList<merge::Field> fields;
+                for ( QDomNode child = node.firstChild(); !child.isNull(); child = child.nextSibling() )
+                {
+                        QDomElement e = child.toElement();
+                        if ( e.tagName() == "Field" )
+                        {
+                                merge::Field f;
+                                f.source  = XmlUtil::getStringAttr( e, "source", "" );
+                                f.name    = XmlUtil::getStringAttr( e, "name", f.source );
+                                f.type    = XmlUtil::getStringAttr( e, "type", "text" );
+                                f.include = XmlUtil::getBoolAttr( e, "include", true );
+                                if ( !f.source.isEmpty() && !f.name.isEmpty() )
+                                {
+                                        fields << f;
+                                }
+                        }
+                }
+                merge->setFields( fields );
+
+                // Unselected records
+                QString unselected = XmlUtil::getStringAttr( node, "unselected", "" );
+                if ( !unselected.isEmpty() )
+                {
+                        QList<int> indices;
+                        for ( const auto& s : unselected.split( ",", Qt::SkipEmptyParts ) )
+                        {
+                                bool ok = false;
+                                int i = s.trimmed().toInt( &ok );
+                                if ( ok )
+                                {
+                                        indices << i;
+                                }
+                        }
+                        merge->setUnselectedIndices( indices );
+                }
+
                 model->setMerge( merge );
         }
 

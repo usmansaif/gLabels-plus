@@ -21,6 +21,8 @@
 
 #include "ModelBarcodeObject.hpp"
 
+#include "merge/DataSourceUtil.hpp"
+
 #include "Size.hpp"
 
 #include "barcode/Backends.hpp"
@@ -401,7 +403,7 @@ namespace glabels::model
                 }
                 else if ( mBcData.hasPlaceHolders() )
                 {
-                        drawPlaceHolder( painter, color, mBcData.toString() );
+                        drawPlaceHolder( painter, color, merge::DataSourceUtil::toDisplay( mBcData.toString() ) );
                 }
                 else if ( mEditorBarcode->isDataValid() )
                 {

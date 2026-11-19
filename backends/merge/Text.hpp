@@ -41,6 +41,7 @@ namespace glabels::merge
                 /////////////////////////////////
         protected:
                 Text( QChar delimiter, bool line1HasKeys );
+                Text( bool line1HasKeys );   // auto-detect delimiter
                 Text( const Text* merge );
                 virtual ~Text() = default;
 
@@ -49,8 +50,17 @@ namespace glabels::merge
                 // Implementation of virtual methods
                 /////////////////////////////////
         public:
-                QStringList keys() const override;
-                QString primaryKey() const override;
+                /// Guess the delimiter of delimited text: ',', '\t', ';', ':' or '|'
+                static QChar detectDelimiter( const QByteArray& sample );
+
+                /// Delimiter in use (after open() for auto-detecting backends)
+                QChar delimiter() const;
+
+                /// True when the source was not valid UTF-8 and was read as Latin-1
+                bool isLatin1() const;
+
+                QStringList sourceKeys() const override;
+                QString sourcePrimaryKey() const override;
         protected:
                 void open() override;
                 void close() override;
@@ -68,8 +78,12 @@ namespace glabels::merge
                 // Private data
                 /////////////////////////////////
         private:
+                QString toQString( const QByteArray& bytes ) const;
+
                 QChar mDelimeter;
                 bool  mLine1HasKeys;
+                bool  mAutoDetect{ false };
+                bool  mLatin1{ false };
 
                 QFile          mFile;
                 QStringList    mKeys;

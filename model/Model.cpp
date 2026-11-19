@@ -30,6 +30,9 @@
 #include "XmlLabelParser.hpp"
 
 #include "merge/None.hpp"
+#include "merge/DataSourceUtil.hpp"
+#include "ModelBarcodeObject.hpp"
+#include "ModelImageObject.hpp"
 
 #include <QApplication>
 #include <QClipboard>
@@ -188,7 +191,9 @@ namespace glabels::model
                 emit changed();
                 emit sizeChanged();
 
-                Settings::addToRecentTemplateList( tmplate.name() );
+                // Not added to the recent products list here: reading a label file
+                // (thumbnails, previews) must not change settings.  Callers that set
+                // a product the user just picked do that themselves.
         }
 
 
@@ -514,6 +519,101 @@ namespace glabels::model
 
 
         ///
+        /// Rename variable references
+        ///
+        int Model::renameVariableReferences( const QString& oldName, const QString& newName )
+        {
+                if ( oldName.isEmpty() || newName.isEmpty() || oldName == newName )
+                {
+                        return 0;
+                }
+
+                auto renameColor = [&]( ColorNode node, bool& changed ) {
+                        if ( node.isField() && node.key() == oldName )
+                        {
+                                node.setKey( newName );
+                                changed = true;
+                        }
+                        return node;
+                };
+
+                int count = 0;
+                for ( ModelObject* object : mObjectList )
+                {
+                        bool changed = false;
+
+                        if ( object->canText() )
+                        {
+                                QString text = merge::DataSourceUtil::renameReferences( object->text(), oldName, newName );
+                                if ( text != object->text() )
+                                {
+                                        object->setText( text );
+                                        changed = true;
+                                }
+                                bool c = false;
+                                ColorNode node = renameColor( object->textColorNode(), c );
+                                if ( c ) { object->setTextColorNode( node ); changed = true; }
+                        }
+
+                        if ( dynamic_cast<ModelBarcodeObject*>( object ) )
+                        {
+                                QString data = merge::DataSourceUtil::renameReferences( object->bcData(), oldName, newName );
+                                if ( data != object->bcData() )
+                                {
+                                        object->setBcData( data );
+                                        changed = true;
+                                }
+                                bool c = false;
+                                ColorNode node = renameColor( object->bcColorNode(), c );
+                                if ( c ) { object->setBcColorNode( node ); changed = true; }
+                        }
+
+                        if ( dynamic_cast<ModelImageObject*>( object ) )
+                        {
+                                TextNode fn = object->filenameNode();
+                                if ( fn.isField() && fn.data() == oldName )
+                                {
+                                        object->setFilenameNode( TextNode( true, newName ) );
+                                        changed = true;
+                                }
+                        }
+
+                        if ( object->canLineColor() )
+                        {
+                                bool c = false;
+                                ColorNode node = renameColor( object->lineColorNode(), c );
+                                if ( c ) { object->setLineColorNode( node ); changed = true; }
+                        }
+
+                        if ( object->canFill() )
+                        {
+                                bool c = false;
+                                ColorNode node = renameColor( object->fillColorNode(), c );
+                                if ( c ) { object->setFillColorNode( node ); changed = true; }
+                        }
+
+                        {
+                                bool c = false;
+                                ColorNode node = renameColor( object->shadowColorNode(), c );
+                                if ( c ) { object->setShadowColorNode( node ); changed = true; }
+                        }
+
+                        if ( changed )
+                        {
+                                count++;
+                        }
+                }
+
+                if ( count )
+                {
+                        setModified();
+                        emit changed();
+                }
+                return count;
+        }
+
+
+        ///
         /// Merge Source Changed Slot
         ///
         void Model::onMergeSourceChanged()
@@ -529,6 +629,7 @@ namespace glabels::model
         ///
         void Model::onMergeSelectionChanged()
         {
+                setModified();   // record selections are saved with the label
                 emit changed();
                 emit mergeSelectionChanged();
         }
@@ -1742,7 +1843,7 @@ namespace glabels::model
         void Model::pasteAsText( const QMimeData* mimeData, Point p )
         {
                 auto* object = new ModelTextObject();
-                object->setText( mimeData->text() );
+                object->setText( merge::DataSourceUtil::fromDisplay( mimeData->text() ) );   // {{Name}} -> ${Name}
                 object->setSize( object->naturalSize() );
                 object->setPosition( p.x(), p.y() );
                 addObject( object );

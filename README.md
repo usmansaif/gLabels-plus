@@ -106,10 +106,22 @@ The new **Barcode labels** category is shown here.
   and an *Also sold as* list of equivalent part numbers from other brands.
 - **Product template designer** for products that aren't listed, including roll labels.
 
-### Mail merge and variables
-- Merge from **CSV and other text files**, with a **live merge preview** that shows real
-  records on the label and First / Previous / Next / Last buttons.
-- **User-defined variables** for counters, dates and other values that change from label to label.
+### Data sources and variables
+- **Data > Connect Data Source** imports **CSV, TSV and JSON** files. The delimiter and
+  encoding are detected automatically, and every column becomes a variable.
+- A **Variable Setup** table to include or exclude columns, rename them (e.g.
+  `prod_sku_01` to `Product_SKU`) and pick a type (Text, Barcode, Image Path, Number),
+  plus **Preview Records** to choose which records to print.
+- A docked **Variables panel**: drag a variable onto the label to create a bound text,
+  barcode or image object. Renaming a variable updates every use of it on the label.
+- Variables appear as **`{{Variable_Name}}` pills**. Barcodes and images have a
+  **Static | Variable** switch, and text has an **Insert Variable** menu.
+- **Show Placeholders | Preview Live Data** on the toolbar, with Previous / Next record buttons.
+- **Custom variables** for counters, dates and other values that change from label to label.
+
+### Recent labels
+- After closing a label, a **Recent Labels** grid shows thumbnails of your recent labels
+  and their projects. Click to open one, or double-click to go straight to printing.
 
 ### Printing
 - **Sheet and continuous-roll** printing, with a print preview.
@@ -215,7 +227,7 @@ Ready-to-run packages will be published on the
 
 | Platform | Packages |
 |:--|:--|
-| Linux | `.AppImage`, `.deb`, `.rpm`, `.tar.gz` (Qt bundled) |
+| Linux | `.AppImage`, `.deb`, `.rpm`, `.tar.gz` (Qt bundled; Ubuntu 20.04 LTS and newer) |
 | Windows | `.exe` installer and portable `.zip` |
 | macOS | `.dmg` and `.tar.gz` |
 
@@ -250,7 +262,13 @@ Useful `build.sh` options:
 ```bash
 ./release.sh                       # all package formats for this OS, written to dist/
 ./release.sh -f appimage,deb       # only some formats
+./release-ubuntu2004.sh            # Linux packages built in an Ubuntu 20.04 container (needs Docker)
 ```
+
+Linux packages for distribution should be built with `release-ubuntu2004.sh`. It builds
+in an Ubuntu 20.04 container with Qt 6.5 LTS, so the packages run on Ubuntu 20.04 LTS
+and every newer release. Packages built directly on a newer system need that system's
+glibc or newer.
 
 ### Requirements
 

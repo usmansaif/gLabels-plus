@@ -1,0 +1,70 @@
+<h1>Adding and arranging objects</h1>
+<p class="lead">A label is built from <b>objects</b>: text, barcodes, images, boxes, lines and ellipses. This page covers creating, selecting and arranging them.</p>
+
+<h2>Drawing tools</h2>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Tool</th><th>Key</th><th>How to use it</th></tr>
+<tr><td>Select</td><td>[[V]]</td><td>Select, move and resize objects. This is the normal mode.</td></tr>
+<tr><td>Text</td><td>[[T]]</td><td>Click to start typing, or drag to set the width of the text box.</td></tr>
+<tr><td>Box</td><td>[[R]]</td><td>Drag to draw a rectangle.</td></tr>
+<tr><td>Line</td><td>[[L]]</td><td>Drag from one end to the other.</td></tr>
+<tr><td>Ellipse</td><td>[[O]]</td><td>Drag to draw an ellipse or circle.</td></tr>
+<tr><td>Image</td><td>[[I]]</td><td>Drag a frame, then choose the image file in the properties panel.</td></tr>
+<tr><td>Barcode</td><td>[[B]]</td><td>Drag a frame, then type the data. See <a href="barcodes.html">Barcodes</a>.</td></tr>
+<tr><td>Measure</td><td>[[M]]</td><td>Drag between two points to measure. See <a href="guides.html">Measuring</a>.</td></tr>
+</table>
+<p>After you draw an object, gLabels Plus switches back to the Select tool. You can change any of these keys in <b>Edit &gt; Keyboard Shortcuts</b>.</p>
+
+<h2>Selecting</h2>
+<ul>
+<li>Click an object to select it. [[Ctrl]]+click adds an object to the selection, or removes it.</li>
+<li>Drag on an empty part of the label to select every object inside the rectangle. Hold [[Ctrl]] to add them to the current selection.</li>
+<li>[[Ctrl+A]] selects everything; <b>Edit &gt; Un-select All</b> clears the selection. [[Esc]] also clears it.</li>
+<li>Click a row in the <a href="layers.html">Objects panel</a> to select objects that are hidden under others.</li>
+<li><b>Locked</b> objects can't be selected on the canvas. Unlock them in the Objects panel.</li>
+</ul>
+
+<h2>Moving and resizing</h2>
+<ul>
+<li>Drag a selected object to move it. A tooltip shows the live position.</li>
+<li>Drag one of the handles to resize. Hold [[Ctrl]] while resizing to keep the proportions (or, if <b>Lock aspect ratio</b> is on, to free them).</li>
+<li>The arrow keys nudge the selection one step; hold [[Shift]] for ten steps.</li>
+<li>[[Ctrl]]+mouse wheel zooms; [[Shift]]+mouse wheel scrolls sideways.</li>
+<li>For exact values, type the X, Y, width and height in the <b>Position/Size</b> tab of the properties panel.</li>
+<li>Objects snap to other objects and to the label while you drag. Hold [[Ctrl]] to turn snapping off for that drag. See <a href="guides.html">Smart guides</a>.</li>
+</ul>
+
+<h2>Cut, copy, paste, duplicate and delete</h2>
+<ul>
+<li>[[Ctrl+X]], [[Ctrl+C]] and [[Ctrl+V]] cut, copy and paste. You can paste into another open label.</li>
+<li>[[Ctrl+D]] duplicates the selection (from the Objects panel).</li>
+<li>[[Delete]] or [[E]] deletes the selection.</li>
+<li>[[Ctrl+Z]] undoes and [[Ctrl+Y]] (or [[Ctrl+Shift+Z]]) redoes. Every change can be undone.</li>
+</ul>
+
+<h2>Stacking order</h2>
+<p>Objects higher in the list are drawn on top. Use <b>Objects &gt; Order</b> or the right-click menu:</p>
+<ul>
+<li><b>Bring Forward</b> [[Ctrl+]]] and <b>Send Backward</b> [[Ctrl+[]] move one layer at a time.</li>
+<li><b>Bring To Front</b> [[Ctrl+Shift+]]] and <b>Send To Back</b> [[Ctrl+Shift+[]] move all the way.</li>
+<li>You can also drag rows in the Objects panel.</li>
+</ul>
+
+<h2>Rotating and flipping</h2>
+<ul>
+<li><b>Objects &gt; Rotate/Flip</b>: rotate left or right by 90&deg;, flip horizontally or vertically.</li>
+<li>Type any angle into the <b>rotation box</b> on the toolbar, or in the Position/Size tab.</li>
+</ul>
+
+<h2>Aligning and centering</h2>
+<p><b>Objects &gt; Alignment</b> lines objects up by their left, center, right, top, middle or bottom edges. Choose what they align to at the bottom of the same menu:</p>
+<ul>
+<li><b>Selection</b>: the outer edges of all the selected objects.</li>
+<li><b>Last selected object</b>: the other objects move to match it.</li>
+<li><b>Label</b>: align to the label's edges, even with just one object selected.</li>
+</ul>
+<p><b>Objects &gt; Center</b> centers the selection on the label horizontally, vertically or both.</p>
+<tip>Set your preferred alignment reference once in <a href="preferences.html">Preferences &gt; Editor</a>.</tip>
+
+<h2>Right-click menu</h2>
+<p>Right-click an object for quick access to Edit Text, Order, Rotate/Flip, Alignment, Center, Cut, Copy, Paste and Delete.</p>

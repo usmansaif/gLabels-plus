@@ -36,9 +36,15 @@
 #include "ShortcutsDialog.hpp"
 #include "StartupView.hpp"
 #include "VariablesView.hpp"
+#include "VariablesPanel.hpp"
+#include "ConnectDataSourceDialog.hpp"
+#include "RecentView.hpp"
+#include "merge/DataSourceUtil.hpp"
 #include "WhatsNewDialog.hpp"
+#include "HelpWindow.hpp"
 
 #include "model/Db.hpp"
+#include "model/Frame.hpp"
 #include "model/Model.hpp"
 #include "model/ModelBarcodeObject.hpp"
 #include "model/ModelObject.hpp"
@@ -54,6 +60,7 @@
 #include <QStyle>
 #include <QFrame>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QScrollBar>
@@ -73,6 +80,7 @@ namespace
                 MERGE_PAGE_INDEX      = 3,
                 VARIABLES_PAGE_INDEX  = 4,
                 PRINT_PAGE_INDEX      = 5,
+                RECENT_PAGE_INDEX     = 6,
         };
 }
 
@@ -168,12 +176,22 @@ namespace glabels
                 mPropertiesButton->setCheckable( true );
                 mPropertiesAction = mContents->addWidget( mPropertiesButton );
                 group->addButton( mPropertiesButton );
+                mPropertiesAction->setVisible( false );   // product details now live on the Print page
 
-                // Add "Merge" page
+                // Page orientation (not a page: toggles the label between horizontal and vertical)
+                mOrientationButton = new QToolButton( this );
+                mOrientationButton->setIcon( QIcon::fromTheme( "glabels-label-orientation-horiz" ) );
+                mOrientationButton->setText( tr("Horizontal") );
+                mOrientationButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+                mOrientationAction = mContents->addWidget( mOrientationButton );
+                connect( mOrientationButton, &QToolButton::clicked, this, &MainWindow::onOrientationButtonClicked );
+
+                // Add "Data Source" page
                 mPages->addWidget( mergePage );
                 mMergeButton = new QToolButton( this );
                 mMergeButton->setIcon( QIcon::fromTheme( "glabels-merge" ) );
-                mMergeButton->setText( tr("Merge") );
+                mMergeButton->setText( tr("Data Source") );
+                mMergeButton->setToolTip( tr("Data source: connect a CSV, TSV or JSON file and choose records") );
                 mMergeButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mMergeButton->setCheckable( true );
                 mMergeAction = mContents->addWidget( mMergeButton );
@@ -183,7 +201,8 @@ namespace glabels
                 mPages->addWidget( variablesPage );
                 mVariablesButton = new QToolButton( this );
                 mVariablesButton->setIcon( QIcon::fromTheme( "glabels-variables" ) );
-                mVariablesButton->setText( tr("Variables") );
+                mVariablesButton->setText( tr("Custom Variables") );
+                mVariablesButton->setToolTip( tr("Custom variables: counters and constants") );
                 mVariablesButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
                 mVariablesButton->setCheckable( true );
                 mVariablesAction = mContents->addWidget( mVariablesButton );
@@ -198,6 +217,19 @@ namespace glabels
                 mPrintButton->setCheckable( true );
                 mPrintAction = mContents->addWidget( mPrintButton );
                 group->addButton( mPrintButton );
+
+                // Add "Recent" page (only offered while no label is open)
+                mRecentView = new RecentView( this );
+                connect( mRecentView, &RecentView::homeRequested, this, &MainWindow::showWelcomePage );
+                mPages->addWidget( mRecentView );
+                mRecentButton = new QToolButton( this );
+                mRecentButton->setIcon( QIcon::fromTheme( "glabels-file-recent" ) );
+                mRecentButton->setText( tr("Recent") );
+                mRecentButton->setToolTip( tr("Recently used labels") );
+                mRecentButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+                mRecentButton->setCheckable( true );
+                mRecentAction = mContents->addWidget( mRecentButton );
+                group->addButton( mRecentButton );
 
                 // Set initial page selection
                 mWelcomeButton->setChecked( true );
@@ -216,11 +248,13 @@ namespace glabels
                 setTitle();
 
                 // Connect
+                connect( mWelcomeButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mEditorButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mPropertiesButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mMergeButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mVariablesButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mPrintButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
+                connect( mRecentButton, SIGNAL(toggled(bool)), this, SLOT(changePage(bool)));
                 connect( mLabelEditor, SIGNAL(zoomChanged()), this, SLOT(onZoomChanged()) );
                 connect( mLabelEditor, SIGNAL(previewRecordChanged()), this, SLOT(onPreviewRecordChanged()) );
                 connect( model::Settings::instance(), SIGNAL(changed()), this, SLOT(onSettingsChanged()) );
@@ -288,6 +322,7 @@ namespace glabels
                 mObjectEditor->setModel( mModel.get(), mUndoRedoModel.get() );
                 mObjectListView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mMergeView->setModel( mModel.get(), mUndoRedoModel.get() );
+                mVariablesPanel->setModel( mModel.get(), mUndoRedoModel.get() );
                 mVariablesView->setModel( mModel.get(), mUndoRedoModel.get() );
                 mPrintView->setModel( mModel.get() );
 
@@ -303,7 +338,9 @@ namespace glabels
                 connect( mModel.get(), SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()) );
                 connect( mModel.get(), SIGNAL(changed()), this, SLOT(onLabelChanged()) );
                 connect( mUndoRedoModel.get(), SIGNAL(changed()), this, SLOT(onUndoRedoChanged()) );
+                connect( mModel.get(), SIGNAL(sizeChanged()), this, SLOT(updateOrientationButton()) );
 
+                updateOrientationButton();
                 onPreviewRecordChanged();
                 syncRotationSpin();
                 syncPageButton();
@@ -356,7 +393,9 @@ namespace glabels
                         return;    // user cancelled the save prompt
                 }
 
+                // The label editor was closed: show the recent labels in its place
                 auto* welcome = new MainWindow();
+                welcome->showRecentPage();
                 welcome->show();
 
                 mCloseConfirmed = true;
@@ -405,7 +444,7 @@ namespace glabels
                 fileOpenAction->setStatusTip( tr("Open an existing gLabels Plus label") );
                 connect( fileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()) );
 
-                for ( int i = 0; i < model::Settings::maxRecentFiles(); i++ )
+                for ( int i = 0; i < std::min( model::Settings::maxRecentFiles(), 10 ); i++ )   // menu shows up to 10
                 {
                         auto* action = new QAction( this );
                         action->setIcon( QIcon::fromTheme( "glabels" ) );
@@ -436,14 +475,14 @@ namespace glabels
                 fileShowPropertiesPageAction->setStatusTip( tr("Select label Properties mode") );
                 connect( fileShowPropertiesPageAction, SIGNAL(triggered()), this, SLOT(fileShowPropertiesPage()) );
 
-                fileShowMergePageAction = new QAction( tr("&Merge") , this );
+                fileShowMergePageAction = new QAction( tr("&Data Source") , this );
                 fileShowMergePageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_3 ) );
-                fileShowMergePageAction->setStatusTip( tr("Select label Merge mode") );
+                fileShowMergePageAction->setStatusTip( tr("Show the data source and its records") );
                 connect( fileShowMergePageAction, SIGNAL(triggered()), this, SLOT(fileShowMergePage()) );
 
-                fileShowVariablesPageAction = new QAction( tr("&Variables") , this );
+                fileShowVariablesPageAction = new QAction( tr("&Custom Variables") , this );
                 fileShowVariablesPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_4 ) );
-                fileShowVariablesPageAction->setStatusTip( tr("Select label Variables mode") );
+                fileShowVariablesPageAction->setStatusTip( tr("Edit custom variables (counters and constants)") );
                 connect( fileShowVariablesPageAction, SIGNAL(triggered()), this, SLOT(fileShowVariablesPage()) );
 
                 fileShowPrintPageAction = new QAction( tr("&Print") , this );
@@ -564,9 +603,9 @@ namespace glabels
                 viewArrangeToolBarAction->setStatusTip( tr("Change visibility of the \"Arrange\" toolbar") );
                 connect( viewArrangeToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewToolBarToggled(bool)) );
 
-                viewMergeToolBarAction = new QAction( tr("Merge Preview"), this );
+                viewMergeToolBarAction = new QAction( tr("Live Data Preview"), this );
                 viewMergeToolBarAction->setCheckable( true );
-                viewMergeToolBarAction->setStatusTip( tr("Change visibility of the \"Merge Preview\" toolbar") );
+                viewMergeToolBarAction->setStatusTip( tr("Change visibility of the \"Live Data Preview\" toolbar") );
                 connect( viewMergeToolBarAction, SIGNAL(toggled(bool)), this, SLOT(viewToolBarToggled(bool)) );
 
                 viewPropertiesDockAction = new QAction( tr("Object Properties Panel"), this );
@@ -574,6 +613,12 @@ namespace glabels
                 viewPropertiesDockAction->setIcon( QIcon::fromTheme( "glabels-object-properties" ) );
                 viewPropertiesDockAction->setStatusTip( tr("Show or hide the object properties panel") );
                 connect( viewPropertiesDockAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
+
+                viewVariablesDockAction = new QAction( tr("Variables Panel"), this );
+                viewVariablesDockAction->setCheckable( true );
+                viewVariablesDockAction->setIcon( QIcon::fromTheme( "glabels-variables" ) );
+                viewVariablesDockAction->setStatusTip( tr("Show or hide the data source variables panel") );
+                connect( viewVariablesDockAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
 
                 viewObjectListDockAction = new QAction( tr("Objects Panel"), this );
                 viewObjectListDockAction->setCheckable( true );
@@ -734,22 +779,40 @@ namespace glabels
                 } );
 
                 /* Merge preview */
-                mergePreviewAction = new QAction( tr("Preview Merge Data"), this );
+                mergePlaceholdersAction = new QAction( tr("Show Placeholders"), this );
+                mergePlaceholdersAction->setCheckable( true );
+                mergePlaceholdersAction->setChecked( true );
+                mergePlaceholdersAction->setStatusTip( tr("Show variables as {{Variable_Name}} placeholders on the label") );
+                connect( mergePlaceholdersAction, SIGNAL(triggered()), this, SLOT(dataShowPlaceholders()) );
+
+                mergePreviewAction = new QAction( tr("Preview Live Data"), this );
                 mergePreviewAction->setIcon( QIcon::fromTheme( "glabels-merge" ) );
                 mergePreviewAction->setCheckable( true );
-                mergePreviewAction->setStatusTip( tr("Show actual merge records on the label instead of field names") );
+                mergePreviewAction->setStatusTip( tr("Show real records from the data source on the label instead of placeholders") );
                 connect( mergePreviewAction, SIGNAL(toggled(bool)), this, SLOT(mergePreviewToggled(bool)) );
+
+                dataConnectAction = new QAction( tr("&Connect Data Source..."), this );
+                dataConnectAction->setIcon( QIcon::fromTheme( "glabels-merge" ) );
+                dataConnectAction->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_D ) );
+                dataConnectAction->setStatusTip( tr("Import a CSV, TSV or JSON file and set up its variables") );
+                connect( dataConnectAction, SIGNAL(triggered()), this, SLOT(dataConnectSource()) );
+
+                dataReloadAction = new QAction( tr("&Reload Data"), this );
+                dataReloadAction->setStatusTip( tr("Read the data source file again") );
+                connect( dataReloadAction, SIGNAL(triggered()), this, SLOT(dataReload()) );
 
                 mergeFirstAction = new QAction( tr("First Record"), this );
                 mergeFirstAction->setIcon( QIcon::fromTheme( "glabels-go-first" ) );
                 connect( mergeFirstAction, SIGNAL(triggered()), this, SLOT(mergePreviewFirst()) );
 
-                mergePreviousAction = new QAction( tr("Previous Record"), this );
+                mergePreviousAction = new QAction( tr("< Previous"), this );
+                mergePreviousAction->setToolTip( tr("Previous Record") );
                 mergePreviousAction->setIcon( QIcon::fromTheme( "glabels-go-previous" ) );
                 mergePreviousAction->setShortcut( QKeySequence( Qt::ALT | Qt::Key_PageUp ) );
                 connect( mergePreviousAction, SIGNAL(triggered()), this, SLOT(mergePreviewPrevious()) );
 
-                mergeNextAction = new QAction( tr("Next Record"), this );
+                mergeNextAction = new QAction( tr("Next >"), this );
+                mergeNextAction->setToolTip( tr("Next Record") );
                 mergeNextAction->setIcon( QIcon::fromTheme( "glabels-go-next" ) );
                 mergeNextAction->setShortcut( QKeySequence( Qt::ALT | Qt::Key_PageDown ) );
                 connect( mergeNextAction, SIGNAL(triggered()), this, SLOT(mergePreviewNext()) );
@@ -877,16 +940,14 @@ namespace glabels
                 fileMenu->addAction( fileNewAction );
                 fileMenu->addAction( fileNewProjectAction );
                 fileMenu->addAction( fileOpenAction );
-                fileRecentMenu = fileMenu->addMenu( QIcon::fromTheme( "glabels-file-recent" ), tr("Open Recent") );
-                for ( auto* action : fileRecentActionList )
-                {
-                        fileRecentMenu->addAction( action );
-                }
+                // "Open Recent..." shows the Recent labels screen (thumbnail grid)
+                fileOpenRecentAction = fileMenu->addAction( QIcon::fromTheme( "glabels-file-recent" ), tr("Open Recent...") );
+                fileOpenRecentAction->setStatusTip( tr("Show recently used labels") );
+                connect( fileOpenRecentAction, &QAction::triggered, this, &MainWindow::fileShowRecentScreen );
                 fileMenu->addAction( fileSaveAction );
                 fileMenu->addAction( fileSaveAsAction );
                 fileMenu->addSeparator();
                 fileMenu->addAction( fileShowEditorPageAction );
-                fileMenu->addAction( fileShowPropertiesPageAction );
                 fileMenu->addAction( fileShowMergePageAction );
                 fileMenu->addAction( fileShowVariablesPageAction );
                 fileMenu->addAction( fileShowPrintPageAction );
@@ -923,20 +984,14 @@ namespace glabels
                 auto* viewPanelsMenu = viewMenu->addMenu( tr("Panels") );
                 viewPanelsMenu->addAction( viewPropertiesDockAction );
                 viewPanelsMenu->addAction( viewObjectListDockAction );
+                viewPanelsMenu->addAction( viewVariablesDockAction );
                 viewMenu->addSeparator();
                 viewMenu->addAction( viewGridAction );
                 viewMenu->addAction( viewMarkupAction );
                 viewMenu->addAction( viewRulersAction );
                 viewMenu->addAction( viewPropertiesUnitsAction );
                 viewMenu->addSeparator();
-                auto* viewMergeMenu = viewMenu->addMenu( QIcon::fromTheme( "glabels-merge" ), tr("Merge Preview") );
-                viewMergeMenu->addAction( mergePreviewAction );
-                viewMergeMenu->addSeparator();
-                viewMergeMenu->addAction( mergeFirstAction );
-                viewMergeMenu->addAction( mergePreviousAction );
-                viewMergeMenu->addAction( mergeNextAction );
-                viewMergeMenu->addAction( mergeLastAction );
-                viewMenu->addSeparator();
+
                 viewMenu->addAction( viewZoomInAction );
                 viewMenu->addAction( viewZoomOutAction );
                 viewMenu->addAction( viewZoom1To1Action );
@@ -980,6 +1035,22 @@ namespace glabels
                 objectsCenterMenu->addAction( objectsCenterHorizAction );
                 objectsCenterMenu->addAction( objectsCenterVertAction );
                 objectsCenterMenu->addAction( objectsCenterAction );
+
+                dataMenu = menuBar()->addMenu( tr("&Data") );
+                dataMenu->addAction( dataConnectAction );
+                dataMenu->addAction( fileShowMergePageAction );
+                dataMenu->addAction( viewVariablesDockAction );
+                dataMenu->addAction( dataReloadAction );
+                dataMenu->addSeparator();
+                dataMenu->addAction( mergePlaceholdersAction );
+                dataMenu->addAction( mergePreviewAction );
+                dataMenu->addSeparator();
+                dataMenu->addAction( mergeFirstAction );
+                dataMenu->addAction( mergePreviousAction );
+                dataMenu->addAction( mergeNextAction );
+                dataMenu->addAction( mergeLastAction );
+                dataMenu->addSeparator();
+                dataMenu->addAction( fileShowVariablesPageAction );
 
                 helpMenu = menuBar()->addMenu( tr("&Help") );
                 helpMenu->addAction( helpContentsAction );
@@ -1172,21 +1243,60 @@ namespace glabels
                 addToolBar( Qt::TopToolBarArea, arrangeToolBar );
 
                 /* Merge preview */
-                mergeToolBar = new QToolBar( tr("Merge Preview") );
+                mergeToolBar = new QToolBar( tr("Live Data Preview") );
                 mergeToolBar->setObjectName( "mergeToolBar" );
                 mergeToolBar->setToolButtonStyle( style );
-                mergeToolBar->addAction( mergePreviewAction );
+                mergeToolBar->addAction( dataConnectAction );
+                mergeToolBar->addSeparator();
+                {
+                        // Segmented "Show Placeholders | Preview Live Data" switch
+                        auto* placeholders = new QToolButton();
+                        placeholders->setDefaultAction( mergePlaceholdersAction );
+                        placeholders->setToolButtonStyle( Qt::ToolButtonTextOnly );
+                        placeholders->setObjectName( "segmentLeft" );
+                        auto* live = new QToolButton();
+                        live->setDefaultAction( mergePreviewAction );
+                        live->setToolButtonStyle( Qt::ToolButtonTextOnly );
+                        live->setObjectName( "segmentRight" );
+                        auto* segment = new QWidget();
+                        segment->setObjectName( "previewSegment" );
+                        auto* segLayout = new QHBoxLayout( segment );
+                        segLayout->setContentsMargins( 2, 0, 2, 0 );
+                        segLayout->setSpacing( 0 );
+                        segLayout->addWidget( placeholders );
+                        segLayout->addWidget( live );
+                        segment->setStyleSheet(
+                                "#previewSegment QToolButton { padding: 3px 10px; border: 1px solid palette(mid); }"
+                                "#previewSegment QToolButton#segmentLeft { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }"
+                                "#previewSegment QToolButton#segmentRight { border-left: none;"
+                                "  border-top-right-radius: 5px; border-bottom-right-radius: 5px; }"
+                                "#previewSegment QToolButton:checked { background: palette(highlight); color: palette(highlighted-text);"
+                                "  border-color: palette(highlight); }"
+                                "#previewSegment QToolButton:disabled { color: palette(placeholder-text); }" );
+                        mergeToolBar->addWidget( segment );
+                }
+                mergeToolBar->addSeparator();
                 mergeToolBar->addAction( mergeFirstAction );
-                mergeToolBar->addAction( mergePreviousAction );
+                {
+                        auto* prev = new QToolButton();
+                        prev->setDefaultAction( mergePreviousAction );
+                        prev->setToolButtonStyle( Qt::ToolButtonTextOnly );
+                        mergeToolBar->addWidget( prev );
+                }
                 mMergeRecordSpin = new QSpinBox();
-                mMergeRecordSpin->setToolTip( tr("Merge record shown on the label") );
+                mMergeRecordSpin->setToolTip( tr("Data record shown on the label") );
                 mMergeRecordSpin->setPrefix( tr("Record ") );
                 mMergeRecordSpin->setKeyboardTracking( false );
                 connect( mMergeRecordSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::onMergeRecordSpinChanged );
                 mergeToolBar->addWidget( mMergeRecordSpin );
                 mMergeRecordCountLabel = new QLabel();
                 mergeToolBar->addWidget( mMergeRecordCountLabel );
-                mergeToolBar->addAction( mergeNextAction );
+                {
+                        auto* next = new QToolButton();
+                        next->setDefaultAction( mergeNextAction );
+                        next->setToolButtonStyle( Qt::ToolButtonTextOnly );
+                        mergeToolBar->addWidget( next );
+                }
                 mergeToolBar->addAction( mergeLastAction );
                 addToolBar( Qt::TopToolBarArea, mergeToolBar );
 
@@ -1279,7 +1389,21 @@ namespace glabels
                 resizeDocks( { mPropertiesDock, mObjectListDock }, { 3, 1 }, Qt::Vertical );
                 resizeDocks( { mPropertiesDock }, { 400 }, Qt::Horizontal );
 
-                for ( auto* dock : { mPropertiesDock, mObjectListDock } )
+                // Variables (data source) panel, on the left of the canvas
+                mVariablesPanel = new VariablesPanel();
+                connect( mVariablesPanel, &VariablesPanel::connectRequested, this, &MainWindow::dataConnectSource );
+                connect( mVariablesPanel, &VariablesPanel::addVariableRequested, this, &MainWindow::onAddVariableRequested );
+                mVariablesDock = new QDockWidget( tr("Variables"), this );
+                mVariablesDock->setObjectName( "variablesDock" );
+                mVariablesDock->setWidget( mVariablesPanel );
+                mVariablesDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
+                mVariablesDock->setFeatures( QDockWidget::DockWidgetClosable |
+                                             QDockWidget::DockWidgetMovable |
+                                             QDockWidget::DockWidgetFloatable );
+                addDockWidget( Qt::LeftDockWidgetArea, mVariablesDock );
+                resizeDocks( { mVariablesDock }, { 230 }, Qt::Horizontal );
+
+                for ( auto* dock : { mPropertiesDock, mObjectListDock, mVariablesDock } )
                 {
                         dock->toggleViewAction()->setVisible( false );
                         dock->installEventFilter( this );
@@ -1311,7 +1435,9 @@ namespace glabels
                         { viewZoom1To1Action, "view.zoom1to1" }, { viewZoomToFitAction, "view.zoomToFit" },
                         { mergePreviewAction, "merge.preview" }, { mergeFirstAction, "merge.first" },
                         { mergePreviousAction, "merge.previous" }, { mergeNextAction, "merge.next" },
-                        { mergeLastAction, "merge.last" },
+                        { mergeLastAction, "merge.last" }, { mergePlaceholdersAction, "merge.placeholders" },
+                        { dataConnectAction, "merge.connect" }, { dataReloadAction, "merge.reload" },
+                        { viewVariablesDockAction, "view.variablesPanel" },
                         { objectsArrowModeAction, "objects.select" }, { objectsMeasureModeAction, "objects.measure" }, { objectsCreateTextAction, "objects.createText" },
                         { objectsCreateBoxAction, "objects.createBox" }, { objectsCreateLineAction, "objects.createLine" },
                         { objectsCreateEllipseAction, "objects.createEllipse" }, { objectsCreateImageAction, "objects.createImage" },
@@ -1328,6 +1454,13 @@ namespace glabels
                         { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
                         { helpWhatsNewAction, "help.whatsNew" }, { helpAboutAction, "help.about" },
                 };
+
+                QList<QAction*> helpActions;
+                for ( auto& entry : table )
+                {
+                        helpActions.append( entry.first );
+                }
+                HelpWindow::setShortcutActions( helpActions );
 
                 for ( auto& entry : table )
                 {
@@ -1413,7 +1546,7 @@ namespace glabels
                         mContents->layout()->setContentsMargins( 0, 0, 0, 0 );
                 }
 
-                const QList<QToolButton*> buttons = { mWelcomeButton, mEditorButton, mPropertiesButton,
+                const QList<QToolButton*> buttons = { mWelcomeButton, mEditorButton, mOrientationButton,
                                                       mMergeButton, mVariablesButton, mPrintButton };
                 int cellWidth = 0;
                 for ( auto* button : buttons )
@@ -1445,6 +1578,8 @@ namespace glabels
                 {
                         mContents->updateGeometry();
                 }
+
+                updateOrientationButton();   // restore its tooltip
         }
 
 
@@ -1500,6 +1635,7 @@ namespace glabels
                 menu->addSeparator();
                 menu->addAction( viewPropertiesDockAction );
                 menu->addAction( viewObjectListDockAction );
+                menu->addAction( viewVariablesDockAction );
                 return menu;
         }
 
@@ -1518,6 +1654,10 @@ namespace glabels
                         else if ( watched == mObjectListDock )
                         {
                                 viewObjectListDockAction->setChecked( false );
+                        }
+                        else if ( watched == mVariablesDock )
+                        {
+                                viewVariablesDockAction->setChecked( false );
                         }
                 }
                 return QMainWindow::eventFilter( watched, event );
@@ -1541,6 +1681,7 @@ namespace glabels
                 {
                         mPropertiesDock->setVisible( isEditor && viewPropertiesDockAction->isChecked() );
                         mObjectListDock->setVisible( isEditor && viewObjectListDockAction->isChecked() );
+                        mVariablesDock->setVisible( isEditor && viewVariablesDockAction->isChecked() );
                 }
 
                 bool rulers = viewRulersAction->isChecked();
@@ -1584,7 +1725,9 @@ namespace glabels
         {
                 mPropertiesView = new PropertiesView();
 
-                return mPropertiesView;
+                // The Properties page itself is retired (its view moves into the Print
+                // page); keep an empty placeholder so page indices stay unchanged.
+                return new QWidget();
         }
 
 
@@ -1660,6 +1803,7 @@ namespace glabels
         QWidget* MainWindow::createMergePage()
         {
                 mMergeView = new MergeView();
+                connect( mMergeView, &MergeView::connectRequested, this, &MainWindow::dataConnectSource );
 
                 return mMergeView;
         }
@@ -1683,7 +1827,21 @@ namespace glabels
         {
                 mPrintView = new PrintView();
 
-                return mPrintView;
+                // Product details (formerly the Properties page) sit beside the print controls
+                mPropertiesView->showAsProductPane();
+
+                auto* page = new QWidget();
+                auto* layout = new QHBoxLayout( page );
+                layout->setContentsMargins( 0, 0, 0, 0 );
+                layout->setSpacing( 0 );
+                layout->addWidget( mPrintView, 1 );
+                auto* separator = new QFrame();
+                separator->setFrameShape( QFrame::VLine );
+                separator->setFrameShadow( QFrame::Sunken );
+                layout->addWidget( separator );
+                layout->addWidget( mPropertiesView, 0 );
+
+                return page;
         }
 
 
@@ -1696,7 +1854,7 @@ namespace glabels
                 bool hasModel      = mModel != nullptr;
 
                 // Which page is currently active?
-                bool isWelcomePage    = mWelcomeButton->isChecked();
+                bool isWelcomePage    = mWelcomeButton->isChecked() || ( mRecentButton && mRecentButton->isChecked() );
                 bool isEditorPage     = mEditorButton->isChecked();
                 bool isPropertiesPage = mPropertiesButton->isChecked();
                 bool isMergePage      = mMergeButton->isChecked();
@@ -1709,23 +1867,29 @@ namespace glabels
                 bool canPaste = hasModel && mModel->canPaste();
 
                 // Toggle visibility of TOC buttons based on welcome mode
-                mWelcomeAction->setVisible( isWelcomePage );
-                mEditorAction->setVisible( !isWelcomePage );
-                mPropertiesAction->setVisible( !isWelcomePage );
-                mMergeAction->setVisible( !isWelcomePage );
-                mVariablesAction->setVisible( !isWelcomePage );
-                mPrintAction->setVisible( !isWelcomePage );
+                // (Welcome and Recent are offered while no label is open)
+                mWelcomeAction->setVisible( !hasModel );
+                if ( mRecentAction )
+                {
+                        mRecentAction->setVisible( !hasModel );
+                }
+                mEditorAction->setVisible( hasModel );
+                mPropertiesAction->setVisible( false );
+                mOrientationAction->setVisible( hasModel );
+                mMergeAction->setVisible( hasModel );
+                mVariablesAction->setVisible( hasModel );
+                mPrintAction->setVisible( hasModel );
 
                 // Recent file actions
                 QStringList recentFileList = model::Settings::recentFileList();
-                for ( int i = 0; i < recentFileList.size(); i++ )
+                for ( int i = 0; i < recentFileList.size() && i < fileRecentActionList.size(); i++ )
                 {
                         QString baseName = QFileInfo( recentFileList.at(i) ).completeBaseName();
                         fileRecentActionList.at(i)->setText(baseName);
                         fileRecentActionList.at(i)->setData(recentFileList.at(i));
                         fileRecentActionList.at(i)->setVisible( true );
                 }
-                for ( int i = recentFileList.size(); i < model::Settings::maxRecentFiles(); i++ )
+                for ( int i = int( recentFileList.size() ); i < fileRecentActionList.size(); i++ )
                 {
                         fileRecentActionList.at(i)->setVisible( false );
                 }
@@ -1733,7 +1897,7 @@ namespace glabels
                 // File actions
                 fileNewAction->setEnabled( true );
                 fileOpenAction->setEnabled( true );
-                fileRecentMenu->setEnabled( !recentFileList.isEmpty() );
+                fileOpenRecentAction->setEnabled( !recentFileList.isEmpty() );
                 fileSaveAction->setEnabled( hasModel && mModel->isModified() );
                 fileSaveAsAction->setEnabled( hasModel );
                 fileShowEditorPageAction->setEnabled( !isWelcomePage && !isEditorPage );
@@ -1802,6 +1966,11 @@ namespace glabels
                 int iRecord  = (hasModel && mLabelEditor) ? mLabelEditor->previewRecord() : -1;
                 bool previewing = iRecord >= 0;
                 mergePreviewAction->setEnabled( isEditorPage && nRecords > 0 );
+                mergePlaceholdersAction->setEnabled( isEditorPage && nRecords > 0 );
+                mergePlaceholdersAction->setChecked( !previewing );
+                dataConnectAction->setEnabled( hasModel );
+                dataReloadAction->setEnabled( hasModel && mModel->merge() && !mModel->merge()->source().isEmpty() );
+                viewVariablesDockAction->setEnabled( isEditorPage );
                 mergeFirstAction->setEnabled( isEditorPage && previewing && iRecord > 0 );
                 mergePreviousAction->setEnabled( isEditorPage && previewing && iRecord > 0 );
                 mergeNextAction->setEnabled( isEditorPage && previewing && iRecord < nRecords-1 );
@@ -1909,6 +2078,7 @@ namespace glabels
                 bool showMergeToolBar   = settings.value( "showMergeToolBar",   true ).toBool();
                 bool showPropertiesDock = settings.value( "showPropertiesDock", true ).toBool();
                 bool showObjectListDock = settings.value( "showObjectListDock", true ).toBool();
+                bool showVariablesDock = settings.value( "showVariablesDock", true ).toBool();
                 QByteArray geometry     = settings.value( "geometry" ).toByteArray();
                 QByteArray state        = settings.value( "state" ).toByteArray();
                 settings.endGroup();
@@ -1929,6 +2099,7 @@ namespace glabels
                 viewMergeToolBarAction   ->setChecked( showMergeToolBar );
                 viewPropertiesDockAction ->setChecked( showPropertiesDock );
                 viewObjectListDockAction ->setChecked( showObjectListDock );
+                viewVariablesDockAction  ->setChecked( showVariablesDock );
                 viewGridAction           ->setChecked( model::Settings::showGrid() );
                 viewMarkupAction         ->setChecked( model::Settings::showMarkup() );
                 viewRulersAction         ->setChecked( model::Settings::showRulers() );
@@ -1964,6 +2135,7 @@ namespace glabels
                 settings.setValue( "showMergeToolBar",   viewMergeToolBarAction->isChecked() );
                 settings.setValue( "showPropertiesDock", viewPropertiesDockAction->isChecked() );
                 settings.setValue( "showObjectListDock", viewObjectListDockAction->isChecked() );
+                settings.setValue( "showVariablesDock",  viewVariablesDockAction->isChecked() );
                 settings.setValue( "geometry", saveGeometry() );
                 settings.setValue( "state",    saveState( STATE_VERSION ) );
                 settings.endGroup();
@@ -2016,13 +2188,65 @@ namespace glabels
 
 
         ///
+        /// Bottom bar orientation button: flip between horizontal and vertical
+        ///
+        void MainWindow::onOrientationButtonClicked()
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+                auto* frame = mModel->tmplate().frame();
+                if ( !frame || frame->w() == frame->h() )
+                {
+                        return;
+                }
+                mUndoRedoModel->checkpoint( tr("Product Rotate") );
+                mModel->setRotate( !mModel->rotate() );
+                updateOrientationButton();
+        }
+
+
+        ///
+        /// Show the current orientation on the bottom bar button
+        ///
+        void MainWindow::updateOrientationButton()
+        {
+                if ( !mOrientationButton || !mModel )
+                {
+                        return;
+                }
+                auto* frame = mModel->tmplate().frame();
+                bool square = !frame || frame->w() == frame->h();
+                bool vertical = !square && ( frame->w() > frame->h() ? mModel->rotate() : !mModel->rotate() );
+
+                mOrientationButton->setEnabled( !square );
+                mOrientationButton->setText( vertical ? tr("Vertical") : tr("Horizontal") );
+                mOrientationButton->setIcon( QIcon::fromTheme( vertical ? "glabels-label-orientation-vert"
+                                                                        : "glabels-label-orientation-horiz" ) );
+                mOrientationButton->setToolTip( square ? tr("Page orientation: this label is round or square")
+                                                       : tr("Page orientation: %1. Click to switch to %2.")
+                                                         .arg( vertical ? tr("vertical") : tr("horizontal"),
+                                                               vertical ? tr("horizontal") : tr("vertical") ) );
+        }
+
+
+        ///
         /// Change page
         ///
         void MainWindow::changePage( bool checked )
         {
                 if ( checked )
                 {
-                        if ( mEditorButton->isChecked() )
+                        if ( mWelcomeButton->isChecked() )
+                        {
+                                mPages->setCurrentIndex( WELCOME_PAGE_INDEX );
+                        }
+                        else if ( mRecentButton && mRecentButton->isChecked() )
+                        {
+                                mPages->setCurrentIndex( RECENT_PAGE_INDEX );
+                        }
+                        else if ( mEditorButton->isChecked() )
                         {
                                 mPages->setCurrentIndex( EDITOR_PAGE_INDEX );
                         }
@@ -2150,7 +2374,7 @@ namespace glabels
         ///
         void MainWindow::fileShowPropertiesPage()
         {
-                mPropertiesButton->setChecked( true );
+                mPrintButton->setChecked( true );   // the product pane is part of the Print page
         }
 
 
@@ -2178,6 +2402,60 @@ namespace glabels
         void MainWindow::fileShowPrintPage()
         {
                 mPrintButton->setChecked( true );
+        }
+
+
+        ///
+        /// Show the Print page
+        ///
+        void MainWindow::showPrintPage()
+        {
+                if ( mModel )
+                {
+                        mPrintButton->setChecked( true );
+                }
+        }
+
+
+        ///
+        /// File->Open Recent...: the Recent labels screen.  It is only offered while
+        /// no label is open, so with a label open it appears in a new window.
+        ///
+        void MainWindow::fileShowRecentScreen()
+        {
+                if ( !mModel )
+                {
+                        showRecentPage();
+                        return;
+                }
+                auto* window = new MainWindow();
+                window->showRecentPage();
+                window->show();
+        }
+
+
+        ///
+        /// Show the Recent labels page (no label open)
+        ///
+        void MainWindow::showRecentPage()
+        {
+                if ( !mModel )
+                {
+                        mRecentButton->setChecked( true );
+                        mRecentView->reload();
+                }
+        }
+
+
+        ///
+        /// Show the Welcome page (no label open)
+        ///
+        void MainWindow::showWelcomePage()
+        {
+                if ( !mModel )
+                {
+                        mWelcomeButton->setChecked( true );
+                }
         }
 
 
@@ -2455,6 +2733,7 @@ namespace glabels
                 // label rotation are left untouched. Undoable in one step.
                 mUndoRedoModel->checkpoint( tr("Change Page") );
                 mModel->setTmplate( tmplate );
+                model::Settings::addToRecentTemplateList( tmplate.name() );
 
                 statusBar()->showMessage( tr("Page changed to %1").arg( tmplate.name() ), 4000 );
         }
@@ -2846,10 +3125,102 @@ namespace glabels
                 mergePreviewAction->setChecked( i >= 0 );
                 mMergeRecordSpin->setRange( n > 0 ? 1 : 0, qMax( n, 0 ) );
                 mMergeRecordSpin->setValue( i + 1 );
-                mMergeRecordCountLabel->setText( n > 0 ? tr(" of %1 ").arg( n ) : tr(" (no merge data) ") );
+                mMergeRecordCountLabel->setText( n > 0 ? tr(" of %1 ").arg( n ) : tr(" (no data) ") );
                 mSyncing = false;
 
                 manageActions();
+        }
+
+
+        ///
+        /// Data->Show Placeholders
+        ///
+        void MainWindow::dataShowPlaceholders()
+        {
+                mLabelEditor->setPreviewRecord( -1 );
+                onPreviewRecordChanged();
+        }
+
+
+        ///
+        /// Data->Connect Data Source
+        ///
+        void MainWindow::dataConnectSource()
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+
+                ConnectDataSourceDialog dialog( mModel.get(), this );
+                if ( dialog.exec() != QDialog::Accepted )
+                {
+                        return;
+                }
+
+                merge::Merge* newMerge = dialog.takeMerge();
+                if ( !newMerge )
+                {
+                        return;
+                }
+                QMap<QString,QString> renames = dialog.renames();
+
+                mUndoRedoModel->checkpoint( tr("Connect Data Source") );
+                mModel->setMerge( newMerge );
+
+                // Two-step rename (old -> temporary -> new) so that swapped names don't collide
+                QMap<QString,QString> temporary;
+                for ( auto it = renames.constBegin(); it != renames.constEnd(); ++it )
+                {
+                        QString tmp = "__glabels_rename_" + it.key();
+                        mModel->renameVariableReferences( it.key(), tmp );
+                        temporary[tmp] = it.value();
+                }
+                for ( auto it = temporary.constBegin(); it != temporary.constEnd(); ++it )
+                {
+                        mModel->renameVariableReferences( it.key(), it.value() );
+                }
+
+                // Show the variables next to the label
+                if ( !mEditorButton->isChecked() )
+                {
+                        mEditorButton->setChecked( true );
+                }
+                viewVariablesDockAction->setChecked( true );
+                updateChromeVisibility();
+                mVariablesDock->raise();
+
+                statusBar()->showMessage( tr("Imported %n variable(s) from %1", "", int( newMerge->keys().size() ))
+                                          .arg( QFileInfo( newMerge->source() ).fileName() ), 6000 );
+        }
+
+
+        ///
+        /// Data->Reload Data
+        ///
+        void MainWindow::dataReload()
+        {
+                if ( mModel && mModel->merge() )
+                {
+                        mModel->merge()->reloadSource();
+                }
+        }
+
+
+        ///
+        /// Add an object bound to a variable (from the Variables panel)
+        ///
+        void MainWindow::onAddVariableRequested( const QString& name, const QString& type )
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+                if ( !mEditorButton->isChecked() )
+                {
+                        mEditorButton->setChecked( true );
+                }
+                mLabelEditor->addVariableObject( name, type );
         }
 
 
@@ -2988,7 +3359,19 @@ namespace glabels
         ///
         void MainWindow::helpContents()
         {
-                Help::displayContents( this );
+                // Context-sensitive: open the guide at the page you are working on
+                QString topic;
+                switch ( mPages->currentIndex() )
+                {
+                case WELCOME_PAGE_INDEX:    topic = "index";      break;
+                case EDITOR_PAGE_INDEX:     topic = "objects";    break;
+                case PROPERTIES_PAGE_INDEX: topic = "products";   break;
+                case MERGE_PAGE_INDEX:      topic = "merge";      break;
+                case VARIABLES_PAGE_INDEX:  topic = "variables";  break;
+                case PRINT_PAGE_INDEX:      topic = "printing";   break;
+                default:                    break;
+                }
+                Help::displayContents( this, topic );
         }
 
 

@@ -22,16 +22,23 @@
 #define StartupView_hpp
 
 
+#include "StartupWidgets.hpp"
+
+#include <QDateTime>
+#include <QHash>
+#include <QImage>
 #include <QWidget>
 
 
 class QFileSystemWatcher;
 class QLabel;
+class QLineEdit;
 class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
 class QTimer;
 class QToolButton;
+class QVBoxLayout;
 
 
 namespace glabels
@@ -44,6 +51,10 @@ namespace glabels
         ///
         /// Startup (Welcome) View Widget
         ///
+        /// Three panes: navigation (start actions, recent labels and projects) on the
+        /// left, quick start tiles and the label list in the middle, and details of
+        /// the selected label on the right.
+        ///
         class StartupView : public QWidget
         {
                 Q_OBJECT
@@ -55,7 +66,7 @@ namespace glabels
         public:
                 StartupView( MainWindow* window );
 
-                /// Select a project in the Projects panel (e.g. after File > New Project)
+                /// Show a project's labels (e.g. after File > New Project)
                 void selectProject( const QString& project );
 
 
@@ -64,42 +75,51 @@ namespace glabels
                 /////////////////////////////////
         protected:
                 void changeEvent( QEvent* event ) override;
+                void resizeEvent( QResizeEvent* event ) override;
+                bool eventFilter( QObject* watched, QEvent* event ) override;
 
 
                 /////////////////////////////////
                 // Slots
                 /////////////////////////////////
         private slots:
-                void onNewProjectButtonClicked();
-                void onOpenProjectButtonClicked();
-                void onTemplateDesignerButtonClicked();
-                void onRecentItemActivated( QListWidgetItem* item );
-                void onRecentContextMenu( const QPoint& pos );
                 void onSettingsChanged();
                 void onAppearanceChanged();
-
+                void onCurrentItemChanged();
+                void onListContextMenu( const QPoint& pos );
                 void onCreateProject();
-                void onProjectSelectionChanged();
-                void onProjectContextMenu( const QPoint& pos );
                 void onNewLabelInProject();
                 void onOpenProjectFolder();
-                void onProjectLabelActivated( QListWidgetItem* item );
-                void onProjectLabelContextMenu( const QPoint& pos );
                 void onProjectsChangedOnDisk();
+                void loadNextThumbnail();
+                void updateInspectorDetails();
 
 
                 /////////////////////////////////
                 // Private methods
                 /////////////////////////////////
         private:
-                QToolButton* createActionCard( const QString& iconName,
-                                               const QString& title,
-                                               const QString& description );
-                void loadRecentList();
-                QWidget* createProjectsSection();
+                enum Mode { RecentMode, ProjectMode };
+
+                QWidget* createTopBar();
+                QWidget* createSidebar();
+                QWidget* createCenter();
+                QWidget* createInspector();
+                QWidget* createStatusBar();
+                QLabel*  createSectionLabel( const QString& text );
+
+                void setMode( Mode mode, const QString& project = QString() );
                 void loadProjects( const QString& select = QString() );
-                void loadProjectLabels();
-                QString currentProject() const;
+                void loadList();
+                void applyFilter();
+                void updateInspector();
+                void updateStyle();
+                void watchProjectFolders();
+
+                QString selectedPath() const;
+                void openSelected( bool print );
+                void showProjectMenu( const QString& project, const QPoint& globalPos );
+
                 void renameProject( const QString& project );
                 void trashProject( const QString& project );
                 void deleteProject( const QString& project );
@@ -107,8 +127,6 @@ namespace glabels
                 void duplicateLabel( const QString& filePath );
                 void trashLabel( const QString& filePath );
                 void deleteLabel( const QString& filePath );
-                void watchProjectFolders();
-                void updateStyle();
 
 
                 /////////////////////////////////
@@ -116,32 +134,62 @@ namespace glabels
                 /////////////////////////////////
         private:
                 MainWindow*     mWindow;
+                startup::Theme  mTheme;
+                bool            mUpdatingStyle{ false };
 
-                QLabel*         mLogoLabel;
-                QLabel*         mVersionLabel;
-                QLabel*         mFooterLabel{ nullptr };
-                QLabel*         mBannerLabel{ nullptr };
-                QToolButton*    mNewButton;
-                QToolButton*    mOpenButton;
-                QToolButton*    mDesignerButton;
-                QStackedWidget* mRecentStack;
-                QListWidget*    mRecentList;
-                QLabel*         mRecentEmptyLabel;
-                bool            mUpdatingStyle { false };
+                Mode            mMode{ RecentMode };
+                QString         mProject;           // project shown in the project tab
 
-                // Projects panel
-                QStackedWidget*     mProjectsStack;
-                QListWidget*        mProjectList;
-                QLabel*             mProjectsEmptyLabel;
-                QLabel*             mProjectTitle;
-                QToolButton*        mNewLabelInProjectButton;
-                QToolButton*        mProjectFolderButton;
-                QStackedWidget*     mProjectLabelsStack;
-                QListWidget*        mProjectLabelList;
-                QLabel*             mProjectLabelsEmptyLabel;
-                QFileSystemWatcher* mWatcher;
-                QTimer*             mReloadTimer;
+                // Top bar
+                QLabel*         mAppIcon;
+                QLabel*         mVersionPill;
+                QLineEdit*      mSearch;
 
+                // Sidebar
+                QWidget*                    mSidebar;
+                startup::NavButton*         mRecentNav;
+                QToolButton*                mNewProjectButton;
+                QWidget*                    mProjectNavBox;
+                QVBoxLayout*                mProjectNavLayout;
+                QList<startup::NavButton*>  mProjectNavs;
+                QLabel*                     mNoProjectsLabel;
+                QLabel*                     mLinksLabel;
+
+                // Center
+                QToolButton*    mRecentTab;
+                QToolButton*    mProjectTab;
+                QWidget*        mProjectActions;
+                QLabel*         mProjectNote;
+                QStackedWidget* mListStack;
+                QListWidget*    mList;
+                QLabel*         mEmptyLabel;
+
+                // Inspector
+                QWidget*               mInspector;
+                startup::PreviewWell*  mPreview;
+                QLabel*                mInspTitle;
+                QLabel*                mInspSub;
+                QLabel*                mInspProject;
+                QLabel*                mInspSize;
+                QLabel*                mInspModified;
+                QLabel*                mInspPath;
+                QWidget*               mInspDetails;
+                QToolButton*           mOpenButton;
+                QToolButton*           mPrintButton;
+                QToolButton*           mShowFolderButton;
+                QTimer*                mInspectorTimer;
+
+                // Status bar
+                startup::KeyHints*     mHints;
+                QLabel*                mStatusLabel;
+
+                // Thumbnails and file watching
+                QHash<QString, QImage> mThumbs;
+                QHash<QString, QDateTime> mThumbTimes;   // file time each thumbnail was drawn from
+                QStringList            mRecentFiles;     // recent list last shown
+                QStringList            mThumbQueue;
+                QFileSystemWatcher*    mWatcher;
+                QTimer*                mReloadTimer;
         };
 
 }

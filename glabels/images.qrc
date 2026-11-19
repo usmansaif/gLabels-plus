@@ -6,6 +6,13 @@
 	<file>images/glabels-label-designer.png</file>
 	<file>images/glabels-label-designer-dark.png</file>
 	<file>images/glabels-logo.png</file>
+	<file>icons/app/glabels-plus-16.png</file>
+	<file>icons/app/glabels-plus-22.png</file>
+	<file>icons/app/glabels-plus-24.png</file>
+	<file>icons/app/glabels-plus-32.png</file>
+	<file>icons/app/glabels-plus-48.png</file>
+	<file>icons/app/glabels-plus-64.png</file>
+	<file>icons/app/glabels-plus-128.png</file>
 
 	<file>images/checkerboard.png</file>
 

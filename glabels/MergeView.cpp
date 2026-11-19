@@ -21,6 +21,11 @@
 
 #include "MergeView.hpp"
 
+#include "UndoRedoModel.hpp"
+
+#include <QLabel>
+#include <QPushButton>
+
 #include "MergeTableModel.hpp"
 
 #include "merge/Factory.hpp"
@@ -44,10 +49,33 @@ namespace glabels
         {
                 setupUi( this );
 
-                titleLabel->setText( QString( "<span style='font-size:18pt;'>%1</span>" ).arg( tr("Merge") ) );
+                titleLabel->setText( QString( "<span style='font-size:18pt;'>%1</span>" ).arg( tr("Data Source") ) );
 
                 mMergeFormatNames = merge::Factory::nameList();
                 formatCombo->addItems( mMergeFormatNames );
+
+                // The format is chosen (or detected) in the Connect Data Source dialog
+                label->setVisible( false );
+                formatCombo->setVisible( false );
+                groupBox->setTitle( tr("Data file") );
+                groupBox_2->setTitle( tr("Records to print") );
+                locationLabel->setText( tr("File:") );
+                locationLineEdit->setPlaceholderText( tr("No data source connected") );
+
+                auto* disconnectButton = new QPushButton( tr("Disconnect") );
+                disconnectButton->setObjectName( "disconnectButton" );
+                disconnectButton->setToolTip( tr("Stop using a data source for this label") );
+                horizontalLayout_2->addWidget( disconnectButton );
+                connect( disconnectButton, &QPushButton::clicked, this, [this]{
+                        if ( mModel && mUndoRedoModel )
+                        {
+                                mUndoRedoModel->checkpoint( tr("Disconnect Data Source") );
+                                mModel->setMerge( merge::Factory::createMerge( "None" ) );
+                        }
+                } );
+
+                mCountLabel = new QLabel();
+                horizontalLayout->insertWidget( 3, mCountLabel );
         }
 
 
@@ -85,14 +113,16 @@ namespace glabels
                 case merge::Factory::FIXED:
                         locationLabel->setEnabled( false );
                         locationLineEdit->setText( "" );
-                        locationBrowseButton->setVisible( false );
+                        locationBrowseButton->setText( tr("Connect Data Source...") );
+                        findChild<QPushButton*>( "disconnectButton" )->setVisible( false );
                         break;
 
                 case merge::Factory::FILE:
                         locationLabel->setEnabled( true );
                         fn = model::FileUtil::makeRelativeIfInDir( mModel->dir(), mModel->merge()->source() );
                         locationLineEdit->setText( fn );
-                        locationBrowseButton->setVisible( true );
+                        locationBrowseButton->setText( tr("Change File or Variables...") );
+                        findChild<QPushButton*>( "disconnectButton" )->setVisible( true );
                         break;
 
                 default:
@@ -102,9 +132,11 @@ namespace glabels
 
                 recordsTableView->setModel( new MergeTableModel( mModel->merge() ) );
                 recordsTableView->resizeColumnsToContents();
+                updateCount();
 
                 connect( mModel->merge(), SIGNAL(sourceChanged()),
                          this, SLOT(onMergeSourceChanged()) );
+                connect( mModel->merge(), &merge::Merge::selectionChanged, this, &MergeView::updateCount );
         }
 
 
@@ -118,6 +150,23 @@ namespace glabels
 
                 recordsTableView->setModel( new MergeTableModel( mModel->merge() ) );
                 recordsTableView->resizeColumnsToContents();
+                updateCount();
+        }
+
+
+        ///
+        /// Selected record count
+        ///
+        void MergeView::updateCount()
+        {
+                if ( !mModel || !mModel->merge() || mModel->merge()->recordList().isEmpty() )
+                {
+                        mCountLabel->clear();
+                        return;
+                }
+                mCountLabel->setText( tr("%1 of %2 records selected")
+                                      .arg( mModel->merge()->nSelectedRecords() )
+                                      .arg( mModel->merge()->recordList().size() ) );
         }
 
 
@@ -142,16 +191,7 @@ namespace glabels
         ///
         void MergeView::onLocationBrowseButtonClicked()
         {
-                QString fileName =
-                        QFileDialog::getOpenFileName( this,
-                                                      tr("Select merge file"),
-                                                      mCwd,
-                                                      tr("All files (*)") );
-                if ( !fileName.isEmpty() )
-                {
-                        mModel->merge()->setSource( fileName );
-                        mCwd = QFileInfo( fileName ).absolutePath(); // Update CWD
-                }
+                emit connectRequested();
         }
 
 

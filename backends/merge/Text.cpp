@@ -24,6 +24,8 @@
 #include "Record.hpp"
 
 #include <QDebug>
+#include <QMap>
+#include <QStringDecoder>
 
 
 namespace glabels::merge
@@ -42,12 +44,27 @@ namespace glabels::merge
 
 
         ///
+        /// Constructor (auto-detect delimiter)
+        ///
+        Text::Text( bool line1HasKeys )
+                : Merge(),
+                  mDelimeter(','),
+                  mLine1HasKeys(line1HasKeys),
+                  mAutoDetect(true),
+                  mNFieldsMax(0)
+        {
+        }
+
+
+        ///
         /// Constructor
         ///
         Text::Text( const Text* merge )
                 : Merge( merge ),
                   mDelimeter(merge->mDelimeter),
                   mLine1HasKeys(merge->mLine1HasKeys),
+                  mAutoDetect(merge->mAutoDetect),
+                  mLatin1(merge->mLatin1),
                   mKeys(merge->mKeys),
                   mNFieldsMax(merge->mNFieldsMax)
         {
@@ -57,7 +74,7 @@ namespace glabels::merge
         ///
         /// Get key list
         ///
-        QStringList Text::keys() const
+        QStringList Text::sourceKeys() const
         {
                 QStringList keys;
                 for ( int iField = 0; iField < mNFieldsMax; iField++ )
@@ -71,7 +88,7 @@ namespace glabels::merge
         ///
         /// Get primary key
         ///
-        QString Text::primaryKey() const
+        QString Text::sourcePrimaryKey() const
         {
                 return keyFromIndex(0);
         }
@@ -88,6 +105,23 @@ namespace glabels::merge
                 mFile.setFileName( source() );
                 if (mFile.open( QIODevice::ReadOnly|QIODevice::Text ))
                 {
+                        // Encoding: UTF-8 (with or without BOM), falling back to Latin-1
+                        QByteArray all = mFile.peek( 4*1024*1024 );
+                        QStringDecoder decoder( QStringDecoder::Utf8 );
+                        QString dummy = decoder.decode( all );
+                        mLatin1 = decoder.hasError();
+                        Q_UNUSED( dummy );
+
+                        if ( mFile.peek( 3 ) == QByteArray( "\xEF\xBB\xBF" ) )
+                        {
+                                mFile.read( 3 );   // skip UTF-8 byte order mark
+                        }
+
+                        if ( mAutoDetect )
+                        {
+                                mDelimeter = detectDelimiter( mFile.peek( 64*1024 ) );
+                        }
+
                         if ( mLine1HasKeys )
                         {
                                 mKeys = parseLine();
@@ -138,6 +172,127 @@ namespace glabels::merge
                 }
 
                 return NullRecord();
+        }
+
+
+        ///
+        /// Delimiter in use
+        ///
+        QChar Text::delimiter() const
+        {
+                return mDelimeter;
+        }
+
+
+        ///
+        /// Read as Latin-1?
+        ///
+        bool Text::isLatin1() const
+        {
+                return mLatin1;
+        }
+
+
+        ///
+        /// Convert raw field bytes to a string
+        ///
+        QString Text::toQString( const QByteArray& bytes ) const
+        {
+                return mLatin1 ? QString::fromLatin1( bytes ) : QString::fromUtf8( bytes );
+        }
+
+
+        ///
+        /// Guess delimiter
+        ///
+        /// Counts candidate delimiters (outside of quotes) on the first lines and
+        /// picks the one that occurs the same, non-zero number of times on the most
+        /// lines.  Ties go to the more frequent delimiter, then to the order below.
+        ///
+        QChar Text::detectDelimiter( const QByteArray& sample )
+        {
+                const char candidates[] = { ',', '\t', ';', '|', ':' };
+                const int nCandidates = sizeof(candidates);
+
+                // Split into (at most 30) logical lines, honoring quoted newlines
+                QList<QByteArray> lines;
+                QByteArray line;
+                bool quoted = false;
+                for ( char c : sample )
+                {
+                        if ( c == '"' )
+                        {
+                                quoted = !quoted;
+                        }
+                        if ( c == '\n' && !quoted )
+                        {
+                                if ( !line.trimmed().isEmpty() )
+                                {
+                                        lines << line;
+                                }
+                                line.clear();
+                                if ( lines.size() >= 30 )
+                                {
+                                        break;
+                                }
+                        }
+                        else if ( c != '\r' )
+                        {
+                                line.append( c );
+                        }
+                }
+                if ( lines.size() < 30 && !line.trimmed().isEmpty() )
+                {
+                        lines << line;
+                }
+                if ( lines.isEmpty() )
+                {
+                        return ',';
+                }
+
+                int    bestScore = -1;
+                int    bestCount = 0;
+                QChar  best      = ',';
+                for ( int iC = 0; iC < nCandidates; iC++ )
+                {
+                        char d = candidates[iC];
+                        QMap<int,int> histogram;   // count per line -> number of lines
+                        for ( const auto& l : lines )
+                        {
+                                int  n = 0;
+                                bool q = false;
+                                for ( char c : l )
+                                {
+                                        if ( c == '"' ) q = !q;
+                                        else if ( c == d && !q ) n++;
+                                }
+                                histogram[n]++;
+                        }
+
+                        // Most common non-zero count
+                        int mode = 0, modeLines = 0;
+                        for ( auto it = histogram.constBegin(); it != histogram.constEnd(); ++it )
+                        {
+                                if ( it.key() > 0 && it.value() > modeLines )
+                                {
+                                        mode = it.key();
+                                        modeLines = it.value();
+                                }
+                        }
+                        if ( mode == 0 )
+                        {
+                                continue;
+                        }
+
+                        if ( modeLines > bestScore || ( modeLines == bestScore && mode > bestCount ) )
+                        {
+                                bestScore = modeLines;
+                                bestCount = mode;
+                                best      = QChar( d );
+                        }
+                }
+
+                return best;
         }
 
 
@@ -253,7 +408,7 @@ namespace glabels::merge
                                         {
                                         case '\n':
                                                 /* line ended after quoted item */
-                                                fields << QString( field );
+                                                fields << toQString( field );
                                                 state = DONE;
                                                 break;
                                         case '"':
@@ -269,7 +424,7 @@ namespace glabels::merge
                                                 if ( c == mDelimeter )
                                                 {
                                                         /* end of field. */
-                                                        fields << QString( field );
+                                                        fields << toQString( field );
                                                         field.clear();
                                                         state = DELIM;
                                                 }
@@ -309,7 +464,7 @@ namespace glabels::merge
                                         {
                                         case '\n':
                                                 /* line ended */
-                                                fields << QString( field );
+                                                fields << toQString( field );
                                                 state = DONE;
                                                 break;
                                         case '\r':
@@ -324,7 +479,7 @@ namespace glabels::merge
                                                 if ( c == mDelimeter )
                                                 {
                                                         /* end of field. */
-                                                        fields << QString( field );
+                                                        fields << toQString( field );
                                                         field.clear();
                                                         state = DELIM;
                                                 }
@@ -377,27 +532,27 @@ namespace glabels::merge
 
                                 case QUOTED:
                                         /* File ended midway through quoted item. Truncate field. */
-                                        fields << QString( field );
+                                        fields << toQString( field );
                                         break;
 
                                 case QUOTED_QUOTE1:
                                         /* File ended after quoted item. */
-                                        fields << QString( field );
+                                        fields << toQString( field );
                                         break;
 
                                 case QUOTED_ESCAPED:
                                         /* File ended midway through quoted item. Truncate field. */
-                                        fields << QString( field );
+                                        fields << toQString( field );
                                         break;
 
                                 case SIMPLE:
                                         /* File ended after simple item. */
-                                        fields << QString( field );
+                                        fields << toQString( field );
                                         break;
 
                                 case SIMPLE_ESCAPED:
                                         /* File ended midway through escaped item. */
-                                        fields << QString( field );
+                                        fields << toQString( field );
                                         break;
 
                                 default:

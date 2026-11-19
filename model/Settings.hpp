@@ -172,7 +172,7 @@ namespace glabels::model
 
         private:
                 static std::unique_ptr<Settings> mInstance;
-                static const int mMaxRecentFiles{5};
+                static const int mMaxRecentFiles{24};
 
         };
 

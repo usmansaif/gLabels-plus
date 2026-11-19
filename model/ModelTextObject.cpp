@@ -21,6 +21,8 @@
 
 #include "ModelTextObject.hpp"
 
+#include "merge/DataSourceUtil.hpp"
+
 #include "Size.hpp"
 
 #include <QBrush>
@@ -494,7 +496,7 @@ namespace glabels::model
                 QFontMetricsF fontMetrics( font );
                 double dy = fontMetrics.lineSpacing() * mTextLineSpacing;
 
-                QString displayText = mText.isEmpty() ? tr("Text") : mText.toString();
+                QString displayText = mText.isEmpty() ? tr("Text") : merge::DataSourceUtil::toDisplay( mText.toString() );
                 QTextDocument document( displayText );
 
                 // Do layouts
@@ -550,7 +552,7 @@ namespace glabels::model
 
                         if ( inEditor )
                         {
-                                drawTextInEditor( painter, shadowColor );
+                                drawTextInEditor( painter, shadowColor, false );
                         }
                         else
                         {
@@ -618,11 +620,14 @@ namespace glabels::model
                 QFontMetricsF fontMetrics( font );
                 double dy = fontMetrics.lineSpacing() * mTextLineSpacing;
 
-                QString displayText = mText.isEmpty() ? tr("Text") : mText.toString();
+                QString displayText = mText.isEmpty() ? tr("Text") : merge::DataSourceUtil::toDisplay( mText.toString() );
                 QTextDocument document( displayText );
 
                 qDeleteAll( mEditorLayouts );
                 mEditorLayouts.clear();
+                mEditorPills.clear();
+
+                static const QRegularExpression pillRe( "\\{\\{[^{}]+\\}\\}" );
 
                 // Pass #1 -- do initial layouts
                 double x = 0;
@@ -646,6 +651,18 @@ namespace glabels::model
                         layout->endLayout();
 
                         mEditorLayouts.append( layout );
+
+                        QList<QPair<int,int>> pills;
+                        if ( !mText.isEmpty() )
+                        {
+                                auto it = pillRe.globalMatch( layout->text() );
+                                while ( it.hasNext() )
+                                {
+                                        auto m = it.next();
+                                        pills.append( qMakePair( int( m.capturedStart() ), int( m.capturedLength() ) ) );
+                                }
+                        }
+                        mEditorPills.append( pills );
 
                         boundingRect = layout->boundingRect().united( boundingRect );
                 }
@@ -686,7 +703,7 @@ namespace glabels::model
         ///
         /// Draw text in editor from cached information
         ///
-        void ModelTextObject::drawTextInEditor( QPainter* painter, const QColor& color ) const
+        void ModelTextObject::drawTextInEditor( QPainter* painter, const QColor& color, bool drawPills ) const
         {
                 painter->save();
 
@@ -701,6 +718,48 @@ namespace glabels::model
                 else
                 {
                         painter->setPen( QPen( color ) );
+                }
+
+                // Variable placeholders are drawn as rounded "pills" behind the text
+                if ( drawPills )
+                {
+                        QColor pillColor( 52, 101, 164 );
+                        QColor fill = pillColor;
+                        fill.setAlpha( 38 );
+                        QColor border = pillColor;
+                        border.setAlpha( 150 );
+                        QPen pen( border, 0.6 );
+                        painter->setBrush( fill );
+
+                        for ( int i = 0; i < mEditorLayouts.size() && i < mEditorPills.size(); i++ )
+                        {
+                                QTextLayout* layout = mEditorLayouts[i];
+                                for ( const auto& pill : mEditorPills[i] )
+                                {
+                                        int start = pill.first;
+                                        int end   = pill.first + pill.second;
+                                        for ( int j = 0; j < layout->lineCount(); j++ )
+                                        {
+                                                QTextLine l = layout->lineAt( j );
+                                                int ls = l.textStart();
+                                                int le = ls + l.textLength();
+                                                if ( end <= ls || start >= le )
+                                                {
+                                                        continue;
+                                                }
+                                                qreal x1 = l.cursorToX( qMax( start, ls ) );
+                                                qreal x2 = l.cursorToX( qMin( end, le ) );
+                                                QRectF r( qMin( x1, x2 ), l.y(), qAbs( x2 - x1 ), l.height() );
+                                                r.adjust( -0.8, 0.4, 0.8, -0.4 );
+                                                qreal radius = r.height() / 3.0;
+                                                painter->save();
+                                                painter->setPen( pen );
+                                                painter->drawRoundedRect( r, radius, radius );
+                                                painter->restore();
+                                        }
+                                }
+                        }
+                        painter->setBrush( Qt::NoBrush );
                 }
 
                 for ( QTextLayout* layout : mEditorLayouts )

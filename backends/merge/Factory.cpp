@@ -30,6 +30,9 @@
 #include "TextColonKeys.hpp"
 #include "TextSemicolon.hpp"
 #include "TextSemicolonKeys.hpp"
+#include "TextAuto.hpp"
+#include "TextAutoKeys.hpp"
+#include "Json.hpp"
 
 
 namespace glabels::merge
@@ -92,6 +95,21 @@ namespace glabels::merge
                                  tr("Text: Semicolon Separated Values, keys on line 1"),
                                  FILE,
                                  &TextSemicolonKeys::create );
+
+                registerBackend( TextAutoKeys::id(),
+                                 tr("Text: Auto-detect delimiter, column names on line 1"),
+                                 FILE,
+                                 &TextAutoKeys::create );
+
+                registerBackend( TextAuto::id(),
+                                 tr("Text: Auto-detect delimiter, no column names"),
+                                 FILE,
+                                 &TextAuto::create );
+
+                registerBackend( Json::id(),
+                                 tr("JSON: array of objects"),
+                                 FILE,
+                                 &Json::create );
         }
 
 

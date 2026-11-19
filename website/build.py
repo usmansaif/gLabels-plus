@@ -295,13 +295,15 @@ def faq_html(items):
     return "\n".join(out)
 
 
-def icon_svg(name):
-    return (f'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" '
+def icon_svg(name, size=22):
+    return (f'<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="currentColor" stroke-width="2" '
             f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>')
 
 
 def latest_html():
-    jump = "".join(f'<li><a href="#new-{i + 1}">{esc(h["title"])}</a></li>' for i, h in enumerate(LATEST))
+    jump = "".join(f'<li><a href="#new-{i + 1}"><span class="hx-icon">{icon_svg(h["icon"], 18)}</span>'
+                   f'<span class="hx-title">{esc(h["title"])}</span><span class="hx-num">{i + 1:02d}</span></a></li>'
+                   for i, h in enumerate(LATEST))
     cards = []
     for i, h in enumerate(LATEST):
         keys = ""
@@ -320,7 +322,7 @@ def latest_html():
     return (f'      <section class="notes latest" id="latest-additions" aria-labelledby="latest-additions-h">\n'
             f'        <h2 id="latest-additions-h">Latest additions</h2>\n'
             f'        <p class="latest-sub">{len(LATEST)} headline features and {len(LATEST_MINOR)} smaller touches in this release.</p>\n'
-            f'        <nav aria-label="Latest additions"><ul class="hl-jump">{jump}</ul></nav>\n'
+            f'        <nav aria-label="Latest additions"><ul class="hl-index">{jump}</ul></nav>\n'
             f'        <div class="hl-grid">\n' + "\n".join(cards) + '\n        </div>\n'
             f'        <div class="hl-minor"><h3>Also in {VERSION}</h3><ul>{minor}</ul></div>\n'
             f'      </section>')

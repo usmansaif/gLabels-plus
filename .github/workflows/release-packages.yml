@@ -1,7 +1,8 @@
 # Builds installable packages on each OS with release.sh and publishes them
 # to a GitHub Release, where anyone can download them.
 #
-#     - ubuntu-22.04  -> .AppImage, .deb, .rpm, .tar.gz
+#     - ubuntu-22.04  -> .AppImage, .deb, .rpm, .tar.gz  (built in an Ubuntu 20.04
+#                        container, so they run on Ubuntu 20.04 LTS and newer)
 #     - windows-2022  -> .exe (NSIS installer), .zip
 #     - macos-latest  -> .tar.gz, .dmg
 #
@@ -45,23 +46,23 @@ jobs:
         ref: ${{ env.RELEASE_TAG }}
         fetch-depth: 0
 
-    - name: Install packaging tools (Ubuntu)
+    - name: Build packages (Ubuntu 20.04 container)
       if: startsWith( matrix.os, 'ubuntu-' )
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install ninja-build libqrencode-dev zlib1g-dev rpm file libxcb-cursor0
+      run: bash ./release-ubuntu2004.sh
 
     - name: Install packaging tools (macOS)
       if: startsWith( matrix.os, 'macos-' )
       run: brew install ninja qrencode
 
     - name: Install Qt
+      if: ${{ !startsWith( matrix.os, 'ubuntu-' ) }}
       uses: jurplel/install-qt-action@v4
       with:
         version: '6.5.3'
         install-deps: 'true'
 
     - name: Build packages
+      if: ${{ !startsWith( matrix.os, 'ubuntu-' ) }}
       shell: bash
       run: bash ./release.sh --qt "$QT_ROOT_DIR"
 

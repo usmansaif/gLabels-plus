@@ -1,0 +1,30 @@
+<!DOCTYPE RCC>
+
+<RCC version="1.0">
+<qresource>
+
+	<file>help/barcodes.html</file>
+	<file>help/batch.html</file>
+	<file>help/faq.html</file>
+	<file>help/fields.html</file>
+	<file>help/glossary.html</file>
+	<file>help/guides.html</file>
+	<file>help/images.html</file>
+	<file>help/index.html</file>
+	<file>help/layers.html</file>
+	<file>help/merge.html</file>
+	<file>help/objects.html</file>
+	<file>help/preferences.html</file>
+	<file>help/printing.html</file>
+	<file>help/products.html</file>
+	<file>help/projects.html</file>
+	<file>help/properties.html</file>
+	<file>help/quickstart.html</file>
+	<file>help/shortcuts.html</file>
+	<file>help/templates.html</file>
+	<file>help/text.html</file>
+	<file>help/variables.html</file>
+	<file>help/window.html</file>
+
+</qresource>
+</RCC>

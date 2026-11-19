@@ -1,0 +1,56 @@
+<h1>Substitution field syntax</h1>
+<p class="lead">A substitution field is replaced with a value when the label is printed. Fields can name a <a href="merge.html">merge column</a> or a <a href="variables.html">variable</a>, and can be used in text, barcodes, image file names and colors.</p>
+
+<h2>Basic form</h2>
+<pre>${FIELD}</pre>
+<p>For example <code>${FIRST_NAME}</code>. Modifiers come after a colon, and several can be chained:</p>
+<pre>${FIELD:modifier:modifier}</pre>
+
+<h2>Default value: <code>=</code></h2>
+<p>Used when the field is empty or missing.</p>
+<pre>${COUNTRY:=Pakistan}</pre>
+<p>To use <code>:</code>, <code>}</code> or <code>\</code> in a default value, put a backslash in front: <code>\:</code>, <code>\}</code>, <code>\\</code>.</p>
+
+<h2>New line only if not empty: <code>n</code></h2>
+<p>Puts the value on a new line, but only if it has a value, so empty address lines don't leave gaps:</p>
+<pre>${NAME}
+${ADDR1}${ADDR2:n}
+${CITY} ${ZIP}</pre>
+
+<h2>Number and text format: <code>%</code></h2>
+<p>A printf-style format: <code>%</code> [flags] [width] [.precision] type.</p>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Field</th><th>Value</th><th>Prints</th></tr>
+<tr><td><code>${n:%05d}</code></td><td>42</td><td>00042</td></tr>
+<tr><td><code>${price:%.2f}</code></td><td>3.5</td><td>3.50</td></tr>
+<tr><td><code>${n:%+d}</code></td><td>7</td><td>+7</td></tr>
+<tr><td><code>${n:%X}</code></td><td>255</td><td>FF</td></tr>
+<tr><td><code>${name:%.10s}</code></td><td>Christopher Columbus</td><td>Christophe</td></tr>
+<tr><td><code>${name:%-12s}|</code></td><td>Ali</td><td>Ali&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</td></tr>
+</table>
+
+<h3>Types</h3>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Type</th><th>Meaning</th></tr>
+<tr><td><code>d</code>, <code>i</code></td><td>Whole number</td></tr>
+<tr><td><code>u</code></td><td>Unsigned whole number</td></tr>
+<tr><td><code>f</code>, <code>F</code></td><td>Decimal number</td></tr>
+<tr><td><code>e</code>, <code>E</code></td><td>Scientific notation</td></tr>
+<tr><td><code>g</code>, <code>G</code></td><td>Decimal or scientific, whichever is shorter</td></tr>
+<tr><td><code>x</code>, <code>X</code></td><td>Hexadecimal (lower or upper case)</td></tr>
+<tr><td><code>o</code></td><td>Octal</td></tr>
+<tr><td><code>s</code></td><td>Text</td></tr>
+</table>
+
+<h3>Flags</h3>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th>Flag</th><th>Meaning</th></tr>
+<tr><td><code>-</code></td><td>Align left within the width</td></tr>
+<tr><td><code>+</code></td><td>Always show the sign of a number</td></tr>
+<tr><td>space</td><td>Put a space in front of positive numbers</td></tr>
+<tr><td><code>0</code></td><td>Pad numbers with zeros instead of spaces</td></tr>
+</table>
+
+<h2>Combining modifiers</h2>
+<pre>${qty:=0:%03d}</pre>
+<p>Prints the quantity as three digits, or <code>000</code> if it is empty.</p>

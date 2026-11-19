@@ -72,7 +72,7 @@ namespace glabels::merge
         ///
         /// Get key list
         ///
-        QStringList None::keys() const
+        QStringList None::sourceKeys() const
         {
                 QStringList emptyList;
                 return emptyList;
@@ -82,7 +82,7 @@ namespace glabels::merge
         ///
         /// Get primary key
         ///
-        QString None::primaryKey() const
+        QString None::sourcePrimaryKey() const
         {
                 return "";
         }

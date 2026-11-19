@@ -20,6 +20,7 @@ set (glabels_sources
   FieldButton.cpp
   File.cpp
   Help.cpp
+  HelpWindow.cpp
   LabelEditor.cpp
   MainWindow.cpp
   MergeTableModel.cpp
@@ -44,11 +45,17 @@ set (glabels_sources
   SimplePreview.cpp
   SplashScreen.cpp
   StartupView.cpp
+  StartupWidgets.cpp
   TemplateDesigner.cpp
   TemplatePicker.cpp
   TemplatePickerItem.cpp
   UndoRedoModel.cpp
   VariablesView.cpp
+  VariablesPanel.cpp
+  VariableTypeIcon.cpp
+  VariableHighlighter.cpp
+  ConnectDataSourceDialog.cpp
+  RecentView.cpp
   WhatsNewDialog.cpp
   FontPicker.cpp
 )
@@ -84,11 +91,16 @@ set (glabels_qobject_headers
   SimplePreview.hpp
   SplashScreen.hpp
   StartupView.hpp
+  StartupWidgets.hpp
   TemplateDesigner.hpp
   TemplatePicker.hpp
   UndoRedoModel.hpp
   VariablesView.hpp
+  VariablesPanel.hpp
+  ConnectDataSourceDialog.hpp
+  RecentView.hpp
   WhatsNewDialog.hpp
+  HelpWindow.hpp
   FontPicker.hpp
 )
 
@@ -118,6 +130,7 @@ set (glabels_forms
 
 set (glabels_resource_files
   cursors.qrc
+  help.qrc
   icons.qrc
   images.qrc
 )
@@ -154,12 +167,21 @@ target_link_libraries (glabels-qt
   Model
   Qt6::Concurrent
   Qt6::Widgets
+  Qt6::Svg
 )
 
 #=======================================
 # Install
 #=======================================
 install (TARGETS glabels-qt RUNTIME DESTINATION bin)
+
+# Application icon: the gLabels Plus logo shown in the About dialog.  A unique name
+# ("glabels-plus") so the desktop entry never picks up the upstream gLabels icon.
+foreach (size 16 22 24 32 48 64 128)
+  install (FILES icons/app/glabels-plus-${size}.png
+           DESTINATION share/icons/hicolor/${size}x${size}/apps
+           RENAME glabels-plus.png)
+endforeach ()
 
 install (FILES icons/glabels-flat/scalable/apps/glabels.svg DESTINATION share/icons/hicolor/scalable/apps)
 install (FILES icons/glabels-flat/16x16/apps/glabels.svg    DESTINATION share/icons/hicolor/16x16/apps)

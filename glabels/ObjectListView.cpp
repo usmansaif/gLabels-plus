@@ -20,6 +20,8 @@
 
 #include "ObjectListView.hpp"
 
+#include "merge/DataSourceUtil.hpp"
+
 #include "UndoRedoModel.hpp"
 
 #include "model/ModelBarcodeObject.hpp"
@@ -199,16 +201,20 @@ namespace glabels
 
                 if ( dynamic_cast<const model::ModelTextObject*>( object ) )
                 {
-                        QString t = snippet( object->text() );
+                        QString t = snippet( merge::DataSourceUtil::toDisplay( object->text() ) );
                         return t.isEmpty() ? tr("Text") : tr("Text: %1").arg( t );
                 }
                 if ( dynamic_cast<const model::ModelBarcodeObject*>( object ) )
                 {
-                        QString t = snippet( object->bcData() );
+                        QString t = snippet( merge::DataSourceUtil::toDisplay( object->bcData() ) );
                         return t.isEmpty() ? tr("Barcode") : tr("Barcode: %1").arg( t );
                 }
                 if ( dynamic_cast<const model::ModelImageObject*>( object ) )
                 {
+                        if ( object->filenameNode().isField() )
+                        {
+                                return tr("Image: %1").arg( "{{" + object->filenameNode().data() + "}}" );
+                        }
                         return tr("Image");
                 }
                 if ( dynamic_cast<const model::ModelLineObject*>( object ) )

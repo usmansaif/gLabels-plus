@@ -217,6 +217,18 @@
         <source>Text: Semicolon Separated Values, keys on line 1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Text: Auto-detect delimiter, column names on line 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text: Auto-detect delimiter, no column names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JSON: array of objects</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Frame</name>
@@ -544,23 +556,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Merge control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Uncollated (e.g.  1,1,1   2,2,2   3,3,3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Collated   (e.g.  1,2,3   1,2,3   1,2,3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Merge groups are contiguous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Merge groups start on a new page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -577,6 +577,18 @@
     </message>
     <message>
         <source>Use system print dialog...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data records</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record copies are contiguous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Each record starts on a new page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -709,6 +721,47 @@
     </message>
     <message>
         <source>Select another product for this gLabels Plus project.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecentView</name>
+    <message>
+        <source>Edited just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Edited %n minute(s) ago</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Edited %n hour(s) ago</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Edited yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Edited %n day(s) ago</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Edited %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No project</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1099,6 +1152,25 @@
     </message>
 </context>
 <context>
+    <name>VariableType</name>
+    <message>
+        <source>Barcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>VariablesView</name>
     <message>
         <source>Add</source>
@@ -1224,6 +1296,224 @@
     </message>
 </context>
 <context>
+    <name>glabels::ConnectDataSourceDialog</name>
+    <message>
+        <source>Connect Data Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import a spreadsheet export to fill your label with data. Each column becomes a variable you can place on the label as {{Variable_Name}}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced Parsing Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto-detect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comma separated (CSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tab separated (TSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Semicolon separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colon separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JSON (array of objects)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First row contains column names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source Column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Placeholder Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click a placeholder name to rename it. Names may contain letters, digits and underscores. The data type decides what is created when you drag the variable onto the label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview Records</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm &amp;&amp; Import Variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No file selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select data file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data files (*.csv *.tsv *.tab *.txt *.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CSV files (*.csv)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TSV files (*.tsv *.tab)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JSON files (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet files can&apos;t be read directly. Save the sheet as CSV (File &gt; Save As &gt; CSV) and import that file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>comma separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tab separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>semicolon separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>colon separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pipe separated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Latin-1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UTF-8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JSON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n record(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n column(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Click to rename. Used on the label as {{%1}}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(empty)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No records were found in this file. Check the format under Advanced Parsing Options.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use only letters, digits and underscores</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name is used more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A custom variable already has this name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include at least one column.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 records selected for printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::DropZone</name>
+    <message>
+        <source>Drop a data file here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CSV, TSV or JSON. The delimiter and encoding are detected automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>glabels::EditVariableDialog</name>
     <message>
         <source>Default</source>
@@ -1233,11 +1523,19 @@
 <context>
     <name>glabels::FieldButton</name>
     <message>
-        <source>Merge fields</source>
+        <source>Data variables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Variables</source>
+        <source>None (connect a data source)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1304,6 +1602,301 @@
     </message>
 </context>
 <context>
+    <name>glabels::HelpWindow</name>
+    <message>
+        <source>Tip:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Designing labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data and variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Organizing and settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your first label in 5 minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The main window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Products, sheets and rolls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adding and arranging objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart guides, rulers and measuring</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects panel, layers and groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Barcodes and QR codes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images, boxes, lines and ellipses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object properties reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Designing your own product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mail merge from CSV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variables and counters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Substitution field syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Printing labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command-line printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Projects and files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences and appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Troubleshooting and FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Glossary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search the guide (Ctrl+K)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find on this page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous match (Shift+F3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next match (F3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close (Esc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back (Alt+Left)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward (Alt+Right)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start page (Alt+Home)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smaller text (Ctrl+-)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Larger text (Ctrl++)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find on this page (Ctrl+F)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print this page (Ctrl+P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This help page is missing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File and pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objects and tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a label to see the full list of shortcuts here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 - gLabels Plus Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No pages match &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Help Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 matches</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>glabels::LabelEditor</name>
     <message>
         <source>Move</source>
@@ -1349,6 +1942,10 @@
         <source>Edit Text</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MainWindow</name>
@@ -1362,10 +1959,6 @@
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1398,14 +1991,6 @@
     </message>
     <message>
         <source>P&amp;roperties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Merge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Variables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1829,10 +2414,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open Recent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Quick Access Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1888,14 +2469,6 @@
     </message>
     <message>
         <source>Change visibility of the &quot;Arrange&quot; toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Merge Preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change visibility of the &quot;Merge Preview&quot; toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1976,14 +2549,6 @@
     </message>
     <message>
         <source>Align objects to the edges or center of the label (canvas)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preview Merge Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show actual merge records on the label instead of field names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2087,10 +2652,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Merge record shown on the label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Record </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2144,10 +2705,6 @@
     </message>
     <message>
         <source> of %1 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> (no merge data) </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2223,14 +2780,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select label Merge mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select label Variables mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select label Print mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2290,19 +2839,205 @@
         <source>Ctrl+V</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Data Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data source: connect a CSV, TSV or JSON file and choose records</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom Variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom variables: counters and constants</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recently used labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Data Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the data source and its records</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Custom Variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit custom variables (counters and constants)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Live Data Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change visibility of the &quot;Live Data Preview&quot; toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variables Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide the data source variables panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Placeholders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show variables as {{Variable_Name}} placeholders on the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview Live Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show real records from the data source on the label instead of placeholders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Connect Data Source...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import a CSV, TSV or JSON file and set up its variables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reload Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read the data source file again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt; Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next &gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data record shown on the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> (no data) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect Data Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Imported %n variable(s) from %1</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Product Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page orientation: this label is round or square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page orientation: %1. Click to switch to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Recent...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show recently used labels</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
     <message>
-        <source>Merge</source>
+        <source>Data Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select merge file</source>
+        <source>Data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All files (*)</source>
+        <source>Records to print</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No data source connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop using a data source for this label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnect Data Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect Data Source...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change File or Variables...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 records selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2461,15 +3196,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Insert substitution field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use substitution field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>gLabels Plus - Select image file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect a data source or add a custom variable first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fit box to text: resize the text box to the size of its text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fit box to text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fit to Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2643,6 +3406,10 @@ Click the lock column to lock or unlock an object.</source>
     </message>
     <message>
         <source>Ctrl+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3159,6 +3926,75 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
         <source>Change Product</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::RecentView</name>
+    <message>
+        <source>Recent Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search labels and projects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Label...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back to the welcome screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click a label to open it in the editor. Double-click to go straight to printing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No recent labels yet.
+
+Labels you open or save will appear here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 of %n label(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Containing Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::ReportBugDialog</name>
@@ -3533,15 +4369,7 @@ Double-click a product, or press Enter, to choose it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove from list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 (file not found)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enhanced with new features and a refreshed interface.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3579,21 +4407,6 @@ Labels you open or save will appear here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>+  New project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a project, for example for a business or client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No projects yet.
-
-Create a project for each business or client,
-then add its labels to it.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Choose a product and add a new label to this project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3607,10 +4420,6 @@ then add its labels to it.</source>
     </message>
     <message>
         <source>Labels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select or create a project to see its labels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3761,6 +4570,142 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Couldn&apos;t delete the label file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label Designer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search labels and projects...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search labels (/)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template designer...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New project... (for example one per business or client)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No projects yet. Use + to keep each business or client&apos;s labels together.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quick start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels in this project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enhanced with new features and a refreshed interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No labels match your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No label selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a label to see its preview and details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file was moved or deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file couldn&apos;t be read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No preview available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list	Del</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3986,6 +4931,91 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Add to Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::VariablesPanel</name>
+    <message>
+        <source>Connect Data Source...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload data from the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No data source connected.
+
+Import a CSV, TSV or JSON file to turn its columns into variables you can drag onto the label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag a variable onto the label, or double-click to add it. Press F2 to rename.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data source: none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change data source or variables...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 records selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Placeholder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;%1&quot; is not a valid name. Use only letters, digits and underscores.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A variable named &quot;%1&quot; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A custom variable named &quot;%1&quot; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable &quot;%1&quot; was not found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Type</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
