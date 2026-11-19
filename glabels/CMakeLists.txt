@@ -34,6 +34,7 @@ set (glabels_sources
   PrinterMonitor.cpp
   PrintView.cpp
   Projects.cpp
+  Samples.cpp
   PropertiesView.cpp
   Preview.cpp
   PreviewOverlayItem.cpp
@@ -133,6 +134,7 @@ set (glabels_resource_files
   help.qrc
   icons.qrc
   images.qrc
+  samples.qrc
 )
 
 qt6_wrap_cpp (glabels_moc_sources ${glabels_qobject_headers})

@@ -785,6 +785,43 @@
     </message>
 </context>
 <context>
+    <name>Samples</name>
+    <message>
+        <source>My templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open the sample &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t create the folder &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template name (it appears under &quot;My templates&quot; in Sample Labels):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t save &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saved &quot;%1&quot; to My templates.
+
+Find it under File &gt; New from Sample.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Template</name>
     <message>
         <source>Roll, %1 %2 wide</source>
@@ -2958,15 +2995,7 @@
         </translation>
     </message>
     <message>
-        <source>Horizontal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Product Rotate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2991,6 +3020,26 @@
     </message>
     <message>
         <source>Show recently used labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New from Sa&amp;mple...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start from a ready-made shipping label, receipt, invoice, SKU, product or asset label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as &amp;Template...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save a copy of this label to My templates in the sample library</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4706,6 +4755,106 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Remove from list	Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready-made shipping labels, receipts, invoices, SKU, product and asset labels to start from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start from a sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shipping, receipt, invoice, SKU, product and asset labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Samples</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready-made labels: open a copy, edit it and print</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No sample labels found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use this sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open an untitled copy to edit; the sample itself never changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open an untitled copy on the Print page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No sample selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your template. Opening it creates an untitled copy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print a copy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit original template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to Trash...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move Template to Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move your template &quot;%1&quot; to the Trash?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t move the template to the Trash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small thumbnails</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium thumbnails</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

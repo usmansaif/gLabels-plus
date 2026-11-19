@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Receipt Paper" part="80 × 150 mm" size="roll" width="80mm" height="150mm" roll_width="80mm" description="80 mm receipt roll">
+    <Label-rectangle id="0" width="80mm" height="150mm" round="0mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="3mm" y_size="3mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text name="Store name" x="4mm" y="5mm" w="72mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="16" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>YOUR STORE</p>
+    </Object-text>
+    <Object-text x="4mm" y="13.5mm" w="72mm" h="13.392mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>12 Market Street, Lahore</p>
+      <p>Tel +92 300 1234567</p>
+      <p>NTN 1234567-8</p>
+    </Object-text>
+    <Object-line x="4mm" y="27.5mm" dx="72mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="29mm" w="36mm" h="9.6346mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Receipt #000123</p>
+      <p>Cashier: Ali</p>
+    </Object-text>
+    <Object-text x="40mm" y="29mm" w="36mm" h="9.6346mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>20 Nov 2026</p>
+      <p>14:32</p>
+    </Object-text>
+    <Object-line x="4mm" y="38mm" dx="72mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="39.5mm" w="40mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ITEM</p>
+    </Object-text>
+    <Object-text x="44mm" y="39.5mm" w="10mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>QTY</p>
+    </Object-text>
+    <Object-text x="56mm" y="39.5mm" w="20mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>AMOUNT</p>
+    </Object-text>
+    <Object-text x="4mm" y="45mm" w="40mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Organic Honey 500 g</p>
+    </Object-text>
+    <Object-text x="44mm" y="45mm" w="10mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>2</p>
+    </Object-text>
+    <Object-text x="56mm" y="45mm" w="20mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>1,900.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="50.5mm" w="40mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Green Tea (25 bags)</p>
+    </Object-text>
+    <Object-text x="44mm" y="50.5mm" w="10mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>1</p>
+    </Object-text>
+    <Object-text x="56mm" y="50.5mm" w="20mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>450.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="56mm" w="40mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Whole Wheat Bread</p>
+    </Object-text>
+    <Object-text x="44mm" y="56mm" w="10mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>3</p>
+    </Object-text>
+    <Object-text x="56mm" y="56mm" w="20mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>540.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="61.5mm" w="40mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Fresh Milk 1 L</p>
+    </Object-text>
+    <Object-text x="44mm" y="61.5mm" w="10mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>2</p>
+    </Object-text>
+    <Object-text x="56mm" y="61.5mm" w="20mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>560.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="67mm" w="40mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Basmati Rice 5 kg</p>
+    </Object-text>
+    <Object-text x="44mm" y="67mm" w="10mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>1</p>
+    </Object-text>
+    <Object-text x="56mm" y="67mm" w="20mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>2,150.00</p>
+    </Object-text>
+    <Object-line x="4mm" y="73.5mm" dx="72mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="75.5mm" w="50mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Subtotal</p>
+    </Object-text>
+    <Object-text x="46mm" y="75.5mm" w="30mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>5,600.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="80.5mm" w="50mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Discount</p>
+    </Object-text>
+    <Object-text x="46mm" y="80.5mm" w="30mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>-100.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="85.5mm" w="50mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Sales tax (5%)</p>
+    </Object-text>
+    <Object-text x="46mm" y="85.5mm" w="30mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>275.00</p>
+    </Object-text>
+    <Object-line x="4mm" y="91mm" dx="72mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="92.4341mm" w="40mm" h="8.1317mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="12" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>TOTAL</p>
+    </Object-text>
+    <Object-text name="Total" x="36mm" y="92.4341mm" w="40mm" h="8.1317mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="12" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Rs 5,775.00</p>
+    </Object-text>
+    <Object-line x="4mm" y="101mm" dx="72mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="103mm" w="50mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Paid by card</p>
+      <p>Change</p>
+    </Object-text>
+    <Object-text x="46mm" y="103mm" w="30mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>5,775.00</p>
+      <p>0.00</p>
+    </Object-text>
+    <Object-text x="4mm" y="115mm" w="72mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Thank you for shopping with us!</p>
+      <p>Exchanges within 7 days with this receipt.</p>
+    </Object-text>
+    <Object-barcode name="Receipt barcode" x="12mm" y="127mm" w="56mm" h="16mm" lock_aspect_ratio="false" backend="" style="code128" text="true" checksum="true" color="255" data="R000123" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+  </Objects>
+  <Data/>
+</Glabels-document>

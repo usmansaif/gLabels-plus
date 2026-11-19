@@ -322,6 +322,10 @@ namespace glabels::model
 
                 if ( mFileName.isEmpty() )
                 {
+                        if ( !mUntitledName.isEmpty() )
+                        {
+                                return mUntitledName;
+                        }
                         if ( mUntitledInstance == 0 )
                         {
                                 mUntitledInstance = ++untitledCount;
@@ -335,6 +339,19 @@ namespace glabels::model
                 {
                         QFileInfo fileInfo( mFileName );
                         return fileInfo.completeBaseName();
+                }
+        }
+
+
+        ///
+        /// Name shown for a label that hasn't been saved yet (e.g. a copy of a sample)
+        ///
+        void Model::setUntitledName( const QString& name )
+        {
+                if ( mUntitledName != name )
+                {
+                        mUntitledName = name;
+                        emit nameChanged();
                 }
         }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="57 × 32 mm" size="roll" width="57mm" height="32mm" roll_width="61mm" description="Small Retail &amp; Logistics">
+    <Label-rectangle id="0" width="57mm" height="32mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text name="Product" x="2.5mm" y="1.8mm" w="52mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Chicken Biryani</p>
+    </Object-text>
+    <Object-line x="2.5mm" y="9.4mm" dx="52mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="2.5mm" y="10.2mm" w="18mm" h="5.8773mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Prepared</p>
+    </Object-text>
+    <Object-text x="20mm" y="10.2mm" w="35mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>20 Nov 2026</p>
+    </Object-text>
+    <Object-text x="2.5mm" y="14.8mm" w="18mm" h="5.8773mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Use by</p>
+    </Object-text>
+    <Object-text x="20mm" y="14.8mm" w="35mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>22 Nov 2026</p>
+    </Object-text>
+    <Object-text x="2.5mm" y="19.4mm" w="18mm" h="5.8773mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Batch</p>
+    </Object-text>
+    <Object-text x="20mm" y="19.4mm" w="35mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>B-1120-07</p>
+    </Object-text>
+    <Object-text x="2.5mm" y="24.4mm" w="52mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="true" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Keep refrigerated at 0–4 °C</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

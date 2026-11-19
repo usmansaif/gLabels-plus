@@ -100,6 +100,7 @@ namespace glabels::model
                 QDir dir() const;
                 QString dirPath() const;
                 QString shortName();
+                void setUntitledName( const QString& name );   // shown instead of "UntitledN" until saved
                 const QString& fileName() const;
                 void setFileName( const QString &fileName );
 
@@ -260,6 +261,7 @@ namespace glabels::model
                 /////////////////////////////////
         private:
                 int                       mUntitledInstance{0};
+                QString                   mUntitledName;
                 bool                      mModified{true};
                 QString                   mFileName;
                 Template                  mTmplate;

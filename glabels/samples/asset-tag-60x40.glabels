@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="60 × 40 mm" size="roll" width="60mm" height="40mm" roll_width="64mm" description="Mid-Size Warehouse / Retail">
+    <Label-rectangle id="0" width="60mm" height="40mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="0mm" y="0mm" w="60mm" h="8mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="2mm" y="0mm" w="56mm" h="8mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>PROPERTY OF YOUR COMPANY</p>
+    </Object-text>
+    <Object-barcode name="Asset QR" x="2.5mm" y="10.5mm" w="19mm" h="19mm" lock_aspect_ratio="false" backend="qrencode" style="qrcode" text="false" checksum="false" color="255" data="AST-000123" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text x="24mm" y="10mm" w="34mm" h="4.8754mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="5.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ASSET ID</p>
+    </Object-text>
+    <Object-text name="Asset ID" x="24mm" y="13mm" w="34mm" h="8.1317mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="12" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>AST-000123</p>
+    </Object-text>
+    <Object-text x="24mm" y="19.5mm" w="34mm" h="10mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Laptop · Dell Latitude 5440</p>
+      <p>IT Department</p>
+    </Object-text>
+    <Object-barcode name="Asset barcode" x="2.5mm" y="31mm" w="55mm" h="6.5mm" lock_aspect_ratio="false" backend="" style="code128" text="false" checksum="true" color="255" data="AST-000123" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+  </Objects>
+  <Data/>
+</Glabels-document>

@@ -18,12 +18,13 @@
 - [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.
 - [Features](https://usmansaif.github.io/gLabels-plus/features.html): All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.
 - [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
-- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.0 release notes: single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
+- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.0 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
 - [Barcode Labels](https://usmansaif.github.io/gLabels-plus/barcode-labels.html): 24 free barcode label templates for Zebra, TSC, Xprinter and Godex thermal printers, from 30 × 15 mm and 50 × 25 mm to 4 × 6 inch shipping labels.
 - [FAQ](https://usmansaif.github.io/gLabels-plus/faq.html): Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.
 - [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
 
 ## What's new in 5.0
+- Sample label library: 13 ready-made designs to start from: shipping label (4×6), sales receipt, A4 invoice, SKU, product, barcode, price tag, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each one opens as an untitled copy, so the sample itself never changes.
 - Smart guides and snapping: While you move or resize, red lines show the distance to the nearest object or label edge in your chosen units (mm, inches, points...). Objects snap to other objects' edges and centers and to the label's edges and center.
 - Measure tool: Measure anywhere on the label: between objects, to the label edge, or any two points. Shows the length, plus width × height for diagonal lines.
 - Layer groups and names: Name your objects and organize them into collapsible groups in the Objects panel. Select a group to move, align or lock all of it at once.
@@ -102,6 +103,9 @@ Save the spreadsheet as CSV, open the Merge page in gLabels Plus and choose the 
 
 ### How is gLabels Plus different from gLabels?
 gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, smart guides with snapping, a measure tool, an objects panel with layer names, groups and locking, and a refreshed interface. It opens existing .glabels files.
+
+### Does gLabels Plus have ready-made label designs?
+Yes. File > New from Sample opens a library of 13 ready-made designs: a 4×6 shipping label, an 80 mm sales receipt, an A4 invoice, SKU, product, barcode, sale price, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each opens as an untitled copy, so you edit your text, save it under a new name and print, and the sample stays unchanged. Save your own designs with File > Save as Template.
 
 ### My label sheet isn't listed. What can I do?
 Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it.

@@ -34,6 +34,7 @@
 #include "Ruler.hpp"
 #include "SelectProductDialog.hpp"
 #include "ShortcutsDialog.hpp"
+#include "Samples.hpp"
 #include "StartupView.hpp"
 #include "VariablesView.hpp"
 #include "VariablesPanel.hpp"
@@ -177,14 +178,6 @@ namespace glabels
                 mPropertiesAction = mContents->addWidget( mPropertiesButton );
                 group->addButton( mPropertiesButton );
                 mPropertiesAction->setVisible( false );   // product details now live on the Print page
-
-                // Page orientation (not a page: toggles the label between horizontal and vertical)
-                mOrientationButton = new QToolButton( this );
-                mOrientationButton->setIcon( QIcon::fromTheme( "glabels-label-orientation-horiz" ) );
-                mOrientationButton->setText( tr("Horizontal") );
-                mOrientationButton->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-                mOrientationAction = mContents->addWidget( mOrientationButton );
-                connect( mOrientationButton, &QToolButton::clicked, this, &MainWindow::onOrientationButtonClicked );
 
                 // Add "Data Source" page
                 mPages->addWidget( mergePage );
@@ -438,6 +431,12 @@ namespace glabels
                 fileNewProjectAction->setStatusTip( tr("Create a project to keep a business or client's labels together") );
                 connect( fileNewProjectAction, &QAction::triggered, this, &MainWindow::fileNewProject );
 
+                fileNewFromSampleAction = new QAction( tr("New from Sa&mple..."), this );
+                fileNewFromSampleAction->setIcon( QIcon::fromTheme( "glabels-file-new" ) );
+                fileNewFromSampleAction->setStatusTip( tr("Start from a ready-made shipping label, receipt, invoice, "
+                                                          "SKU, product or asset label") );
+                connect( fileNewFromSampleAction, &QAction::triggered, this, &MainWindow::fileNewFromSample );
+
                 fileOpenAction = new QAction( tr("&Open..."), this );
                 fileOpenAction->setIcon( QIcon::fromTheme( "glabels-file-open" ) );
                 fileOpenAction->setShortcut( QKeySequence::Open );
@@ -464,6 +463,10 @@ namespace glabels
                 fileSaveAsAction->setShortcut( QKeySequence::SaveAs );
                 fileSaveAsAction->setStatusTip( tr("Save current gLabels Plus label to a different name") );
                 connect( fileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()) );
+
+                fileSaveAsTemplateAction = new QAction( tr("Save as &Template..."), this );
+                fileSaveAsTemplateAction->setStatusTip( tr("Save a copy of this label to My templates in the sample library") );
+                connect( fileSaveAsTemplateAction, &QAction::triggered, this, [this]{ Samples::saveAsTemplate( this ); } );
 
                 fileShowEditorPageAction = new QAction( tr("&Edit") , this );
                 fileShowEditorPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_1 ) );
@@ -938,6 +941,7 @@ namespace glabels
         {
                 fileMenu = menuBar()->addMenu( tr("&File") );
                 fileMenu->addAction( fileNewAction );
+                fileMenu->addAction( fileNewFromSampleAction );
                 fileMenu->addAction( fileNewProjectAction );
                 fileMenu->addAction( fileOpenAction );
                 // "Open Recent..." shows the Recent labels screen (thumbnail grid)
@@ -946,6 +950,7 @@ namespace glabels
                 connect( fileOpenRecentAction, &QAction::triggered, this, &MainWindow::fileShowRecentScreen );
                 fileMenu->addAction( fileSaveAction );
                 fileMenu->addAction( fileSaveAsAction );
+                fileMenu->addAction( fileSaveAsTemplateAction );
                 fileMenu->addSeparator();
                 fileMenu->addAction( fileShowEditorPageAction );
                 fileMenu->addAction( fileShowMergePageAction );
@@ -1215,6 +1220,20 @@ namespace glabels
                 arrangeToolBar->addAction( objectsAlignTopAction );
                 arrangeToolBar->addAction( objectsAlignVCenterAction );
                 arrangeToolBar->addAction( objectsAlignBottomAction );
+
+                // Label orientation toggle: a small icon-only button (checked = vertical)
+                mOrientationButton = new QToolButton( this );
+                mOrientationButton->setObjectName( "orientationToggle" );
+                mOrientationButton->setCheckable( true );
+                mOrientationButton->setAutoRaise( true );
+                mOrientationButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
+                mOrientationButton->setIcon( QIcon::fromTheme( "glabels-label-orientation-horiz" ) );
+                mOrientationButton->setIconSize( arrangeToolBar->iconSize() );
+                mOrientationButton->setAccessibleName( tr("Label orientation") );
+                connect( arrangeToolBar, &QToolBar::iconSizeChanged, mOrientationButton, &QToolButton::setIconSize );
+                connect( mOrientationButton, &QToolButton::clicked, this, &MainWindow::onOrientationButtonClicked );
+                mOrientationAction = arrangeToolBar->addWidget( mOrientationButton );
+
                 arrangeToolBar->addSeparator();
                 arrangeToolBar->addAction( objectsCenterHorizAction );
                 arrangeToolBar->addAction( objectsCenterVertAction );
@@ -1417,8 +1436,8 @@ namespace glabels
         void MainWindow::registerShortcuts()
         {
                 const QList<QPair<QAction*,QString>> table = {
-                        { fileNewAction, "file.new" }, { fileNewProjectAction, "file.newProject" }, { fileOpenAction, "file.open" },
-                        { fileSaveAction, "file.save" }, { fileSaveAsAction, "file.saveAs" },
+                        { fileNewAction, "file.new" }, { fileNewFromSampleAction, "file.newFromSample" }, { fileNewProjectAction, "file.newProject" }, { fileOpenAction, "file.open" },
+                        { fileSaveAction, "file.save" }, { fileSaveAsAction, "file.saveAs" }, { fileSaveAsTemplateAction, "file.saveAsTemplate" },
                         { fileShowEditorPageAction, "file.showEditor" }, { fileShowPropertiesPageAction, "file.showProperties" },
                         { fileShowMergePageAction, "file.showMerge" }, { fileShowVariablesPageAction, "file.showVariables" },
                         { fileShowPrintPageAction, "file.showPrint" }, { fileTemplateDesignerAction, "file.templateDesigner" },
@@ -1546,7 +1565,7 @@ namespace glabels
                         mContents->layout()->setContentsMargins( 0, 0, 0, 0 );
                 }
 
-                const QList<QToolButton*> buttons = { mWelcomeButton, mEditorButton, mOrientationButton,
+                const QList<QToolButton*> buttons = { mWelcomeButton, mEditorButton,
                                                       mMergeButton, mVariablesButton, mPrintButton };
                 int cellWidth = 0;
                 for ( auto* button : buttons )
@@ -1579,7 +1598,6 @@ namespace glabels
                         mContents->updateGeometry();
                 }
 
-                updateOrientationButton();   // restore its tooltip
         }
 
 
@@ -1900,6 +1918,7 @@ namespace glabels
                 fileOpenRecentAction->setEnabled( !recentFileList.isEmpty() );
                 fileSaveAction->setEnabled( hasModel && mModel->isModified() );
                 fileSaveAsAction->setEnabled( hasModel );
+                fileSaveAsTemplateAction->setEnabled( hasModel );
                 fileShowEditorPageAction->setEnabled( !isWelcomePage && !isEditorPage );
                 fileShowPropertiesPageAction->setEnabled( !isWelcomePage && !isPropertiesPage );
                 fileShowMergePageAction->setEnabled( !isWelcomePage && !isMergePage );
@@ -2188,7 +2207,7 @@ namespace glabels
 
 
         ///
-        /// Bottom bar orientation button: flip between horizontal and vertical
+        /// Toolbar orientation toggle: flip between horizontal and vertical
         ///
         void MainWindow::onOrientationButtonClicked()
         {
@@ -2208,7 +2227,7 @@ namespace glabels
 
 
         ///
-        /// Show the current orientation on the bottom bar button
+        /// Show the current orientation on the toolbar toggle
         ///
         void MainWindow::updateOrientationButton()
         {
@@ -2221,7 +2240,7 @@ namespace glabels
                 bool vertical = !square && ( frame->w() > frame->h() ? mModel->rotate() : !mModel->rotate() );
 
                 mOrientationButton->setEnabled( !square );
-                mOrientationButton->setText( vertical ? tr("Vertical") : tr("Horizontal") );
+                mOrientationButton->setChecked( vertical );
                 mOrientationButton->setIcon( QIcon::fromTheme( vertical ? "glabels-label-orientation-vert"
                                                                         : "glabels-label-orientation-horiz" ) );
                 mOrientationButton->setToolTip( square ? tr("Page orientation: this label is round or square")
@@ -2293,6 +2312,24 @@ namespace glabels
         void MainWindow::fileNew()
         {
                 File::newLabel( this );
+        }
+
+
+        ///
+        /// File->New from Sample: the sample library on the welcome screen (in this
+        /// window if no label is open, otherwise in a new window)
+        ///
+        void MainWindow::fileNewFromSample()
+        {
+                MainWindow* target = this;
+                if ( mModel )
+                {
+                        target = new MainWindow();
+                        target->show();
+                }
+                target->showWelcomePage();
+                target->mWelcomeView->showSamples();
+                target->activateWindow();
         }
 
 

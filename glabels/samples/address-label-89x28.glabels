@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="89 × 28 mm" size="roll" width="89mm" height="28mm" roll_width="93mm" description="Address / Dymo 30252">
+    <Label-rectangle id="0" width="89mm" height="28mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text name="Name" x="4mm" y="2.5mm" w="81mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Ayesha Khan</p>
+    </Object-text>
+    <Object-text name="Address" x="4mm" y="8.5mm" w="81mm" h="17mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>House 45, Street 7, Block C, Gulberg III</p>
+      <p>Lahore 54660</p>
+      <p>Pakistan</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

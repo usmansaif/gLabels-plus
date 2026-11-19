@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="100 × 150 mm" size="roll" width="100mm" height="150mm" roll_width="104mm" description="Shipping &amp; Courier (4×6)">
+    <Label-rectangle id="0" width="100mm" height="150mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text x="4mm" y="4mm" w="60mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>FROM</p>
+    </Object-text>
+    <Object-text x="4mm" y="8.5mm" w="60mm" h="19.1532mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Your Company Name</p>
+      <p>12 Market Street</p>
+      <p>Lahore 54000, Pakistan</p>
+      <p>+92 300 1234567</p>
+    </Object-text>
+    <Object-box x="68mm" y="4mm" w="28mm" h="13mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="68mm" y="4mm" w="28mm" h="13mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="13" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>EXPRESS</p>
+    </Object-text>
+    <Object-text x="68mm" y="18.5mm" w="28mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Parcel 1 of 1</p>
+    </Object-text>
+    <Object-line x="0mm" y="28mm" dx="100mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="31mm" w="60mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>SHIP TO</p>
+    </Object-text>
+    <Object-text name="Recipient" x="4mm" y="36mm" w="92mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="16" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Ayesha Khan</p>
+    </Object-text>
+    <Object-text name="Address" x="4mm" y="45mm" w="92mm" h="28.4212mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="10.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>House 45, Street 7, Block C</p>
+      <p>Gulberg III</p>
+      <p>Lahore 54660</p>
+      <p>PAKISTAN</p>
+      <p>Phone: +92 321 7654321</p>
+    </Object-text>
+    <Object-line x="0mm" y="74mm" dx="100mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="76.5mm" w="30mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ORDER</p>
+    </Object-text>
+    <Object-text x="4mm" y="81mm" w="30mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>#10045</p>
+    </Object-text>
+    <Object-text x="36mm" y="76.5mm" w="30mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>WEIGHT</p>
+    </Object-text>
+    <Object-text x="36mm" y="81mm" w="30mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>1.2 kg</p>
+    </Object-text>
+    <Object-line x="34mm" y="74mm" dx="0mm" dy="15mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="68mm" y="76.5mm" w="30mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>DATE</p>
+    </Object-text>
+    <Object-text x="68mm" y="81mm" w="30mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>20 Nov 2026</p>
+    </Object-text>
+    <Object-line x="66mm" y="74mm" dx="0mm" dy="15mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="0mm" y="89mm" dx="100mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="91.5mm" w="92mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>TRACKING NUMBER</p>
+    </Object-text>
+    <Object-barcode name="Tracking barcode" x="8mm" y="96.5mm" w="84mm" h="30mm" lock_aspect_ratio="false" backend="" style="code128" text="true" checksum="true" color="255" data="LP1004512345PK" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-line x="0mm" y="129mm" dx="100mm" dy="0mm" line_width="0.6mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-barcode name="Tracking QR" x="4mm" y="131.5mm" w="15mm" h="15mm" lock_aspect_ratio="false" backend="qrencode" style="qrcode" text="false" checksum="false" color="255" data="https://example.com/track/LP1004512345PK" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text x="22mm" y="132mm" w="74mm" h="6.6288mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Scan to track your parcel</p>
+    </Object-text>
+    <Object-text x="22mm" y="138mm" w="74mm" h="9.6346mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Handle with care · Do not bend</p>
+      <p>Return to sender if undelivered</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

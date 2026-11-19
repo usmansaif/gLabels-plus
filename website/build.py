@@ -28,8 +28,8 @@ RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
 VERSION = "5.0"
 RELEASE_DATE = "2026-11-19"          # ISO date of the 5.0 release
-UPDATED = "2026-11-19"               # last content update, shown on every page
-UPDATED_HUMAN = "19 November 2026"
+UPDATED = "2026-11-20"               # last content update, shown on every page
+UPDATED_HUMAN = "20 November 2026"
 CONTACT_URL = "https://usmansaif.com/en/contact"   # custom barcode label printing solutions
 MAINTAINER = {"@type": "Person", "@id": SITE_URL + "#maintainer", "name": "Usman Saif",
               "url": "https://usmansaif.com", "jobTitle": "Maintainer of gLabels Plus"}
@@ -75,6 +75,9 @@ TOOL_KEYS = [("V", "Select"), ("T", "Text"), ("R", "Box"), ("L", "Line"), ("O", 
 # Latest additions, shown as highlight cards on whats-new.html.
 # icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app.
 LATEST = [
+    dict(icon="samples", title="Sample label library",
+         summary="13 ready-made designs to start from: shipping label (4×6), sales receipt, A4 invoice, SKU, product, barcode, price tag, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each one opens as an untitled copy, so the sample itself never changes.",
+         how="<b>File &gt; New from Sample</b> or <b>Start from a sample</b> on the welcome screen · <b>File &gt; Save as Template</b> adds your own"),
     dict(icon="guides", title="Smart guides and snapping",
          summary="While you move or resize, red lines show the distance to the nearest object or label edge in your chosen units (mm, inches, points...). Objects snap to other objects' edges and centers and to the label's edges and center.",
          how="Just drag an object · hold <kbd>Ctrl</kbd> while dragging to turn snapping off"),
@@ -122,6 +125,7 @@ ICONS = {
     "guides": '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="14" y="13" width="6" height="7" rx="1"/><path d="M11 7.5h9M17 3v7M4 16.5h6M7 14v5"/>',
     "ruler": '<rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/>',
     "layers": '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+    "samples": '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 }
 
 
@@ -150,6 +154,8 @@ RELEASE_NOTES = [
         "<b>Merge preview</b> shows real records on the label instead of field names, with First / Previous / Next / Last buttons to step through them.",
     ]),
     ("Products and templates", [
+        "<b>Sample label library</b>: start from a ready-made shipping label, receipt, invoice, SKU, product, price, asset, address, bin, pallet, food date or QR code label. Opening a sample creates an untitled copy, so saving always asks for a new file name.",
+        "<b>Save as Template</b> keeps your own designs under <b>My templates</b> in the sample library.",
         "<b>Redesigned product chooser</b>: search by brand, part number, description or size (for example <i>avery 5160</i> or <i>2x4</i>), with brand, category and size filters.",
         "<b>Grid and list views</b>, plus <b>favorites</b> and <b>recently used</b> products.",
         "<b>Also sold as</b>: see equivalent part numbers from other brands.",
@@ -196,6 +202,8 @@ FAQ = [
      "Save the spreadsheet as CSV, open the Merge page in gLabels Plus and choose the file. Insert merge fields into text or barcode objects, check the live merge preview, and print. Each record becomes one label."),
     ("How is gLabels Plus different from gLabels?",
      "gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, smart guides with snapping, a measure tool, an objects panel with layer names, groups and locking, and a refreshed interface. It opens existing .glabels files."),
+    ("Does gLabels Plus have ready-made label designs?",
+     "Yes. File > New from Sample opens a library of 13 ready-made designs: a 4×6 shipping label, an 80 mm sales receipt, an A4 invoice, SKU, product, barcode, sale price, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each opens as an untitled copy, so you edit your text, save it under a new name and print, and the sample stays unchanged. Save your own designs with File > Save as Template."),
     ("My label sheet isn't listed. What can I do?",
      "Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it."),
     ("Where are my labels saved?",
@@ -237,7 +245,7 @@ PAGES = {
     "whats-new": dict(
         file="whats-new.html", label="What's New",
         title="What's New in gLabels Plus 5.0: Release Notes",
-        description="gLabels Plus 5.0 release notes: single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.",
+        description="gLabels Plus 5.0 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.",
     ),
     "barcode-labels": dict(
         file="barcode-labels.html", label="Barcode Labels",
@@ -404,6 +412,8 @@ def software_app(extra=None):
             "Projects to group labels by client", "Single-key tool shortcuts",
             "Quick font search", "Rulers, alignment and object locking",
             "Smart distance guides and snapping", "Measure tool", "Layer groups and names",
+            "13 ready-made sample labels: shipping, receipt, invoice, SKU, product and asset",
+            "Save your own designs as templates",
             "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",
             "Works offline, no account", "Light and dark themes",
         ],

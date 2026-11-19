@@ -147,6 +147,11 @@ namespace glabels
                         QString path = selectedPath();
                         if ( path.isEmpty() ) return;
                         if ( mMode == ProjectMode ) trashLabel( path );
+                        else if ( mMode == SampleMode )
+                        {
+                                int sample = sampleIndex( path );
+                                if ( sample >= 0 && !mSamples[sample].builtIn ) trashTemplate( path );
+                        }
                         else model::Settings::removeFromRecentFileList( path );
                 } );
                 auto* deleteKey = new QShortcut( QKeySequence( Qt::SHIFT | Qt::Key_Delete ), mList );
@@ -305,6 +310,12 @@ namespace glabels
                 connect( mRecentNav, &QAbstractButton::clicked, this, [this]{ setMode( RecentMode ); } );
                 layout->addWidget( mRecentNav );
 
+                mSamplesNav = new startup::NavButton( startup::icon::Samples, tr("Sample labels"), &mTheme );
+                mSamplesNav->setToolTip( tr("Ready-made shipping labels, receipts, invoices, SKU, product and asset "
+                                            "labels to start from") );
+                connect( mSamplesNav, &QAbstractButton::clicked, this, [this]{ setMode( SampleMode ); } );
+                layout->addWidget( mSamplesNav );
+
                 // Projects heading with a "+" button
                 auto* projectsHeading = new QWidget();
                 auto* phLayout = new QHBoxLayout( projectsHeading );
@@ -413,6 +424,9 @@ namespace glabels
                 auto* newTile = new startup::TileButton( startup::icon::NewLabel, tr("New label..."),
                                                          tr("Pick a label or card product and start designing"),
                                                          true, &mTheme );
+                auto* sampleTile = new startup::TileButton( startup::icon::Samples, tr("Start from a sample"),
+                                                            tr("Shipping, receipt, invoice, SKU, product and asset labels"),
+                                                            false, &mTheme );
                 auto* openTile = new startup::TileButton( startup::icon::Open, tr("Open label..."),
                                                           tr("Browse for an existing gLabels Plus label file"),
                                                           false, &mTheme );
@@ -420,9 +434,11 @@ namespace glabels
                                                               tr("Create a template for a product that isn't listed"),
                                                               false, &mTheme );
                 connect( newTile,      &QAbstractButton::clicked, this, [this]{ File::newLabel( mWindow ); } );
+                connect( sampleTile,   &QAbstractButton::clicked, this, [this]{ showSamples(); } );
                 connect( openTile,     &QAbstractButton::clicked, this, [this]{ File::open( mWindow ); } );
                 connect( designerTile, &QAbstractButton::clicked, this, [this]{ File::templateDesigner( mWindow ); } );
                 tiles->addWidget( newTile, 1 );
+                tiles->addWidget( sampleTile, 1 );
                 tiles->addWidget( openTile, 1 );
                 tiles->addWidget( designerTile, 1 );
                 layout->addLayout( tiles );
@@ -447,15 +463,44 @@ namespace glabels
                         return tab;
                 };
                 mRecentTab  = makeTab( tr("Recent") );
+                mSamplesTab = makeTab( tr("Samples") );
+                mSamplesTab->setToolTip( tr("Ready-made labels: open a copy, edit it and print") );
                 mProjectTab = makeTab( QString() );
                 mProjectTab->setToolTip( tr("Labels in this project") );
                 auto* tabGroup = new QButtonGroup( this );
                 tabGroup->addButton( mRecentTab );
+                tabGroup->addButton( mSamplesTab );
                 tabGroup->addButton( mProjectTab );
                 connect( mRecentTab,  &QToolButton::clicked, this, [this]{ setMode( RecentMode ); } );
+                connect( mSamplesTab, &QToolButton::clicked, this, [this]{ setMode( SampleMode ); } );
                 connect( mProjectTab, &QToolButton::clicked, this, [this]{ setMode( ProjectMode, mProject ); } );
                 head->addWidget( tabs, 0, Qt::AlignVCenter );
                 head->addStretch( 1 );
+
+                // Grid tile size: Small | Medium
+                auto* sizes = new QFrame();
+                sizes->setObjectName( "startupTabs" );
+                auto* sizesLayout = new QHBoxLayout( sizes );
+                sizesLayout->setContentsMargins( 3, 3, 3, 3 );
+                sizesLayout->setSpacing( 2 );
+                auto makeSize = [&]( const QString& text, const QString& tip ) {
+                        auto* b = new QToolButton();
+                        b->setObjectName( "startupTab" );
+                        b->setText( text );
+                        b->setToolTip( tip );
+                        b->setCheckable( true );
+                        b->setCursor( Qt::PointingHandCursor );
+                        sizesLayout->addWidget( b );
+                        return b;
+                };
+                mSmallTiles  = makeSize( tr("Small"), tr("Small thumbnails") );
+                mMediumTiles = makeSize( tr("Medium"), tr("Medium thumbnails") );
+                auto* sizeGroup = new QButtonGroup( this );
+                sizeGroup->addButton( mSmallTiles );
+                sizeGroup->addButton( mMediumTiles );
+                connect( mSmallTiles,  &QToolButton::clicked, this, [this]{ setTileSize( startup::LabelTileDelegate::Small ); } );
+                connect( mMediumTiles, &QToolButton::clicked, this, [this]{ setTileSize( startup::LabelTileDelegate::Medium ); } );
+                head->addWidget( sizes, 0, Qt::AlignVCenter );
 
                 mProjectActions = new QWidget();
                 auto* actionsLayout = new QHBoxLayout( mProjectActions );
@@ -490,7 +535,14 @@ namespace glabels
                 // The list
                 mList = new QListWidget();
                 mList->setObjectName( "startupList" );
-                mList->setItemDelegate( new LabelRowDelegate( &mTheme, mList ) );
+                mTiles = new startup::LabelTileDelegate( &mTheme, mList );
+                mList->setItemDelegate( mTiles );
+                mList->setViewMode( QListView::IconMode );
+                mList->setFlow( QListView::LeftToRight );
+                mList->setWrapping( true );
+                mList->setResizeMode( QListView::Adjust );
+                mList->setMovement( QListView::Static );
+                mList->setSpacing( 0 );
                 mList->setUniformItemSizes( true );
                 mList->setMouseTracking( true );
                 mList->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -506,6 +558,9 @@ namespace glabels
                 mEmptyLabel->setObjectName( "startupEmpty" );
                 mEmptyLabel->setAlignment( Qt::AlignCenter );
                 mEmptyLabel->setWordWrap( true );
+
+                setTileSize( QSettings().value( "Startup/tileSize" ).toString() == "small"
+                             ? startup::LabelTileDelegate::Small : startup::LabelTileDelegate::Medium );
 
                 mListStack = new QStackedWidget();
                 mListStack->addWidget( mList );
@@ -558,8 +613,9 @@ namespace glabels
                 grid->setVerticalSpacing( 9 );
                 grid->setColumnMinimumWidth( 0, 72 );
                 grid->setColumnStretch( 1, 1 );
-                auto addRow = [&]( int row, const QString& term, bool mono ) {
+                auto addRow = [&]( int row, const QString& term, bool mono, QLabel** termLabel = nullptr ) {
                         auto* dt = new QLabel( term );
+                        if ( termLabel ) *termLabel = dt;
                         dt->setObjectName( "startupText3" );
                         auto* dd = new QLabel();
                         dd->setObjectName( mono ? "startupMono" : "startupText" );
@@ -576,10 +632,10 @@ namespace glabels
                         grid->addWidget( dd, row, 1, Qt::AlignTop );
                         return dd;
                 };
-                mInspProject  = addRow( 0, tr("Project"), false );
+                mInspProject  = addRow( 0, tr("Project"), false, &mInspProjectTerm );
                 mInspSize     = addRow( 1, tr("Size"), false );
-                mInspModified = addRow( 2, tr("Modified"), false );
-                mInspPath     = addRow( 3, tr("Location"), true );
+                mInspModified = addRow( 2, tr("Modified"), false, &mInspModifiedTerm );
+                mInspPath     = addRow( 3, tr("Location"), true, &mInspPathTerm );
                 layout->addWidget( mInspDetails );
                 layout->addStretch( 1 );
 
@@ -855,6 +911,7 @@ namespace glabels
                 mMode = mode;
 
                 mRecentNav->setActive( mode == RecentMode );
+                mSamplesNav->setActive( mode == SampleMode );
                 for ( auto* nav : mProjectNavs )
                 {
                         nav->setActive( mode == ProjectMode && nav->property( "project" ).toString() == mProject );
@@ -862,6 +919,7 @@ namespace glabels
                 mProjectTab->setText( mProject );
                 mProjectTab->setVisible( !mProject.isEmpty() );
                 mRecentTab->setChecked( mode == RecentMode );
+                mSamplesTab->setChecked( mode == SampleMode );
                 mProjectTab->setChecked( mode == ProjectMode );
                 mProjectActions->setVisible( mode == ProjectMode );
                 mProjectNote->setVisible( mode == ProjectMode );
@@ -877,6 +935,16 @@ namespace glabels
         {
                 loadProjects( project );
                 setMode( ProjectMode, project );
+        }
+
+
+        ///
+        /// Public: show the sample label library
+        ///
+        void StartupView::showSamples()
+        {
+                setMode( SampleMode );
+                mList->setFocus();
         }
 
 
@@ -966,7 +1034,19 @@ namespace glabels
                         mList->addItem( item );
                 };
 
-                if ( mMode == RecentMode )
+                if ( mMode == SampleMode )
+                {
+                        mSamples = Samples::list();
+                        for ( const auto& sample : mSamples )
+                        {
+                                addRow( sample.path, sample.name, sample.description, sample.category,
+                                        sample.builtIn ? tr("Sample") : tr("Template"), true );
+                                auto* item = mList->item( mList->count() - 1 );
+                                item->setToolTip( sample.builtIn ? sample.description
+                                                                 : QDir::toNativeSeparators( sample.path ) );
+                        }
+                }
+                else if ( mMode == RecentMode )
                 {
                         for ( const auto& file : model::Settings::recentFileList() )
                         {
@@ -989,6 +1069,11 @@ namespace glabels
 
                 mRecentNav->setTrailing( QString::number( model::Settings::recentFileList().size() ),
                                          startup::NavButton::Count );
+                if ( mMode != SampleMode )
+                {
+                        mSamples = Samples::list();
+                }
+                mSamplesNav->setTrailing( QString::number( mSamples.size() ), startup::NavButton::Count );
 
                 mList->blockSignals( false );
 
@@ -1060,6 +1145,10 @@ namespace glabels
                 {
                         mEmptyLabel->setText( tr("No labels match your search.") );
                 }
+                else if ( mMode == SampleMode )
+                {
+                        mEmptyLabel->setText( tr("No sample labels found.") );
+                }
                 else if ( mMode == RecentMode )
                 {
                         mEmptyLabel->setText( tr("No recent labels yet.\n\nLabels you open or save will appear here.") );
@@ -1087,8 +1176,22 @@ namespace glabels
                 QString path = mThumbQueue.takeFirst();
 
                 qreal dpr = devicePixelRatioF();
-                QSize area = LabelRowDelegate::ThumbSize - QSize( 8, 8 );
-                QImage image = startup::labelThumbnail( path, area * dpr );
+                QSize area = startup::LabelTileDelegate::MaxThumbSize;
+                QImage image;
+                int sample = sampleIndex( path );
+                if ( sample >= 0 && mSamples[sample].builtIn )
+                {
+                        // Built-in samples are resources: render them directly
+                        std::unique_ptr<model::Model> label( Samples::load( mSamples[sample] ) );
+                        if ( label )
+                        {
+                                image = startup::renderLabel( *label, area * dpr );
+                        }
+                }
+                else
+                {
+                        image = startup::labelThumbnail( path, area * dpr );
+                }
                 image.setDevicePixelRatio( dpr );
                 mThumbs.insert( path, image );
                 mThumbTimes.insert( path, QFileInfo( path ).lastModified() );
@@ -1116,6 +1219,34 @@ namespace glabels
         }
 
 
+        ///
+        /// Grid tile size (remembered between sessions)
+        ///
+        void StartupView::setTileSize( startup::LabelTileDelegate::Size size )
+        {
+                mTiles->setTileSize( size );
+                mSmallTiles->setChecked( size == startup::LabelTileDelegate::Small );
+                mMediumTiles->setChecked( size == startup::LabelTileDelegate::Medium );
+                mList->setGridSize( mTiles->tileExtent() );
+                mList->doItemsLayout();
+                QSettings().setValue( "Startup/tileSize",
+                                      size == startup::LabelTileDelegate::Small ? "small" : "medium" );
+        }
+
+
+        int StartupView::sampleIndex( const QString& path ) const
+        {
+                for ( int i = 0; i < mSamples.size(); i++ )
+                {
+                        if ( mSamples[i].path == path )
+                        {
+                                return i;
+                        }
+                }
+                return -1;
+        }
+
+
         void StartupView::onCurrentItemChanged()
         {
                 updateInspector();
@@ -1132,21 +1263,52 @@ namespace glabels
                 bool has = !path.isEmpty();
                 bool exists = has && QFileInfo::exists( path );
 
+                bool samples = mMode == SampleMode;
+                int sample = samples ? sampleIndex( path ) : -1;
+                bool builtIn = sample >= 0 && mSamples[sample].builtIn;
+
+                mOpenButton->setText( samples ? tr("Use this sample") : tr("Open label") );
+                mOpenButton->setToolTip( samples ? tr("Open an untitled copy to edit; the sample itself never changes")
+                                                 : QString() );
+                mPrintButton->setToolTip( samples ? tr("Open an untitled copy on the Print page") : QString() );
+                mShowFolderButton->setVisible( !builtIn );
+                mInspProjectTerm->setText( samples ? tr("Category") : tr("Project") );
+                mInspModifiedTerm->setVisible( !builtIn );
+                mInspModified->setVisible( !builtIn );
+                mInspPath->setVisible( !builtIn );
+                mInspPathTerm->setVisible( !builtIn );
+
                 mOpenButton->setEnabled( exists );
                 mPrintButton->setEnabled( exists );
-                mShowFolderButton->setEnabled( has && QFileInfo( path ).absoluteDir().exists() );
+                mShowFolderButton->setEnabled( has && !builtIn && QFileInfo( path ).absoluteDir().exists() );
                 mInspDetails->setVisible( has );
                 mInspectorTimer->stop();
 
                 if ( !has )
                 {
-                        mInspTitle->setText( mMode == RecentMode ? tr("No label selected") : mProject );
+                        mInspTitle->setText( mMode == ProjectMode ? mProject
+                                             : samples          ? tr("No sample selected")
+                                                                : tr("No label selected") );
                         mInspSub->setText( tr("Select a label to see its preview and details.") );
                         mPreview->setImage( QImage(), QString() );
                         return;
                 }
 
                 auto* item = mList->currentItem();
+                if ( sample >= 0 )
+                {
+                        const auto& info = mSamples[sample];
+                        mInspTitle->setText( info.name );
+                        mInspSub->setText( info.builtIn ? info.description
+                                                        : tr("Your template. Opening it creates an untitled copy.") );
+                        mInspProject->setText( info.category );
+                        mInspSize->setText( QString::fromUtf8( "—" ) );
+                        mInspModified->setText( shortDateTime( QFileInfo( path ).lastModified() ) );
+                        mInspPath->setText( displayFolder( QFileInfo( path ).absolutePath() ) );
+                        mPreview->setImage( QImage(), QString() );
+                        mInspectorTimer->start();
+                        return;
+                }
                 QString project = Projects::projectOf( path );
                 mInspTitle->setText( item->data( LabelRowDelegate::NameRole ).toString() );
                 mInspSub->setText( exists ? QString() : tr("File not found") );
@@ -1175,7 +1337,9 @@ namespace glabels
                         return;
                 }
 
-                std::unique_ptr<model::Model> label( model::XmlLabelParser::readFile( path ) );
+                int sample = mMode == SampleMode ? sampleIndex( path ) : -1;
+                std::unique_ptr<model::Model> label( sample >= 0 ? Samples::load( mSamples[sample] )
+                                                                 : model::XmlLabelParser::readFile( path ) );
                 if ( !label )
                 {
                         mInspSub->setText( tr("This file couldn't be read.") );
@@ -1186,9 +1350,12 @@ namespace glabels
                 const auto& tmplate = label->tmplate();
                 QString product = QString( "%1 %2" ).arg( tmplate.brand(), tmplate.part() ).trimmed();
                 QString description = tmplate.description();
-                mInspSub->setText( description.isEmpty() ? product
-                                                          : ( product.isEmpty() ? description
-                                                                                : product + QString::fromUtf8( " · " ) + description ) );
+                if ( sample < 0 )   // samples keep their own description
+                {
+                        mInspSub->setText( description.isEmpty() ? product
+                                                                  : ( product.isEmpty() ? description
+                                                                                        : product + QString::fromUtf8( " · " ) + description ) );
+                }
 
                 model::Units units = model::Settings::units();
                 QLocale locale;
@@ -1214,7 +1381,9 @@ namespace glabels
                 {
                         return;
                 }
-                MainWindow* target = File::open( path, mWindow );
+                int sample = mMode == SampleMode ? sampleIndex( path ) : -1;
+                MainWindow* target = sample >= 0 ? Samples::open( mSamples[sample], mWindow )
+                                                 : File::open( path, mWindow );
                 if ( print && target )
                 {
                         QMetaObject::invokeMethod( target, "fileShowPrintPage" );
@@ -1235,6 +1404,31 @@ namespace glabels
                 mList->setCurrentItem( item );
                 QString filePath = item->data( LabelRowDelegate::PathRole ).toString();
                 bool exists = item->data( LabelRowDelegate::ExistsRole ).toBool();
+
+                if ( mMode == SampleMode )
+                {
+                        int sample = sampleIndex( filePath );
+                        bool builtIn = sample >= 0 && mSamples[sample].builtIn;
+                        QMenu menu;
+                        menu.addAction( QIcon::fromTheme( "glabels-file-new" ), tr("Use this sample"),
+                                        this, [this]{ openSelected( false ); } );
+                        menu.addAction( tr("Print a copy..."), this, [this]{ openSelected( true ); } );
+                        if ( !builtIn )
+                        {
+                                menu.addSeparator();
+                                menu.addAction( tr("Edit original template"), this, [this, filePath]{
+                                        File::open( filePath, mWindow );
+                                } );
+                                menu.addAction( tr("Show in folder"), this, [filePath]{
+                                        QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( filePath ).absolutePath() ) );
+                                } );
+                                menu.addSeparator();
+                                menu.addAction( QIcon::fromTheme( "glabels-delete" ), tr("Move to Trash..."),
+                                                this, [this, filePath]{ trashTemplate( filePath ); } );
+                        }
+                        menu.exec( mList->viewport()->mapToGlobal( pos ) );
+                        return;
+                }
 
                 QMenu menu;
                 auto* open = menu.addAction( QIcon::fromTheme( "glabels-file-open" ), tr("Open"),
@@ -1328,6 +1522,10 @@ namespace glabels
                 for ( const auto& name : Projects::list() )
                 {
                         dirs << Projects::path( name );
+                }
+                if ( Samples::userDir().exists() )
+                {
+                        dirs << Samples::userDir().absolutePath();
                 }
                 mWatcher->addPaths( dirs );
         }
@@ -1538,6 +1736,26 @@ namespace glabels
                 }
                 model::Settings::removeFromRecentFileList( filePath );
                 loadProjects();
+                setMode( mMode );
+        }
+
+
+        void StartupView::trashTemplate( const QString& filePath )
+        {
+                QString name = QFileInfo( filePath ).completeBaseName();
+                if ( QMessageBox::question( this, tr("Move Template to Trash"),
+                                            tr("Move your template \"%1\" to the Trash?").arg( name ),
+                                            QMessageBox::Yes | QMessageBox::Cancel,
+                                            QMessageBox::Cancel ) != QMessageBox::Yes )
+                {
+                        return;
+                }
+                if ( !QFile::moveToTrash( filePath ) )
+                {
+                        QMessageBox::warning( this, tr("Move Template to Trash"),
+                                              tr("Couldn't move the template to the Trash.") );
+                        return;
+                }
                 setMode( mMode );
         }
 

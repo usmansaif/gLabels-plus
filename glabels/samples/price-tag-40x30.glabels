@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="40 × 30 mm" size="roll" width="40mm" height="30mm" roll_width="44mm" description="Healthcare &amp; Asset Tag">
+    <Label-rectangle id="0" width="40mm" height="30mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="2mm" y="2mm" w="11mm" h="5mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="2mm" y="1.6866mm" w="11mm" h="5.6268mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>SALE</p>
+    </Object-text>
+    <Object-text x="14mm" y="1.8118mm" w="24mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="right" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Was Rs 1,599</p>
+    </Object-text>
+    <Object-text name="Price" x="2mm" y="6.9312mm" w="36mm" h="11.1376mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="18" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Rs 1,299</p>
+    </Object-text>
+    <Object-text x="2mm" y="17.8mm" w="36mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Denim Jacket · Size L</p>
+    </Object-text>
+    <Object-barcode x="6mm" y="22.9mm" w="28mm" h="5.6mm" lock_aspect_ratio="false" backend="" style="code128" text="false" checksum="true" color="255" data="PRC-1299-L" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+  </Objects>
+  <Data/>
+</Glabels-document>

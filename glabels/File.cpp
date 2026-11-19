@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QStandardPaths>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -291,6 +292,17 @@ namespace glabels
                         {
                                 cwd = fileInfo.filePath();
                         }
+                }
+                else if ( window->model() )
+                {
+                        // Untitled (e.g. a copy of a sample): suggest its name in a sensible folder
+                        QString dir = mCwd;
+                        if ( dir == "." )
+                        {
+                                dir = QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation );
+                                if ( dir.isEmpty() ) dir = QDir::homePath();
+                        }
+                        cwd = QDir( dir ).absoluteFilePath( window->model()->shortName() + ".glabels" );
                 }
 
                 QString rawFileName =

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="100 × 100 mm" size="roll" width="100mm" height="100mm" roll_width="104mm" description="Pallet / Warehouse Tracking">
+    <Label-rectangle id="0" width="100mm" height="100mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="0mm" y="0mm" w="100mm" h="11mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="0mm" w="92mm" h="11mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>CARTON / PALLET</p>
+    </Object-text>
+    <Object-text x="4mm" y="13mm" w="44mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>FROM</p>
+    </Object-text>
+    <Object-text x="4mm" y="16.5mm" w="44mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Your Company Name</p>
+      <p>Lahore, Pakistan</p>
+    </Object-text>
+    <Object-text x="52mm" y="13mm" w="44mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>TO</p>
+    </Object-text>
+    <Object-text x="52mm" y="16.5mm" w="44mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Client Company Ltd.</p>
+      <p>Karachi, Pakistan</p>
+    </Object-text>
+    <Object-line x="0mm" y="30mm" dx="100mm" dy="0mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="50mm" y="30mm" dx="0mm" dy="30mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="0mm" y="45mm" dx="100mm" dy="0mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="0mm" y="60mm" dx="100mm" dy="0mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="32mm" w="42mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>PO NUMBER</p>
+    </Object-text>
+    <Object-text x="4mm" y="36mm" w="42mm" h="9.1337mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>PO-78421</p>
+    </Object-text>
+    <Object-text x="54mm" y="32mm" w="42mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>CARTON</p>
+    </Object-text>
+    <Object-text x="54mm" y="36mm" w="42mm" h="9.1337mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>3 of 8</p>
+    </Object-text>
+    <Object-text x="4mm" y="47mm" w="42mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>QUANTITY</p>
+    </Object-text>
+    <Object-text x="4mm" y="51mm" w="42mm" h="9.1337mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>48 units</p>
+    </Object-text>
+    <Object-text x="54mm" y="47mm" w="42mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>GROSS WEIGHT</p>
+    </Object-text>
+    <Object-text x="54mm" y="51mm" w="42mm" h="9.1337mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>18.5 kg</p>
+    </Object-text>
+    <Object-text x="4mm" y="62mm" w="92mm" h="5.3763mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>SSCC</p>
+    </Object-text>
+    <Object-barcode name="SSCC barcode" x="4mm" y="66mm" w="92mm" h="24mm" lock_aspect_ratio="false" backend="" style="code128" text="false" checksum="true" color="255" data="00340123450000000017" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text name="SSCC text" x="4mm" y="90.5mm" w="92mm" h="7.1298mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="10" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>(00) 3 4012345 000000001 7</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

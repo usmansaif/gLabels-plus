@@ -1,0 +1,22 @@
+<!DOCTYPE RCC>
+
+<RCC version="1.0">
+<qresource>
+
+	<file>samples/samples.json</file>
+	<file>samples/shipping-label-4x6.glabels</file>
+	<file>samples/product-label-50x30.glabels</file>
+	<file>samples/sku-label-50x25.glabels</file>
+	<file>samples/asset-tag-60x40.glabels</file>
+	<file>samples/barcode-label-38x25.glabels</file>
+	<file>samples/price-tag-40x30.glabels</file>
+	<file>samples/receipt-80mm.glabels</file>
+	<file>samples/invoice-a4.glabels</file>
+	<file>samples/address-label-89x28.glabels</file>
+	<file>samples/bin-location-100x50.glabels</file>
+	<file>samples/pallet-label-100x100.glabels</file>
+	<file>samples/food-date-label-57x32.glabels</file>
+	<file>samples/qr-code-label-50x50.glabels</file>
+
+</qresource>
+</RCC>

@@ -1,0 +1,80 @@
+[
+  {
+    "file": "shipping-label-4x6.glabels",
+    "name": "Shipping Label 4×6",
+    "category": "Shipping",
+    "description": "Sender, recipient, order details, tracking barcode and QR on a 100 × 150 mm thermal label."
+  },
+  {
+    "file": "product-label-50x30.glabels",
+    "name": "Product Label",
+    "category": "Retail",
+    "description": "Product name, variant, EAN-13 barcode and price on a 50 × 30 mm label."
+  },
+  {
+    "file": "sku-label-50x25.glabels",
+    "name": "SKU Label",
+    "category": "Inventory",
+    "description": "Large SKU code, short description and a matching Code 128 barcode (50 × 25 mm)."
+  },
+  {
+    "file": "asset-tag-60x40.glabels",
+    "name": "Asset Tag",
+    "category": "Inventory",
+    "description": "Company asset tag with QR code, asset ID, description and Code 128 barcode (60 × 40 mm)."
+  },
+  {
+    "file": "barcode-label-38x25.glabels",
+    "name": "Barcode Label",
+    "category": "Retail",
+    "description": "A compact Code 128 barcode with product name and price (38 × 25 mm)."
+  },
+  {
+    "file": "price-tag-40x30.glabels",
+    "name": "Sale Price Tag",
+    "category": "Retail",
+    "description": "Eye-catching sale price, old price, item name and barcode (40 × 30 mm)."
+  },
+  {
+    "file": "receipt-80mm.glabels",
+    "name": "Sales Receipt",
+    "category": "Business",
+    "description": "Store header, items, totals and a receipt barcode on 80 mm thermal receipt paper."
+  },
+  {
+    "file": "invoice-a4.glabels",
+    "name": "Invoice (A4)",
+    "category": "Business",
+    "description": "A full-page A4 invoice with company details, line items, totals, bank details and a QR code."
+  },
+  {
+    "file": "address-label-89x28.glabels",
+    "name": "Address Label",
+    "category": "Shipping",
+    "description": "Name and mailing address for envelopes and parcels (89 × 28 mm)."
+  },
+  {
+    "file": "bin-location-100x50.glabels",
+    "name": "Bin / Shelf Location",
+    "category": "Inventory",
+    "description": "Big warehouse location code with QR and Code 128 for scanning (100 × 50 mm)."
+  },
+  {
+    "file": "pallet-label-100x100.glabels",
+    "name": "Carton / Pallet Label",
+    "category": "Shipping",
+    "description": "From, to, PO, carton count, quantity, weight and an SSCC barcode (100 × 100 mm)."
+  },
+  {
+    "file": "food-date-label-57x32.glabels",
+    "name": "Food Date Label",
+    "category": "Food",
+    "description": "Prepared and use-by dates with batch number for kitchens and food packing (57 × 32 mm)."
+  },
+  {
+    "file": "qr-code-label-50x50.glabels",
+    "name": "QR Code Label",
+    "category": "Marketing",
+    "description": "A large QR code with a call to action, for links, menus and Wi-Fi (50 × 50 mm)."
+  }
+]

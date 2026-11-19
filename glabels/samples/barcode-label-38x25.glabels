@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="38 × 25 mm" size="roll" width="38mm" height="25mm" roll_width="42mm" description="Compact Retail &amp; Stock">
+    <Label-rectangle id="0" width="38mm" height="25mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text name="Name" x="2mm" y="1.5mm" w="34mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Product Name</p>
+    </Object-text>
+    <Object-barcode name="Barcode" x="2mm" y="7.2mm" w="34mm" h="12mm" lock_aspect_ratio="false" backend="" style="code128" text="true" checksum="true" color="255" data="1234567890" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text name="Price" x="2mm" y="19.8mm" w="34mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Rs 499</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

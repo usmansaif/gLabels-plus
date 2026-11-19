@@ -22,6 +22,7 @@
 #define StartupView_hpp
 
 
+#include "Samples.hpp"
 #include "StartupWidgets.hpp"
 
 #include <QDateTime>
@@ -69,6 +70,9 @@ namespace glabels
                 /// Show a project's labels (e.g. after File > New Project)
                 void selectProject( const QString& project );
 
+                /// Show the sample label library (File > New from Sample)
+                void showSamples();
+
 
                 /////////////////////////////////
                 // Events
@@ -99,7 +103,7 @@ namespace glabels
                 // Private methods
                 /////////////////////////////////
         private:
-                enum Mode { RecentMode, ProjectMode };
+                enum Mode { RecentMode, ProjectMode, SampleMode };
 
                 QWidget* createTopBar();
                 QWidget* createSidebar();
@@ -114,6 +118,7 @@ namespace glabels
                 void applyFilter();
                 void updateInspector();
                 void updateStyle();
+                void setTileSize( startup::LabelTileDelegate::Size size );
                 void watchProjectFolders();
 
                 QString selectedPath() const;
@@ -127,6 +132,8 @@ namespace glabels
                 void duplicateLabel( const QString& filePath );
                 void trashLabel( const QString& filePath );
                 void deleteLabel( const QString& filePath );
+                void trashTemplate( const QString& filePath );
+                int  sampleIndex( const QString& path ) const;
 
 
                 /////////////////////////////////
@@ -148,6 +155,7 @@ namespace glabels
                 // Sidebar
                 QWidget*                    mSidebar;
                 startup::NavButton*         mRecentNav;
+                startup::NavButton*         mSamplesNav;
                 QToolButton*                mNewProjectButton;
                 QWidget*                    mProjectNavBox;
                 QVBoxLayout*                mProjectNavLayout;
@@ -157,11 +165,15 @@ namespace glabels
 
                 // Center
                 QToolButton*    mRecentTab;
+                QToolButton*    mSamplesTab;
                 QToolButton*    mProjectTab;
                 QWidget*        mProjectActions;
                 QLabel*         mProjectNote;
                 QStackedWidget* mListStack;
                 QListWidget*    mList;
+                startup::LabelTileDelegate* mTiles;
+                QToolButton*    mSmallTiles;
+                QToolButton*    mMediumTiles;
                 QLabel*         mEmptyLabel;
 
                 // Inspector
@@ -170,6 +182,9 @@ namespace glabels
                 QLabel*                mInspTitle;
                 QLabel*                mInspSub;
                 QLabel*                mInspProject;
+                QLabel*                mInspProjectTerm;
+                QLabel*                mInspModifiedTerm;
+                QLabel*                mInspPathTerm;
                 QLabel*                mInspSize;
                 QLabel*                mInspModified;
                 QLabel*                mInspPath;
@@ -187,6 +202,7 @@ namespace glabels
                 QHash<QString, QImage> mThumbs;
                 QHash<QString, QDateTime> mThumbTimes;   // file time each thumbnail was drawn from
                 QStringList            mRecentFiles;     // recent list last shown
+                QList<Samples::Info>   mSamples;         // sample library last shown
                 QStringList            mThumbQueue;
                 QFileSystemWatcher*    mWatcher;
                 QTimer*                mReloadTimer;

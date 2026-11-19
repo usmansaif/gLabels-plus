@@ -115,6 +115,7 @@ namespace glabels
 
                 void fileNew();
                 void fileNewProject();
+                void fileNewFromSample();
                 void fileOpen();
                 void fileOpenRecent();
                 void fileSave();
@@ -349,6 +350,8 @@ namespace glabels
 
                 QAction*  fileNewAction;
                 QAction*  fileNewProjectAction;
+                QAction*  fileNewFromSampleAction;
+                QAction*  fileSaveAsTemplateAction;
                 QAction*  fileOpenAction;
                 QAction*  fileSaveAction;
                 QAction*  fileSaveAsAction;

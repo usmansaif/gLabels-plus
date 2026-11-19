@@ -176,6 +176,9 @@ namespace glabels
                         const char* const Print = SVG_OPEN
                                 "<path d='M6 9V3h12v6'/><rect x='3' y='9' width='18' height='8' rx='2'/>"
                                 "<path d='M7 14h10v7H7z'/></svg>";
+                        const char* const Samples = SVG_OPEN
+                                "<rect x='3' y='3' width='7' height='7' rx='1.5'/><rect x='14' y='3' width='7' height='7' rx='1.5'/>"
+                                "<rect x='3' y='14' width='7' height='7' rx='1.5'/><rect x='14' y='14' width='7' height='7' rx='1.5'/></svg>";
 
 #undef SVG_OPEN
                 }
@@ -749,6 +752,111 @@ namespace glabels
                         p->setPen( t.text3 );
                         p->drawText( QRectF( x, y, w, mfm.height() ), Qt::AlignLeft | Qt::AlignVCenter,
                                      mfm.elidedText( index.data( FolderRole ).toString(), Qt::ElideMiddle, w ) );
+
+                        p->restore();
+                }
+
+
+                ///
+                /// Label grid tile
+                ///
+                const QSize LabelTileDelegate::MaxThumbSize( 160, 112 );
+
+                LabelTileDelegate::LabelTileDelegate( const Theme* theme, QObject* parent )
+                        : QStyledItemDelegate( parent ), mTheme( theme )
+                {
+                }
+
+
+                QSize LabelTileDelegate::tileExtent() const
+                {
+                        return mSize == Small ? QSize( 132, 146 ) : QSize( 176, 182 );
+                }
+
+
+                QSize LabelTileDelegate::sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const
+                {
+                        return tileExtent();
+                }
+
+
+                void LabelTileDelegate::paint( QPainter* p, const QStyleOptionViewItem& option,
+                                               const QModelIndex& index ) const
+                {
+                        p->save();
+                        p->setRenderHint( QPainter::Antialiasing );
+                        p->setRenderHint( QPainter::SmoothPixmapTransform );
+                        const Theme& t = *mTheme;
+
+                        // Center a fixed-size card in the grid cell
+                        QSizeF extent = tileExtent();
+                        QRectF r( QPointF( 0, 0 ), extent - QSizeF( 8, 8 ) );
+                        r.moveCenter( QRectF( option.rect ).center() );
+
+                        bool selected = option.state & QStyle::State_Selected;
+                        bool hover    = option.state & QStyle::State_MouseOver;
+                        bool exists   = index.data( LabelRowDelegate::ExistsRole ).toBool();
+
+                        // Card
+                        QColor fill = selected ? t.tint : ( hover ? mix( t.surface, t.primary, t.dark ? 0.07 : 0.035 ) : t.surface );
+                        p->setPen( QPen( selected ? t.primary : ( hover ? t.borderStrong : t.border ), selected ? 2 : 1 ) );
+                        p->setBrush( fill );
+                        p->drawRoundedRect( r.adjusted( 1, 1, -1, -1 ), 9, 9 );
+
+                        // Thumbnail well
+                        double pad = mSize == Small ? 7 : 8;
+                        QFont nameFont = scaledFont( option.font, mSize == Small ? 0.92 : 1.0, QFont::DemiBold );
+                        QFont small = scaledFont( option.font, mSize == Small ? 0.8 : 0.86 );
+                        QFontMetricsF nfm( nameFont );
+                        QFontMetricsF sfm( small );
+                        double textH = nfm.height() + 2 + sfm.height();
+                        QRectF well( r.left() + pad, r.top() + pad, r.width() - 2*pad, r.height() - 2*pad - textH - 8 );
+                        p->setPen( Qt::NoPen );
+                        p->setBrush( t.muted );
+                        p->drawRoundedRect( well, 6, 6 );
+
+                        if ( !exists )
+                        {
+                                p->setOpacity( 0.4 );
+                        }
+                        QImage image = index.data( LabelRowDelegate::ThumbRole ).value<QImage>();
+                        if ( !image.isNull() )
+                        {
+                                QSizeF is = QSizeF( image.size() ) / image.devicePixelRatio();
+                                QRectF area = well.adjusted( 6, 6, -6, -6 );
+                                double s = std::min( { 1.0, area.width() / is.width(), area.height() / is.height() } );
+                                QRectF ir( QPointF( 0, 0 ), is * s );
+                                ir.moveCenter( area.center() );
+                                p->drawImage( ir, image );
+                        }
+                        else
+                        {
+                                QRect ir( 0, 0, 24, 24 );
+                                ir.moveCenter( well.center().toPoint() );
+                                p->setOpacity( p->opacity() * 0.5 );
+                                QIcon::fromTheme( "glabels" ).paint( p, ir );
+                        }
+                        p->setOpacity( 1.0 );
+
+                        // Name and detail line (project or category, then time or kind)
+                        double x = r.left() + pad + 2;
+                        double w = r.width() - 2*pad - 4;
+                        double y = well.bottom() + 6;
+                        p->setFont( nameFont );
+                        p->setPen( exists ? t.text : t.text3 );
+                        p->drawText( QRectF( x, y, w, nfm.height() ), Qt::AlignLeft | Qt::AlignVCenter,
+                                     nfm.elidedText( index.data( LabelRowDelegate::NameRole ).toString(), Qt::ElideRight, w ) );
+
+                        QString project = index.data( LabelRowDelegate::ProjectRole ).toString();
+                        QString when    = index.data( LabelRowDelegate::WhenRole ).toString();
+                        QString detail  = project.isEmpty() ? when
+                                                            : ( when.isEmpty() ? project
+                                                                               : project + QString::fromUtf8( " · " ) + when );
+                        y += nfm.height() + 2;
+                        p->setFont( small );
+                        p->setPen( exists ? t.text3 : QColor( 192, 57, 43 ) );
+                        p->drawText( QRectF( x, y, w, sfm.height() ), Qt::AlignLeft | Qt::AlignVCenter,
+                                     sfm.elidedText( detail, Qt::ElideRight, w ) );
 
                         p->restore();
                 }

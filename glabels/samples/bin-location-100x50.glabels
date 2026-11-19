@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Barcode Labels" part="100 × 50 mm" size="roll" width="100mm" height="50mm" roll_width="104mm" description="Box / Tray Marking">
+    <Label-rectangle id="0" width="100mm" height="50mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text x="4mm" y="2.5mm" w="40mm" h="5.6268mm" lock_aspect_ratio="false" color="1717987071" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>LOCATION</p>
+    </Object-text>
+    <Object-text name="Location" x="4mm" y="5.1754mm" w="62mm" h="17.1493mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="30" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>A-12-03</p>
+    </Object-text>
+    <Object-text x="4mm" y="21.5mm" w="62mm" h="6.6288mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Aisle A  ·  Rack 12  ·  Shelf 3</p>
+    </Object-text>
+    <Object-barcode name="Location QR" x="74mm" y="3mm" w="22mm" h="22mm" lock_aspect_ratio="false" backend="qrencode" style="qrcode" text="false" checksum="false" color="255" data="LOC:A-12-03" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-barcode name="Location barcode" x="4mm" y="28.5mm" w="92mm" h="18mm" lock_aspect_ratio="false" backend="" style="code128" text="false" checksum="true" color="255" data="A-12-03" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+  </Objects>
+  <Data/>
+</Glabels-document>

@@ -68,6 +68,7 @@ namespace glabels
                         extern const char* const Plus;
                         extern const char* const Search;
                         extern const char* const Print;
+                        extern const char* const Samples;
                 }
 
                 /// Render an icon in a given color at a logical size
@@ -198,6 +199,34 @@ namespace glabels
 
                 private:
                         const Theme* mTheme;
+                };
+
+
+                ///
+                /// Label grid tile: thumbnail on top, name and a detail line below.
+                /// Uses the LabelRowDelegate roles.  Small or Medium size.
+                ///
+                class LabelTileDelegate : public QStyledItemDelegate
+                {
+                public:
+                        enum Size { Small, Medium };
+
+                        /// Largest thumbnail area (Medium); render thumbnails at this size
+                        static const QSize MaxThumbSize;
+
+                        LabelTileDelegate( const Theme* theme, QObject* parent = nullptr );
+
+                        void  setTileSize( Size size ) { mSize = size; }
+                        Size  tileSize() const { return mSize; }
+                        QSize tileExtent() const;
+
+                        QSize sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const override;
+                        void paint( QPainter* painter, const QStyleOptionViewItem& option,
+                                    const QModelIndex& index ) const override;
+
+                private:
+                        const Theme* mTheme;
+                        Size         mSize{ Medium };
                 };
 
 
