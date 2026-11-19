@@ -350,6 +350,109 @@ def whats_new_teaser():
     return "\n".join(f"        <li>{i}</li>" for i in RELEASE_NOTES[0][1][:5])
 
 
+# --------------------------------------------------------------------------
+# Comparison tables (home page, "Why switch")
+# Cell values: True = tick, False = cross, ("part", note) = partly, str = plain text.
+# A tuple (True/False, note) shows the icon with a short note under it.
+# --------------------------------------------------------------------------
+
+COMPARE_COLS = ["gLabels Plus", "gLabels (original)", "BarTender", "ZebraDesigner",
+                "Avery Design &amp; Print Online", "DYMO Connect"]
+COMPARE_ROWS = [
+    ("Price", ["Free", "Free", "Paid licence", "Free Essentials, paid Professional", "Free", "Free"]),
+    ("Platforms", ["Windows, Linux, macOS", "Linux (Windows test builds)", "Windows", "Windows",
+                   "Web browser", "Windows, macOS"]),
+    ("Works offline", [True, True, True, True, False, True]),
+    ("Open source", [(True, "GPL v3"), (True, "GPL"), False, False, False, False]),
+    ("Barcodes and QR codes", [True, True, True, True, True, True]),
+    ("Bulk labels from CSV / spreadsheet", [True, True, True, ("part", "Professional only"), True, True]),
+    ("Thermal roll label presets", [(True, "Zebra, TSC, Xprinter, Godex"), False, True,
+                                    ("part", "Zebra only"), False, ("part", "DYMO only")]),
+    ("Any printer brand", [True, True, ("part", "Most label printers"), ("part", "Zebra only"),
+                           ("part", "Avery sheets"), ("part", "DYMO only")]),
+    ("Actively maintained, stable release", [(True, "5.0, Nov 2026"),
+                                            ("part", "3.x unsupported since 2018; 4.0 has no stable release"),
+                                            True, True, True, True]),
+]
+
+# gLabels Plus vs the original gLabels: (feature, gLabels cell)
+GLABELS_SHARED = [
+    ("Text, barcodes, QR codes, images and shapes", True),
+    ("1,800+ label sheet templates (Avery, Herma, Brother...)", True),
+    ("Product template designer", True),
+    ("Mail merge from CSV files", True),
+    ("Command line printing (batch)", True),
+    ("Free and open source", True),
+]
+GLABELS_PLUS_ONLY = [
+    ("Ready-to-run installers for Windows, Linux and macOS", ("part", "Linux packages; Windows test builds")),
+    ("Data Source import for CSV, TSV and JSON with automatic delimiter and encoding", ("part", "CSV and text files, set up by hand")),
+    ("Variables panel: drag a data column onto the label", False),
+    ("Live data preview with Previous / Next record", False),
+    ("Sample label library: shipping, receipt, invoice, SKU, price, asset and more", False),
+    ("Projects: keep each business or client's labels together", False),
+    ("Recent Labels screen with thumbnails", False),
+    ("24 thermal roll presets for Zebra, TSC, Xprinter and Godex", False),
+    ("Smart guides and snapping", False),
+    ("Measure tool", False),
+    ("Layer names and groups", False),
+    ("Page selector: change the label size at any time", False),
+    ("Click a label in the preview to start on a partly used sheet", False),
+    ("Built-in Urdu Nastaliq font", False),
+    ("Quick font search", False),
+    ("Single-key tools and custom keyboard shortcuts", False),
+    ("Light and dark themes", False),
+]
+
+_TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12.5 4 4L18 8"/></svg>'
+_CROSS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg>'
+_PART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 12h9"/></svg>'
+
+
+def cmp_cell(v):
+    note = ""
+    if isinstance(v, tuple):
+        v, note = v
+    if v is True:
+        icon = f'<span class="cmp-ic cmp-y">{_TICK}<span class="sr">Yes</span></span>'
+    elif v is False:
+        icon = f'<span class="cmp-ic cmp-n">{_CROSS}<span class="sr">No</span></span>'
+    elif v == "part":
+        icon = f'<span class="cmp-ic cmp-p">{_PART}<span class="sr">Partly</span></span>'
+    else:
+        return f"<td>{v}</td>"
+    note = f'<span class="cmp-note">{note}</span>' if note else ""
+    return f'<td class="cmp-c">{icon}{note}</td>'
+
+
+def _cmp_head(cols):
+    first = (f'<th scope="col" class="cmp-hl"><span class="cmp-badge">Free &amp; recommended</span>{cols[0]}</th>')
+    rest = "".join(f'<th scope="col">{c}</th>' for c in cols[1:])
+    return f'<thead><tr><th scope="col"><span class="sr">Feature</span></th>{first}{rest}</tr></thead>'
+
+
+def compare_table():
+    rows = "\n".join(f'            <tr><th scope="row">{name}</th>{"".join(cmp_cell(c) for c in cells)}</tr>'
+                     for name, cells in COMPARE_ROWS)
+    cap = "gLabels Plus compared with the original gLabels, BarTender, ZebraDesigner, Avery Design &amp; Print Online and DYMO Connect"
+    return (f'      <div class="table-wrap compare">\n        <table>\n          <caption class="sr">{cap}</caption>\n'
+            f'          {_cmp_head(COMPARE_COLS)}\n          <tbody>\n{rows}\n          </tbody>\n        </table>\n      </div>')
+
+
+def compare_glabels():
+    def group(label, items):
+        head = f'            <tr class="cmp-group"><th scope="rowgroup" colspan="3">{label}</th></tr>'
+        body = "\n".join(f'            <tr><th scope="row">{esc(n)}</th>{cmp_cell(True)}{cmp_cell(g)}</tr>'
+                         for n, g in items)
+        return head + "\n" + body
+    return (f'      <div class="table-wrap compare compare-gl">\n        <table>\n'
+            f'          <caption class="sr">gLabels Plus compared with the original gLabels</caption>\n'
+            f'          {_cmp_head(["gLabels Plus", "gLabels (original)"])}\n          <tbody>\n'
+            f'{group(f"Only in gLabels Plus ({len(GLABELS_PLUS_ONLY)})", GLABELS_PLUS_ONLY)}\n'
+            f'{group("In both", GLABELS_SHARED)}\n'
+            f'          </tbody>\n        </table>\n      </div>')
+
+
 def tool_keys_html():
     return "\n".join(f'          <li><kbd>{k}</kbd><span>{esc(t)}</span></li>' for k, t in TOOL_KEYS)
 
@@ -363,6 +466,8 @@ PLACEHOLDERS = {
     "{{release_notes}}": release_notes_html,
     "{{whats_new_teaser}}": whats_new_teaser,
     "{{tool_keys}}": tool_keys_html,
+    "{{compare_table}}": compare_table,
+    "{{compare_glabels}}": compare_glabels,
     "{{version}}": lambda: VERSION,
     "{{release_date}}": lambda: RELEASE_DATE,
     "{{updated_human}}": lambda: UPDATED_HUMAN,
