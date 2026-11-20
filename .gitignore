@@ -1,6 +1,10 @@
 # My cmake build directory
 /build
 
+# Release packages and downloaded packaging tools (release.sh)
+/dist
+/.tools
+
 # Compiled Object files
 *.slo
 *.lo

@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.22)
 ###############################################################################
 # gLabels Label Designer Project
 ###############################################################################
-project (glabels-plus VERSION "5.0.0")
+project (glabels-plus VERSION "5.1.1")
 
 #
 # Path for locally defined cmake modules
@@ -117,6 +117,13 @@ if (MINGW)
 
    # Make sure we can find MINGW libraries, e.g. zlib
    set (CMAKE_PREFIX_PATH ${MINGW_BASE_DIR} )
+endif ()
+
+if (UNIX AND NOT APPLE)
+   # Link OpenGL through the legacy libGL.so.1 (package libgl1), as the Qt
+   # binaries themselves do.  The GLVND default would add libOpenGL.so.0, which
+   # is missing from many Ubuntu 20.04 installs, so the app would not start there.
+   set (OpenGL_GL_PREFERENCE LEGACY)
 endif ()
 
 find_package (Qt6 6.2 REQUIRED COMPONENTS Concurrent Core Gui Widgets PrintSupport Xml Svg LinguistTools Test)

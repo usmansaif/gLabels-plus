@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         dpkg-dev fakeroot rpm \
         zlib1g-dev libqrencode-dev \
         libgl1-mesa-dev libegl1-mesa-dev libglib2.0-0 libdbus-1-3 \
-        libfontconfig1-dev libfreetype6-dev \
+        libfontconfig1-dev libfreetype6-dev libcups2 \
         libx11-dev libx11-xcb-dev libxext-dev libxrender-dev libxkbcommon-dev libxkbcommon-x11-0 \
         libxcb1-dev libxcb-cursor0 libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
         libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 \
