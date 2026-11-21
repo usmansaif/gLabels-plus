@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="100 × 70 mm" size="roll" width="100mm" height="70mm" roll_width="104mm" description="Rectangle sticker 100 × 70 mm">
+    <Label-rectangle id="0" width="100mm" height="70mm" round="4mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="2.5mm" y="2.5mm" w="95mm" h="65mm" lock_aspect_ratio="false" line_width="0.5mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="6mm" y="5.1817mm" w="88mm" h="10.6366mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="17" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>MINI CHOCOCHIP</p>
+    </Object-text>
+    <Object-text name="Product type" x="6mm" y="13.6817mm" w="88mm" h="10.6366mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="17" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>COOKIES</p>
+    </Object-text>
+    <Object-line x="6mm" y="26mm" dx="88mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Tagline" x="6mm" y="27.5mm" w="88mm" h="8mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="11" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Fresh from the kitchen</p>
+    </Object-text>
+    <Object-line x="6mm" y="37mm" dx="88mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="5mm" y="40.4361mm" w="26mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>PREMIUM</p>
+    </Object-text>
+    <Object-text x="5mm" y="46.1846mm" w="26mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>COOKIES</p>
+    </Object-text>
+    <Object-text name="Weight" x="5mm" y="54mm" w="26mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>100 g · 12 pcs</p>
+    </Object-text>
+    <Object-line x="33mm" y="40mm" dx="0mm" dy="22mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="34mm" y="40.5mm" w="30mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>BEST BEFORE</p>
+    </Object-text>
+    <Object-text name="Best before" x="34mm" y="46mm" w="30mm" h="8mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="10" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>30 Nov 2026</p>
+    </Object-text>
+    <Object-text x="34mm" y="54mm" w="30mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Store in a cool, dry place</p>
+    </Object-text>
+    <Object-line x="65mm" y="40mm" dx="0mm" dy="22mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="66.5mm" y="40.5mm" w="29mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ORDER NOW</p>
+    </Object-text>
+    <Object-text name="Contact" x="66.5mm" y="45mm" w="29mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>+92 300 1234567</p>
+      <p>@crumbandco</p>
+      <p>crumbandco.com</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

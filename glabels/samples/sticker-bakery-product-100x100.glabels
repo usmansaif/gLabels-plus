@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="100 × 100 mm" size="roll" width="100mm" height="100mm" roll_width="104mm" description="Square sticker 100 × 100 mm">
+    <Label-rectangle id="0" width="100mm" height="100mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="2mm" y="2mm" w="96mm" h="96mm" lock_aspect_ratio="false" line_width="0.8mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="1.7581mm" y="7.7581mm" w="96.4838mm" h="96.4838mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="4.8" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="0.283">
+      <p>MADE IN A HOME KITCHEN AND NOT SUBJECT TO ROUTINE FOOD SAFETY INSPECTIONS</p>
+    </Object-text>
+    <Object-text name="Business name" x="22mm" y="17.9322mm" w="56mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="16" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>GOLDEN CRUMB</p>
+    </Object-text>
+    <Object-text x="22mm" y="27.0613mm" w="56mm" h="5.8773mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>HOMEMADE BAKERY</p>
+    </Object-text>
+    <Object-line x="20mm" y="34mm" dx="60mm" dy="0mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="6mm" y="34.9312mm" w="88mm" h="11.1376mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="18" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>HANDMADE SUGAR</p>
+    </Object-text>
+    <Object-text name="Product type" x="50mm" y="42.4302mm" w="42mm" h="12.1395mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="20" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Cookies</p>
+    </Object-text>
+    <Object-text x="8mm" y="46.4361mm" w="44mm" h="6.1278mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>INGREDIENTS</p>
+    </Object-text>
+    <Object-text name="Ingredients" x="6mm" y="54mm" w="88mm" h="9mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.2" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ALL PURPOSE FLOUR, CANE SUGAR, BROWN SUGAR, EGGS,</p>
+      <p>UNSALTED BUTTER, BAKING POWDER, VANILLA EXTRACT</p>
+    </Object-text>
+    <Object-text name="Net weight" x="6mm" y="62.0604mm" w="88mm" h="6.8793mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>NET WT. 2 OZ / 55 G</p>
+    </Object-text>
+    <Object-line x="10mm" y="70mm" dx="80mm" dy="0mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="8mm" y="72mm" w="40mm" h="6.6288mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="9" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Golden Crumb</p>
+    </Object-text>
+    <Object-text name="Address" x="8mm" y="77mm" w="40mm" h="9mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>206 Orchard Lane, Your City</p>
+      <p>Postcode 54000</p>
+    </Object-text>
+    <Object-line x="50mm" y="72mm" dx="0mm" dy="13mm" line_width="0.5mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="53mm" y="72mm" w="38mm" h="5.8773mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>CONTAINS</p>
+    </Object-text>
+    <Object-text name="Allergens" x="53mm" y="77mm" w="38mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>MILK, EGGS, WHEAT</p>
+    </Object-text>
+    <Object-image x="21mm" y="89mm" w="4mm" h="4mm" lock_aspect_ratio="true" src="sparkle.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="26mm" y="88.3118mm" w="48mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ALWAYS HOMEMADE WITH LOVE</p>
+    </Object-text>
+    <Object-image x="75mm" y="89mm" w="4mm" h="4mm" lock_aspect_ratio="true" src="sparkle.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+  </Objects>
+  <Data>
+    <File name="sparkle.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0C12.9 7.6 16.4 11.1 24 12 16.4 12.9 12.9 16.4 12 24 11.1 16.4 7.6 12.9 0 12 7.6 11.1 11.1 7.6 12 0z"/></svg>]]></File>
+  </Data>
+</Glabels-document>

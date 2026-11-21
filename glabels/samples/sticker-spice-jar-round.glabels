@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 38.1 mm" size="roll" width="38.1mm" height="38.1mm" roll_width="42.1mm" description="Round sticker 1.5 in">
+    <Label-round id="0" radius="19.05mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="0.75mm" y="0.75mm" w="36.6mm" h="36.6mm" lock_aspect_ratio="false" line_width="0.5mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="0.9964mm" y="0.9964mm" w="36.1071mm" h="36.1071mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="1.984">
+      <p>SPICE PANTRY</p>
+    </Object-text>
+    <Object-text name="Curved text" x="0.9964mm" y="0.9964mm" w="36.1071mm" h="36.1071mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.8" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="1.984">
+      <p>NET 50 G</p>
+    </Object-text>
+    <Object-text name="Spice" x="5mm" y="10.5mm" w="28.1mm" h="11mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="0.9" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Smoked</p>
+      <p>Paprika</p>
+    </Object-text>
+    <Object-line x="11mm" y="22.5mm" dx="16.1mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Best before" x="6mm" y="23mm" w="26.1mm" h="4.6249mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Best before 11/2027</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

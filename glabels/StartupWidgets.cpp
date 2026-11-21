@@ -106,21 +106,28 @@ namespace glabels
                 ///
                 /// Theme
                 ///
-                Theme Theme::make( const QColor& accent, bool dark )
+                Theme Theme::make( const QPalette& palette, bool dark )
                 {
+                        // Neutrals come from the application palette (Preferences > Appearance),
+                        // so the Welcome screen matches menus, toolbars and dialogs.
+                        const QColor window = palette.color( QPalette::Window );
+                        const QColor base   = palette.color( QPalette::Base );
+                        const QColor ink    = palette.color( QPalette::WindowText );
+                        const QColor accent = palette.color( QPalette::Highlight );
+
                         Theme t;
                         t.dark = dark;
                         if ( dark )
                         {
-                                t.bg           = QColor( "#15171c" );
-                                t.surface      = QColor( "#1d2026" );
-                                t.muted        = QColor( "#191c21" );
-                                t.hover        = QColor( "#262a31" );
-                                t.border       = QColor( "#2b3038" );
-                                t.borderStrong = QColor( "#3b414c" );
-                                t.text         = QColor( "#e7eaf0" );
-                                t.text2        = QColor( "#b3bbc7" );
-                                t.text3        = QColor( "#8a94a3" );
+                                t.bg           = base;
+                                t.surface      = window;
+                                t.muted        = mix( base, window, 0.5 );
+                                t.hover        = mix( window, ink, 0.07 );
+                                t.border       = mix( window, ink, 0.10 );
+                                t.borderStrong = mix( window, ink, 0.20 );
+                                t.text         = ink;
+                                t.text2        = mix( window, ink, 0.75 );
+                                t.text3        = mix( window, ink, 0.58 );
                                 t.primary      = accent.lightness() < 90 ? accent.lighter( 140 ) : accent;
                                 t.primaryDark  = t.primary.darker( 115 );
                                 t.tint         = mix( t.surface, t.primary, 0.16 );
@@ -128,15 +135,15 @@ namespace glabels
                         }
                         else
                         {
-                                t.bg           = QColor( "#f4f6f9" );
-                                t.surface      = QColor( "#ffffff" );
-                                t.muted        = QColor( "#f8fafc" );
-                                t.hover        = QColor( "#eaeff5" );
-                                t.border       = QColor( "#e2e8f0" );
-                                t.borderStrong = QColor( "#cbd5e1" );
-                                t.text         = QColor( "#0f172a" );
-                                t.text2        = QColor( "#475569" );
-                                t.text3        = QColor( "#64748b" );
+                                t.bg           = mix( window, ink, 0.035 );
+                                t.surface      = mix( window, Qt::white, 0.7 );
+                                t.muted        = window;
+                                t.hover        = mix( window, ink, 0.065 );
+                                t.border       = mix( window, ink, 0.10 );
+                                t.borderStrong = mix( window, ink, 0.18 );
+                                t.text         = mix( window, ink, 0.92 );
+                                t.text2        = mix( window, ink, 0.70 );
+                                t.text3        = mix( window, ink, 0.56 );
                                 t.primary      = accent;
                                 t.primaryDark  = accent.darker( 115 );
                                 t.tint         = mix( t.surface, accent, 0.08 );
@@ -396,14 +403,14 @@ namespace glabels
                         p.setPen( Qt::NoPen );
                         if ( hover )
                         {
-                                p.setBrush( QColor( 15, 23, 42, t.dark ? 110 : 16 ) );
+                                p.setBrush( QColor( 0, 0, 0, t.dark ? 110 : 16 ) );
                                 p.drawRoundedRect( card.translated( 0, 5 ).adjusted( 2, 0, -2, 0 ), 12, 12 );
-                                p.setBrush( QColor( 15, 23, 42, t.dark ? 70 : 14 ) );
+                                p.setBrush( QColor( 0, 0, 0, t.dark ? 70 : 14 ) );
                                 p.drawRoundedRect( card.translated( 0, 2 ), 12, 12 );
                         }
                         else
                         {
-                                p.setBrush( QColor( 15, 23, 42, t.dark ? 70 : 12 ) );
+                                p.setBrush( QColor( 0, 0, 0, t.dark ? 70 : 12 ) );
                                 p.drawRoundedRect( card.translated( 0, 1 ), 12, 12 );
                         }
 
@@ -496,8 +503,8 @@ namespace glabels
                         // Checkerboard
                         p.save();
                         p.setClipPath( clip );
-                        QColor a = t.dark ? QColor( "#22262d" ) : QColor( "#f1f5f9" );
-                        QColor b = t.dark ? QColor( "#1e2128" ) : QColor( "#f8fafc" );
+                        QColor b = t.muted;
+                        QColor a = mix( t.muted, t.text, t.dark ? 0.05 : 0.035 );
                         p.fillRect( rect(), b );
                         const int sq = 8;
                         for ( int y = 0; y < height(); y += sq )
@@ -523,7 +530,7 @@ namespace glabels
                                 p.setPen( Qt::NoPen );
                                 for ( int i = 3; i >= 1; i-- )
                                 {
-                                        p.setBrush( QColor( 15, 23, 42, t.dark ? 40 : 14 ) );
+                                        p.setBrush( QColor( 0, 0, 0, t.dark ? 40 : 14 ) );
                                         p.drawRoundedRect( ir.adjusted( 2, 2 + i, -2, -2 + 2*i ), 4, 4 );
                                 }
                                 p.drawImage( ir, mImage );
@@ -668,7 +675,7 @@ namespace glabels
                         QRectF thumb( r.left() + 16, r.center().y() - ThumbSize.height()/2.0,
                                       ThumbSize.width(), ThumbSize.height() );
                         p->setPen( Qt::NoPen );
-                        p->setBrush( QColor( 15, 23, 42, t.dark ? 60 : 10 ) );
+                        p->setBrush( QColor( 0, 0, 0, t.dark ? 60 : 10 ) );
                         p->drawRoundedRect( thumb.translated( 0, 1 ), 6, 6 );
                         p->setPen( QPen( t.borderStrong, 1 ) );
                         p->setBrush( t.surface );

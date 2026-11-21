@@ -32,9 +32,11 @@ set (glabels_sources
   PaletteUtil.cpp
   PreferencesDialog.cpp
   PrinterMonitor.cpp
+  PrintEstimatorWindow.cpp
   PrintView.cpp
   Projects.cpp
   Samples.cpp
+  SymbolsDialog.cpp
   PropertiesView.cpp
   Preview.cpp
   PreviewOverlayItem.cpp
@@ -82,6 +84,7 @@ set (glabels_qobject_headers
   ObjectListView.hpp
   PreferencesDialog.hpp
   PrinterMonitor.hpp
+  PrintEstimatorWindow.hpp
   PrintView.hpp
   PropertiesView.hpp
   Preview.hpp
@@ -91,6 +94,7 @@ set (glabels_qobject_headers
   ShortcutsDialog.hpp
   SimplePreview.hpp
   SplashScreen.hpp
+  SymbolsDialog.hpp
   StartupView.hpp
   StartupWidgets.hpp
   TemplateDesigner.hpp
@@ -135,6 +139,7 @@ set (glabels_resource_files
   icons.qrc
   images.qrc
   samples.qrc
+  symbols.qrc
 )
 
 qt6_wrap_cpp (glabels_moc_sources ${glabels_qobject_headers})

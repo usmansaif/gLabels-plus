@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Oval 90 × 60 mm" size="roll" width="90mm" height="60mm" roll_width="94mm" description="Oval sticker 90 × 60 mm">
+    <Label-ellipse id="0" width="90mm" height="60mm" waste="0mm">
+      <Markup-margin size="2mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-ellipse>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="2mm" y="2mm" w="86mm" h="56mm" lock_aspect_ratio="false" line_width="0.6mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-ellipse x="3.6mm" y="3.6mm" w="82.8mm" h="52.8mm" lock_aspect_ratio="false" line_width="0.25mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image name="Bee drawing" x="37.5mm" y="6.5mm" w="15mm" h="12mm" lock_aspect_ratio="true" src="bee.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="10mm" y="18.1817mm" w="70mm" h="10.6366mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="17" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>RAW HONEY</p>
+    </Object-text>
+    <Object-text name="Variety" x="10mm" y="27.1827mm" w="70mm" h="9.6346mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="15" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Wildflower</p>
+    </Object-text>
+    <Object-line x="22mm" y="38mm" dx="46mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="12mm" y="39mm" w="66mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>PURE · UNFILTERED · LOCAL</p>
+    </Object-text>
+    <Object-text name="Business name" x="16mm" y="44mm" w="58mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="7" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Honey Lane Apiary</p>
+    </Object-text>
+    <Object-text name="Net weight" x="22mm" y="49mm" w="46mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Net wt 500 g</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="bee.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" width="100" height="80"><ellipse cx="38" cy="22" rx="20" ry="13" transform="rotate(-25 38 22)" fill="#fff" stroke="#000" stroke-width="3"/><ellipse cx="62" cy="22" rx="20" ry="13" transform="rotate(25 62 22)" fill="#fff" stroke="#000" stroke-width="3"/><defs><clipPath id="b"><ellipse cx="50" cy="50" rx="30" ry="20"/></clipPath></defs><ellipse cx="50" cy="50" rx="30" ry="20" fill="#fff" stroke="#000" stroke-width="3"/><g clip-path="url(#b)"><rect x="36" y="28" width="8" height="44"/><rect x="52" y="28" width="8" height="44"/><rect x="68" y="28" width="8" height="44"/></g><circle cx="24" cy="50" r="10"/><circle cx="21" cy="47" r="2.4" fill="#fff"/><path d="M17 42 C12 32 8 30 4 31 M23 41 C22 31 19 27 14 25" stroke="#000" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M80 50 L94 50 L80 56 Z"/></svg>]]></File>
+  </Data>
+</Glabels-document>

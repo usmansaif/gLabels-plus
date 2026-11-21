@@ -44,6 +44,27 @@
 namespace glabels::model
 {
 
+        ///
+        /// Path that a text object's letters follow.  The path is fitted to the
+        /// object's box: ArcTop and ArcBottom follow the top or bottom half of the
+        /// ellipse inside the box, Circle goes all the way round it (starting at
+        /// the top), Wave is one sine wave across the box and Rectangle runs
+        /// round the edges of the box (starting at the top).
+        ///
+        enum class TextPath
+        {
+                Straight = 0,
+                ArcTop,
+                ArcBottom,
+                Circle,
+                Wave,
+                Rectangle
+        };
+
+        /// File format names: "straight", "arc-top", "arc-bottom", "circle", "wave", "rectangle"
+        QString  textPathToString( TextPath path );
+        TextPath textPathFromString( const QString& name );
+
         // Forward References
         class Region;
         class Size;
@@ -308,6 +329,34 @@ namespace glabels::model
                 //
                 virtual bool textAutoShrink() const;
                 virtual void setTextAutoShrink( bool value );
+
+
+                //
+                // Virtual Text Property: textPath
+                //
+                virtual TextPath textPath() const;
+                virtual void setTextPath( TextPath value );
+
+
+                //
+                // Virtual Text Property: textLetterSpacing (points added between letters)
+                //
+                virtual double textLetterSpacing() const;
+                virtual void setTextLetterSpacing( double value );
+
+
+                //
+                // Virtual Text Property: textPathStart (degrees the text is turned clockwise along its path)
+                //
+                virtual double textPathStart() const;
+                virtual void setTextPathStart( double value );
+
+
+                //
+                // Virtual Text Property: textPathOffset (points the text is moved in from the edge; negative moves it out)
+                //
+                virtual double textPathOffset() const;
+                virtual void setTextPathOffset( double value );
 
 
                 ///////////////////////////////////////////////////////////////

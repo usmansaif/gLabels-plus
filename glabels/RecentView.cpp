@@ -145,7 +145,12 @@ namespace
                         // Thumbnail well
                         QRectF well( card.left() + 10, card.top() + 10, card.width() - 20, thumbSize.height() );
                         p->setPen( Qt::NoPen );
-                        p->setBrush( dark ? QColor( 58, 60, 64 ) : QColor( 236, 238, 242 ) );
+                        QColor wellBase = pal.color( QPalette::Base );
+                        QColor wellInk  = pal.color( QPalette::Text );
+                        double k = dark ? 0.08 : 0.05;
+                        p->setBrush( QColor::fromRgbF( wellBase.redF()   * (1-k) + wellInk.redF()   * k,
+                                                       wellBase.greenF() * (1-k) + wellInk.greenF() * k,
+                                                       wellBase.blueF()  * (1-k) + wellInk.blueF()  * k ) );
                         p->drawRoundedRect( well, 6, 6 );
 
                         QImage thumb = index.data( ThumbRole ).value<QImage>();

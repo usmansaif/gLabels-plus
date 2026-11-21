@@ -504,6 +504,74 @@
         <source>Opacity:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve the text along an arc or circle. The curve fits the text box: draw the box over a round label, then resize it to change the curve.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Straight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arc (top)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arc (bottom)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Letter spacing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra space between letters, in points. Spread curved text around a round label, or tighten it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> pt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start angle:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn the text round the curve. Positive values move it clockwise.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag to turn the text round the curve.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Distance from edge:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the text in from the edge of the box (or shape). Negative values move it out, for text around the outside of a circle.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PrintView</name>
@@ -1932,6 +2000,10 @@ Find it under File &gt; New from Sample.</source>
         <source>%1 matches</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Print sheet estimator</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::LabelEditor</name>
@@ -3042,6 +3114,54 @@ Find it under File &gt; New from Sample.</source>
         <source>Save a copy of this label to My templates in the sample library</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Print Sheet &amp;Estimator...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Estimate how many printing sheets a job needs and the paper waste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Put Text on &amp;Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Curve the selected text along the selected circle, ellipse, box or line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select one text object and one circle, ellipse, box or line, then fit the text to the shape&apos;s outline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Put Text on Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text on shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text on shape %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert &amp;Symbol...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert handling, food, contact and other symbols made for thermal label printers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -3931,6 +4051,301 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
     <name>glabels::Preview</name>
     <message>
         <source>Label %1 — click to start printing here, Shift+click to set the last label</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::PrintEstimatorWindow</name>
+    <message>
+        <source>Choose a product and a printing sheet, then click Estimate Printing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Sheet Estimator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Millimeters (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centimeters (cm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inches (in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One label of the chosen product, printed and cut out on its own</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The whole page of the chosen product, as one printed piece</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a product from the library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Printing sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge of the sheet the press cannot print on (gripper), on each side</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sheet:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Margin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bleed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra printed area around each item, trimmed off after cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Each side:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Estimate Printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Items per sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How many items fit on one sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sheets needed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sheets to print the whole quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share of each full sheet not used by finished items (margin, bleed and offcuts)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save the estimate as a PDF, PNG image or text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pages and custom items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard for %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings changed. Click Estimate Printing to update the results.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a product first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the width and height of the product.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The printing sheet must be at least A4 (%1).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The product with its bleed (%1) does not fit inside the printable area of this sheet. Choose a larger sheet or a smaller margin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Product size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sheet margin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bleed (each side)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (%2 turned 90°)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waste per sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Job waste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 positions used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 items turned 90°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Job waste %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last sheet: %1 of %2 positions used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Sheet Estimate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waste is the share of paper not used by finished items (sheet margin, bleed and offcuts).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF document (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG image (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text file (*.txt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>print-estimate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Estimate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saved to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the size below, or choose a product.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the size below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No product chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 labels per page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the chosen product and enter a custom size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4855,6 +5270,41 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Medium thumbnails</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::SymbolsDialog</name>
+    <message>
+        <source>Insert Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search symbols (fragile, phone, veg...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width and height of the inserted symbol. You can resize it on the label afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Solid black symbols that print sharply on thermal label printers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Insert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inserted &quot;%1&quot;. Choose another symbol, or close this window.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -39,10 +39,12 @@ class Label:
     def __init__( self, tmpl ):
         self.tmpl = tmpl
         self.objects = []
+        self.files = {}
         CURRENT[0] = tmpl.split( 'part="' )[1].split( '"' )[0] if 'part="' in tmpl else "?"
 
     def text( self, x, y, w, h, text, size=9, bold=False, align="left", valign="top",
-              color=BLACK, italic=False, shrink=False, wrap="word", spacing=1, name=None ):
+              color=BLACK, italic=False, shrink=False, wrap="word", spacing=1, name=None,
+              family="Sans", group=None, path=None, letter_spacing=0 ):
         lines = text.split( "\n" )
         need = len( lines ) * size * 0.3528 * 1.42 * spacing + 2 * 1.06   # text keeps a 3 pt margin inside its box
         if h < need:
@@ -55,14 +57,20 @@ class Label:
                 CHECKS.append( "  %s: %r grew from %.1f to %.1f mm" % ( CURRENT[0], lines[0], h, need ) )
             h = need
         body = "".join( "\n      <p>%s</p>" % escape( line ) for line in lines )
-        attrs = ( 'x="%s" y="%s" w="%s" h="%s" lock_aspect_ratio="false" color="%d" font_family="Sans" '
+        attrs = ( 'x="%s" y="%s" w="%s" h="%s" lock_aspect_ratio="false" color="%d" font_family=%s '
                   'font_size="%g" font_weight="%s" font_italic="%s" font_underline="false" align="%s" '
                   'valign="%s" wrap="%s" line_spacing="%g" auto_shrink="%s" %s %s'
-                  % ( mm( x ), mm( y ), mm( w ), mm( h ), color, size, "bold" if bold else "normal",
+                  % ( mm( x ), mm( y ), mm( w ), mm( h ), color, quoteattr( family ), size, "bold" if bold else "normal",
                       str( italic ).lower(), align, valign, wrap, spacing, str( shrink ).lower(),
                       affine(), shadow() ) )
         if name:
             attrs = 'name=%s ' % quoteattr( name ) + attrs
+        if group:
+            attrs = 'group=%s ' % quoteattr( group ) + attrs
+        if path:
+            attrs += ' text_path="%s"' % path
+        if letter_spacing:
+            attrs += ' letter_spacing="%g"' % round( letter_spacing, 3 )
         self.objects.append( '    <Object-text %s>%s\n    </Object-text>' % ( attrs, body ) )
 
     def box( self, x, y, w, h, fill=NONE, line=BLACK, lw=0.3 ):
@@ -70,6 +78,24 @@ class Label:
             '    <Object-box x="%s" y="%s" w="%s" h="%s" lock_aspect_ratio="false" line_width="%s" '
             'line_color="%d" fill_color="%d" %s %s/>'
             % ( mm( x ), mm( y ), mm( w ), mm( h ), mm( lw ), line, fill, affine(), shadow() ) )
+
+    def ellipse( self, x, y, w, h, fill=NONE, line=BLACK, lw=0.3 ):
+        self.objects.append(
+            '    <Object-ellipse x="%s" y="%s" w="%s" h="%s" lock_aspect_ratio="false" line_width="%s" '
+            'line_color="%d" fill_color="%d" %s %s/>'
+            % ( mm( x ), mm( y ), mm( w ), mm( h ), mm( lw ), line, fill, affine(), shadow() ) )
+
+    def circle( self, cx, cy, r, fill=NONE, line=BLACK, lw=0.3 ):
+        self.ellipse( cx - r, cy - r, 2 * r, 2 * r, fill=fill, line=line, lw=lw )
+
+    def image( self, x, y, w, h, svg_name, svg, name=None ):
+        """An SVG drawing, embedded in the file's <Data> section."""
+        self.files[ svg_name ] = svg
+        attrs = ( 'x="%s" y="%s" w="%s" h="%s" lock_aspect_ratio="true" src=%s %s %s'
+                  % ( mm( x ), mm( y ), mm( w ), mm( h ), quoteattr( svg_name ), affine(), shadow() ) )
+        if name:
+            attrs = 'name=%s ' % quoteattr( name ) + attrs
+        self.objects.append( '    <Object-image %s/>' % attrs )
 
     def line( self, x, y, dx, dy=0, lw=0.3, color=BLACK ):
         self.objects.append(
@@ -90,9 +116,15 @@ class Label:
                       text=False, checksum=False, name=name )
 
     def xml( self ):
+        if self.files:
+            data = "  <Data>\n%s\n  </Data>" % "\n".join(
+                '    <File name=%s mimetype="image/svg+xml" encoding="cdata"><![CDATA[%s]]></File>'
+                % ( quoteattr( n ), svg ) for n, svg in self.files.items() )
+        else:
+            data = "  <Data/>"
         return ( '<?xml version="1.0"?>\n<Glabels-document version="4.0">\n%s\n'
-                 '  <Objects id="0" rotate="false">\n%s\n  </Objects>\n  <Data/>\n</Glabels-document>\n'
-                 % ( self.tmpl, "\n".join( self.objects ) ) )
+                 '  <Objects id="0" rotate="false">\n%s\n  </Objects>\n%s\n</Glabels-document>\n'
+                 % ( self.tmpl, "\n".join( self.objects ), data ) )
 
 
 def roll_template( part, description, w, h, round_=2, margin=1.5 ):
@@ -406,6 +438,12 @@ L.qr( 9, 8.5, 32, "https://example.com", name="QR code" )
 L.text( 3, 42, 44, 5, "example.com", size=8, align="hcenter", shrink=True, name="Link text" )
 sample( "qr-code-label-50x50.glabels", "QR Code Label", "Marketing",
         "A large QR code with a call to action, for links, menus and Wi-Fi (50 × 50 mm).", L )
+
+
+# ---------------------------------------------------------------------------
+# Black and white stickers for thermal printers (up to 4 in / 101.6 mm wide)
+# ---------------------------------------------------------------------------
+exec( open( os.path.join( HERE, "stickers.py" ), encoding="utf-8" ).read() )
 
 
 with open( os.path.join( HERE, "samples.json" ), "w", encoding="utf-8" ) as f:

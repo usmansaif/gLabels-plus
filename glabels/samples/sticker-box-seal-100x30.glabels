@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="100 × 30 mm" size="roll" width="100mm" height="30mm" roll_width="104mm" description="Seal strip 100 × 30 mm">
+    <Label-rectangle id="0" width="100mm" height="30mm" round="2mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="1.5mm" y="1.5mm" w="25mm" h="27mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image x="9mm" y="5mm" w="9mm" h="9mm" lock_aspect_ratio="true" src="heart-white.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="2mm" y="15.5mm" w="24mm" h="10mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="7.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>SEALED</p>
+      <p>FRESH</p>
+    </Object-text>
+    <Object-text name="Heading" x="30mm" y="1.9322mm" w="66mm" h="10.1356mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="16" font_weight="normal" font_italic="true" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Sealed with love</p>
+    </Object-text>
+    <Object-text name="Message" x="30mm" y="11.5mm" w="66mm" h="9mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.8" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>If this seal is broken, please do not accept</p>
+      <p>the package and contact us.</p>
+    </Object-text>
+    <Object-line x="30mm" y="21.3mm" dx="66mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Contact" x="30mm" y="22mm" w="66mm" h="5.5mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>@crumbandco  ·  +92 300 1234567</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="heart-white.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#fff" d="M12 21.4l-1.4-1.3C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.6z"/></svg>]]></File>
+  </Data>
+</Glabels-document>

@@ -1,0 +1,62 @@
+<!DOCTYPE RCC>
+
+<RCC version="1.0">
+<qresource>
+
+	<file>symbols/symbols.json</file>
+	<file>symbols/fragile.svg</file>
+	<file>symbols/this-way-up.svg</file>
+	<file>symbols/keep-dry.svg</file>
+	<file>symbols/keep-away-from-heat.svg</file>
+	<file>symbols/do-not-stack.svg</file>
+	<file>symbols/temperature.svg</file>
+	<file>symbols/recycle.svg</file>
+	<file>symbols/handle-with-care.svg</file>
+	<file>symbols/keep-refrigerated.svg</file>
+	<file>symbols/vegetarian.svg</file>
+	<file>symbols/non-vegetarian.svg</file>
+	<file>symbols/gluten-free.svg</file>
+	<file>symbols/spicy.svg</file>
+	<file>symbols/microwave-safe.svg</file>
+	<file>symbols/natural.svg</file>
+	<file>symbols/hot-drink.svg</file>
+	<file>symbols/cupcake.svg</file>
+	<file>symbols/phone.svg</file>
+	<file>symbols/mobile.svg</file>
+	<file>symbols/email.svg</file>
+	<file>symbols/website.svg</file>
+	<file>symbols/location.svg</file>
+	<file>symbols/clock.svg</file>
+	<file>symbols/calendar.svg</file>
+	<file>symbols/person.svg</file>
+	<file>symbols/message.svg</file>
+	<file>symbols/home.svg</file>
+	<file>symbols/delivery.svg</file>
+	<file>symbols/package.svg</file>
+	<file>symbols/shopping-bag.svg</file>
+	<file>symbols/price-tag.svg</file>
+	<file>symbols/discount.svg</file>
+	<file>symbols/gift.svg</file>
+	<file>symbols/cut-here.svg</file>
+	<file>symbols/quality.svg</file>
+	<file>symbols/star.svg</file>
+	<file>symbols/sparkle.svg</file>
+	<file>symbols/heart.svg</file>
+	<file>symbols/check.svg</file>
+	<file>symbols/check-circle.svg</file>
+	<file>symbols/cross.svg</file>
+	<file>symbols/checkbox.svg</file>
+	<file>symbols/checkbox-ticked.svg</file>
+	<file>symbols/warning.svg</file>
+	<file>symbols/info.svg</file>
+	<file>symbols/circle.svg</file>
+	<file>symbols/square.svg</file>
+	<file>symbols/arrow-right.svg</file>
+	<file>symbols/arrow-down.svg</file>
+	<file>symbols/arrow-left.svg</file>
+	<file>symbols/arrow-up.svg</file>
+	<file>symbols/arrow-both.svg</file>
+	<file>symbols/open-here.svg</file>
+
+</qresource>
+</RCC>

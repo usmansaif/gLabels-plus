@@ -20,6 +20,7 @@
 
 
 #include "MainWindow.hpp"
+#include "SymbolsDialog.hpp"
 
 #include "File.hpp"
 #include "Help.hpp"
@@ -28,6 +29,7 @@
 #include "ObjectEditor.hpp"
 #include "ObjectListView.hpp"
 #include "PreferencesDialog.hpp"
+#include "PrintEstimatorWindow.hpp"
 #include "PrintView.hpp"
 #include "Projects.hpp"
 #include "PropertiesView.hpp"
@@ -49,6 +51,10 @@
 #include "model/Model.hpp"
 #include "model/ModelBarcodeObject.hpp"
 #include "model/ModelObject.hpp"
+#include "model/ModelImageObject.hpp"
+#include "model/ModelLineObject.hpp"
+#include "model/ModelEllipseObject.hpp"
+#include "model/ModelBoxObject.hpp"
 #include "model/ModelTextObject.hpp"
 
 #include <QApplication>
@@ -83,6 +89,50 @@ namespace
                 PRINT_PAGE_INDEX      = 5,
                 RECENT_PAGE_INDEX     = 6,
         };
+}
+
+
+namespace
+{
+        using namespace glabels;
+
+        ///
+        /// Exactly one text object and one circle/ellipse, box or line selected?
+        ///
+        bool findTextAndShape( model::Model*            model,
+                                           model::ModelTextObject*& text,
+                                           model::ModelObject*&     shape )
+        {
+                text  = nullptr;
+                shape = nullptr;
+                const auto selection = model->getSelection();
+                if ( selection.size() != 2 )
+                {
+                        return false;
+                }
+                for ( auto* object : selection )
+                {
+                        if ( auto* t = dynamic_cast<model::ModelTextObject*>( object ) )
+                        {
+                                text = t;
+                        }
+                        else if ( dynamic_cast<model::ModelEllipseObject*>( object ) ||
+                                  dynamic_cast<model::ModelBoxObject*>( object ) ||
+                                  dynamic_cast<model::ModelLineObject*>( object ) )
+                        {
+                                shape = object;
+                        }
+                }
+                return text && shape;
+        }
+
+
+        bool textAndShapeSelected( model::Model* model )
+        {
+                model::ModelTextObject* text;
+                model::ModelObject*     shape;
+                return findTextAndShape( model, text, shape );
+        }
 }
 
 
@@ -472,6 +522,7 @@ namespace glabels
                 fileShowEditorPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_1 ) );
                 fileShowEditorPageAction->setStatusTip( tr("Select label Edit mode") );
                 connect( fileShowEditorPageAction, SIGNAL(triggered()), this, SLOT(fileShowEditorPage()) );
+                addAction( fileShowEditorPageAction );   // not in a menu: keep Ctrl+1 working
 
                 fileShowPropertiesPageAction = new QAction( tr("P&roperties") , this );
                 fileShowPropertiesPageAction->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_2 ) );
@@ -889,6 +940,23 @@ namespace glabels
                 objectsCenterAction->setStatusTip( tr("Center objects in label") );
                 connect( objectsCenterAction, SIGNAL(triggered()), this, SLOT(objectsCenter()) );
 
+                objectsPutTextOnShapeAction = new QAction( tr("Put Text on &Shape"), this );
+                objectsPutTextOnShapeAction->setStatusTip( tr("Curve the selected text along the selected circle, ellipse, box or line") );
+                objectsPutTextOnShapeAction->setToolTip( tr("Select one text object and one circle, ellipse, box or line, then fit the text to the shape's outline") );
+                connect( objectsPutTextOnShapeAction, SIGNAL(triggered()), this, SLOT(objectsPutTextOnShape()) );
+
+
+                /* Tools actions */
+                toolsInsertSymbolAction = new QAction( tr("Insert &Symbol..."), this );
+                toolsInsertSymbolAction->setIcon( QIcon::fromTheme( "glabels-image" ) );
+                toolsInsertSymbolAction->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_Y ) );
+                toolsInsertSymbolAction->setStatusTip( tr("Insert handling, food, contact and other symbols made for thermal label printers") );
+                connect( toolsInsertSymbolAction, &QAction::triggered, this, &MainWindow::toolsInsertSymbol );
+
+                toolsPrintEstimatorAction = new QAction( tr("Print Sheet &Estimator..."), this );
+                toolsPrintEstimatorAction->setStatusTip( tr("Estimate how many printing sheets a job needs and the paper waste") );
+                connect( toolsPrintEstimatorAction, &QAction::triggered, this, &MainWindow::toolsPrintEstimator );
+
 
                 /* Help actions */
                 helpContentsAction = new QAction( tr("&User Manual..."), this );
@@ -952,12 +1020,7 @@ namespace glabels
                 fileMenu->addAction( fileSaveAsAction );
                 fileMenu->addAction( fileSaveAsTemplateAction );
                 fileMenu->addSeparator();
-                fileMenu->addAction( fileShowEditorPageAction );
-                fileMenu->addAction( fileShowMergePageAction );
-                fileMenu->addAction( fileShowVariablesPageAction );
                 fileMenu->addAction( fileShowPrintPageAction );
-                fileMenu->addSeparator();
-                fileMenu->addAction( fileTemplateDesignerAction );
                 fileMenu->addSeparator();
                 fileMenu->addAction( fileCloseAction );
                 fileMenu->addAction( fileExitAction );
@@ -976,7 +1039,6 @@ namespace glabels
                 editMenu->addSeparator();
                 editMenu->addAction( editPageSetupAction );
                 editMenu->addSeparator();
-                editMenu->addAction( editShortcutsAction );
                 editMenu->addAction( editPreferencesAction );
 
                 viewMenu = menuBar()->addMenu( tr("&View") );
@@ -1004,7 +1066,6 @@ namespace glabels
 
                 objectsMenu = menuBar()->addMenu( tr("&Objects") );
                 objectsMenu->addAction( objectsArrowModeAction );
-                objectsMenu->addAction( objectsMeasureModeAction );
                 objectsCreateMenu = objectsMenu->addMenu( tr("&Create") );
                 objectsCreateMenu->addAction( objectsCreateTextAction );
                 objectsCreateMenu->addAction( objectsCreateBoxAction );
@@ -1040,6 +1101,8 @@ namespace glabels
                 objectsCenterMenu->addAction( objectsCenterHorizAction );
                 objectsCenterMenu->addAction( objectsCenterVertAction );
                 objectsCenterMenu->addAction( objectsCenterAction );
+                objectsMenu->addSeparator();
+                objectsMenu->addAction( objectsPutTextOnShapeAction );
 
                 dataMenu = menuBar()->addMenu( tr("&Data") );
                 dataMenu->addAction( dataConnectAction );
@@ -1056,6 +1119,15 @@ namespace glabels
                 dataMenu->addAction( mergeLastAction );
                 dataMenu->addSeparator();
                 dataMenu->addAction( fileShowVariablesPageAction );
+
+                toolsMenu = menuBar()->addMenu( tr("&Tools") );
+                toolsMenu->addAction( toolsInsertSymbolAction );
+                toolsMenu->addAction( objectsMeasureModeAction );
+                toolsMenu->addSeparator();
+                toolsMenu->addAction( toolsPrintEstimatorAction );
+                toolsMenu->addAction( fileTemplateDesignerAction );
+                toolsMenu->addSeparator();
+                toolsMenu->addAction( editShortcutsAction );
 
                 helpMenu = menuBar()->addMenu( tr("&Help") );
                 helpMenu->addAction( helpContentsAction );
@@ -1092,6 +1164,7 @@ namespace glabels
                 contextCenterMenu->addAction( objectsCenterHorizAction );
                 contextCenterMenu->addAction( objectsCenterVertAction );
                 contextCenterMenu->addAction( objectsCenterAction );
+                contextMenu->addAction( objectsPutTextOnShapeAction );
                 contextMenu->addSeparator();
                 contextMenu->addAction( contextCutAction );
                 contextMenu->addAction( contextCopyAction );
@@ -1470,6 +1543,9 @@ namespace glabels
                         { objectsAlignVCenterAction, "objects.alignVCenter" }, { objectsAlignBottomAction, "objects.alignBottom" },
                         { objectsCenterHorizAction, "objects.centerHoriz" }, { objectsCenterVertAction, "objects.centerVert" },
                         { objectsCenterAction, "objects.center" },
+                        { objectsPutTextOnShapeAction, "objects.putTextOnShape" },
+                        { toolsPrintEstimatorAction, "tools.printEstimator" },
+                        { toolsInsertSymbolAction, "tools.insertSymbol" },
                         { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
                         { helpWhatsNewAction, "help.whatsNew" }, { helpAboutAction, "help.about" },
                 };
@@ -2044,6 +2120,8 @@ namespace glabels
                 objectsCenterHorizAction->setEnabled( isEditorPage && hasSelection );
                 objectsCenterVertAction->setEnabled( isEditorPage && hasSelection );
                 objectsCenterAction->setEnabled( isEditorPage && hasSelection );
+                toolsInsertSymbolAction->setEnabled( hasModel );
+                objectsPutTextOnShapeAction->setEnabled( isEditorPage && hasModel && textAndShapeSelected( mModel.get() ) );
 
                 // Help actions
                 helpContentsAction->setEnabled( true );
@@ -3372,6 +3450,89 @@ namespace glabels
 
 
         ///
+        /// Objects->Put Text on Shape Action
+        ///
+        /// Fits the selected text object to the selected circle, ellipse, box or
+        /// line: the text takes the shape's position, size and rotation and
+        /// follows its outline, and the two are grouped so they move together.
+        ///
+        void MainWindow::objectsPutTextOnShape()
+        {
+                model::ModelTextObject* text  = nullptr;
+                model::ModelObject*     shape = nullptr;
+                if ( !findTextAndShape( mModel.get(), text, shape ) )
+                {
+                        return;
+                }
+
+                mUndoRedoModel->checkpoint( tr("Put Text on Shape") );
+
+                if ( dynamic_cast<model::ModelLineObject*>( shape ) )
+                {
+                        // Straight text standing on the line, reading left to right
+                        QPointF start( shape->x0().pt(), shape->y0().pt() );
+                        QPointF v = shape->matrix().map( QPointF( shape->w().pt(), shape->h().pt() ) );
+                        if ( v.x() < 0 )
+                        {
+                                start += v;     // keep the text the right way up
+                                v = -v;
+                        }
+                        double length = std::hypot( v.x(), v.y() );
+                        double angle  = qRadiansToDegrees( std::atan2( v.y(), v.x() ) );
+                        double h      = text->fontSize() * 1.4 + 6;      // one line plus the text margins
+
+                        QTransform m;
+                        m.rotate( angle );
+                        QPointF corner = m.map( QPointF( 0, h ) );       // bottom-left corner sits on the line start
+
+                        text->setTextPath( model::TextPath::Straight );
+                        text->setTextWrapMode( QTextOption::NoWrap );
+                        text->setTextVAlign( Qt::AlignBottom );
+                        text->setMatrix( m );
+                        text->setSize( model::Distance::pt( qMax( 1.0, length ) ), model::Distance::pt( h ) );
+                        text->setPosition( model::Distance::pt( start.x() - corner.x() ),
+                                           model::Distance::pt( start.y() - corner.y() ) );
+                }
+                else
+                {
+                        model::TextPath path = text->textPath();
+                        if ( dynamic_cast<model::ModelBoxObject*>( shape ) )
+                        {
+                                path = model::TextPath::Rectangle;
+                        }
+                        else if ( path != model::TextPath::ArcTop && path != model::TextPath::ArcBottom &&
+                                  path != model::TextPath::Circle )
+                        {
+                                path = model::TextPath::ArcTop;
+                        }
+
+                        text->setTextPath( path );
+                        text->setMatrix( shape->matrix() );
+                        text->setSize( shape->w(), shape->h() );
+                        text->setPosition( shape->x0(), shape->y0() );
+                }
+                text->setTextHAlign( Qt::AlignHCenter );
+
+                // Group them so they move together (join the shape's group if it has one)
+                QString group = shape->group();
+                if ( group.isEmpty() )
+                {
+                        QSet<QString> used;
+                        for ( auto* object : mModel->objectList() )
+                        {
+                                used.insert( object->group() );
+                        }
+                        group = tr("Text on shape");
+                        for ( int n = 2; used.contains( group ); n++ )
+                        {
+                                group = tr("Text on shape %1").arg( n );
+                        }
+                }
+                mModel->groupObjects( { shape, text }, group );
+        }
+
+
+        ///
         /// Objects->Center Action
         ///
         void MainWindow::objectsCenter()
@@ -3394,6 +3555,62 @@ namespace glabels
         ///
         /// Help->Contents Action
         ///
+        ///
+        /// Tools > Print Sheet Estimator (for the open label's product, if any)
+        ///
+        ///
+        /// Tools->Insert Symbol Action: show (or raise) the non-modal symbol picker
+        ///
+        void MainWindow::toolsInsertSymbol()
+        {
+                if ( !mSymbolsDialog )
+                {
+                        mSymbolsDialog = new SymbolsDialog( this );
+                        connect( mSymbolsDialog, &SymbolsDialog::insertRequested, this, &MainWindow::onInsertSymbol );
+                }
+                mSymbolsDialog->show();
+                mSymbolsDialog->raise();
+                mSymbolsDialog->activateWindow();
+        }
+
+
+        ///
+        /// Add a symbol from the picker to the label, centered, as an embedded SVG image
+        ///
+        void MainWindow::onInsertSymbol( const QString& id, const QString& name, const QByteArray& svg, double size )
+        {
+                if ( !mModel )
+                {
+                        return;
+                }
+                if ( mPages->currentIndex() != EDITOR_PAGE_INDEX )
+                {
+                        fileShowEditorPage();
+                }
+
+                // Center on the label; step each new symbol down and right so they don't hide each other
+                double step = 3 * ( mSymbolInsertCount++ % 6 ) / 25.4 * 72.0;   // 3 mm
+                double x = qMax( 0.0, ( mModel->w().pt() - size ) / 2 ) + step;
+                double y = qMax( 0.0, ( mModel->h().pt() - size ) / 2 ) + step;
+
+                mUndoRedoModel->checkpoint( tr("Insert Symbol") );
+
+                auto* object = new model::ModelImageObject( model::Distance::pt( x ), model::Distance::pt( y ),
+                                                            model::Distance::pt( size ), model::Distance::pt( size ),
+                                                            true, "symbol-" + id + ".svg", svg );
+                object->setName( name );
+                mModel->addObject( object );
+                mModel->unselectAll();
+                mModel->selectObject( object );
+        }
+
+
+        void MainWindow::toolsPrintEstimator()
+        {
+                PrintEstimatorWindow::showWindow( mModel ? mModel->tmplate() : model::Template() );
+        }
+
+
         void MainWindow::helpContents()
         {
                 // Context-sensitive: open the guide at the page you are working on

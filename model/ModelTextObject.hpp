@@ -168,6 +168,34 @@ namespace glabels::model
 
 
                 //
+                // Text Property: textPath
+                //
+                TextPath textPath() const override;
+                void setTextPath( TextPath value ) override;
+
+
+                //
+                // Text Property: textLetterSpacing
+                //
+                double textLetterSpacing() const override;
+                void setTextLetterSpacing( double value ) override;
+
+
+                //
+                // Text Property: textPathStart
+                //
+                double textPathStart() const override;
+                void setTextPathStart( double value ) override;
+
+
+                //
+                // Text Property: textPathOffset
+                //
+                double textPathOffset() const override;
+                void setTextPathOffset( double value ) override;
+
+
+                //
                 // Property: naturalSize
                 //
                 Size naturalSize() const override;
@@ -216,6 +244,17 @@ namespace glabels::model
                 double autoShrinkFontSize( const merge::Record& record,
                                            const Variables&     variables ) const;
 
+                QFont makeFont( double fontSize ) const;
+
+                QPainterPath baselinePath( const QFontMetricsF& fm, double& fitLength, bool& closed ) const;
+
+                double pathTextWidth( const QString& text, const QFont& font ) const;
+
+                void drawTextOnPath( QPainter*      painter,
+                                     const QColor&  color,
+                                     const QString& text,
+                                     double         fontSize ) const;
+
 
                 ///////////////////////////////////////////////////////////////
                 // Private Members
@@ -233,6 +272,10 @@ namespace glabels::model
                 QTextOption::WrapMode mTextWrapMode;
                 double                mTextLineSpacing;
                 bool                  mTextAutoShrink;
+                TextPath              mTextPath;
+                double                mTextLetterSpacing;
+                double                mTextPathStart;
+                double                mTextPathOffset;
 
                 QList<QTextLayout*>   mEditorLayouts;
                 QList<QList<QPair<int,int>>> mEditorPills;   // per layout: {start, length} of {{variable}} tokens

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="76.2 × 76.2 mm" size="roll" width="76.2mm" height="76.2mm" roll_width="80.2mm" description="Square sticker 3 × 3 in">
+    <Label-rectangle id="0" width="76.2mm" height="76.2mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="3.1mm" y="3.1mm" w="70mm" h="70mm" lock_aspect_ratio="false" line_width="0.6mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-ellipse x="11.6mm" y="11.6mm" w="53mm" h="53mm" lock_aspect_ratio="false" line_width="0.25mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="4.7053mm" y="4.7053mm" w="66.7894mm" h="66.7894mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.3" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="0.85">
+      <p>NATURAL · HANDMADE · COLD PROCESS</p>
+    </Object-text>
+    <Object-text name="Curved text" x="4.7053mm" y="4.7053mm" w="66.7894mm" h="66.7894mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.3" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="1.417">
+      <p>MAPLE &amp; OAK SOAP CO.</p>
+    </Object-text>
+    <Object-image x="32.1mm" y="13.5mm" w="12mm" h="9.6mm" lock_aspect_ratio="true" src="sprig.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="13mm" y="22.4332mm" w="50.2mm" h="9.1337mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="14" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>LAVENDER</p>
+    </Object-text>
+    <Object-text name="Type" x="13mm" y="30.1846mm" w="50.2mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="11" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Goat Milk Soap</p>
+    </Object-text>
+    <Object-text name="Ingredients" x="16mm" y="39mm" w="44.2mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Olive oil, coconut oil, goat milk,</p>
+      <p>shea butter, lavender essential oil</p>
+    </Object-text>
+    <Object-text name="Net weight" x="20mm" y="51mm" w="36.2mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Net wt 4 oz / 113 g</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="sprig.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" width="100" height="80"><path d="M8 72 C30 58 52 40 92 10" stroke="#000" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(26 59) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(26 59) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(40 48) rotate(12)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(40 48) rotate(12)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(52 39) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(52 39) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(64 30) rotate(12)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(64 30) rotate(12)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(76 21) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(76 21) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(88 13) rotate(-38)" fill="#000"/></svg>]]></File>
+  </Data>
+</Glabels-document>

@@ -76,5 +76,95 @@
     "name": "QR Code Label",
     "category": "Marketing",
     "description": "A large QR code with a call to action, for links, menus and Wi-Fi (50 × 50 mm)."
+  },
+  {
+    "file": "sticker-homemade-cookies-round.glabels",
+    "name": "Homemade Cookies Sticker",
+    "category": "Stickers",
+    "description": "Curved serif heading, script-style flavour name and ingredients on a 2.5 in round sticker."
+  },
+  {
+    "file": "sticker-bakery-cookies-round.glabels",
+    "name": "Home Bakery Cookie Sticker",
+    "category": "Stickers",
+    "description": "Bakery name and website on curves, cookie drawing, flavour, ingredients and net weight (3 in round)."
+  },
+  {
+    "file": "sticker-cottage-food-round.glabels",
+    "name": "Cottage Food Sticker",
+    "category": "Stickers",
+    "description": "Home kitchen notice around the edge, contact details, flavour, ingredients and allergens (3 in round)."
+  },
+  {
+    "file": "sticker-cookie-box-100x70.glabels",
+    "name": "Cookie Box Label",
+    "category": "Stickers",
+    "description": "Bold product name, tagline, best-before date and contact details for cookie boxes (100 × 70 mm)."
+  },
+  {
+    "file": "sticker-bakery-product-100x100.glabels",
+    "name": "Bakery Product Label",
+    "category": "Stickers",
+    "description": "Curved home kitchen notice, bakery name, product, ingredients, weight, address and allergens (100 × 100 mm)."
+  },
+  {
+    "file": "sticker-thank-you-round.glabels",
+    "name": "Thank You Sticker",
+    "category": "Stickers",
+    "description": "Thank-you message with a heart and your shop handle for packaging (2 in round)."
+  },
+  {
+    "file": "sticker-handmade-seal-round.glabels",
+    "name": "Handmade Seal",
+    "category": "Stickers",
+    "description": "Solid black seal with white curved text for boxes and bags (1.5 in round)."
+  },
+  {
+    "file": "sticker-jam-jar-76x51.glabels",
+    "name": "Jam Jar Label",
+    "category": "Stickers",
+    "description": "Double-border jar label with flavour, ingredients, a date to fill in and net weight (3 × 2 in)."
+  },
+  {
+    "file": "sticker-honey-oval-90x60.glabels",
+    "name": "Honey Jar Label",
+    "category": "Stickers",
+    "description": "Oval honey label with a bee drawing, variety, apiary name and net weight (90 × 60 mm)."
+  },
+  {
+    "file": "sticker-candle-4x2.glabels",
+    "name": "Candle Label",
+    "category": "Stickers",
+    "description": "Scent name, notes, size, burn time and the safety warning, with a flame drawing (4 × 2 in)."
+  },
+  {
+    "file": "sticker-soap-76x76.glabels",
+    "name": "Handmade Soap Label",
+    "category": "Stickers",
+    "description": "Circular badge with curved text, soap name, ingredients and weight on a 3 × 3 in square."
+  },
+  {
+    "file": "sticker-coffee-round.glabels",
+    "name": "Coffee Bag Label",
+    "category": "Stickers",
+    "description": "Roaster name on curves, origin, tasting notes, roast level and a roast date to fill in (2.5 in round)."
+  },
+  {
+    "file": "sticker-cake-box-100x75.glabels",
+    "name": "Cake Box Label",
+    "category": "Stickers",
+    "description": "Cake name, flavour, size, dates to fill in and allergen tick boxes for cake boxes (100 × 75 mm)."
+  },
+  {
+    "file": "sticker-box-seal-100x30.glabels",
+    "name": "Box Seal Sticker",
+    "category": "Stickers",
+    "description": "Tamper-evident seal strip with a message and contact details, for boxes and bags (100 × 30 mm)."
+  },
+  {
+    "file": "sticker-spice-jar-round.glabels",
+    "name": "Spice Jar Label",
+    "category": "Stickers",
+    "description": "Small round spice label with curved brand and weight, spice name and best-before date (1.5 in round)."
   }
 ]

@@ -34,6 +34,14 @@ if (Qt6Test_FOUND)
   add_test (NAME XmlLabel COMMAND TestXmlLabel)
 
   #=======================================
+  # Test object resize handles (grab anywhere along an edge)
+  #=======================================
+  qt6_wrap_cpp (TestHandles_moc_sources TestHandles.hpp)
+  add_executable (TestHandles TestHandles.cpp ${TestHandles_moc_sources})
+  target_link_libraries (TestHandles Model Qt6::Test)
+  add_test (NAME Handles COMMAND TestHandles)
+
+  #=======================================
   # Test ColorNode class
   #=======================================
   qt6_wrap_cpp (TestColorNode_moc_sources TestColorNode.hpp)
@@ -112,5 +120,13 @@ if (Qt6Test_FOUND)
   add_executable (TestStrUtil TestStrUtil.cpp ${TestStrUtil_moc_sources})
   target_link_libraries (TestStrUtil Model Qt6::Test)
   add_test (NAME StrUtil COMMAND TestStrUtil)
+
+  #=======================================
+  # Test SheetLayout (print sheet estimator)
+  #=======================================
+  qt6_wrap_cpp (TestSheetLayout_moc_sources TestSheetLayout.hpp)
+  add_executable (TestSheetLayout TestSheetLayout.cpp ${TestSheetLayout_moc_sources})
+  target_link_libraries (TestSheetLayout Model Qt6::Test)
+  add_test (NAME SheetLayout COMMAND TestSheetLayout)
 
 endif (Qt6Test_FOUND)

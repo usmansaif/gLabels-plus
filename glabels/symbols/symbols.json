@@ -1,0 +1,320 @@
+[
+  {
+    "id": "fragile",
+    "name": "Fragile",
+    "category": "Handling",
+    "keywords": "glass breakable care"
+  },
+  {
+    "id": "this-way-up",
+    "name": "This Way Up",
+    "category": "Handling",
+    "keywords": "arrows upright orientation top"
+  },
+  {
+    "id": "keep-dry",
+    "name": "Keep Dry",
+    "category": "Handling",
+    "keywords": "umbrella rain water moisture"
+  },
+  {
+    "id": "keep-away-from-heat",
+    "name": "Keep Away from Heat",
+    "category": "Handling",
+    "keywords": "sun sunlight hot temperature"
+  },
+  {
+    "id": "do-not-stack",
+    "name": "Do Not Stack",
+    "category": "Handling",
+    "keywords": "stacking weight top load"
+  },
+  {
+    "id": "temperature",
+    "name": "Temperature",
+    "category": "Handling",
+    "keywords": "thermometer limit storage cold hot"
+  },
+  {
+    "id": "recycle",
+    "name": "Recyclable",
+    "category": "Handling",
+    "keywords": "recycle environment green arrows"
+  },
+  {
+    "id": "handle-with-care",
+    "name": "Handle with Care",
+    "category": "Handling",
+    "keywords": "careful gentle hands"
+  },
+  {
+    "id": "keep-refrigerated",
+    "name": "Keep Refrigerated",
+    "category": "Food",
+    "keywords": "snowflake cold frozen fridge freezer chilled"
+  },
+  {
+    "id": "vegetarian",
+    "name": "Vegetarian Mark",
+    "category": "Food",
+    "keywords": "veg vegetarian dot square"
+  },
+  {
+    "id": "non-vegetarian",
+    "name": "Non-Vegetarian Mark",
+    "category": "Food",
+    "keywords": "non veg meat triangle square"
+  },
+  {
+    "id": "gluten-free",
+    "name": "Gluten Free",
+    "category": "Food",
+    "keywords": "wheat gluten free allergen"
+  },
+  {
+    "id": "spicy",
+    "name": "Spicy",
+    "category": "Food",
+    "keywords": "chili chilli pepper hot"
+  },
+  {
+    "id": "microwave-safe",
+    "name": "Microwave Safe",
+    "category": "Food",
+    "keywords": "microwave heat reheat oven"
+  },
+  {
+    "id": "natural",
+    "name": "Natural",
+    "category": "Food",
+    "keywords": "leaf organic plant vegan eco green"
+  },
+  {
+    "id": "hot-drink",
+    "name": "Hot Drink",
+    "category": "Food",
+    "keywords": "coffee tea cup mug cafe"
+  },
+  {
+    "id": "cupcake",
+    "name": "Cupcake",
+    "category": "Food",
+    "keywords": "bakery cake cupcake dessert sweet"
+  },
+  {
+    "id": "phone",
+    "name": "Phone",
+    "category": "Contact",
+    "keywords": "telephone call landline number"
+  },
+  {
+    "id": "mobile",
+    "name": "Mobile",
+    "category": "Contact",
+    "keywords": "cell phone smartphone sms"
+  },
+  {
+    "id": "email",
+    "name": "Email",
+    "category": "Contact",
+    "keywords": "mail envelope letter"
+  },
+  {
+    "id": "website",
+    "name": "Website",
+    "category": "Contact",
+    "keywords": "web globe internet url world"
+  },
+  {
+    "id": "location",
+    "name": "Location",
+    "category": "Contact",
+    "keywords": "address map pin place shop"
+  },
+  {
+    "id": "clock",
+    "name": "Opening Hours",
+    "category": "Contact",
+    "keywords": "clock time hours open"
+  },
+  {
+    "id": "calendar",
+    "name": "Date",
+    "category": "Contact",
+    "keywords": "calendar date day best before made on"
+  },
+  {
+    "id": "person",
+    "name": "Person",
+    "category": "Contact",
+    "keywords": "user name contact customer"
+  },
+  {
+    "id": "message",
+    "name": "Message",
+    "category": "Contact",
+    "keywords": "chat bubble message text sms"
+  },
+  {
+    "id": "home",
+    "name": "Home",
+    "category": "Contact",
+    "keywords": "house home address shop store"
+  },
+  {
+    "id": "delivery",
+    "name": "Delivery",
+    "category": "Shop & delivery",
+    "keywords": "truck van shipping courier"
+  },
+  {
+    "id": "package",
+    "name": "Package",
+    "category": "Shop & delivery",
+    "keywords": "box parcel carton shipment"
+  },
+  {
+    "id": "shopping-bag",
+    "name": "Shopping Bag",
+    "category": "Shop & delivery",
+    "keywords": "bag shop store buy"
+  },
+  {
+    "id": "price-tag",
+    "name": "Price Tag",
+    "category": "Shop & delivery",
+    "keywords": "price tag sale label"
+  },
+  {
+    "id": "discount",
+    "name": "Discount",
+    "category": "Shop & delivery",
+    "keywords": "percent sale offer off promo"
+  },
+  {
+    "id": "gift",
+    "name": "Gift",
+    "category": "Shop & delivery",
+    "keywords": "present gift wrap"
+  },
+  {
+    "id": "cut-here",
+    "name": "Cut Here",
+    "category": "Shop & delivery",
+    "keywords": "scissors cut tear coupon"
+  },
+  {
+    "id": "quality",
+    "name": "Quality Badge",
+    "category": "Shop & delivery",
+    "keywords": "award rosette quality best premium"
+  },
+  {
+    "id": "star",
+    "name": "Star",
+    "category": "Marks & shapes",
+    "keywords": "star rating favourite"
+  },
+  {
+    "id": "sparkle",
+    "name": "Sparkle",
+    "category": "Marks & shapes",
+    "keywords": "sparkle shine new twinkle"
+  },
+  {
+    "id": "heart",
+    "name": "Heart",
+    "category": "Marks & shapes",
+    "keywords": "love heart like thank you"
+  },
+  {
+    "id": "check",
+    "name": "Check Mark",
+    "category": "Marks & shapes",
+    "keywords": "tick yes ok done approved"
+  },
+  {
+    "id": "check-circle",
+    "name": "Check Circle",
+    "category": "Marks & shapes",
+    "keywords": "tick approved passed verified"
+  },
+  {
+    "id": "cross",
+    "name": "Cross",
+    "category": "Marks & shapes",
+    "keywords": "x no wrong cancel"
+  },
+  {
+    "id": "checkbox",
+    "name": "Check Box",
+    "category": "Marks & shapes",
+    "keywords": "box tick option empty square"
+  },
+  {
+    "id": "checkbox-ticked",
+    "name": "Ticked Box",
+    "category": "Marks & shapes",
+    "keywords": "box tick selected checked"
+  },
+  {
+    "id": "warning",
+    "name": "Warning",
+    "category": "Marks & shapes",
+    "keywords": "caution attention alert exclamation"
+  },
+  {
+    "id": "info",
+    "name": "Information",
+    "category": "Marks & shapes",
+    "keywords": "info i note help"
+  },
+  {
+    "id": "circle",
+    "name": "Circle",
+    "category": "Marks & shapes",
+    "keywords": "dot bullet round"
+  },
+  {
+    "id": "square",
+    "name": "Square",
+    "category": "Marks & shapes",
+    "keywords": "block bullet"
+  },
+  {
+    "id": "arrow-right",
+    "name": "Arrow Right",
+    "category": "Arrows",
+    "keywords": "arrow direction right next forward"
+  },
+  {
+    "id": "arrow-down",
+    "name": "Arrow Down",
+    "category": "Arrows",
+    "keywords": "arrow direction down below"
+  },
+  {
+    "id": "arrow-left",
+    "name": "Arrow Left",
+    "category": "Arrows",
+    "keywords": "arrow direction left back"
+  },
+  {
+    "id": "arrow-up",
+    "name": "Arrow Up",
+    "category": "Arrows",
+    "keywords": "arrow direction up top"
+  },
+  {
+    "id": "arrow-both",
+    "name": "Arrows Both Ways",
+    "category": "Arrows",
+    "keywords": "arrow double left right width"
+  },
+  {
+    "id": "open-here",
+    "name": "Open Here",
+    "category": "Arrows",
+    "keywords": "open tear pull here"
+  }
+]

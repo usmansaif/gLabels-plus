@@ -734,13 +734,21 @@ namespace glabels::model
                 }
                 QString text = document.toPlainText();
 
-                return new ModelTextObject( x0, y0, w, h, lockAspectRatio,
-                                            text,
-                                            fontFamily, fontSize, fontWeight, fontItalicFlag, fontUnderlineFlag,
-                                            textColorNode, textHAlign, textVAlign, textWrapMode, textLineSpacing,
-                                            textAutoShrink,
-                                            QTransform( a[0], a[1], a[2], a[3], a[4], a[5] ),
-                                            shadowState, shadowX, shadowY, shadowOpacity, shadowColorNode );
+                auto* object = new ModelTextObject( x0, y0, w, h, lockAspectRatio,
+                                                    text,
+                                                    fontFamily, fontSize, fontWeight, fontItalicFlag, fontUnderlineFlag,
+                                                    textColorNode, textHAlign, textVAlign, textWrapMode, textLineSpacing,
+                                                    textAutoShrink,
+                                                    QTransform( a[0], a[1], a[2], a[3], a[4], a[5] ),
+                                                    shadowState, shadowX, shadowY, shadowOpacity, shadowColorNode );
+
+                /* curved text attrs (gLabels Plus) */
+                object->setTextPath( textPathFromString( XmlUtil::getStringAttr( node, "text_path", "" ) ) );
+                object->setTextLetterSpacing( XmlUtil::getDoubleAttr( node, "letter_spacing", 0 ) );
+                object->setTextPathStart( XmlUtil::getDoubleAttr( node, "path_start", 0 ) );
+                object->setTextPathOffset( XmlUtil::getDoubleAttr( node, "path_offset", 0 ) );
+
+                return object;
         }
 
 

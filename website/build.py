@@ -28,8 +28,8 @@ RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
 VERSION = "5.0"
 RELEASE_DATE = "2026-11-19"          # ISO date of the 5.0 release
-UPDATED = "2026-11-20"               # last content update, shown on every page
-UPDATED_HUMAN = "20 November 2026"
+UPDATED = "2026-11-22"               # last content update, shown on every page
+UPDATED_HUMAN = "22 November 2026"
 CONTACT_URL = "https://usmansaif.com/en/contact"   # custom barcode label printing solutions
 MAINTAINER = {"@type": "Person", "@id": SITE_URL + "#maintainer", "name": "Usman Saif",
               "url": "https://usmansaif.com", "jobTitle": "Maintainer of gLabels Plus"}
@@ -75,8 +75,17 @@ TOOL_KEYS = [("V", "Select"), ("T", "Text"), ("R", "Box"), ("L", "Line"), ("O", 
 # Latest additions, shown as highlight cards on whats-new.html.
 # icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app.
 LATEST = [
+    dict(icon="symbols", title="Symbols for thermal labels",
+         summary="53 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), food marks (Keep Refrigerated, Vegetarian, Gluten Free), contact icons (phone, email, website, location), delivery, shop, check boxes, stars and arrows.",
+         how="<b>Tools &gt; Insert Symbol</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Y</kbd>) · the window stays open while you add more"),
+    dict(icon="curve", title="Curved text for round labels",
+         summary="Set text along an arc, round a circle, round a box or on a wave, or draw any circle, ellipse, box or line and put the text on it. Start angle turns the words round the curve a degree at a time, and distance from edge moves them in or out.",
+         how="<b>Objects &gt; Put Text on Shape</b> · <b>Text</b> tab &gt; <b>Path</b>, <b>Start angle</b>, <b>Distance from edge</b>"),
+    dict(icon="sticker", title="Sticker labels for thermal printers",
+         summary="15 black and white sticker designs up to 4 in (101.6 mm) wide: round, oval, square and rectangle designs for cookies, bakery products, cottage food, jam, honey, candles, soap, coffee, cake boxes, spice jars, thank-you notes and box seals. Curved text around round labels, simple line drawings and clean type that prints sharply on a direct thermal printer.",
+         how="<b>File &gt; New from Sample</b> &gt; <b>Stickers</b> · replace the sample business name with your own"),
     dict(icon="samples", title="Sample label library",
-         summary="13 ready-made designs to start from: shipping label (4×6), sales receipt, A4 invoice, SKU, product, barcode, price tag, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each one opens as an untitled copy, so the sample itself never changes.",
+         summary="28 ready-made designs to start from: shipping label (4×6), sales receipt, A4 invoice, SKU, product, barcode, price tag, asset tag, address, bin location, carton/pallet, food date and QR code labels, plus 15 black and white stickers. Each one opens as an untitled copy, so the sample itself never changes.",
          how="<b>File &gt; New from Sample</b> or <b>Start from a sample</b> on the welcome screen · <b>File &gt; Save as Template</b> adds your own"),
     dict(icon="guides", title="Smart guides and snapping",
          summary="While you move or resize, red lines show the distance to the nearest object or label edge in your chosen units (mm, inches, points...). Objects snap to other objects' edges and centers and to the label's edges and center.",
@@ -125,6 +134,9 @@ ICONS = {
     "guides": '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="14" y="13" width="6" height="7" rx="1"/><path d="M11 7.5h9M17 3v7M4 16.5h6M7 14v5"/>',
     "ruler": '<rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/>',
     "layers": '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+    "symbols": '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+    "curve": '<path d="M4 17a8 8 0 0 1 16 0"/><path d="M8 17h.01M12 9h.01M16 17h.01"/>',
+    "sticker": '<circle cx="12" cy="12" r="9"/><path d="M7.5 9.5a6 6 0 0 1 9 0M8 15h8"/>',
     "samples": '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 }
 
@@ -154,7 +166,7 @@ RELEASE_NOTES = [
         "<b>Merge preview</b> shows real records on the label instead of field names, with First / Previous / Next / Last buttons to step through them.",
     ]),
     ("Products and templates", [
-        "<b>Sample label library</b>: start from a ready-made shipping label, receipt, invoice, SKU, product, price, asset, address, bin, pallet, food date or QR code label. Opening a sample creates an untitled copy, so saving always asks for a new file name.",
+        "<b>Sample label library</b>: start from a ready-made shipping label, receipt, invoice, SKU, product, price, asset, address, bin, pallet, food date or QR code label, or one of 15 black and white <b>stickers</b> for bakery, cottage food, jar, candle, soap and coffee products. Opening a sample creates an untitled copy, so saving always asks for a new file name.",
         "<b>Save as Template</b> keeps your own designs under <b>My templates</b> in the sample library.",
         "<b>Redesigned product chooser</b>: search by brand, part number, description or size (for example <i>avery 5160</i> or <i>2x4</i>), with brand, category and size filters.",
         "<b>Grid and list views</b>, plus <b>favorites</b> and <b>recently used</b> products.",
@@ -203,7 +215,13 @@ FAQ = [
     ("How is gLabels Plus different from gLabels?",
      "gLabels Plus is built on gLabels-qt (gLabels 4). It adds Projects, a page selector, 24 thermal roll presets, single-key tool shortcuts, quick font search, a redesigned product chooser and Preferences, rulers, smart guides with snapping, a measure tool, an objects panel with layer names, groups and locking, and a refreshed interface. It opens existing .glabels files."),
     ("Does gLabels Plus have ready-made label designs?",
-     "Yes. File > New from Sample opens a library of 13 ready-made designs: a 4×6 shipping label, an 80 mm sales receipt, an A4 invoice, SKU, product, barcode, sale price, asset tag, address, bin location, carton/pallet, food date and QR code labels. Each opens as an untitled copy, so you edit your text, save it under a new name and print, and the sample stays unchanged. Save your own designs with File > Save as Template."),
+     "Yes. File > New from Sample opens a library of 28 ready-made designs: a 4×6 shipping label, an 80 mm sales receipt, an A4 invoice, SKU, product, barcode, sale price, asset tag, address, bin location, carton/pallet, food date and QR code labels, plus 15 black and white stickers for cookies, bakery products, cottage food, jam, honey, candles, soap, coffee, cake boxes, spice jars, thank-you notes and box seals. Each opens as an untitled copy, so you edit your text, save it under a new name and print, and the sample stays unchanged. Save your own designs with File > Save as Template."),
+    ("Can I print round product stickers on a thermal label printer?",
+     "Yes. gLabels Plus has 15 black and white sticker samples up to 4 inches (101.6 mm) wide, including 1.5, 2, 2.5 and 3 inch round stickers, an oval jar label and square and rectangle labels, for cookies, bakery products, cottage food, jam, honey, candles, soap, coffee and spice jars. They use only black and white, so they print sharply on direct thermal printers such as Zebra, TSC, Xprinter and Godex. Text can follow an arc or circle around the edge (Text tab > Path). Open one with File > New from Sample, choose Stickers, and type your own business name and product details."),
+    ("Can I put curved text on a round label?",
+     "Yes. Select a text object and choose a Path in the Text tab: Arc (top) for a name over the top of a round sticker, Arc (bottom) for a website or weight under the bottom that still reads the right way up, Circle to go all the way round, Rectangle or Wave. The curve fits the text box. You can also draw a circle, ellipse, box or line, select it with the text and choose Objects > Put Text on Shape. Start angle turns the text round the curve a degree at a time, and Distance from edge moves it in or out, for example round the outside of a circle logo."),
+    ("Does gLabels Plus have symbols like Fragile, This Way Up or Keep Refrigerated?",
+     "Yes. Tools > Insert Symbol (Ctrl+Shift+Y) opens 53 solid black symbols made to print sharply on thermal label printers: handling marks (Fragile, This Way Up, Keep Dry, Keep Away from Heat, Do Not Stack, Recyclable), food marks (Keep Refrigerated, Vegetarian and Non-Vegetarian, Gluten Free, Spicy, Microwave Safe), contact icons (phone, mobile, email, website, location, opening hours), delivery and shop icons, check boxes, stars and arrows. Choose a size, press Insert, and the window stays open so you can add more. Symbols are saved inside the label file."),
     ("My label sheet isn't listed. What can I do?",
      "Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it."),
     ("Where are my labels saved?",
@@ -390,6 +408,9 @@ GLABELS_PLUS_ONLY = [
     ("Variables panel: drag a data column onto the label", False),
     ("Live data preview with Previous / Next record", False),
     ("Sample label library: shipping, receipt, invoice, SKU, price, asset and more", False),
+    ("Curved text: arc, circle and wave paths for round labels", False),
+    ("Symbol set for thermal labels: handling, food, contact and delivery marks", False),
+    ("Black and white sticker designs for thermal printers, with curved text", False),
     ("Projects: keep each business or client's labels together", False),
     ("Recent Labels screen with thumbnails", False),
     ("24 thermal roll presets for Zebra, TSC, Xprinter and Godex", False),
@@ -517,7 +538,10 @@ def software_app(extra=None):
             "Projects to group labels by client", "Single-key tool shortcuts",
             "Quick font search", "Rulers, alignment and object locking",
             "Smart distance guides and snapping", "Measure tool", "Layer groups and names",
-            "13 ready-made sample labels: shipping, receipt, invoice, SKU, product and asset",
+            "28 ready-made sample labels: shipping, receipt, invoice, SKU, product and asset",
+            "Curved text along arcs and circles for round labels",
+            "53 thermal-friendly symbols: Fragile, This Way Up, Keep Refrigerated, phone, email and more",
+            "15 black and white sticker designs for thermal printers: bakery, cottage food, jar, candle, soap and coffee labels",
             "Save your own designs as templates",
             "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",
             "Works offline, no account", "Light and dark themes",
@@ -766,19 +790,15 @@ def render(key, page, body):
 # --------------------------------------------------------------------------
 
 def sitemap():
+    """Plain sitemaps.org 0.9 sitemap (no extensions), so every validator accepts it."""
     prio = {"index": "1.0", "download": "0.9", "features": "0.9", "whats-new": "0.8",
             "barcode-labels": "0.8", "faq": "0.7", "donate": "0.5"}
     urls = []
     for key, page in PAGES.items():
         loc = SITE_URL + ("" if page["file"] == "index.html" else page["file"])
-        image = ""
-        if key == "index":
-            image = "".join(f"\n    <image:image><image:loc>{SITE_URL}images/screenshots/{n}</image:loc></image:image>"
-                            for n in ("editor.png", "welcome.png", "product-chooser.png", "print.png", "properties.png"))
-        urls.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{UPDATED}</lastmod>\n    <priority>{prio[key]}</priority>{image}\n  </url>")
+        urls.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{UPDATED}</lastmod>\n    <priority>{prio[key]}</priority>\n  </url>")
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
-            'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + "\n".join(urls) + "\n</urlset>\n")
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n")
 
 
 def robots():

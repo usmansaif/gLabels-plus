@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 50.8 mm" size="roll" width="50.8mm" height="50.8mm" roll_width="54.8mm" description="Round sticker 2 in">
+    <Label-round id="0" radius="25.4mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="1.8mm" y="1.8mm" w="47.2mm" h="47.2mm" lock_aspect_ratio="false" line_width="0.8mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-ellipse x="3.2mm" y="3.2mm" w="44.4mm" h="44.4mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="3.7526mm" y="3.7526mm" w="43.2947mm" h="43.2947mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="9" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="3.401">
+      <p>THANK YOU</p>
+    </Object-text>
+    <Object-image x="21.9mm" y="13.5mm" w="7mm" h="7mm" lock_aspect_ratio="true" src="heart.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Message" x="5mm" y="21mm" w="40.8mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="8.5" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>for supporting</p>
+      <p>small business</p>
+    </Object-text>
+    <Object-text name="Curved text" x="4.2466mm" y="4.2466mm" w="42.3069mm" h="42.3069mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="1.134">
+      <p>@yourshop</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="heart.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 21.4l-1.4-1.3C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.6z"/></svg>]]></File>
+  </Data>
+</Glabels-document>

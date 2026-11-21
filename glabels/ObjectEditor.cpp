@@ -44,6 +44,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QRegularExpression>
+#include <QSignalBlocker>
+#include <QSlider>
 #include <QToolButton>
 
 #include <QDebug>
@@ -71,6 +73,18 @@ namespace glabels
                 : mModel(nullptr), mObject(nullptr), mImageCwd("."), mBlocked(false)
         {
                 setupUi( this );
+
+                // Start angle: the slider and the spin box move together
+                connect( textPathStartSlider, &QSlider::valueChanged, this, [this]( int value ) {
+                        if ( qRound( textPathStartSpin->value() ) != value )
+                        {
+                                textPathStartSpin->setValue( value );
+                        }
+                } );
+                connect( textPathStartSpin, QOverload<double>::of( &QDoubleSpinBox::valueChanged ), this, [this]( double value ) {
+                        QSignalBlocker blocker( textPathStartSlider );
+                        textPathStartSlider->setValue( qBound( -180, qRound( value ), 180 ) );
+                } );
 
                 textHAlignGroup = new QButtonGroup( this );
                 textHAlignGroup->addButton( textHAlignLeftToggle, Qt::AlignLeft );
@@ -300,6 +314,15 @@ namespace glabels
                         textWrapModeCombo->setCurrentIndex( wrapIndex );
                         textLineSpacingSpin->setValue( mObject->textLineSpacing() );
                         textAutoShrinkCheck->setChecked( mObject->textAutoShrink() );
+                        textPathCombo->setCurrentIndex( int( mObject->textPath() ) );
+                        textLetterSpacingSpin->setValue( mObject->textLetterSpacing() );
+                        textPathStartSpin->setValue( mObject->textPathStart() );
+                        textPathOffsetSpin->setValue( mObject->textPathOffset() );
+                        {
+                                QSignalBlocker blocker( textPathStartSlider );
+                                textPathStartSlider->setValue( qBound( -180, qRound( mObject->textPathStart() ), 180 ) );
+                        }
+                        updateTextPathControls();
                         textEdit->setPlainText( merge::DataSourceUtil::toDisplay( mObject->text() ) );
 
                         mBlocked = false;
@@ -805,9 +828,37 @@ namespace glabels
                         mObject->setTextWrapMode( wrapMode );
                         mObject->setTextLineSpacing( textLineSpacingSpin->value() );
                         mObject->setTextAutoShrink( textAutoShrinkCheck->isChecked() );
+                        mObject->setTextPath( model::TextPath( textPathCombo->currentIndex() ) );
+                        mObject->setTextLetterSpacing( textLetterSpacingSpin->value() );
+                        mObject->setTextPathStart( textPathStartSpin->value() );
+                        mObject->setTextPathOffset( textPathOffsetSpin->value() );
+                        updateTextPathControls();
                         mObject->setText( merge::DataSourceUtil::fromDisplay( textEdit->toPlainText() ) );
 
                         mBlocked = false;
+                }
+        }
+
+
+        ///
+        /// Curved text is one line set along its path: wrap, line spacing and
+        /// vertical alignment don't apply to it
+        ///
+        void ObjectEditor::updateTextPathControls()
+        {
+                auto path     = model::TextPath( textPathCombo->currentIndex() );
+                bool straight = path == model::TextPath::Straight;
+                bool round    = !straight && path != model::TextPath::Wave;   // arcs, circle and rectangle
+                textPathStartLabel->setEnabled( round );
+                textPathStartSpin->setEnabled( round );
+                textPathStartSlider->setEnabled( round );
+                textPathOffsetLabel->setEnabled( round );
+                textPathOffsetSpin->setEnabled( round );
+                textWrapModeCombo->setEnabled( straight );
+                textLineSpacingSpin->setEnabled( straight );
+                for ( auto* button : textVAlignGroup->buttons() )
+                {
+                        button->setEnabled( straight );
                 }
         }
 

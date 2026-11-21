@@ -34,6 +34,8 @@ namespace
 {
         const double handlePixels             = 7;
         const double handleOutlineWidthPixels = 1;
+        const double cornerGrabPixels         = 11;   // corners and line ends: easier to grab than they look
+        const double edgeGrabPixels           = 4;    // edges: this far either side of the edge line
 
         const QColor handleFillColor( 0,  192,  0,  96 );
         const QColor originHandleFillColor( 192,  0,  0,  96 );
@@ -167,6 +169,69 @@ namespace glabels::model
                         return QPainterPath(); // Empty
                         break;
                 }
+        }
+
+
+        bool Handle::isEdge() const
+        {
+                return mLocation == N || mLocation == E || mLocation == S || mLocation == W;
+        }
+
+
+        QPointF Handle::direction() const
+        {
+                switch ( mLocation )
+                {
+                case NW: return QPointF( -1, -1 );
+                case N:  return QPointF(  0, -1 );
+                case NE: return QPointF(  1, -1 );
+                case E:  return QPointF(  1,  0 );
+                case SE: return QPointF(  1,  1 );
+                case S:  return QPointF(  0,  1 );
+                case SW: return QPointF( -1,  1 );
+                case W:  return QPointF( -1,  0 );
+                case P1: return QPointF( -mOwner->w().pt(), -mOwner->h().pt() );
+                case P2: return QPointF(  mOwner->w().pt(),  mOwner->h().pt() );
+                default: return QPointF();
+                }
+        }
+
+
+        QPainterPath Handle::hitPath( double scale ) const
+        {
+                const double s = 1/scale;
+                const double w = mOwner->w().pt();
+                const double h = mOwner->h().pt();
+                const double c = s*cornerGrabPixels/2;   // half the corner grab square
+                const double e = s*edgeGrabPixels;
+
+                QPainterPath path;
+                switch ( mLocation )
+                {
+                case N:
+                        path.addRect( QRectF( QPointF( qMin( c, w/2 ), -e ), QPointF( qMax( w - c, w/2 ), e ) ).normalized() );
+                        break;
+                case S:
+                        path.addRect( QRectF( QPointF( qMin( c, w/2 ), h - e ), QPointF( qMax( w - c, w/2 ), h + e ) ).normalized() );
+                        break;
+                case W:
+                        path.addRect( QRectF( QPointF( -e, qMin( c, h/2 ) ), QPointF( e, qMax( h - c, h/2 ) ) ).normalized() );
+                        break;
+                case E:
+                        path.addRect( QRectF( QPointF( w - e, qMin( c, h/2 ) ), QPointF( w + e, qMax( h - c, h/2 ) ) ).normalized() );
+                        break;
+                default:
+                {
+                        // Corners and line ends: a larger square round the drawn handle
+                        QPainterPath square;
+                        square.addRect( -c, -c, 2*c, 2*c );
+                        QPointF at = this->path( scale ).boundingRect().center();
+                        square.translate( at );
+                        path = square;
+                        break;
+                }
+                }
+                return path;
         }
 
 

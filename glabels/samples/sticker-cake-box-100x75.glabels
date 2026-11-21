@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="100 × 75 mm" size="roll" width="100mm" height="75mm" roll_width="104mm" description="Rectangle sticker 100 × 75 mm">
+    <Label-rectangle id="0" width="100mm" height="75mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="1.5mm" y="1.5mm" w="97mm" h="13mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image x="5mm" y="3.5mm" w="6mm" h="9mm" lock_aspect_ratio="true" src="whisk.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="13mm" y="1.5mm" w="58mm" h="13mm" lock_aspect_ratio="false" color="4294967295" font_family="Georgia" font_size="15" font_weight="normal" font_italic="true" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Celebration Cake</p>
+    </Object-text>
+    <Object-text name="Business name" x="66mm" y="1.5mm" w="30mm" h="13mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>LITTLE WHISK</p>
+      <p>BAKE HOUSE</p>
+    </Object-text>
+    <Object-text x="4mm" y="18mm" w="26mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>FLAVOUR</p>
+    </Object-text>
+    <Object-line x="31mm" y="23.3mm" dx="65mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Flavour" x="31mm" y="17.8109mm" w="65mm" h="6.3783mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Chocolate fudge</p>
+    </Object-text>
+    <Object-text x="4mm" y="26.5mm" w="26mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>SIZE</p>
+    </Object-text>
+    <Object-line x="31mm" y="31.8mm" dx="65mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Size" x="31mm" y="26.3109mm" w="65mm" h="6.3783mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>8 in · serves 12</p>
+    </Object-text>
+    <Object-text x="4mm" y="35mm" w="26mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>MADE ON</p>
+    </Object-text>
+    <Object-line x="31mm" y="40.3mm" dx="65mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="43.5mm" w="26mm" h="6mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>BEST BEFORE</p>
+    </Object-text>
+    <Object-line x="31mm" y="48.8mm" dx="65mm" dy="0mm" line_width="0.25mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="4mm" y="52.5mm" w="30mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>CONTAINS</p>
+    </Object-text>
+    <Object-box x="4mm" y="58.3mm" w="3.2mm" h="3.2mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="7.4mm" y="57.0866mm" w="15mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Wheat</p>
+    </Object-text>
+    <Object-box x="23mm" y="58.3mm" w="3.2mm" h="3.2mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="26.4mm" y="57.0866mm" w="15mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Milk</p>
+    </Object-text>
+    <Object-box x="42mm" y="58.3mm" w="3.2mm" h="3.2mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="45.4mm" y="57.0866mm" w="15mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Eggs</p>
+    </Object-text>
+    <Object-box x="61mm" y="58.3mm" w="3.2mm" h="3.2mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="64.4mm" y="57.0866mm" w="15mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Nuts</p>
+    </Object-text>
+    <Object-box x="80mm" y="58.3mm" w="3.2mm" h="3.2mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="83.4mm" y="57.0866mm" w="15mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Soy</p>
+    </Object-text>
+    <Object-text x="4mm" y="65mm" w="92mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="true" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Keep refrigerated. Enjoy within 3 days.</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="whisk.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" width="60" height="100"><rect fill="#fff" x="26" y="62" width="8" height="34" rx="4"/><path d="M30 62 C10 46 12 8 30 4 C48 8 50 46 30 62Z M30 62 C20 46 22 10 30 4 C38 10 40 46 30 62Z M30 62 L30 4" fill="none" stroke="#fff" stroke-width="2.4"/></svg>]]></File>
+  </Data>
+</Glabels-document>

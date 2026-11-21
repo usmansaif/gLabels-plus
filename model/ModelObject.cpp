@@ -35,6 +35,31 @@
 namespace glabels::model
 {
 
+        QString textPathToString( TextPath path )
+        {
+                switch ( path )
+                {
+                case TextPath::ArcTop:    return "arc-top";
+                case TextPath::ArcBottom: return "arc-bottom";
+                case TextPath::Circle:    return "circle";
+                case TextPath::Wave:      return "wave";
+                case TextPath::Rectangle: return "rectangle";
+                default:                  return "straight";
+                }
+        }
+
+
+        TextPath textPathFromString( const QString& name )
+        {
+                if ( name == "arc-top" )    return TextPath::ArcTop;
+                if ( name == "arc-bottom" ) return TextPath::ArcBottom;
+                if ( name == "circle" )     return TextPath::Circle;
+                if ( name == "wave" )       return TextPath::Wave;
+                if ( name == "rectangle" )  return TextPath::Rectangle;
+                return TextPath::Straight;
+        }
+
+
         ///
         /// Next Object ID
         ///
@@ -794,6 +819,78 @@ namespace glabels::model
 
 
         ///
+        /// Virtual Text Path Property Default Getter
+        /// (Overridden by concrete class)
+        ///
+        TextPath ModelObject::textPath() const
+        {
+                return TextPath::Straight;
+        }
+
+
+        ///
+        /// Virtual Text Path Property Default Setter
+        /// (Overridden by concrete class)
+        ///
+        void ModelObject::setTextPath( TextPath value )
+        {
+                // empty
+        }
+
+
+        ///
+        /// Virtual Text Letter Spacing Property Default Getter
+        /// (Overridden by concrete class)
+        ///
+        double ModelObject::textLetterSpacing() const
+        {
+                return 0;
+        }
+
+
+        ///
+        /// Virtual Text Letter Spacing Property Default Setter
+        /// (Overridden by concrete class)
+        ///
+        void ModelObject::setTextLetterSpacing( double value )
+        {
+                // empty
+        }
+
+
+        ///
+        /// Virtual Text Path Start Property Default Getter/Setter
+        /// (Overridden by concrete class)
+        ///
+        double ModelObject::textPathStart() const
+        {
+                return 0;
+        }
+
+
+        void ModelObject::setTextPathStart( double value )
+        {
+                // empty
+        }
+
+
+        ///
+        /// Virtual Text Path Offset Property Default Getter/Setter
+        /// (Overridden by concrete class)
+        ///
+        double ModelObject::textPathOffset() const
+        {
+                return 0;
+        }
+
+
+        void ModelObject::setTextPathOffset( double value )
+        {
+                // empty
+        }
+
+
+        ///
         /// Virtual Filename Node Property Default Getter
         /// (Overridden by concrete class)
         ///
@@ -1326,12 +1423,25 @@ namespace glabels::model
                         QPointF p( x.pt(), y.pt() );
                         p -= QPointF( mX0.pt(), mY0.pt() ); // Translate point to x0,y0
 
+                        // The drawn handles first, then the larger grab areas: corners
+                        // before edges, so a corner wins where they meet
                         for ( auto& handle : mHandles )
                         {
                                 QPainterPath handlePath = mMatrix.map( handle.path( scale ) );
                                 if ( handlePath.contains( p ) )
                                 {
                                         return handle;
+                                }
+                        }
+                        for ( int pass = 0; pass < 2; pass++ )
+                        {
+                                for ( auto& handle : mHandles )
+                                {
+                                        if ( handle.isEdge() == ( pass == 1 ) &&
+                                             mMatrix.map( handle.hitPath( scale ) ).contains( p ) )
+                                        {
+                                                return handle;
+                                        }
                                 }
                         }
                 }

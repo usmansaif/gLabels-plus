@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 38.1 mm" size="roll" width="38.1mm" height="38.1mm" roll_width="42.1mm" description="Round sticker 1.5 in">
+    <Label-round id="0" radius="19.05mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="0.75mm" y="0.75mm" w="36.6mm" h="36.6mm" lock_aspect_ratio="false" line_width="0mm" line_color="0" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-ellipse x="6.85mm" y="6.85mm" w="24.4mm" h="24.4mm" lock_aspect_ratio="false" line_width="0.35mm" line_color="4294967295" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="1.3259mm" y="1.3259mm" w="35.4482mm" h="35.4482mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="0.992">
+      <p>HANDMADE WITH LOVE</p>
+    </Object-text>
+    <Object-text name="Curved text" x="1.3259mm" y="1.3259mm" w="35.4482mm" h="35.4482mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="1.701">
+      <p>SMALL BATCH</p>
+    </Object-text>
+    <Object-text name="Centre text" x="8mm" y="12.5mm" w="22.1mm" h="13mm" lock_aspect_ratio="false" color="4294967295" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>100%</p>
+      <p>HANDMADE</p>
+    </Object-text>
+  </Objects>
+  <Data/>
+</Glabels-document>

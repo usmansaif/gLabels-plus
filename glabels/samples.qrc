@@ -17,6 +17,21 @@
 	<file>samples/pallet-label-100x100.glabels</file>
 	<file>samples/food-date-label-57x32.glabels</file>
 	<file>samples/qr-code-label-50x50.glabels</file>
+	<file>samples/sticker-homemade-cookies-round.glabels</file>
+	<file>samples/sticker-bakery-cookies-round.glabels</file>
+	<file>samples/sticker-cottage-food-round.glabels</file>
+	<file>samples/sticker-cookie-box-100x70.glabels</file>
+	<file>samples/sticker-bakery-product-100x100.glabels</file>
+	<file>samples/sticker-thank-you-round.glabels</file>
+	<file>samples/sticker-handmade-seal-round.glabels</file>
+	<file>samples/sticker-jam-jar-76x51.glabels</file>
+	<file>samples/sticker-honey-oval-90x60.glabels</file>
+	<file>samples/sticker-candle-4x2.glabels</file>
+	<file>samples/sticker-soap-76x76.glabels</file>
+	<file>samples/sticker-coffee-round.glabels</file>
+	<file>samples/sticker-cake-box-100x75.glabels</file>
+	<file>samples/sticker-box-seal-100x30.glabels</file>
+	<file>samples/sticker-spice-jar-round.glabels</file>
 
 </qresource>
 </RCC>

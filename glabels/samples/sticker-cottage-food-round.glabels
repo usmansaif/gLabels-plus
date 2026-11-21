@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 76.2 mm" size="roll" width="76.2mm" height="76.2mm" roll_width="80.2mm" description="Round sticker 3 in">
+    <Label-round id="0" radius="38.1mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="7.7mm" y="7.7mm" w="60.8mm" h="60.8mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="1.9938mm" y="1.9938mm" w="72.2125mm" h="72.2125mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="8.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="0.992">
+      <p>SUNNY SIDE COTTAGE BAKERY</p>
+    </Object-text>
+    <Object-text name="Curved text" x="2.5699mm" y="2.5699mm" w="71.0602mm" h="71.0602mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.2" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="0.142">
+      <p>MADE IN A HOME KITCHEN NOT SUBJECT TO GOVERNMENT FOOD SAFETY INSPECTION</p>
+    </Object-text>
+    <Object-image x="34.1mm" y="8.5mm" w="8mm" h="8mm" lock_aspect_ratio="true" src="cookie.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="16mm" y="18mm" dx="44.2mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Product" x="12mm" y="15.9283mm" w="52.2mm" h="14.1434mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="24" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Cookies</p>
+    </Object-text>
+    <Object-text name="Flavour" x="12mm" y="29mm" w="52.2mm" h="5.8773mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>OATMEAL RAISIN</p>
+    </Object-text>
+    <Object-text x="10mm" y="34.5mm" w="56.2mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>INGREDIENTS:</p>
+    </Object-text>
+    <Object-text name="Ingredients" x="9mm" y="37.6mm" w="58.2mm" h="9mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Oats, plain flour, butter, brown sugar, raisins,</p>
+      <p>eggs, cinnamon, baking soda, salt</p>
+    </Object-text>
+    <Object-text x="12mm" y="45.5mm" w="52.2mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>CONTAINS:</p>
+    </Object-text>
+    <Object-text name="Allergens" x="12mm" y="48.6mm" w="52.2mm" h="4.9255mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Wheat, gluten, milk, eggs</p>
+    </Object-text>
+    <Object-text name="Net weight" x="18mm" y="53mm" w="40.2mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Net Wt. 8 oz</p>
+    </Object-text>
+    <Object-text name="Address" x="16mm" y="58mm" w="44.2mm" h="7.5mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.3" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>12 Baker Street, Your City</p>
+      <p>+92 300 1234567</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="cookie.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60"><polygon points="56.98,30.00 56.50,34.67 54.28,38.84 52.54,43.01 51.20,47.79 47.93,51.37 43.68,53.69 39.44,55.93 34.66,56.41 30.00,55.55 25.43,55.93 20.59,55.87 16.32,53.70 12.20,51.21 8.56,47.99 7.03,43.26 5.89,38.77 3.77,34.62 2.98,30.00 3.32,25.30 3.54,20.37 5.77,16.01 9.84,13.08 13.22,10.00 16.68,6.92 20.97,5.19 25.28,3.23 30.00,1.55 34.80,2.75 39.05,5.12 43.32,6.94 46.91,9.84 49.93,13.28 53.80,16.26 56.64,20.30 56.95,25.25" fill="#fff" stroke="#000" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="17.85" cy="20.55" rx="2.43" ry="2.02" transform="rotate(10 17.85 20.55)"/><ellipse cx="35.40" cy="16.50" rx="2.97" ry="2.02" transform="rotate(40 35.40 16.50)"/><ellipse cx="43.50" cy="28.65" rx="3.51" ry="2.02" transform="rotate(70 43.50 28.65)"/><ellipse cx="27.30" cy="31.35" rx="2.43" ry="2.02" transform="rotate(10 27.30 31.35)"/><ellipse cx="16.50" cy="39.45" rx="2.97" ry="2.02" transform="rotate(40 16.50 39.45)"/><ellipse cx="36.75" cy="42.15" rx="3.51" ry="2.02" transform="rotate(70 36.75 42.15)"/><ellipse cx="25.95" cy="11.10" rx="2.43" ry="2.02" transform="rotate(10 25.95 11.10)"/><ellipse cx="47.55" cy="39.45" rx="2.97" ry="2.02" transform="rotate(40 47.55 39.45)"/><ellipse cx="11.10" cy="28.65" rx="3.51" ry="2.02" transform="rotate(70 11.10 28.65)"/></svg>]]></File>
+  </Data>
+</Glabels-document>

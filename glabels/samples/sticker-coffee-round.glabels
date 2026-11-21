@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 63.5 mm" size="roll" width="63.5mm" height="63.5mm" roll_width="67.5mm" description="Round sticker 2.5 in">
+    <Label-round id="0" radius="31.75mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-ellipse x="1.75mm" y="1.75mm" w="60mm" h="60mm" lock_aspect_ratio="false" line_width="0.5mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Curved text" x="2.4731mm" y="2.4731mm" w="58.5538mm" h="58.5538mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7.5" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="1.701">
+      <p>NORTHSIDE ROASTERS</p>
+    </Object-text>
+    <Object-text name="Curved text" x="2.5966mm" y="2.5966mm" w="58.3069mm" h="58.3069mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="1.701">
+      <p>WHOLE BEAN · 250 G</p>
+    </Object-text>
+    <Object-image x="28.75mm" y="9.5mm" w="6mm" h="8mm" lock_aspect_ratio="true" src="bean.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Origin" x="8mm" y="16.1827mm" w="47.5mm" h="9.6346mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="15" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ETHIOPIA</p>
+    </Object-text>
+    <Object-text name="Region" x="8mm" y="24.1846mm" w="47.5mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="11" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Yirgacheffe</p>
+    </Object-text>
+    <Object-text name="Tasting notes" x="10mm" y="32mm" w="43.5mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Jasmine · lemon · honey</p>
+    </Object-text>
+    <Object-text x="13mm" y="36.4371mm" w="13mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>ROAST</p>
+    </Object-text>
+    <Object-box x="27mm" y="37.6mm" w="6.5mm" h="2.8mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-box x="35mm" y="37.6mm" w="6.5mm" h="2.8mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-box x="43mm" y="37.6mm" w="6.5mm" h="2.8mm" lock_aspect_ratio="false" line_width="0.3mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="25.5mm" y="40.8mm" w="11mm" h="4.6249mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>LIGHT</p>
+    </Object-text>
+    <Object-text x="41.5mm" y="40.8mm" w="11mm" h="4.6249mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>DARK</p>
+    </Object-text>
+    <Object-text name="Roast date" x="9mm" y="45mm" w="45.5mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Roasted: ____________</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="bean.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" width="60" height="80"><ellipse cx="30" cy="40" rx="24" ry="34" transform="rotate(20 30 40)"/><path d="M40 9 C20 26 42 52 20 71" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>]]></File>
+  </Data>
+</Glabels-document>

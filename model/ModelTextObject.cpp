@@ -27,7 +27,11 @@
 
 #include <QBrush>
 #include <QDebug>
+#include <QGlyphRun>
+#include <QPainter>
 #include <QPen>
+#include <QRawFont>
+#include <QtMath>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QRegularExpression>
@@ -90,6 +94,10 @@ namespace glabels::model
                 mTextWrapMode      = QTextOption::WordWrap;
                 mTextLineSpacing   = 1;
                 mTextAutoShrink    = false;
+                mTextPath          = TextPath::Straight;
+                mTextLetterSpacing = 0;
+                mTextPathStart     = 0;
+                mTextPathOffset    = 0;
         }
 
 
@@ -154,6 +162,10 @@ namespace glabels::model
                 mTextWrapMode      = textWrapMode;
                 mTextLineSpacing   = textLineSpacing;
                 mTextAutoShrink    = textAutoShrink;
+                mTextPath          = TextPath::Straight;
+                mTextLetterSpacing = 0;
+                mTextPathStart     = 0;
+                mTextPathOffset    = 0;
 
                 update(); // Initialize cached editor layouts
         }
@@ -177,6 +189,10 @@ namespace glabels::model
                 mTextWrapMode      = object->mTextWrapMode;
                 mTextLineSpacing   = object->mTextLineSpacing;
                 mTextAutoShrink    = object->mTextAutoShrink;
+                mTextPath          = object->mTextPath;
+                mTextLetterSpacing = object->mTextLetterSpacing;
+                mTextPathStart     = object->mTextPathStart;
+                mTextPathOffset    = object->mTextPathOffset;
 
                 update(); // Initialize cached editor layouts
         }
@@ -478,16 +494,97 @@ namespace glabels::model
 
 
         ///
+        /// TextPath Property Getter
+        ///
+        TextPath ModelTextObject::textPath() const
+        {
+                return mTextPath;
+        }
+
+
+        ///
+        /// TextPath Property Setter
+        ///
+        void ModelTextObject::setTextPath( TextPath value )
+        {
+                if ( mTextPath != value )
+                {
+                        mTextPath = value;
+                        update();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// TextLetterSpacing Property Getter
+        ///
+        double ModelTextObject::textLetterSpacing() const
+        {
+                return mTextLetterSpacing;
+        }
+
+
+        ///
+        /// TextLetterSpacing Property Setter
+        ///
+        void ModelTextObject::setTextLetterSpacing( double value )
+        {
+                if ( mTextLetterSpacing != value )
+                {
+                        mTextLetterSpacing = value;
+                        update();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// TextPathStart Property Getter/Setter
+        ///
+        double ModelTextObject::textPathStart() const
+        {
+                return mTextPathStart;
+        }
+
+
+        void ModelTextObject::setTextPathStart( double value )
+        {
+                if ( mTextPathStart != value )
+                {
+                        mTextPathStart = value;
+                        update();
+                        emit changed();
+                }
+        }
+
+
+        ///
+        /// TextPathOffset Property Getter/Setter
+        ///
+        double ModelTextObject::textPathOffset() const
+        {
+                return mTextPathOffset;
+        }
+
+
+        void ModelTextObject::setTextPathOffset( double value )
+        {
+                if ( mTextPathOffset != value )
+                {
+                        mTextPathOffset = value;
+                        update();
+                        emit changed();
+                }
+        }
+
+
+        ///
         /// NaturalSize Property Getter
         ///
         Size ModelTextObject::naturalSize() const
         {
-                QFont font;
-                font.setFamily( mFontFamily );
-                font.setPixelSize( pixelSize( mFontSize ) );
-                font.setWeight( mFontWeight );
-                font.setItalic( mFontItalicFlag );
-                font.setUnderline( mFontUnderlineFlag );
+                QFont font = makeFont( mFontSize );
 
                 QTextOption textOption;
                 textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
@@ -606,12 +703,7 @@ namespace glabels::model
         ///
         void ModelTextObject::update()
         {
-                QFont font;
-                font.setFamily( mFontFamily );
-                font.setPixelSize( pixelSize( mFontSize ) );
-                font.setWeight( mFontWeight );
-                font.setItalic( mFontItalicFlag );
-                font.setUnderline( mFontUnderlineFlag );
+                QFont font = makeFont( mFontSize );
 
                 QTextOption textOption;
                 textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
@@ -696,6 +788,13 @@ namespace glabels::model
                         }
                 }
 
+                if ( mTextPath != TextPath::Straight )
+                {
+                        // Curved text can be anywhere in the box
+                        hoverPath = QPainterPath();
+                        hoverPath.addRect( QRectF( 0, 0, mW.pt(), mH.pt() ) );
+                }
+
                 mHoverPath = hoverPath; // save new hover path
         }
 
@@ -707,7 +806,10 @@ namespace glabels::model
         {
                 painter->save();
 
-                painter->setClipRect( QRectF( 0, 0, mW.pt(), mH.pt() ) );
+                if ( mTextPath == TextPath::Straight )
+                {
+                        painter->setClipRect( QRectF( 0, 0, mW.pt(), mH.pt() ) );   // curved text may be moved out past the box
+                }
 
                 if ( mText.isEmpty() )
                 {
@@ -718,6 +820,15 @@ namespace glabels::model
                 else
                 {
                         painter->setPen( QPen( color ) );
+                }
+
+                if ( mTextPath != TextPath::Straight )
+                {
+                        QString displayText = mText.isEmpty() ? tr("Text")
+                                                              : merge::DataSourceUtil::toDisplay( mText.toString() );
+                        drawTextOnPath( painter, painter->pen().color(), displayText, mFontSize );
+                        painter->restore();
+                        return;
                 }
 
                 // Variable placeholders are drawn as rounded "pills" behind the text
@@ -782,14 +893,20 @@ namespace glabels::model
         {
                 painter->save();
 
-                painter->setClipRect( QRectF( 0, 0, mW.pt(), mH.pt() ) );
+                if ( mTextPath == TextPath::Straight )
+                {
+                        painter->setClipRect( QRectF( 0, 0, mW.pt(), mH.pt() ) );   // curved text may be moved out past the box
+                }
 
-                QFont font;
-                font.setFamily( mFontFamily );
-                font.setPixelSize( pixelSize( mTextAutoShrink ? autoShrinkFontSize( record, variables ) : mFontSize ) );
-                font.setWeight( mFontWeight );
-                font.setItalic( mFontItalicFlag );
-                font.setUnderline( mFontUnderlineFlag );
+                if ( mTextPath != TextPath::Straight )
+                {
+                        drawTextOnPath( painter, color, mText.expand( record, variables ),
+                                        mTextAutoShrink ? autoShrinkFontSize( record, variables ) : mFontSize );
+                        painter->restore();
+                        return;
+                }
+
+                QFont font = makeFont( mTextAutoShrink ? autoShrinkFontSize( record, variables ) : mFontSize );
 
                 QTextOption textOption;
                 textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
@@ -875,11 +992,32 @@ namespace glabels::model
         ModelTextObject::autoShrinkFontSize( const merge::Record& record,
                                              const Variables&     variables ) const
         {
+                if ( mTextPath != TextPath::Straight )
+                {
+                        // Shrink until the text fits along the path
+                        QString text = mText.expand( record, variables );
+                        double candidateSize = mFontSize;
+                        while ( candidateSize > 1.0 )
+                        {
+                                QFont font = makeFont( candidateSize );
+                                double fitLength;
+                                bool   closed;
+                                baselinePath( QFontMetricsF( font ), fitLength, closed );
+                                if ( pathTextWidth( text, font ) <= fitLength )
+                                {
+                                        break;
+                                }
+                                candidateSize -= 0.5;
+                        }
+                        return candidateSize;
+                }
+
                 QFont font;
                 font.setFamily( mFontFamily );
                 font.setWeight( mFontWeight );
                 font.setItalic( mFontItalicFlag );
                 font.setUnderline( mFontUnderlineFlag );
+                font.setLetterSpacing( QFont::AbsoluteSpacing, mTextLetterSpacing );
 
                 QTextOption textOption;
                 textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute ); // honor L/C/R literally, also for RTL (Urdu, Arabic) text
@@ -932,6 +1070,287 @@ namespace glabels::model
                 }
 
                 return candidateSize;
+        }
+
+
+
+        ///
+        /// Font for the given size, with all of this object's font settings
+        ///
+        QFont ModelTextObject::makeFont( double fontSize ) const
+        {
+                QFont font;
+                font.setFamily( mFontFamily );
+                font.setPixelSize( pixelSize( fontSize ) );
+                font.setWeight( mFontWeight );
+                font.setItalic( mFontItalicFlag );
+                font.setUnderline( mFontUnderlineFlag );
+                font.setLetterSpacing( QFont::AbsoluteSpacing, mTextLetterSpacing );
+                return font;
+        }
+
+
+        ///
+        /// Baseline the letters sit on, fitted inside the object's box so the
+        /// letters themselves stay inside it (moved in or out by the path offset).
+        ///
+        /// Closed paths (arcs, circle, rectangle) start at the point the text is
+        /// aligned to: the left end of an arc, or the top of a circle or rectangle.
+        /// "fitLength" is the length text can fill: half the ellipse for an arc.
+        ///
+        QPainterPath ModelTextObject::baselinePath( const QFontMetricsF& fm, double& fitLength, bool& closed ) const
+        {
+                const double w = mW.pt();
+                const double h = mH.pt();
+                const double ascent  = fm.ascent();
+                const double descent = fm.descent();
+
+                auto insetRect = [&]( double inset )
+                {
+                        double rw = qMax( 1.0, w - 2*inset );
+                        double rh = qMax( 1.0, h - 2*inset );
+                        return QRectF( w/2 - rw/2, h/2 - rh/2, rw, rh );
+                };
+
+                QPainterPath path;
+                closed = true;
+                switch ( mTextPath )
+                {
+                case TextPath::ArcTop:
+                {
+                        // Clockwise from the left: left to right over the top, letters standing on the curve
+                        QRectF r = insetRect( marginPts + ascent + mTextPathOffset );
+                        path.arcMoveTo( r, 180 );
+                        path.arcTo( r, 180, -360 );
+                        fitLength = path.length() / 2;
+                        break;
+                }
+                case TextPath::ArcBottom:
+                {
+                        // Counter-clockwise from the left: left to right under the bottom, letters hanging from it
+                        QRectF r = insetRect( marginPts + descent + mTextPathOffset );
+                        path.arcMoveTo( r, 180 );
+                        path.arcTo( r, 180, 360 );
+                        fitLength = path.length() / 2;
+                        break;
+                }
+                case TextPath::Circle:
+                {
+                        // All the way round, clockwise from the top
+                        QRectF r = insetRect( marginPts + ascent + mTextPathOffset );
+                        path.arcMoveTo( r, 90 );
+                        path.arcTo( r, 90, -360 );
+                        fitLength = path.length();
+                        break;
+                }
+                case TextPath::Rectangle:
+                {
+                        // Round the edges, clockwise from the middle of the top
+                        QRectF r = insetRect( marginPts + ascent + mTextPathOffset );
+                        path.moveTo( r.center().x(), r.top() );
+                        path.lineTo( r.topRight() );
+                        path.lineTo( r.bottomRight() );
+                        path.lineTo( r.bottomLeft() );
+                        path.lineTo( r.topLeft() );
+                        path.closeSubpath();
+                        fitLength = path.length();
+                        break;
+                }
+                case TextPath::Wave:
+                {
+                        // One sine wave across the box, centered vertically
+                        closed = false;
+                        double x0  = marginPts;
+                        double x1  = qMax( x0 + 1, w - marginPts );
+                        double yc  = h/2 + ( ascent - descent )/2;
+                        double amp = qMax( 0.0, h/2 - marginPts - ( ascent + descent )/2 );
+                        const int n = 96;
+                        for ( int i = 0; i <= n; i++ )
+                        {
+                                double t = double( i ) / n;
+                                QPointF p( x0 + t*( x1 - x0 ), yc - amp*qSin( 2*M_PI*t ) );
+                                if ( i == 0 )
+                                {
+                                        path.moveTo( p );
+                                }
+                                else
+                                {
+                                        path.lineTo( p );
+                                }
+                        }
+                        fitLength = path.length();
+                        break;
+                }
+                default:
+                        closed = false;
+                        path.moveTo( marginPts, h/2 );
+                        path.lineTo( qMax( marginPts + 1, w - marginPts ), h/2 );
+                        fitLength = path.length();
+                        break;
+                }
+
+                return path;
+        }
+
+
+        ///
+        /// Width of the text set on one line (lines are joined with spaces)
+        ///
+        double ModelTextObject::pathTextWidth( const QString& text, const QFont& font ) const
+        {
+                QString oneLine = text;
+                oneLine.replace( '\n', ' ' );
+
+                QTextLayout layout( oneLine, font );
+                layout.beginLayout();
+                QTextLine line = layout.createLine();
+                double width = 0;
+                if ( line.isValid() )
+                {
+                        line.setPosition( QPointF( 0, 0 ) );
+                        width = line.naturalTextWidth();
+                }
+                layout.endLayout();
+                return width;
+        }
+
+
+        ///
+        /// Draw text along the object's text path, one glyph at a time
+        ///
+        void ModelTextObject::drawTextOnPath( QPainter*      painter,
+                                              const QColor&  color,
+                                              const QString& text,
+                                              double         fontSize ) const
+        {
+                QFont font = makeFont( fontSize );
+                QFontMetricsF fm( font );
+
+                double fitLength;
+                bool   closed;
+                QPainterPath path = baselinePath( fm, fitLength, closed );
+                const double length = path.length();
+                if ( length <= 0 )
+                {
+                        return;
+                }
+
+                QString oneLine = text;
+                oneLine.replace( '\n', ' ' );
+
+                QTextLayout layout( oneLine, font );
+                layout.setCacheEnabled( true );
+                layout.beginLayout();
+                QTextLine line = layout.createLine();
+                if ( !line.isValid() )
+                {
+                        layout.endLayout();
+                        return;
+                }
+                line.setPosition( QPointF( 0, 0 ) );
+                layout.endLayout();
+
+                const double textWidth = line.naturalTextWidth();
+                const double baselineY = line.ascent();
+
+                // Where the text begins along the path
+                double offset = 0;
+                bool centeredOnStart = ( mTextPath == TextPath::Circle || mTextPath == TextPath::Rectangle );
+                if ( centeredOnStart )
+                {
+                        // The path starts at the top: center means centered on the top
+                        if ( mTextHAlign & Qt::AlignHCenter )
+                        {
+                                offset = -textWidth/2;
+                        }
+                        else if ( mTextHAlign & Qt::AlignRight )
+                        {
+                                offset = -textWidth;
+                        }
+                }
+                else
+                {
+                        if ( mTextHAlign & Qt::AlignHCenter )
+                        {
+                                offset = ( fitLength - textWidth )/2;
+                        }
+                        else if ( mTextHAlign & Qt::AlignRight )
+                        {
+                                offset = fitLength - textWidth;
+                        }
+                }
+
+                // Start angle: turn the text clockwise round a closed path
+                if ( closed && mTextPathStart != 0 )
+                {
+                        double shift = mTextPathStart / 360.0 * length;
+                        offset += ( mTextPath == TextPath::ArcBottom ) ? -shift : shift;   // bottom arc runs counter-clockwise
+                }
+
+                // Point and direction (degrees, counter-clockwise) at a distance along the path;
+                // round a closed path, or carry on in a straight line beyond the ends of an open one
+                auto placeAt = [&]( double s, QPointF& point, double& angle )
+                {
+                        if ( closed )
+                        {
+                                s = std::fmod( s, length );
+                                if ( s < 0 )
+                                {
+                                        s += length;
+                                }
+                        }
+                        double extra = 0;
+                        if ( s < 0 )
+                        {
+                                extra = s;
+                                s = 0;
+                        }
+                        else if ( s > length )
+                        {
+                                extra = s - length;
+                                s = length;
+                        }
+                        double t = path.percentAtLength( s );
+                        point = path.pointAtPercent( t );
+                        angle = path.angleAtPercent( t );
+                        if ( extra != 0 )
+                        {
+                                double a = qDegreesToRadians( angle );
+                                point += QPointF( extra*qCos( a ), -extra*qSin( a ) );
+                        }
+                };
+
+                painter->setPen( QPen( color ) );
+
+                const auto runs = layout.glyphRuns();
+                for ( const QGlyphRun& run : runs )
+                {
+                        QRawFont rawFont = run.rawFont();
+                        const QVector<quint32> indexes   = run.glyphIndexes();
+                        const QVector<QPointF> positions = run.positions();
+                        const QVector<QPointF> advances  = rawFont.advancesForGlyphIndexes( indexes );
+
+                        for ( int i = 0; i < indexes.size(); i++ )
+                        {
+                                double advance = advances.value( i ).x();
+                                double center  = positions[i].x() + advance/2;
+
+                                QPointF point;
+                                double  angle;
+                                placeAt( offset + center, point, angle );
+
+                                QGlyphRun glyph;
+                                glyph.setRawFont( rawFont );
+                                glyph.setGlyphIndexes( { indexes[i] } );
+                                glyph.setPositions( { QPointF( -advance/2, positions[i].y() - baselineY ) } );
+
+                                painter->save();
+                                painter->translate( point );
+                                painter->rotate( -angle );
+                                painter->drawGlyphRun( QPointF( 0, 0 ), glyph );
+                                painter->restore();
+                        }
+                }
         }
 
 }

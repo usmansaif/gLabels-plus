@@ -358,6 +358,22 @@ namespace glabels::model
                 XmlUtil::setWrapModeAttr( node, "wrap", object->textWrapMode() );
                 XmlUtil::setDoubleAttr( node, "line_spacing", object->textLineSpacing() );
                 XmlUtil::setBoolAttr( node, "auto_shrink", object->textAutoShrink() );
+                if ( object->textPath() != TextPath::Straight )
+                {
+                        XmlUtil::setStringAttr( node, "text_path", textPathToString( object->textPath() ) );
+                }
+                if ( object->textPathStart() != 0 )
+                {
+                        XmlUtil::setDoubleAttr( node, "path_start", object->textPathStart() );
+                }
+                if ( object->textPathOffset() != 0 )
+                {
+                        XmlUtil::setDoubleAttr( node, "path_offset", object->textPathOffset() );
+                }
+                if ( object->textLetterSpacing() != 0 )
+                {
+                        XmlUtil::setDoubleAttr( node, "letter_spacing", object->textLetterSpacing() );
+                }
 
                 /* affine attrs */
                 createAffineAttrs( node, object );

@@ -26,6 +26,7 @@
 #include <QColor>
 #include <QImage>
 #include <QPair>
+#include <QPalette>
 #include <QStringList>
 #include <QStyledItemDelegate>
 
@@ -53,7 +54,7 @@ namespace glabels
                         QColor text, text2, text3;
                         QColor primary, primaryDark, tint, tintBorder, onPrimary;
 
-                        static Theme make( const QColor& accent, bool dark );
+                        static Theme make( const QPalette& palette, bool dark );
                 };
 
 

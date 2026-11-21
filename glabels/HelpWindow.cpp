@@ -254,6 +254,7 @@ namespace glabels
 
                         { "printing",    tr("Printing labels"),               output },
                         { "batch",       tr("Command-line printing"),         output },
+                        { "estimator",   tr("Print sheet estimator"),         output },
 
                         { "projects",    tr("Projects and files"),            organize },
                         { "preferences", tr("Preferences and appearance"),    organize },

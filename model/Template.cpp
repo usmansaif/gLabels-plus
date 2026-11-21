@@ -117,6 +117,10 @@ namespace glabels::model
                         {
                                 mFrame = other.mFrame->clone();
                         }
+                        else
+                        {
+                                mFrame.reset();
+                        }
 
                         mCategoryIds.clear();
                         for ( auto& categoryId : other.mCategoryIds )

@@ -331,7 +331,209 @@
             </item>
            </layout>
           </item>
-          <item row="3" column="0" colspan="2">
+          <item row="3" column="0">
+           <widget class="QLabel" name="textPathLabel">
+            <property name="text">
+             <string>Path:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <layout class="QHBoxLayout" name="textPathLayout">
+            <item>
+             <widget class="QComboBox" name="textPathCombo">
+              <property name="toolTip">
+               <string>Curve the text along an arc or circle. The curve fits the text box: draw the box over a round label, then resize it to change the curve.</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Straight</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Arc (top)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Arc (bottom)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Circle</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Wave</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Rectangle</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <spacer name="textPathSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="textPathStartLabel">
+            <property name="text">
+             <string>Start angle:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="textPathStartLayout">
+            <item>
+             <widget class="QDoubleSpinBox" name="textPathStartSpin">
+              <property name="toolTip">
+               <string>Turn the text round the curve. Positive values move it clockwise.</string>
+              </property>
+              <property name="suffix">
+               <string>°</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-360.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>360.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>1.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="textPathStartSlider">
+              <property name="toolTip">
+               <string>Drag to turn the text round the curve.</string>
+              </property>
+              <property name="minimum">
+               <number>-180</number>
+              </property>
+              <property name="maximum">
+               <number>180</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="textPathOffsetLabel">
+            <property name="text">
+             <string>Distance from edge:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <layout class="QHBoxLayout" name="textPathOffsetLayout">
+            <item>
+             <widget class="QDoubleSpinBox" name="textPathOffsetSpin">
+              <property name="toolTip">
+               <string>Move the text in from the edge of the box (or shape). Negative values move it out, for text around the outside of a circle.</string>
+              </property>
+              <property name="suffix">
+               <string> pt</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-100.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="textPathOffsetSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="textLetterSpacingLabel">
+            <property name="text">
+             <string>Letter spacing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <layout class="QHBoxLayout" name="textLetterSpacingLayout">
+            <item>
+             <widget class="QDoubleSpinBox" name="textLetterSpacingSpin">
+              <property name="toolTip">
+               <string>Extra space between letters, in points. Spread curved text around a round label, or tighten it.</string>
+              </property>
+              <property name="suffix">
+               <string> pt</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-5.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>50.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="textLetterSpacingSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="7" column="0" colspan="2">
            <widget class="QCheckBox" name="textAutoShrinkCheck">
             <property name="text">
              <string>Allow printing to shrink text to fit object</string>
@@ -1566,6 +1768,11 @@
   <tabstop>textVAlignBottomToggle</tabstop>
   <tabstop>textWrapModeCombo</tabstop>
   <tabstop>textLineSpacingSpin</tabstop>
+  <tabstop>textPathCombo</tabstop>
+  <tabstop>textPathStartSpin</tabstop>
+  <tabstop>textPathStartSlider</tabstop>
+  <tabstop>textPathOffsetSpin</tabstop>
+  <tabstop>textLetterSpacingSpin</tabstop>
   <tabstop>textAutoShrinkCheck</tabstop>
   <tabstop>textEdit</tabstop>
   <tabstop>textInsertFieldButton</tabstop>
@@ -2172,6 +2379,70 @@
     <hint type="destinationlabel">
      <x>395</x>
      <y>599</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathCombo</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>ObjectEditor</receiver>
+   <slot>onTextControlsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>636</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathStartSpin</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>ObjectEditor</receiver>
+   <slot>onTextControlsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>636</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathOffsetSpin</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>ObjectEditor</receiver>
+   <slot>onTextControlsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>636</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textLetterSpacingSpin</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>ObjectEditor</receiver>
+   <slot>onTextControlsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>636</y>
     </hint>
    </hints>
   </connection>

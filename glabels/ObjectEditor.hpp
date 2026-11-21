@@ -72,6 +72,7 @@ namespace glabels
                 void loadRectSizePage();
                 void loadLineSizePage();
                 void loadTextPage();
+                void updateTextPathControls();
                 void loadBarcodePage();
                 void loadShadowPage();
 

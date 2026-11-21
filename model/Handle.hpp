@@ -71,6 +71,15 @@ namespace glabels::model
                 void draw( QPainter* painter, double scale ) const;
                 QPainterPath path( double scale ) const;
 
+                /// Area that picks up this handle with the mouse: a little larger than
+                /// the drawn square for corners and line ends, and the whole length of
+                /// the edge for N, E, S and W, so an edge can be dragged from anywhere.
+                QPainterPath hitPath( double scale ) const;
+                bool isEdge() const;
+
+                /// Direction the handle pulls in, in the owner's own (unrotated) coordinates
+                QPointF direction() const;
+
         private:
                 void drawAt( QPainter* painter,
                              double    scale,

@@ -60,6 +60,7 @@ namespace glabels
         class PropertiesView;
         class RecentView;
         class StartupView;
+        class SymbolsDialog;
         class VariablesPanel;
         class VariablesView;
 
@@ -129,6 +130,8 @@ namespace glabels
                 void fileClose();
                 void fileExit();
 
+                void toolsPrintEstimator();
+
                 void editUndo();
                 void editRedo();
                 void editCut();
@@ -195,6 +198,10 @@ namespace glabels
                 void objectsAlignVCenter();
                 void objectsAlignBottom();
                 void objectsCenter();
+                void objectsPutTextOnShape();
+                void toolsInsertSymbol();
+                void onInsertSymbol( const QString& id, const QString& name, const QByteArray& svg, double size );
+
                 void objectsCenterHoriz();
                 void objectsCenterVert();
 
@@ -278,6 +285,7 @@ namespace glabels
                 QMenu*    objectsXformMenu;
                 QMenu*    objectsAlignMenu;
                 QMenu*    objectsCenterMenu;
+                QMenu*    toolsMenu;
                 QMenu*    helpMenu;
 
                 QMenu*    contextMenu;
@@ -433,6 +441,10 @@ namespace glabels
                 QAction*  objectsAlignVCenterAction;
                 QAction*  objectsAlignBottomAction;
                 QAction*  objectsCenterAction;
+                QAction*  objectsPutTextOnShapeAction;
+                QAction*  toolsInsertSymbolAction;
+                SymbolsDialog* mSymbolsDialog = nullptr;
+                int       mSymbolInsertCount = 0;
                 QAction*  objectsCenterHorizAction;
                 QAction*  objectsCenterVertAction;
 
@@ -440,6 +452,8 @@ namespace glabels
                 QAction*  helpReportBugAction;
                 QAction*  helpWhatsNewAction;
                 QAction*  helpAboutAction;
+
+                QAction*  toolsPrintEstimatorAction;
 
                 QAction*  contextCutAction;
                 QAction*  contextCopyAction;

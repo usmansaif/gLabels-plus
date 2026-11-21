@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="76.2 × 50.8 mm" size="roll" width="76.2mm" height="50.8mm" roll_width="80.2mm" description="Rectangle sticker 3 × 2 in">
+    <Label-rectangle id="0" width="76.2mm" height="50.8mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="2mm" y="2mm" w="72.2mm" h="46.8mm" lock_aspect_ratio="false" line_width="0.6mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-box x="3.4mm" y="3.4mm" w="69.4mm" h="44mm" lock_aspect_ratio="false" line_width="0.25mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text x="6mm" y="5.5mm" w="64.2mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>H O M E M A D E</p>
+    </Object-text>
+    <Object-text name="Flavour" x="6mm" y="9.9283mm" w="64.2mm" h="14.1434mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="24" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Strawberry</p>
+    </Object-text>
+    <Object-text name="Product" x="6mm" y="21.4846mm" w="64.2mm" h="7.6307mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="11" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>J A M</p>
+    </Object-text>
+    <Object-line x="13mm" y="32.3mm" dx="18mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image x="33.6mm" y="28.8mm" w="9mm" h="7.2mm" lock_aspect_ratio="true" src="sprig.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="45.2mm" y="32.3mm" dx="18mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Ingredients" x="6mm" y="35.6mm" w="64.2mm" h="5.1259mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Strawberries, cane sugar, lemon juice</p>
+    </Object-text>
+    <Object-text x="6mm" y="40mm" w="34mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Made: ____________</p>
+    </Object-text>
+    <Object-text name="Net weight" x="38mm" y="40mm" w="32.2mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="right" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Net wt 250 g</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="sprig.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" width="100" height="80"><path d="M8 72 C30 58 52 40 92 10" stroke="#000" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(26 59) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(26 59) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(40 48) rotate(12)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(40 48) rotate(12)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(52 39) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(52 39) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(64 30) rotate(12)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(64 30) rotate(12)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(76 21) rotate(-88)" fill="#fff" stroke="#000" stroke-width="2.2"/><path d="M0 0 L20 0" transform="translate(76 21) rotate(-88)" stroke="#000" stroke-width="1.2"/><path d="M0 0 C6 -7 18 -7 24 0 C18 7 6 7 0 0Z" transform="translate(88 13) rotate(-38)" fill="#000"/></svg>]]></File>
+  </Data>
+</Glabels-document>

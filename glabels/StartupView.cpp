@@ -112,7 +112,7 @@ namespace glabels
 
                 bool dark = AppearanceModel::style() == AppearanceModel::STYLE_DARK ||
                             palette().color( QPalette::Window ).lightness() < 128;
-                mTheme = startup::Theme::make( palette().color( QPalette::Highlight ), dark );
+                mTheme = startup::Theme::make( QApplication::palette(), dark );
 
                 auto* layout = new QVBoxLayout( this );
                 layout->setContentsMargins( 0, 0, 0, 0 );
@@ -732,9 +732,9 @@ namespace glabels
 
                 bool dark = AppearanceModel::style() == AppearanceModel::STYLE_DARK ||
                             palette().color( QPalette::Window ).lightness() < 128;
-                // Read the accent from the application palette: our own palette is
-                // unaffected by the style sheet below, but stay on the safe side.
-                mTheme = startup::Theme::make( QApplication::palette().color( QPalette::Highlight ), dark );
+                // Read the application palette: our own palette is unaffected by
+                // the style sheet below, but stay on the safe side.
+                mTheme = startup::Theme::make( QApplication::palette(), dark );
                 const startup::Theme& t = mTheme;
 
                 mAppIcon->setPixmap( QIcon::fromTheme( "glabels" ).pixmap( 44, 44 ) );
@@ -810,7 +810,7 @@ namespace glabels
                 .arg( t.bg.name(), t.surface.name(), t.muted.name(), t.border.name(), t.borderStrong.name() )
                 .arg( t.text.name(), t.text2.name(), t.text3.name() )
                 .arg( t.primary.name(), t.dark ? t.primary.lighter( 125 ).name() : t.primaryDark.name(),
-                      t.tint.name(), t.tintBorder.name(), t.dark ? t.hover.name() : QString( "#e9eef5" ) );
+                      t.tint.name(), t.tintBorder.name(), t.hover.name() );
                 setStyleSheet( css );
 
                 update();

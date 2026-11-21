@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="101.6 × 50.8 mm" size="roll" width="101.6mm" height="50.8mm" roll_width="105.6mm" description="Rectangle sticker 4 × 2 in">
+    <Label-rectangle id="0" width="101.6mm" height="50.8mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin x_size="1.5mm" y_size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box x="2mm" y="2mm" w="97.6mm" h="46.8mm" lock_aspect_ratio="false" line_width="0.4mm" line_color="255" fill_color="0" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image name="Flame drawing" x="7mm" y="9mm" w="12mm" h="18mm" lock_aspect_ratio="true" src="flame.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Number" x="4mm" y="28mm" w="18mm" h="5.6268mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="7" font_weight="bold" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>NO. 07</p>
+    </Object-text>
+    <Object-line x="24mm" y="6mm" dx="0mm" dy="28mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Scent" x="27mm" y="5.1817mm" w="70mm" h="10.6366mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="17" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="true" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>VANILLA &amp; AMBER</p>
+    </Object-text>
+    <Object-text x="27mm" y="15.1856mm" w="70mm" h="6.6288mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="9" font_weight="normal" font_italic="true" font_underline="false" align="left" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Hand-poured soy wax candle</p>
+    </Object-text>
+    <Object-text name="Notes" x="27mm" y="23mm" w="70mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="bold" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>WARM VANILLA · AMBER · SANDALWOOD</p>
+    </Object-text>
+    <Object-text name="Size" x="27mm" y="28.5mm" w="70mm" h="5.3763mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="6.5" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>8 oz / 226 g  ·  approx. 45 hour burn</p>
+    </Object-text>
+    <Object-line x="5mm" y="36mm" dx="91.6mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Warning" x="5mm" y="37mm" w="91.6mm" h="9mm" lock_aspect_ratio="false" color="255" font_family="Sans" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="left" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>Never leave a burning candle unattended. Burn within sight, away from anything that can catch fire and out of reach of children and pets. Trim the wick to 5 mm before each use.</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="flame.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60" width="40" height="60"><path d="M20 2 C24 14 34 20 34 34 A14 14 0 0 1 6 34 C6 25 11 20 13 12 C15 19 18 21 19 22 C21 16 21 9 20 2Z"/><path d="M20 30 C22 36 27 38 27 43 A7 7 0 0 1 13 43 C13 38 18 36 20 30Z" fill="#fff"/><rect x="18.5" y="50" width="3" height="9"/></svg>]]></File>
+  </Data>
+</Glabels-document>

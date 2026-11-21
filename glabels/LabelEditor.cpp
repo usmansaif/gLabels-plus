@@ -95,6 +95,40 @@ namespace
 }
 
 
+namespace
+{
+        ///
+        /// Resize cursor pointing the way a handle pulls, allowing for rotation
+        ///
+        QCursor resizeCursor( const glabels::model::Handle& handle )
+        {
+                QPointF d = handle.direction();
+                const QTransform m = handle.owner()->matrix();
+                d = QPointF( m.m11()*d.x() + m.m21()*d.y(), m.m12()*d.x() + m.m22()*d.y() );   // rotate, no shift
+                if ( d.isNull() )
+                {
+                        return QCursor( Qt::SizeAllCursor );
+                }
+
+                // Fold to 0..180 degrees, then pick the nearest of the four resize cursors
+                double angle = std::fmod( qRadiansToDegrees( std::atan2( d.y(), d.x() ) ) + 360.0, 180.0 );
+                if ( angle < 22.5 || angle >= 157.5 )
+                {
+                        return QCursor( Qt::SizeHorCursor );
+                }
+                if ( angle < 67.5 )
+                {
+                        return QCursor( Qt::SizeFDiagCursor );       // down-right / up-left
+                }
+                if ( angle < 112.5 )
+                {
+                        return QCursor( Qt::SizeVerCursor );
+                }
+                return QCursor( Qt::SizeBDiagCursor );               // down-left / up-right
+        }
+}
+
+
 namespace glabels
 {
 
@@ -852,7 +886,7 @@ namespace glabels
                                 if ( mModel->isSelectionAtomic() &&
                                      !mModel->handleAt( mScale, xWorld, yWorld ).isNull() )
                                 {
-                                        setCursor( Cursors::Crosshair() );
+                                        setCursor( resizeCursor( mModel->handleAt( mScale, xWorld, yWorld ) ) );
                                 }
                                 else if ( mModel->objectAt( mScale, xWorld, yWorld ) )
                                 {
@@ -2118,6 +2152,7 @@ namespace glabels
                         font.setWeight( object->fontWeight() );
                         font.setItalic( object->fontItalicFlag() );
                         font.setUnderline( object->fontUnderlineFlag() );
+                        font.setLetterSpacing( QFont::AbsoluteSpacing, object->textLetterSpacing() * mScale );
                         mTextEditor->setFont( font );
 
                         // Horizontal alignment for all paragraphs

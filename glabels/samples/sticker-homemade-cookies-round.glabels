@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template brand="Sticker Labels" part="Round 63.5 mm" size="roll" width="63.5mm" height="63.5mm" roll_width="67.5mm" description="Round sticker 2.5 in">
+    <Label-round id="0" radius="31.75mm" waste="0mm">
+      <Markup-margin size="1.5mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="0mm" dy="0mm"/>
+    </Label-round>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text name="Curved text" x="3.0026mm" y="3.0026mm" w="57.4947mm" h="57.4947mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="9" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-top" letter_spacing="4.535">
+      <p>HOMEMADE</p>
+    </Object-text>
+    <Object-text name="Flavour" x="4mm" y="15.1827mm" w="55.5mm" h="9.6346mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="15" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>chocolate chip</p>
+    </Object-text>
+    <Object-text name="Product" x="4mm" y="21.9293mm" w="55.5mm" h="13.1415mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="22" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="vcenter" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>cookies</p>
+    </Object-text>
+    <Object-line x="8mm" y="36mm" dx="19.5mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-image x="29.75mm" y="34mm" w="4mm" h="4mm" lock_aspect_ratio="true" src="heart.svg" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-line x="36mm" y="36mm" dx="19.5mm" dy="0mm" line_width="0.3mm" line_color="255" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5"/>
+    <Object-text name="Ingredients" x="7mm" y="38mm" w="49.5mm" h="12mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="5.6" font_weight="normal" font_italic="false" font_underline="false" align="hcenter" valign="top" wrap="word" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5">
+      <p>flour, butter, sugar, brown sugar, eggs,</p>
+      <p>chocolate chips, walnuts, vanilla,</p>
+      <p>baking soda, salt</p>
+    </Object-text>
+    <Object-text name="Curved text" x="3.1438mm" y="3.1438mm" w="57.2125mm" h="57.2125mm" lock_aspect_ratio="false" color="255" font_family="Georgia" font_size="8.5" font_weight="normal" font_italic="true" font_underline="false" align="hcenter" valign="top" wrap="none" line_spacing="1" auto_shrink="false" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0" shadow="false" shadow_x="1.3pt" shadow_y="1.3pt" shadow_color="0xff" shadow_opacity="0.5" text_path="arc-bottom" letter_spacing="2.834">
+      <p>ingredients</p>
+    </Object-text>
+  </Objects>
+  <Data>
+    <File name="heart.svg" mimetype="image/svg+xml" encoding="cdata"><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 21.4l-1.4-1.3C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.6z"/></svg>]]></File>
+  </Data>
+</Glabels-document>

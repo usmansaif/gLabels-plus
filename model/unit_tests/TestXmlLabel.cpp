@@ -161,8 +161,14 @@ void TestXmlLabel::serializeDeserialize()
         model->addObject( new ModelImageObject( 5, 6, 80, 90, noLock, TextNode( true, "${key}" ), tMatrix, shadow ) );
         model->addObject( new ModelImageObject( 6, 7, 90, 100, lock, TextNode( false, "image6.jpg" ) ) ); // Doesn't exist
         model->addObject( new ModelLineObject( 7, 8, 100, 110, 4, green, sMatrix, shadow, 5, 5, 0.5, red ) );
-        model->addObject( new ModelTextObject( 8, 9, 110, 120, lock, "text", "Serif", 12, QFont::Bold, true, true, red,
-                                               Qt::AlignHCenter, Qt::AlignBottom, QTextOption::NoWrap, 1.3, false, sMatrix, shadow, 5, 5, 0.5, red ) );
+        auto* curvedText = new ModelTextObject( 8, 9, 110, 120, lock, "text", "Serif", 12, QFont::Bold, true, true, red,
+                                                Qt::AlignHCenter, Qt::AlignBottom, QTextOption::NoWrap, 1.3, false, sMatrix, shadow, 5, 5, 0.5, red );
+        curvedText->setTextPath( TextPath::ArcBottom );
+        curvedText->setTextLetterSpacing( 1.5 );
+        curvedText->setTextPathStart( -25 );
+        curvedText->setTextPathOffset( 2.5 );
+        QCOMPARE( curvedText->textPath(), TextPath::ArcBottom );
+        model->addObject( curvedText );
         model->addObject( new ModelBarcodeObject( 9, 10, 50, 50, noLock, Backends::defaultStyle(), true, true, QString("1234"), black, tMatrix ) );
         model->addObject( new ModelImageObject( 10, 11, 8, 8, lock, TextNode( false, svgRelative.fileName() ) ) );
 
@@ -223,6 +229,10 @@ void TestXmlLabel::serializeDeserialize()
                 QCOMPARE( objects.at(i)->textWrapMode(), outObjects.at(i)->textWrapMode() );
                 QCOMPARE( objects.at(i)->textLineSpacing(), outObjects.at(i)->textLineSpacing() );
                 QCOMPARE( objects.at(i)->textAutoShrink(), outObjects.at(i)->textAutoShrink() );
+                QCOMPARE( objects.at(i)->textPath(), outObjects.at(i)->textPath() );
+                QCOMPARE( objects.at(i)->textLetterSpacing(), outObjects.at(i)->textLetterSpacing() );
+                QCOMPARE( objects.at(i)->textPathStart(), outObjects.at(i)->textPathStart() );
+                QCOMPARE( objects.at(i)->textPathOffset(), outObjects.at(i)->textPathOffset() );
 
                 QCOMPARE( objects.at(i)->filenameNode().isField(), outObjects.at(i)->filenameNode().isField() );
                 if ( i == 6 /*image6.jpg*/ )
