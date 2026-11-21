@@ -801,12 +801,32 @@ def sitemap():
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n")
 
 
+def image_sitemap():
+    """Google image sitemap: every image shown on each page, read from the built pages."""
+    ns = 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+    urls = []
+    for key, page in PAGES.items():
+        loc = SITE_URL + ("" if page["file"] == "index.html" else page["file"])
+        html_text = (OUT / page["file"]).read_text(encoding="utf-8")
+        seen = []
+        for src in re.findall(r'<img\b[^>]*\bsrc="([^"]+)"', html_text):
+            if not src.startswith("images/") or src in seen:   # content images only, not the site logo
+                continue
+            seen.append(src)
+        if not seen:
+            continue
+        images = "".join(f"\n    <image:image>\n      <image:loc>{html.escape(SITE_URL + src)}</image:loc>\n    </image:image>"
+                         for src in seen)
+        urls.append(f"  <url>\n    <loc>{loc}</loc>{images}\n  </url>")
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset {ns}>\n' + "\n".join(urls) + "\n</urlset>\n"
+
+
 def robots():
     bots = ["Googlebot", "Bingbot", "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User",
             "Claude-SearchBot", "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended",
             "CCBot", "DuckAssistBot"]
     rules = "\n\n".join(f"User-agent: {b}\nAllow: /" for b in bots)
-    return f"# gLabels Plus website: all search engines and AI assistants are welcome.\n\nUser-agent: *\nAllow: /\n\n{rules}\n\nSitemap: {SITE_URL}sitemap.xml\n"
+    return f"# gLabels Plus website: all search engines and AI assistants are welcome.\n\nUser-agent: *\nAllow: /\n\n{rules}\n\nSitemap: {SITE_URL}sitemap.xml\nSitemap: {SITE_URL}sitemap-images.xml\n"
 
 
 def llms_txt():
@@ -859,10 +879,11 @@ def main():
     body = (ROOT / "pages" / "404.html").read_text(encoding="utf-8")
     (OUT / "404.html").write_text(render("404", notfound, body), encoding="utf-8")
     (OUT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
+    (OUT / "sitemap-images.xml").write_text(image_sitemap(), encoding="utf-8")
     (OUT / "robots.txt").write_text(robots(), encoding="utf-8")
     (OUT / "llms.txt").write_text(llms_txt(), encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
-    print("wrote 404.html sitemap.xml robots.txt llms.txt")
+    print("wrote 404.html sitemap.xml sitemap-images.xml robots.txt llms.txt")
 
 
 if __name__ == "__main__":

@@ -46,3 +46,4 @@ User-agent: DuckAssistBot
 Allow: /
 
 Sitemap: https://usmansaif.github.io/gLabels-plus/sitemap.xml
+Sitemap: https://usmansaif.github.io/gLabels-plus/sitemap-images.xml
