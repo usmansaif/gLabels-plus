@@ -129,4 +129,12 @@ if (Qt6Test_FOUND)
   target_link_libraries (TestSheetLayout Model Qt6::Test)
   add_test (NAME SheetLayout COMMAND TestSheetLayout)
 
+  #=======================================
+  # Test RollCost (ribbon and label cost estimator)
+  #=======================================
+  qt6_wrap_cpp (TestRollCost_moc_sources TestRollCost.hpp)
+  add_executable (TestRollCost TestRollCost.cpp ${TestRollCost_moc_sources})
+  target_link_libraries (TestRollCost Model Qt6::Test)
+  add_test (NAME RollCost COMMAND TestRollCost)
+
 endif (Qt6Test_FOUND)

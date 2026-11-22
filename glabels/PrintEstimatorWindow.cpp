@@ -58,6 +58,7 @@
 #include <QStandardPaths>
 #include <QStyle>
 #include <QTextStream>
+#include <QTimer>
 #include <QVBoxLayout>
 
 #include <algorithm>
@@ -258,8 +259,7 @@ namespace glabels
                                 QColor muted = palette().color( QPalette::PlaceholderText );
                                 p.setPen( muted );
                                 p.drawText( rect().adjusted( 24, 24, -24, -24 ), Qt::AlignCenter | Qt::TextWordWrap,
-                                            PrintEstimatorWindow::tr( "Choose a product and a printing sheet, "
-                                                                      "then click Estimate Printing." ) );
+                                            PrintEstimatorWindow::tr( "Choose a product and a printing sheet." ) );
                                 return;
                         }
 
@@ -330,6 +330,7 @@ namespace glabels
                 loadSettings();
                 onProductTypeChanged();
                 onSheetChanged();
+                estimate();
 
                 auto* help = new QShortcut( QKeySequence::HelpContents, this );
                 connect( help, &QShortcut::activated, this, [this]() {
@@ -454,14 +455,6 @@ namespace glabels
                 bleedForm->addRow( mBleedHint );
                 inputsLayout->addWidget( bleedBox );
 
-                mEstimateButton = new QPushButton( tr("Estimate Printing") );
-                mEstimateButton->setDefault( true );
-                mEstimateButton->setAutoDefault( true );
-                mEstimateButton->setMinimumHeight( 36 );
-                QFont bold = mEstimateButton->font();
-                bold.setBold( true );
-                mEstimateButton->setFont( bold );
-                inputsLayout->addWidget( mEstimateButton );
                 inputsLayout->addStretch();
 
                 auto* inputsScroll = new QScrollArea();
@@ -557,10 +550,15 @@ namespace glabels
                 connect( mSheetCombo, &QComboBox::currentIndexChanged, this, &PrintEstimatorWindow::onSheetChanged );
                 for ( auto* spin : { mItemWSpin, mItemHSpin, mSheetWSpin, mSheetHSpin, mMarginSpin, mBleedSpin } )
                 {
-                        connect( spin, &QDoubleSpinBox::valueChanged, this, &PrintEstimatorWindow::markStale );
+                        connect( spin, &QDoubleSpinBox::valueChanged, this, &PrintEstimatorWindow::scheduleEstimate );
                 }
-                connect( mQuantitySpin, &QSpinBox::valueChanged, this, &PrintEstimatorWindow::markStale );
-                connect( mEstimateButton, &QPushButton::clicked, this, &PrintEstimatorWindow::estimate );
+                connect( mQuantitySpin, &QSpinBox::valueChanged, this, &PrintEstimatorWindow::scheduleEstimate );
+
+                // Results follow every change, once typing pauses
+                mEstimateTimer = new QTimer( this );
+                mEstimateTimer->setSingleShot( true );
+                mEstimateTimer->setInterval( 150 );
+                connect( mEstimateTimer, &QTimer::timeout, this, &PrintEstimatorWindow::estimate );
                 connect( mSaveButton, &QPushButton::clicked, this, &PrintEstimatorWindow::saveEstimate );
                 connect( closeButton, &QPushButton::clicked, this, &QWidget::close );
         }
@@ -716,7 +714,7 @@ namespace glabels
                 QString kind = (type == LABEL) ? tr("labels") : tr("pages and custom items");
                 mBleedHint->setText( tr("Standard for %1: %2").arg( kind, formatLength( standardBleedPts( type ) ) ) );
 
-                markStale();
+                scheduleEstimate();
         }
 
 
@@ -736,7 +734,7 @@ namespace glabels
                 mSheetWSpin->setEnabled( custom );
                 mSheetHSpin->setEnabled( custom );
 
-                markStale();
+                scheduleEstimate();
         }
 
 
@@ -781,16 +779,15 @@ namespace glabels
                 {
                         mDetailsLabel->setText( reportLines().last().value );
                 }
+                scheduleEstimate();
         }
 
 
-        void PrintEstimatorWindow::markStale()
+        void PrintEstimatorWindow::scheduleEstimate()
         {
-                if ( mUpdating || !mHasEstimate ) return;
+                if ( mUpdating || !mEstimateTimer ) return;
 
-                setStatus( tr("Settings changed. Click Estimate Printing to update the results."), false );
-                mSaveButton->setEnabled( false );
-                mPreview->setLayoutResult( &mLayout, true );
+                mEstimateTimer->start();
         }
 
 

@@ -1,0 +1,38 @@
+<h1>Ribbon and label cost estimator</h1>
+<p class="lead">Work out how many label rolls and ink ribbons a thermal printing job needs and what they cost. Open it from <b>Tools &gt; Ribbon &amp; Label Cost Estimator...</b>. It opens in its own window, so you can keep it open while you work.</p>
+
+<h2>1. Currency and units</h2>
+<p>Choose the <b>Currency</b> of your prices. It is only shown in front of amounts; nothing is converted. If yours is not in the list, choose <b>Other...</b> and type a symbol such as <b>Rs</b>. Choose millimeters, centimeters or inches for the label sizes.</p>
+
+<h2>2. Labels</h2>
+<p>Click <b>Choose...</b> to pick a product from the library. Its label size is filled in, with the gap and labels across when the product has them. You can still change any value; the product name then shows <i>Size changed from the product</i>. Click <b>Clear</b> to stop using the product, or skip it and type the values yourself.</p>
+<ul>
+<li><b>Width</b> and <b>Length</b> of one label. Length is the size along the roll, in the direction the roll feeds through the printer.</li>
+<li><b>Gap</b> between labels along the roll, usually 2 to 3 mm (1/8 in). The ribbon moves past the gap too.</li>
+<li><b>Labels across</b>: labels side by side on the roll. The ribbon moves once for each row, so two labels across use half the ribbon.</li>
+<li><b>Labels per roll</b> and the <b>Roll price</b>.</li>
+</ul>
+<p>When the open label is a roll product, it is chosen for you.</p>
+
+<h2>3. Ribbon</h2>
+<p>Enter the <b>Length</b> of one ribbon in meters or feet (for example 300 m or 1,476 ft), its <b>Width</b> and its <b>Price</b>. The width is only checked: you are warned when the ribbon is narrower than the labels across the roll.</p>
+<p>Direct thermal printers print on heat-sensitive labels without a ribbon. Tick <b>No ribbon (direct thermal)</b> to leave the ribbon out.</p>
+
+<h2>4. Job</h2>
+<p>Enter the <b>Labels to print</b> you need, and a <b>Waste</b> percentage for setup, test prints and misprints. Waste labels use labels and ribbon like any other.</p>
+
+<h2>Results</h2>
+<p>Results update as you type. They are shown in five sections: <b>Job</b>, <b>Labels</b>, <b>Ribbon</b>, <b>Cost</b> (what this job uses) and <b>Totals</b> (what to buy).</p>
+<table class="grid" width="100%" cellspacing="0">
+<tr><th width="30%">Result</th><th>Meaning</th></tr>
+<tr><td>Ribbons</td><td>Whole ribbons to buy and their amount, the ribbon length needed and what is left on the last ribbon.</td></tr>
+<tr><td>Label rolls</td><td>Whole rolls to buy and their amount, and the labels left on the last roll.</td></tr>
+<tr><td>Total to buy</td><td>Ribbons and rolls together.</td></tr>
+<tr><td>Used by this job</td><td>Only the labels and ribbon length this job uses. What is left over stays for the next job.</td></tr>
+<tr><td>Cost per label</td><td>Used by this job divided by the labels you need.</td></tr>
+</table>
+<p>The ribbon needed is rows &times; (label length + gap), where rows is the labels printed divided by the labels across.</p>
+<tip>Use <b>Cost per label</b> to price a job: it counts only what the job uses, not the leftover ribbon and labels.</tip>
+
+<h2>Saving the estimate</h2>
+<p>Click <b>Save...</b> and choose <b>PDF</b> or <b>PNG</b> for a page with the figures, or <b>Text</b> for plain figures you can paste into an email or quote.</p>

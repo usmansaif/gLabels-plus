@@ -53,6 +53,7 @@ set (Model_sources
   RawText.cpp
   Region.cpp
   Settings.cpp
+  RollCost.cpp
   SheetLayout.cpp
   Size.cpp
   StrUtil.cpp

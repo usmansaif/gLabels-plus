@@ -23,16 +23,20 @@
 
 
 #include <QDialog>
+#include <QList>
+#include <QPair>
 
 
+class QButtonGroup;
 class QLabel;
+class QStackedWidget;
 
 
 namespace glabels
 {
 
         ///
-        /// About Dialog Widget
+        /// About Dialog: product header and About, Credits, System and License pages
         ///
         class AboutDialog : public QDialog
         {
@@ -47,20 +51,25 @@ namespace glabels
 
 
                 /////////////////////////////////
-                // Slots
-                /////////////////////////////////
-        private slots:
-                void onLicenseButtonClicked();
-                void onWebsiteButtonClicked();
-
-
-                /////////////////////////////////
                 // Private methods
                 /////////////////////////////////
         private:
-                QWidget* createCard( const QString& title, QWidget* body );
-                QWidget* createPerson( const QString& role, const QString& name,
+                QWidget* createHeader();
+                QWidget* createAboutPage();
+                QWidget* createCreditsPage();
+                QWidget* createSystemPage();
+                QWidget* createLicensePage();
+
+                QWidget* createPage( QWidget* content );
+                QWidget* createSection( const QString& title );
+                QWidget* createLink( const QString& title, const QString& detail, const QString& url );
+                QWidget* createPerson( const QString& name, const QString& role, const QString& note,
                                        const QString& email, const QString& website = QString() );
+
+                QList<QPair<QString,QString>> systemInfo() const;
+                QString  systemInfoText() const;
+                void     copySystemInfo();
+
                 void     applyStyle();
                 void     changeEvent( QEvent* event ) override;
 
@@ -69,8 +78,12 @@ namespace glabels
                 // Private data
                 /////////////////////////////////
         private:
-                QLabel*  mTitleLabel{ nullptr };
-                bool     mStyling{ false };
+                QLabel*         mWordmark{ nullptr };
+                QButtonGroup*   mTabs{ nullptr };
+                QStackedWidget* mPages{ nullptr };
+                QLabel*         mCopiedLabel{ nullptr };
+                QList<QLabel*>  mContactLabels;
+                bool            mStyling{ false };
 
         };
 

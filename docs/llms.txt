@@ -24,6 +24,7 @@
 - [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
 
 ## What's new in 5.0
+- Ribbon and label cost estimator: Tools > Ribbon & Label Cost Estimator works out the label rolls and thermal transfer ribbons a job needs, the amount to buy and the cost per label, in any currency. Enter the label size, gap, labels across, labels per roll, roll price, ribbon length and ribbon price; direct thermal jobs leave the ribbon out.
 - Symbols for thermal labels: 53 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), food marks (Keep Refrigerated, Vegetarian, Gluten Free), contact icons (phone, email, website, location), delivery, shop, check boxes, stars and arrows.
 - Curved text for round labels: Set text along an arc, round a circle, round a box or on a wave, or draw any circle, ellipse, box or line and put the text on it. Start angle turns the words round the curve a degree at a time, and distance from edge moves them in or out.
 - Sticker labels for thermal printers: 15 black and white sticker designs up to 4 in (101.6 mm) wide: round, oval, square and rectangle designs for cookies, bakery products, cottage food, jam, honey, candles, soap, coffee, cake boxes, spice jars, thank-you notes and box seals. Curved text around round labels, simple line drawings and clean type that prints sharply on a direct thermal printer.

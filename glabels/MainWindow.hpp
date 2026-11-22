@@ -131,6 +131,7 @@ namespace glabels
                 void fileExit();
 
                 void toolsPrintEstimator();
+                void toolsRollCost();
 
                 void editUndo();
                 void editRedo();
@@ -454,6 +455,7 @@ namespace glabels
                 QAction*  helpAboutAction;
 
                 QAction*  toolsPrintEstimatorAction;
+                QAction*  toolsRollCostAction;
 
                 QAction*  contextCutAction;
                 QAction*  contextCopyAction;

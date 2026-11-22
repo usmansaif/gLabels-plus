@@ -6,6 +6,8 @@
 #     - windows-2022   - cl    (build on windows-latest is currently broken - Qt-6.2.4 MSVC incompatability)
 #     - macos-latest   - clang, qt-6.10 (Bump to 6.10 to workaround linker errors on macos-latest)
 #     - ubuntu-latest  - clang, qt-6.10 (For comparison to macos, only difference is OS)
+#     - ubuntu-20.04   - gcc-10, qt-6.5 in a container (oldest supported Linux; same
+#                        image the release packages are built in)
 #
       
 
@@ -293,3 +295,24 @@ jobs:
 #      uses: mxschmitt/action-tmate@v3
 #      if: failure()
 
+
+  ubuntu-2004:
+    # GitHub no longer offers Ubuntu 20.04 runners, so build in a 20.04 container
+    name: build (ubuntu-20.04 container, g++-10, 6.5.3)
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build the Ubuntu 20.04 image
+      run: docker build -t glabels-plus-build:ubuntu20.04 packaging/ubuntu-20.04
+
+    - name: Build and test
+      run: |
+        docker run --rm -v "$PWD:/src" -w /src glabels-plus-build:ubuntu20.04 bash -ec '
+          git config --global --add safe.directory /src
+          cmake -S . -B /tmp/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_DIR"
+          cmake --build /tmp/build -j"$(nproc)"
+          cd /tmp/build && QT_QPA_PLATFORM=offscreen ctest --output-on-failure
+        '

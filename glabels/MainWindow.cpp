@@ -30,6 +30,7 @@
 #include "ObjectListView.hpp"
 #include "PreferencesDialog.hpp"
 #include "PrintEstimatorWindow.hpp"
+#include "RollCostWindow.hpp"
 #include "PrintView.hpp"
 #include "Projects.hpp"
 #include "PropertiesView.hpp"
@@ -957,6 +958,10 @@ namespace glabels
                 toolsPrintEstimatorAction->setStatusTip( tr("Estimate how many printing sheets a job needs and the paper waste") );
                 connect( toolsPrintEstimatorAction, &QAction::triggered, this, &MainWindow::toolsPrintEstimator );
 
+                toolsRollCostAction = new QAction( tr("&Ribbon && Label Cost Estimator..."), this );
+                toolsRollCostAction->setStatusTip( tr("Estimate the label rolls and ribbons a job needs and what they cost") );
+                connect( toolsRollCostAction, &QAction::triggered, this, &MainWindow::toolsRollCost );
+
 
                 /* Help actions */
                 helpContentsAction = new QAction( tr("&User Manual..."), this );
@@ -1125,6 +1130,7 @@ namespace glabels
                 toolsMenu->addAction( objectsMeasureModeAction );
                 toolsMenu->addSeparator();
                 toolsMenu->addAction( toolsPrintEstimatorAction );
+                toolsMenu->addAction( toolsRollCostAction );
                 toolsMenu->addAction( fileTemplateDesignerAction );
                 toolsMenu->addSeparator();
                 toolsMenu->addAction( editShortcutsAction );
@@ -1545,6 +1551,7 @@ namespace glabels
                         { objectsCenterAction, "objects.center" },
                         { objectsPutTextOnShapeAction, "objects.putTextOnShape" },
                         { toolsPrintEstimatorAction, "tools.printEstimator" },
+                        { toolsRollCostAction, "tools.rollCost" },
                         { toolsInsertSymbolAction, "tools.insertSymbol" },
                         { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
                         { helpWhatsNewAction, "help.whatsNew" }, { helpAboutAction, "help.about" },
@@ -3608,6 +3615,12 @@ namespace glabels
         void MainWindow::toolsPrintEstimator()
         {
                 PrintEstimatorWindow::showWindow( mModel ? mModel->tmplate() : model::Template() );
+        }
+
+
+        void MainWindow::toolsRollCost()
+        {
+                RollCostWindow::showWindow( mModel ? mModel->tmplate() : model::Template() );
         }
 
 

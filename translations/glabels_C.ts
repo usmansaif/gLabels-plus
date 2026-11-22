@@ -1317,18 +1317,6 @@ Find it under File &gt; New from Sample.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copy version information to the clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>gLabels Plus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1337,31 +1325,203 @@ Find it under File &gt; New from Sample.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>License</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;License</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Read the full GNU General Public License</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Website</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Maintainer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A professional label and business card designer. Create barcode, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge and over 1,800 ready-made templates from 70+ brands, for sheet and thermal roll printers.</source>
+        <source>Free and open source · GPL 3.0 · Works offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Design and print labels, barcodes and business cards for sheet and thermal roll printers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy the version and system information, for example for a bug report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copied</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1,800+ templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>70+ brands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mail merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thermal rolls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus is a label and business card designer. Create barcode, address, shipping and product labels, name badges, CD/DVD labels and business cards, fill them from a spreadsheet with mail merge, and print on sheets from more than 70 brands or on thermal label rolls.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Guides, features and downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus on GitHub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report a problem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open an issue on GitHub. Click Copy above to include your system details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support the project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate or sponsor a feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>People</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Original author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels, which gLabels Plus is built on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qt %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cross-platform application framework</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>glbarcode++ and libqrencode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Barcode and QR code generation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thanks to everyone who has contributed code, templates, translations and bug reports to gLabels and gLabels Plus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This installation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy System Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy these details to paste into a bug report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GNU General Public License 3.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read the full license</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GNU General Public License, version 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kernel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Processor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Customization service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom label designs, printing from your inventory, POS or ERP data, and thermal printer setup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2002,6 +2162,10 @@ Find it under File &gt; New from Sample.</source>
     </message>
     <message>
         <source>Print sheet estimator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon and label cost estimator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3162,6 +3326,14 @@ Find it under File &gt; New from Sample.</source>
         <source>Insert Symbol</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Ribbon &amp;&amp; Label Cost Estimator...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Estimate the label rolls and ribbons a job needs and what they cost</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MergeView</name>
@@ -4057,10 +4229,6 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
 <context>
     <name>glabels::PrintEstimatorWindow</name>
     <message>
-        <source>Choose a product and a printing sheet, then click Estimate Printing.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Print Sheet Estimator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4153,10 +4321,6 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Estimate Printing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Items per sheet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4202,10 +4366,6 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
     </message>
     <message>
         <source>Standard for %1: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Settings changed. Click Estimate Printing to update the results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4348,6 +4508,10 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
         <source>Remove the chosen product and enter a custom size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Choose a product and a printing sheet.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::PrintView</name>
@@ -4476,6 +4640,409 @@ Labels you open or save will appear here.</source>
     </message>
     <message>
         <source>To submit a bug report, click on the button below.  This will open a web browser to the gLabels Plus github issue tracking page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::RollCostWindow</name>
+    <message>
+        <source>Ribbon &amp; Label Cost Estimator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Currency of the prices. Amounts are not converted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Symbol, e.g. Rs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Currency:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Millimeters (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centimeters (cm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inches (in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size across the roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size along the roll, in the direction it feeds through the printer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gap between labels along the roll. The ribbon moves past it too.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels side by side on the roll. The ribbon moves once for each row.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Total labels on one roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Price of one roll of labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gap:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels across:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels per roll:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Roll price:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No ribbon (direct thermal)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direct thermal printers print on heat-sensitive labels without a ribbon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length of one ribbon, e.g. 300 m or 1,476 ft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon width. It should be at least as wide as the labels across the roll.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Price of one ribbon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Price:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Job</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of good labels you need</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra labels for setup, test prints and misprints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels to print:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waste:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whole ribbons to buy and their amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label rolls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whole rolls of labels to buy and their amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Total to buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbons and label rolls together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save the estimate as a PDF, PNG image or text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a currency symbol, or choose a currency from the list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the width and length of one label.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the length of one ribbon, or tick No ribbon (direct thermal).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The ribbon is shorter than one label. Check the ribbon length and its unit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check the values: every quantity must be more than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The ribbon (%1) is narrower than the labels across the roll (%2). Part of each label will not print.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direct thermal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 per label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels to print</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra for waste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (%2 %)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels printed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 wide × %2 long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels across</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (%2 rows)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels per roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Roll price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rolls to buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left on last roll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 × %2 wide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon needed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbons to buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left on last ribbon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbons amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None (direct thermal)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Used by this job</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cost per label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon &amp; Label Cost Estimate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF document (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG image (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text file (*.txt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ribbon-label-cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Estimate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saved to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Labels used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbon used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill in the label size from a product in the library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop using the chosen product. The values stay so you can edit them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a product, or enter the label size below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size changed from the product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label rolls (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ribbons (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Total to buy counts whole ribbons and rolls. Cost counts only the labels and ribbon length this job uses.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -38,6 +38,7 @@ class QPainter;
 class QPushButton;
 class QRadioButton;
 class QSpinBox;
+class QTimer;
 
 
 namespace glabels
@@ -84,7 +85,7 @@ namespace glabels
                 void      onProductTypeChanged();
                 void      onSheetChanged();
                 void      onUnitsChanged();
-                void      markStale();
+                void      scheduleEstimate();
                 void      estimate();
                 void      saveEstimate();
 
@@ -130,7 +131,7 @@ namespace glabels
                 QDoubleSpinBox* mMarginSpin{ nullptr };
                 QDoubleSpinBox* mBleedSpin{ nullptr };
                 QLabel*         mBleedHint{ nullptr };
-                QPushButton*    mEstimateButton{ nullptr };
+                QTimer*         mEstimateTimer{ nullptr };
 
                 // Results
                 SheetPreview*   mPreview{ nullptr };

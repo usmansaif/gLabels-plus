@@ -33,6 +33,7 @@ set (glabels_sources
   PreferencesDialog.cpp
   PrinterMonitor.cpp
   PrintEstimatorWindow.cpp
+  RollCostWindow.cpp
   PrintView.cpp
   Projects.cpp
   Samples.cpp
@@ -85,6 +86,7 @@ set (glabels_qobject_headers
   PreferencesDialog.hpp
   PrinterMonitor.hpp
   PrintEstimatorWindow.hpp
+  RollCostWindow.hpp
   PrintView.hpp
   PropertiesView.hpp
   Preview.hpp

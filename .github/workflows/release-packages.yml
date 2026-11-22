@@ -58,7 +58,8 @@ jobs:
       if: ${{ !startsWith( matrix.os, 'ubuntu-' ) }}
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.5.3'
+        # Qt 6.5 links the AGL framework, which newer macOS SDKs no longer have
+        version: ${{ startsWith( matrix.os, 'macos-' ) && '6.10.*' || '6.5.3' }}
         install-deps: 'true'
 
     - name: Build packages
