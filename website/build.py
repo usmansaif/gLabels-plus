@@ -26,10 +26,24 @@ SITE_URL = "https://usmansaif.github.io/gLabels-plus/"
 REPO_URL = "https://github.com/usmansaif/gLabels-plus"
 RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
-VERSION = "5.0"
-RELEASE_DATE = "2026-11-19"          # ISO date of the 5.0 release
+VERSION = "5.1.2"
+RELEASE_DATE = "2026-11-22"          # ISO date of the release named by VERSION
 UPDATED = "2026-11-22"               # last content update, shown on every page
 UPDATED_HUMAN = "22 November 2026"
+RELEASE_TAG = "v" + VERSION          # GitHub release tag the download buttons fall back to
+PKG_VERSION = "5.1"                  # version string used in the release asset file names
+DOWNLOAD_BASE = f"{RELEASES_URL}/download/{RELEASE_TAG}/"
+# Release asset file names, keyed by the {{dl_<key>}} placeholder used in pages.
+DOWNLOADS = {
+    "deb": f"glabels-qt_{PKG_VERSION}-1_amd64.deb",
+    "rpm": f"glabels-qt-{PKG_VERSION}-1.x86_64.rpm",
+    "appimage": f"glabels-qt-{PKG_VERSION}-x86_64.AppImage",
+    "linux_tar": f"glabels-qt-{PKG_VERSION}-linux-x86_64.tar.gz",
+    "win_exe": f"glabels-qt-{PKG_VERSION}-windows-x64.exe",
+    "win_zip": f"glabels-qt-{PKG_VERSION}-windows-x64.zip",
+    "mac_dmg": f"glabels-qt-{PKG_VERSION}-macos-arm64.dmg",
+    "mac_tar": f"glabels-qt-{PKG_VERSION}-macos-arm64.tar.gz",
+}
 CONTACT_URL = "https://usmansaif.com/en/contact"   # custom barcode label printing solutions
 MAINTAINER = {"@type": "Person", "@id": SITE_URL + "#maintainer", "name": "Usman Saif",
               "url": "https://usmansaif.com", "jobTitle": "Maintainer of gLabels Plus"}
@@ -73,8 +87,13 @@ TOOL_KEYS = [("V", "Select"), ("T", "Text"), ("R", "Box"), ("L", "Line"), ("O", 
              ("I", "Image"), ("B", "Barcode"), ("M", "Measure"), ("E", "Erase (delete) the selection")]
 
 # Latest additions, shown as highlight cards on whats-new.html.
-# icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app.
+# icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app;
+# short: optional one-line text for the home teaser and llms.txt (defaults to summary).
 LATEST = [
+    dict(icon="ribbon", title="Ribbon and label cost estimator",
+         summary="Work out how many label rolls and thermal transfer ribbons a job needs and what they cost. Choose a product from the library or enter the label size, gap, labels across, labels per roll and roll price, the ribbon length and price, and how many labels you need. As you type you get the ribbons and rolls to buy with their amounts, what is left over, and the cost per label. Choose any currency; direct thermal jobs leave the ribbon out.",
+         short="Tools &gt; Ribbon &amp; Label Cost Estimator works out the label rolls and thermal transfer ribbons a job needs, the amount to buy and the cost per label, in any currency. Enter the label size, gap, labels across, labels per roll, roll price, ribbon length and ribbon price; direct thermal jobs leave the ribbon out.",
+         how="<b>Tools &gt; Ribbon &amp; Label Cost Estimator</b> · save the estimate as PDF, PNG or text"),
     dict(icon="symbols", title="Symbols for thermal labels",
          summary="53 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), food marks (Keep Refrigerated, Vegetarian, Gluten Free), contact icons (phone, email, website, location), delivery, shop, check boxes, stars and arrows.",
          how="<b>Tools &gt; Insert Symbol</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Y</kbd>) · the window stays open while you add more"),
@@ -125,6 +144,7 @@ LATEST_MINOR = [
 ]
 
 ICONS = {
+    "ribbon": '<path d="M4 7a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3z"/><path d="M7 4h11v13a3 3 0 0 1-3 3H7"/><path d="M13 9h2.5a1.5 1.5 0 0 1 0 3h-1a1.5 1.5 0 0 0 0 3H17M15 8v1M15 15v1"/>',
     "keyboard": '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
     "search": '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
     "folder": '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
@@ -143,7 +163,7 @@ ICONS = {
 
 def highlight_text(h):
     """Flat one-line version of a highlight card (home teaser, llms.txt)."""
-    return f"<b>{h['title']}</b>: {h['summary']}"
+    return f"<b>{h['title']}</b>: {h.get('short', h['summary'])}"
 
 
 # Release notes, mirrored from Help > What's New in the app (glabels/WhatsNewDialog.cpp)
@@ -184,7 +204,7 @@ RELEASE_NOTES = [
         "<b>Custom keyboard shortcuts</b> for every menu command (<b>Edit &gt; Keyboard Shortcuts</b>).",
         "Show or hide <b>toolbars and panels</b>, and choose icon size and text style for the page buttons and toolbars.",
         "<b>Units selector</b> in the toolbar, and a zoom box that accepts typed values.",
-        "New <b>About</b> dialog with one-click copy of version information.",
+        "Redesigned <b>About</b> window with About, Credits, System and License tabs, quick links to the website, source code, bug reports and donations, and one-click copy of version and system details for bug reports.",
         "Refreshed application icon and a new set of toolbar icons.",
     ]),
 ]
@@ -257,13 +277,13 @@ PAGES = {
     ),
     "download": dict(
         file="download.html", label="Download",
-        title="Download gLabels Plus 5.0 Free for Linux, Windows and macOS",
-        description="Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.",
+        title=f"Download gLabels Plus {VERSION} Free for Linux, Windows and macOS",
+        description=f"Download gLabels Plus {VERSION} free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.",
     ),
     "whats-new": dict(
         file="whats-new.html", label="What's New",
-        title="What's New in gLabels Plus 5.0: Release Notes",
-        description="gLabels Plus 5.0 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.",
+        title=f"What's New in gLabels Plus {VERSION}: Release Notes",
+        description=f"gLabels Plus {VERSION} release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.",
     ),
     "barcode-labels": dict(
         file="barcode-labels.html", label="Barcode Labels",
@@ -388,7 +408,7 @@ COMPARE_ROWS = [
                                     ("part", "Zebra only"), False, ("part", "DYMO only")]),
     ("Any printer brand", [True, True, ("part", "Most label printers"), ("part", "Zebra only"),
                            ("part", "Avery sheets"), ("part", "DYMO only")]),
-    ("Actively maintained, stable release", [(True, "5.0, Nov 2026"),
+    ("Actively maintained, stable release", [(True, f"{VERSION}, Nov 2026"),
                                             ("part", "3.x unsupported since 2018; 4.0 has no stable release"),
                                             True, True, True, True]),
 ]
@@ -491,9 +511,13 @@ PLACEHOLDERS = {
     "{{compare_glabels}}": compare_glabels,
     "{{version}}": lambda: VERSION,
     "{{release_date}}": lambda: RELEASE_DATE,
+    "{{updated}}": lambda: UPDATED,
     "{{updated_human}}": lambda: UPDATED_HUMAN,
     "{{releases_url}}": lambda: RELEASES_URL,
     "{{repo_url}}": lambda: REPO_URL,
+    "{{release_tag}}": lambda: RELEASE_TAG,
+    "{{release_tag_url}}": lambda: f"{RELEASES_URL}/tag/{RELEASE_TAG}",
+    **{"{{dl_%s}}" % k: (lambda n=n: DOWNLOAD_BASE + n) for k, n in DOWNLOADS.items()},
 }
 
 
@@ -516,7 +540,7 @@ def software_app(extra=None):
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "isAccessibleForFree": True,
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-        "downloadUrl": SITE_URL + "download.html",
+        "downloadUrl": [SITE_URL + "download.html"] + [DOWNLOAD_BASE + n for n in DOWNLOADS.values()],
         "installUrl": RELEASES_URL,
         "releaseNotes": SITE_URL + "whats-new.html",
         "screenshot": [SITE_URL + "images/screenshots/" + n for n in
@@ -541,6 +565,7 @@ def software_app(extra=None):
             "28 ready-made sample labels: shipping, receipt, invoice, SKU, product and asset",
             "Curved text along arcs and circles for round labels",
             "53 thermal-friendly symbols: Fragile, This Way Up, Keep Refrigerated, phone, email and more",
+            "Ribbon and label cost estimator for thermal printing jobs, in any currency",
             "15 black and white sticker designs for thermal printers: bakery, cottage food, jar, candle, soap and coffee labels",
             "Save your own designs as templates",
             "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",

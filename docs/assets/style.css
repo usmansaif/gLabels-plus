@@ -190,6 +190,8 @@ h2 + .cards, h2 + .gallery, h2 + .faq { margin-top: 36px; }
 .meta { list-style: none; padding: 0; margin: 0 0 22px; flex: 1; color: var(--muted); font-size: .95rem; }
 .meta li { padding: 7px 0; border-bottom: 1px dashed var(--line); }
 .meta li:last-child { border-bottom: 0; }
+.dl-alt { margin: 12px 0 0; font-size: .9rem; color: var(--muted); text-align: center; }
+.dl-all { margin: 18px 0 0; font-size: .95rem; color: var(--muted); }
 .source { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; }
 .source summary { cursor: pointer; font-weight: 600; }
 .term { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-alt); }

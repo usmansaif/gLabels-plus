@@ -74,4 +74,46 @@
 
   // Open a FAQ answer when its #anchor is linked
   var year = $('#year'); if (year) year.textContent = new Date().getFullYear();
+  // Download page: point every button at the newest GitHub release. The links
+  // written at build time stay as the fallback if the API cannot be reached.
+  var dlLinks = $$('a[data-asset]');
+  if (dlLinks.length && window.fetch) {
+    var ASSETS = {
+      deb: /_amd64\.deb$/,
+      rpm: /\.x86_64\.rpm$/,
+      appimage: /\.AppImage$/,
+      linux_tar: /-linux-x86_64\.tar\.gz$/,
+      win_exe: /-windows-x64\.exe$/,
+      win_zip: /-windows-x64\.zip$/,
+      mac_dmg: /-macos-arm64\.dmg$/,
+      mac_tar: /-macos-arm64\.tar\.gz$/
+    };
+    var CACHE_KEY = 'glp-latest-release';
+    var applyRelease = function (rel) {
+      if (!rel || !rel.assets) return;
+      dlLinks.forEach(function (a) {
+        var re = ASSETS[a.getAttribute('data-asset')];
+        var hit = re && rel.assets.filter(function (x) { return re.test(x.name); })[0];
+        if (hit) a.href = hit.browser_download_url;
+      });
+      var tagLink = $('a[data-release-link]'), tagText = $('[data-release-tag]');
+      if (tagLink && rel.html_url) tagLink.href = rel.html_url;
+      if (tagText && rel.tag_name) tagText.textContent = rel.tag_name;
+    };
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(CACHE_KEY)); } catch (e) {}
+    if (cached) applyRelease(cached);
+    else {
+      fetch('https://api.github.com/repos/usmansaif/gLabels-plus/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (rel) {
+          if (!rel) return;
+          var slim = { tag_name: rel.tag_name, html_url: rel.html_url,
+            assets: (rel.assets || []).map(function (x) { return { name: x.name, browser_download_url: x.browser_download_url }; }) };
+          try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(slim)); } catch (e) {}
+          applyRelease(slim);
+        })
+        .catch(function () {});
+    }
+  }
 })();

@@ -1,6 +1,6 @@
 # gLabels Plus
 
-> gLabels Plus is a free, open-source (GPL v3) label and business card designer for Linux, Windows and macOS. It makes barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge from CSV, over 1,800 templates from 70+ brands and 24 thermal roll printer presets. Latest version: 5.0 (2026-11-19). Maintainer: Usman Saif (https://usmansaif.com). Based on gLabels by Jaye Evins.
+> gLabels Plus is a free, open-source (GPL v3) label and business card designer for Linux, Windows and macOS. It makes barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge from CSV, over 1,800 templates from 70+ brands and 24 thermal roll printer presets. Latest version: 5.1.2 (2026-11-22). Maintainer: Usman Saif (https://usmansaif.com). Based on gLabels by Jaye Evins.
 
 ## Key facts
 - Price: free, no account, no trial, no watermark
@@ -17,13 +17,13 @@
 ## Pages
 - [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.
 - [Features](https://usmansaif.github.io/gLabels-plus/features.html): All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.
-- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.0 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
-- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.0 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
+- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.1.2 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
+- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.1.2 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
 - [Barcode Labels](https://usmansaif.github.io/gLabels-plus/barcode-labels.html): 24 free barcode label templates for Zebra, TSC, Xprinter and Godex thermal printers, from 30 × 15 mm and 50 × 25 mm to 4 × 6 inch shipping labels.
 - [FAQ](https://usmansaif.github.io/gLabels-plus/faq.html): Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.
 - [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
 
-## What's new in 5.0
+## What's new in 5.1.2
 - Ribbon and label cost estimator: Tools > Ribbon & Label Cost Estimator works out the label rolls and thermal transfer ribbons a job needs, the amount to buy and the cost per label, in any currency. Enter the label size, gap, labels across, labels per roll, roll price, ribbon length and ribbon price; direct thermal jobs leave the ribbon out.
 - Symbols for thermal labels: 53 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), food marks (Keep Refrigerated, Vegetarian, Gluten Free), contact icons (phone, email, website, location), delivery, shop, check boxes, stars and arrows.
 - Curved text for round labels: Set text along an arc, round a circle, round a box or on a wave, or draw any circle, ellipse, box or line and put the text on it. Start angle turns the words round the curve a degree at a time, and distance from edge moves them in or out.
