@@ -52,6 +52,7 @@
 #include <QTextBlock>
 #include <QWheelEvent>
 #include <QMouseEvent>
+#include <QPainterPath>
 #include <QPalette>
 #include <QtMath>
 
@@ -125,6 +126,70 @@ namespace
                         return QCursor( Qt::SizeVerCursor );
                 }
                 return QCursor( Qt::SizeBDiagCursor );               // down-left / up-right
+        }
+
+
+        ///
+        /// Rotate zone: a ring just outside each corner of the selected object
+        ///
+        const double rotateZonePixels = 22;
+
+
+        ///
+        /// Photoshop-style rotate cursor: a curved double-headed arrow wrapping the
+        /// corner, turned to face outwardDeg (screen degrees, y down)
+        ///
+        QCursor rotateCursor( double outwardDeg, qreal dpr )
+        {
+                const int S = 32;
+                QPixmap pm( QSize( S, S ) * dpr );
+                pm.setDevicePixelRatio( dpr );
+                pm.fill( Qt::transparent );
+
+                QPainter p( &pm );
+                p.setRenderHint( QPainter::Antialiasing );
+
+                // Drawn facing up-right (-45 degrees), then turned to face the corner
+                p.translate( S/2.0, S/2.0 );
+                p.rotate( outwardDeg + 45.0 );
+                p.translate( -S/2.0, -S/2.0 );
+
+                const QPointF c( 8, 24 );
+                const double  r = 13;
+                const QRectF  arcRect( c.x() - r, c.y() - r, 2*r, 2*r );
+                QPainterPath arc;
+                arc.arcMoveTo( arcRect, 0 );
+                arc.arcTo( arcRect, 0, 90 );
+
+                auto head = []( const QPointF& base, const QPointF& d ) {
+                        const QPointF n( -d.y(), d.x() );
+                        QPainterPath h;
+                        h.moveTo( base + d*5.5 );
+                        h.lineTo( base + n*4.5 );
+                        h.lineTo( base - n*4.5 );
+                        h.closeSubpath();
+                        return h;
+                };
+                QPainterPath heads = head( QPointF( c.x() + r, c.y() ), QPointF( 0, 1 ) )
+                                   + head( QPointF( c.x(), c.y() - r ), QPointF( -1, 0 ) );
+
+                // White halo so the cursor reads on any background, then black
+                p.setBrush( Qt::NoBrush );
+                p.setPen( QPen( Qt::white, 4.5, Qt::SolidLine, Qt::RoundCap ) );
+                p.drawPath( arc );
+                p.setPen( QPen( Qt::white, 2.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+                p.setBrush( Qt::white );
+                p.drawPath( heads );
+
+                p.setPen( QPen( Qt::black, 1.6, Qt::SolidLine, Qt::RoundCap ) );
+                p.setBrush( Qt::NoBrush );
+                p.drawPath( arc );
+                p.setPen( Qt::NoPen );
+                p.setBrush( Qt::black );
+                p.drawPath( heads );
+                p.end();
+
+                return QCursor( pm, S/2, S/2 );
         }
 }
 
@@ -712,6 +777,21 @@ namespace glabels
 
                                                 mState = ArrowResize;
                                         }
+                                        else if ( (object = rotateTargetAt( pWorld, &mRotateCursorAngle )) != nullptr )
+                                        {
+                                                //
+                                                // Start a rotation about the object's center
+                                                //
+                                                mRotateObject = object;
+                                                const QTransform m = object->matrix();
+                                                mRotateCenter = QPointF( object->x0().pt(), object->y0().pt() )
+                                                              + m.map( QPointF( object->w().pt()/2, object->h().pt()/2 ) );
+                                                const QPointF d = pWorld - mRotateCenter;
+                                                mRotateStartAngle    = qRadiansToDegrees( std::atan2( d.y(), d.x() ) );
+                                                mRotateStartRotation = object->rotation();
+
+                                                mState = ArrowRotate;
+                                        }
                                         else if ( (object = mModel->objectAt( mScale, xWorld, yWorld )) != nullptr )
                                         {
                                                 //
@@ -888,6 +968,10 @@ namespace glabels
                                 {
                                         setCursor( resizeCursor( mModel->handleAt( mScale, xWorld, yWorld ) ) );
                                 }
+                                else if ( double deg = 0; rotateTargetAt( pWorld, &deg ) )
+                                {
+                                        setCursor( rotateCursor( deg, devicePixelRatioF() ) );
+                                }
                                 else if ( mModel->objectAt( mScale, xWorld, yWorld ) )
                                 {
                                         setCursor( Cursors::Move() );
@@ -939,6 +1023,26 @@ namespace glabels
                                 mUndoRedoModel->checkpoint( tr("Resize") );
                                 handleResizeMotion( xWorld, yWorld );
                                 break;
+
+                        case ArrowRotate:
+                        {
+                                mUndoRedoModel->checkpoint( tr("Rotate") );
+                                const QPointF d = pWorld - mRotateCenter;
+                                const double delta = qRadiansToDegrees( std::atan2( d.y(), d.x() ) ) - mRotateStartAngle;
+                                double theta = mRotateStartRotation + delta;
+                                if ( event->modifiers() & Qt::ShiftModifier )
+                                {
+                                        theta = std::round( theta / 15.0 ) * 15.0;   // snap to 15 degrees
+                                }
+                                theta = std::fmod( theta, 360.0 );
+                                if ( theta < 0 )
+                                {
+                                        theta += 360.0;
+                                }
+                                mRotateObject->setRotation( theta );
+                                setCursor( rotateCursor( mRotateCursorAngle + delta, devicePixelRatioF() ) );
+                        }
+                        break;
 
                         case CreateIdle:
                         case MeasureIdle:
@@ -993,7 +1097,7 @@ namespace glabels
 
                         }
 
-                        if ( mState == ArrowMove || mState == ArrowResize || mState == CreateDrag )
+                        if ( mState == ArrowMove || mState == ArrowResize || mState == ArrowRotate || mState == CreateDrag )
                         {
                                 showDragInfo( event->pos() );
                         }
@@ -1033,6 +1137,12 @@ namespace glabels
                                 {
 
                                 case ArrowResize:
+                                        mState = IdleState;
+                                        update();
+                                        break;
+
+                                case ArrowRotate:
+                                        mRotateObject = nullptr;
                                         mState = IdleState;
                                         update();
                                         break;
@@ -1264,6 +1374,54 @@ namespace glabels
         ///
         /// Show position (move) or size (resize/create) next to the cursor while dragging
         ///
+        model::ModelObject*
+        LabelEditor::rotateTargetAt( const QPointF& pWorld, double* outwardDeg )
+        {
+                if ( !mModel || !model::Settings::mouseRotate() || !mModel->isSelectionAtomic() )
+                {
+                        return nullptr;
+                }
+                model::ModelObject* object = mModel->getFirstSelectedObject();
+                if ( !object || object->isLocked() )
+                {
+                        return nullptr;
+                }
+
+                const double    w = object->w().pt();
+                const double    h = object->h().pt();
+                const QTransform m = object->matrix();
+                const QPointF   local = m.inverted().map( pWorld - QPointF( object->x0().pt(), object->y0().pt() ) );
+                const QPointF   center( w/2, h/2 );
+
+                // Only outside the object: inside belongs to moving it
+                if ( QRectF( 0, 0, w, h ).normalized().contains( local ) )
+                {
+                        return nullptr;
+                }
+
+                const double reach = rotateZonePixels / mScale;
+                const QPointF corners[] = { { 0, 0 }, { w, 0 }, { 0, h }, { w, h } };
+                for ( const auto& corner : corners )
+                {
+                        const QPointF d   = local - corner;
+                        const QPointF out = corner - center;
+                        if ( std::hypot( d.x(), d.y() ) <= reach &&
+                             d.x()*out.x() + d.y()*out.y() > 0 )
+                        {
+                                if ( outwardDeg )
+                                {
+                                        // Corner direction on screen (rotate, no shift)
+                                        const QPointF s( m.m11()*out.x() + m.m21()*out.y(),
+                                                         m.m12()*out.x() + m.m22()*out.y() );
+                                        *outwardDeg = qRadiansToDegrees( std::atan2( s.y(), s.x() ) );
+                                }
+                                return object;
+                        }
+                }
+                return nullptr;
+        }
+
+
         void
         LabelEditor::showDragInfo( const QPoint& pos )
         {
@@ -1294,6 +1452,14 @@ namespace glabels
                                 return;
                         }
                         text = tr("X: %1  Y: %2 %3").arg( fmt(x), fmt(y), units.toIdString() );
+                }
+                else if ( mState == ArrowRotate )
+                {
+                        if ( !mRotateObject )
+                        {
+                                return;
+                        }
+                        text = tr("Angle: %1°").arg( QString::number( mRotateObject->rotation(), 'f', 1 ) );
                 }
                 else
                 {

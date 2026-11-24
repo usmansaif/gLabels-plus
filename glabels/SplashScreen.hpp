@@ -27,6 +27,8 @@
 #include <QSplashScreen>
 #include <QTimer>
 
+class QScreen;
+
 
 namespace glabels
 {
@@ -71,7 +73,8 @@ namespace glabels
                 // Private methods
                 /////////////////////////////////
         private:
-                static QPixmap renderBackground( const QSize& size, qreal dpr );
+                static qreal   scaleForScreen( const QScreen* screen );
+                static QPixmap renderBackground( const QSize& size, qreal dpr, qreal scale );
                 void onTick();
                 void pump();
 
@@ -85,6 +88,7 @@ namespace glabels
                 double        mShown  { 0.0 };   // displayed progress, eases toward mTarget
                 double        mTarget { 0.0 };
                 QString       mMessage;
+                qreal         mScale  { 1.4 };   // design-grid -> screen scale, set from the screen size
                 qint64        mPhase  { 0 };     // shimmer animation phase (ms)
         };
 

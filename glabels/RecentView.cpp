@@ -291,11 +291,6 @@ namespace glabels
                 connect( newButton, &QPushButton::clicked, this, [this]{ File::newLabel( mWindow ); } );
                 header->addWidget( newButton, 0, Qt::AlignVCenter );
 
-                auto* homeButton = new QPushButton( QIcon::fromTheme( "glabels" ), tr("Welcome") );
-                homeButton->setToolTip( tr("Back to the welcome screen") );
-                connect( homeButton, &QPushButton::clicked, this, &RecentView::homeRequested );
-                header->addWidget( homeButton, 0, Qt::AlignVCenter );
-
                 layout->addLayout( header );
 
                 auto* hint = new QLabel( tr("Click a label to open it in the editor. Double-click to go straight to printing.") );

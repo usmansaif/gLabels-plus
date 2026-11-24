@@ -2219,6 +2219,14 @@ Find it under File &gt; New from Sample.</source>
         <source>Add Variable</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Angle: %1°</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::MainWindow</name>
@@ -3332,6 +3340,14 @@ Find it under File &gt; New from Sample.</source>
     </message>
     <message>
         <source>Estimate the label rolls and ribbons a job needs and what they cost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate with Mouse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag just outside a corner of the selected object to rotate it (Shift snaps to 15 degrees)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4575,14 +4591,6 @@ Your recent files, favorites and keyboard shortcuts are kept.</source>
     </message>
     <message>
         <source>New Label...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Welcome</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Back to the welcome screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

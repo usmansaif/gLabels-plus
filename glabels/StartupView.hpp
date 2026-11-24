@@ -118,6 +118,7 @@ namespace glabels
                 void applyFilter();
                 void updateInspector();
                 void updateStyle();
+                void updateLinksText();
                 void setTileSize( startup::LabelTileDelegate::Size size );
                 void watchProjectFolders();
 
@@ -162,6 +163,7 @@ namespace glabels
                 QList<startup::NavButton*>  mProjectNavs;
                 QLabel*                     mNoProjectsLabel;
                 QLabel*                     mLinksLabel;
+                QString                     mHoveredLink;   // link under the pointer (underlined)
 
                 // Center
                 QToolButton*    mRecentTab;

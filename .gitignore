@@ -52,3 +52,6 @@ OLD*
 
 # Qt installer (aqtinstall) log
 aqtinstall.log
+
+# Test files live outside the repo (~/Documents/gLabels/test-data)
+/test-data

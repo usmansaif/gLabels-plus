@@ -56,9 +56,6 @@ namespace glabels
                 /// Render (or fetch from the disk cache) a thumbnail of a label file
                 static QImage thumbnail( const QString& fileName, const QSize& maxSize );
 
-        signals:
-                void homeRequested();
-
         public slots:
                 void reload();
 

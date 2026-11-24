@@ -392,6 +392,14 @@ namespace glabels
                                 QDesktopServices::openUrl( QUrl( link ) );
                         }
                 } );
+                connect( mLinksLabel, &QLabel::linkHovered, this, [this]( const QString& link ) {
+                        // QLabel has no :hover for links, so underline the hovered one by hand
+                        if ( link != mHoveredLink )
+                        {
+                                mHoveredLink = link;
+                                updateLinksText();
+                        }
+                } );
                 linksLayout->addWidget( mLinksLabel );
                 layout->addSpacing( 10 );
                 layout->addWidget( links );
@@ -720,6 +728,33 @@ namespace glabels
 
 
         ///
+        /// Sidebar utility links in the accent color; the hovered one is underlined
+        ///
+        void StartupView::updateLinksText()
+        {
+                const startup::Theme& t = mTheme;
+                const struct { const char* href; QString text; } items[] = {
+                        { "prefs",    tr("Preferences") },
+                        { "keys",     tr("Keyboard shortcuts") },
+                        { "help",     tr("Help") },
+                        { "whatsnew", tr("What's New") },
+                        { "https://usmansaif.github.io/gLabels-plus", tr("Website") },
+                };
+
+                QStringList parts;
+                for ( const auto& item : items )
+                {
+                        const bool hovered = ( mHoveredLink == item.href );
+                        parts << QString( "<a style='color:%1; text-decoration:%2;' href='%3'>%4</a>" )
+                                 .arg( ( hovered ? t.primaryDark : t.primary ).name(),
+                                       hovered ? "underline" : "none",
+                                       item.href, item.text.toHtmlEscaped() );
+                }
+                mLinksLabel->setText( parts.join( "&nbsp;&nbsp;&nbsp; " ) );
+        }
+
+
+        ///
         /// Re-apply colors whenever the palette or appearance changes
         ///
         void StartupView::updateStyle()
@@ -743,15 +778,7 @@ namespace glabels
 
                 // QLabel bakes link colors in when its text is set, so rebuild the
                 // rich text with explicit theme colors.
-                QString link = QString( "style='color:%1; text-decoration:none;'" ).arg( t.text3.name() );
-                mLinksLabel->setText(
-                        QString( "<a %1 href='prefs'>%2</a>&nbsp;&nbsp;&nbsp; "
-                                 "<a %1 href='keys'>%3</a>&nbsp;&nbsp;&nbsp; "
-                                 "<a %1 href='help'>%4</a>&nbsp;&nbsp;&nbsp; "
-                                 "<a %1 href='whatsnew'>%5</a>&nbsp;&nbsp;&nbsp; "
-                                 "<a %1 href='https://usmansaif.github.io/gLabels-plus'>%6</a>" )
-                        .arg( link, tr("Preferences"), tr("Keyboard shortcuts"), tr("Help"), tr("What's New"),
-                              tr("Website") ) );
+                updateLinksText();
                 mStatusLabel->setText(
                         QString( "%1 &bull; %2: <a style='color:%3; text-decoration:none;' "
                                  "href='https://usmansaif.com'><b>Usman Saif</b></a>" )

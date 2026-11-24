@@ -149,6 +149,7 @@ namespace glabels
                 void viewEditorToolBar( bool );
                 void viewGrid( bool );
                 void viewMarkup( bool );
+                void viewMouseRotate( bool );
                 void viewRulers( bool );
                 void viewPropertiesUnits( bool );
                 void viewToolBarToggled( bool );
@@ -392,6 +393,7 @@ namespace glabels
                 QAction*  viewEditorToolBarAction;
                 QAction*  viewGridAction;
                 QAction*  viewMarkupAction;
+                QAction*  viewMouseRotateAction;
                 QAction*  viewRulersAction;
                 QAction*  viewPropertiesUnitsAction;
                 QAction*  viewViewToolBarAction;

@@ -579,6 +579,9 @@ namespace glabels::model
         bool Settings::showMarkup() { return getValue( "Editor", "showMarkup", true ).toBool(); }
         void Settings::setShowMarkup( bool value ) { putValue( "Editor", "showMarkup", value ); }
 
+        bool Settings::mouseRotate() { return getValue( "Editor", "mouseRotate", true ).toBool(); }
+        void Settings::setMouseRotate( bool value ) { putValue( "Editor", "mouseRotate", value ); }
+
         bool Settings::showRulers() { return getValue( "Editor", "showRulers", true ).toBool(); }
         void Settings::setShowRulers( bool value ) { putValue( "Editor", "showRulers", value ); }
 

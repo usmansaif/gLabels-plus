@@ -275,6 +275,273 @@ symbol( "open-here", "Open Here", "Arrows", "open tear pull here",
 
 
 # ---------------------------------------------------------------------------
+# Shared pieces for the hazard, prohibition and care symbols
+# ---------------------------------------------------------------------------
+def S( w ):
+    """Black stroke of width w (never below 3, so it holds on 203 dpi printers)."""
+    return STROKE.replace( "3.5", str( max( 3, w ) ) )
+
+
+def WS( w ):
+    return WSTROKE.replace( "3.5", str( w ) )
+
+
+TRIANGLE = '<path d="M24 4.5 L44.5 41.5 H3.5 Z" %s/>' % S( 3.5 )
+
+
+def hazard( inner ):
+    """Warning triangle around a pictogram drawn in its lower middle."""
+    return TRIANGLE + inner
+
+
+def prohibited( inner ):
+    """Pictogram struck through by the red-sign style circle and slash."""
+    return inner + '<path d="M10 10 L38 38" fill="none" stroke="#fff" stroke-width="8"/>' + SLASH
+
+
+def flake_at( cx, cy, r, w=3.5 ):
+    out = ""
+    for d in range( 0, 180, 60 ):
+        a = math.radians( d + 90 )
+        out += '<path d="M%.2f %.2f L%.2f %.2f" %s/>' % ( cx - r * math.cos( a ), cy - r * math.sin( a ),
+                                                         cx + r * math.cos( a ), cy + r * math.sin( a ), S( w ) )
+    return out
+
+
+def dots( n, cx, cy, gap=7.5, r=2.6 ):
+    x0 = cx - gap * ( n - 1 ) / 2
+    return "".join( '<circle cx="%.2f" cy="%.2f" r="%g"/>' % ( x0 + i * gap, cy, r ) for i in range( n ) )
+
+
+def ring_sector( cx, cy, r0, r1, a0, a1 ):
+    p = lambda r, a: ( cx + r * math.cos( math.radians( a ) ), cy + r * math.sin( math.radians( a ) ) )
+    ( x0, y0 ), ( x1, y1 ), ( x2, y2 ), ( x3, y3 ) = p( r1, a0 ), p( r1, a1 ), p( r0, a1 ), p( r0, a0 )
+    return ( '<path d="M%.2f %.2f A%g %g 0 0 1 %.2f %.2f L%.2f %.2f A%g %g 0 0 0 %.2f %.2f Z"/>'
+             % ( x0, y0, r1, r1, x1, y1, x2, y2, r0, r0, x3, y3 ) )
+
+
+CROSS_OUT = '<path d="M7 7 L41 41 M41 7 L7 41" %s/>' % S( 3.5 )
+
+# ---------------------------------------------------------------------------
+# Handling (more)
+# ---------------------------------------------------------------------------
+symbol( "center-of-gravity", "Centre of Gravity", "Handling", "center gravity balance weight lift",
+        '<circle cx="24" cy="24" r="17" %s/>' % S( 3.5 )
+        + '<path d="M24 24 V7 A17 17 0 0 1 41 24 Z"/><path d="M24 24 V41 A17 17 0 0 1 7 24 Z"/>' )
+symbol( "no-hooks", "Do Not Use Hooks", "Handling", "hook hand hooks prohibited",
+        prohibited( '<path d="M26 7 V29 A7.5 7.5 0 0 1 11 29 V26" %s/>' % S( 4 ) ) )
+symbol( "keep-away-from-water", "Keep Away from Water", "Handling", "water wet drop liquid moisture",
+        prohibited( '<path d="M24 8 C24 8 34 20 34 27 A10 10 0 0 1 14 27 C14 20 24 8 24 8 Z"/>' ) )
+symbol( "no-knife", "Do Not Use Knife", "Handling", "knife cutter blade open carefully",
+        prohibited( '<path d="M13 35 L21 27" %s/>' % S( 6 )
+                    + '<path d="M21 27 L35 13 L36.5 18 L24.5 30 Z" stroke="#000" stroke-width="1.5" '
+                      'stroke-linejoin="round"/>' ) )
+
+# ---------------------------------------------------------------------------
+# Warning (hazard triangles and prohibition signs)
+# ---------------------------------------------------------------------------
+symbol( "hazard-electric", "Electrical Hazard", "Warning", "electric voltage shock lightning danger",
+        hazard( '<path d="M26.5 15 L17 30 H23 L21 39 L31 24 H25 L27.5 15 Z" stroke="#000" stroke-width="1" '
+                'stroke-linejoin="round"/>' ) )
+symbol( "hazard-flammable", "Flammable", "Warning", "fire flame burn flammable danger",
+        hazard( '<path d="M24 14 C28 20 33 24 33 31 C33 36 29 39 24 39 C19 39 15 36 15 31 C15 27 17 25 19 22 '
+                'C19 26 21 28 22.5 28 C21 23 22 18 24 14 Z"/>' ) )
+symbol( "hazard-hot-surface", "Hot Surface", "Warning", "hot heat surface burn temperature",
+        hazard( '<rect x="14" y="33" width="20" height="4.5" rx="1"/>'
+                + "".join( '<path d="M%g 30 C%g 27.5 %g 25 %g 22" %s/>' % ( x, x - 3, x + 3, x, S( 3 ) )
+                           for x in ( 19, 24, 29 ) ) ) )
+symbol( "hazard-laser", "Laser", "Warning", "laser beam radiation light",
+        hazard( '<circle cx="22" cy="30" r="3.5"/>'
+                + "".join( '<path d="M%.2f %.2f L%.2f %.2f" %s/>'
+                           % ( 22 + 6 * math.cos( a ), 30 + 6 * math.sin( a ), 22 + 9.5 * math.cos( a ),
+                               30 + 9.5 * math.sin( a ), S( 3 ) )
+                           for a in [ math.radians( d ) for d in range( 45, 360, 45 ) ] )
+                + '<path d="M22 30 H36" %s/>' % S( 3 ) ) )
+symbol( "hazard-magnetic", "Magnetic Field", "Warning", "magnet magnetic field",
+        hazard( '<path d="M19 21 V29 A5 5 0 0 0 29 29 V21" fill="none" stroke="#000" stroke-width="5"/>' ) )
+symbol( "hazard-radiation", "Radiation", "Warning", "radiation radioactive nuclear trefoil",
+        hazard( '<circle cx="24" cy="29" r="2.6"/>'
+                + "".join( ring_sector( 24, 29, 4.5, 11, a - 30, a + 30 ) for a in ( -90, 30, 150 ) ) ) )
+symbol( "hazard-toxic", "Toxic", "Warning", "poison toxic skull danger",
+        hazard( '<path d="M15.5 35.5 L32.5 40 M32.5 35.5 L15.5 40" %s/>' % S( 3 )
+                + '<circle cx="24" cy="25.5" r="7.5"/><rect x="20" y="29" width="8" height="6.5" rx="1.5"/>'
+                  '<circle cx="21" cy="25" r="2.1" fill="#fff"/><circle cx="27" cy="25" r="2.1" fill="#fff"/>' ) )
+symbol( "hazard-explosive", "Explosive", "Warning", "explosion explosive bang burst",
+        hazard( '<polygon points="%s"/>' % star_points( 24, 29.5, 11, 5, n=8 ) ) )
+symbol( "hazard-cold", "Low Temperature", "Warning", "cold freeze frost low temperature",
+        hazard( flake_at( 24, 29.5, 9, 3 ) ) )
+symbol( "hazard-battery", "Battery Hazard", "Warning", "battery lithium cell charge",
+        hazard( '<rect x="15.5" y="25.5" width="15" height="9" rx="1.5" %s/>' % S( 3 )
+                + '<rect x="31" y="28" width="2.8" height="4"/><rect x="18" y="28" width="7" height="4"/>' ) )
+symbol( "no-smoking", "No Smoking", "Warning", "smoking cigarette smoke prohibited",
+        prohibited( '<rect x="8" y="25" width="25" height="6" rx="1"/><rect x="34.5" y="25" width="4.5" height="6" rx="1"/>'
+                    '<path d="M37 21 C35 18 39 16 37 12" %s/>' % S( 3 ) ) )
+symbol( "no-open-flame", "No Open Flame", "Warning", "fire flame open light prohibited",
+        prohibited( '<path d="M24 9 C30 17 35 22 35 30 C35 36 30 40 24 40 C18 40 13 36 13 30 C13 25 16 22 18 18 '
+                    'C18 23 20 26 22 26 C21 20 22 14 24 9 Z"/>' ) )
+symbol( "no-food-drink", "No Food or Drink", "Warning", "food drink eating cup prohibited",
+        prohibited( '<path d="M15 15 H33 L31 39 H17 Z"/><path d="M26 15 L30 6" %s/>' % S( 3 ) ) )
+symbol( "no-phone", "No Mobile Phones", "Warning", "phone mobile cell prohibited",
+        prohibited( '<rect x="17" y="8.5" width="14" height="31" rx="3" %s/>' % S( 3.5 )
+                    + '<circle cx="24" cy="34" r="1.8"/>' ) )
+
+# ---------------------------------------------------------------------------
+# Care (textile care, ISO 3758 style)
+# ---------------------------------------------------------------------------
+TUB = ( '<path d="M4 12 L9 40 H39 L44 12" %s/>' % S( 3.5 )
+        + '<path d="M7 19.5 Q11.25 15.5 15.5 19.5 T24 19.5 T32.5 19.5 T41 19.5" %s/>' % S( 3 ) )
+for n, sid, name, temp in [ ( 1, "wash-30", "Wash at 30 °C", "cold 30" ),
+                            ( 2, "wash-40", "Wash at 40 °C", "warm 40" ),
+                            ( 3, "wash-50", "Wash at 50 °C", "hot 50" ) ]:
+    symbol( sid, name, "Care", "wash washing machine laundry " + temp, TUB + dots( n, 24, 30.5 ) )
+symbol( "hand-wash", "Hand Wash", "Care", "hand wash gentle laundry",
+        TUB + '<rect x="17" y="3" width="15" height="12" rx="3"/>'
+        + "".join( '<rect x="%.2f" y="12" width="2.6" height="17" rx="1.3"/>' % ( 17.6 + i * 3.6 ) for i in range( 4 ) ) )
+symbol( "do-not-wash", "Do Not Wash", "Care", "no wash washing laundry", TUB + CROSS_OUT )
+BLEACH = '<path d="M24 6 L44 40 H4 Z" %s/>' % S( 3.5 )
+symbol( "bleach", "Bleach Allowed", "Care", "bleach chlorine laundry", BLEACH )
+symbol( "do-not-bleach", "Do Not Bleach", "Care", "no bleach chlorine laundry", BLEACH + CROSS_OUT )
+DRYER = '<rect x="6" y="6" width="36" height="36" rx="2" %s/>' % S( 3.5 )
+DRUM = '<circle cx="24" cy="24" r="12.5" %s/>' % S( 3.5 )
+symbol( "tumble-dry", "Tumble Dry", "Care", "tumble dryer dry laundry", DRYER + DRUM )
+symbol( "tumble-dry-low", "Tumble Dry Low", "Care", "tumble dryer low heat dry laundry",
+        DRYER + DRUM + '<circle cx="24" cy="24" r="3"/>' )
+symbol( "do-not-tumble-dry", "Do Not Tumble Dry", "Care", "no tumble dryer laundry", DRYER + DRUM + CROSS_OUT )
+symbol( "line-dry", "Line Dry", "Care", "line hang dry laundry",
+        DRYER + '<path d="M8 9 C15 20 33 20 40 9" %s/>' % S( 3.5 ) )
+symbol( "dry-flat", "Dry Flat", "Care", "flat dry laundry", DRYER + '<path d="M13 24 H35" %s/>' % S( 3.5 ) )
+IRON = ( '<path d="M5 38 Q8 24 18 22 H41 L43 38 Z" %s/>' % S( 3.5 )
+         + '<path d="M22 22 V14 H39 V22" %s/>' % S( 3.5 ) )
+for n, sid, name, temp in [ ( 1, "iron-low", "Iron Low (110 °C)", "low cool 110" ),
+                            ( 2, "iron-medium", "Iron Medium (150 °C)", "medium warm 150" ),
+                            ( 3, "iron-high", "Iron High (200 °C)", "high hot 200" ) ]:
+    symbol( sid, name, "Care", "iron ironing laundry " + temp, IRON + dots( n, 27, 31, gap=7 ) )
+symbol( "do-not-iron", "Do Not Iron", "Care", "no iron ironing laundry", IRON + CROSS_OUT )
+CLEAN = '<circle cx="24" cy="24" r="16" %s/>' % S( 3.5 )
+symbol( "dry-clean", "Dry Clean", "Care", "dry clean professional laundry", CLEAN )
+symbol( "do-not-dry-clean", "Do Not Dry Clean", "Care", "no dry clean laundry", CLEAN + CROSS_OUT )
+
+# ---------------------------------------------------------------------------
+# Food (more)
+# ---------------------------------------------------------------------------
+LEAF = ( '<path d="M9 39 C9 19 21 9 40 8 C40 27 29 39 9 39 Z"/>'
+         '<path d="M11.5 36.5 L31 17" %s/>' % WS( 3 ) )
+symbol( "organic", "Organic", "Food", "organic natural leaf bio eco", LEAF )
+symbol( "vegan", "Vegan", "Food", "vegan plant based leaf",
+        '<circle cx="24" cy="24" r="20" %s/>' % S( 3.5 )
+        + '<path d="M14 34 C14 21 22 14 34 13.5 C34 26 27 34 14 34 Z"/><path d="M16.5 31.5 L28.5 19.5" %s/>' % WS( 3 ) )
+symbol( "contains-nuts", "Contains Nuts", "Food", "nuts peanut allergen allergy",
+        '<g transform="rotate(-35 24 24)"><circle cx="24" cy="14.5" r="9"/><circle cx="24" cy="33.5" r="9"/>'
+        '<rect x="18.5" y="14.5" width="11" height="19"/>'
+        '<path d="M20 13 H28 M20 35 H28" %s/></g>' % WS( 3 ) )
+symbol( "dairy", "Contains Milk", "Food", "milk dairy lactose carton allergen",
+        '<path d="M15 17 L19 8 H29 L33 17 V42 H15 Z" %s/>' % S( 3.5 )
+        + '<path d="M15 17 H33"  %s/><rect x="19" y="24" width="10" height="11"/>' % S( 3.5 ) )
+symbol( "egg", "Contains Egg", "Food", "egg allergen",
+        '<path d="M24 5 C33 5 38 19 38 28 C38 37 32 43 24 43 C16 43 10 37 10 28 C10 19 15 5 24 5 Z"/>' )
+symbol( "fish", "Contains Fish", "Food", "fish seafood allergen",
+        '<path d="M4 24 C11 13 25 12 33 24 C25 36 11 35 4 24 Z"/><path d="M32 24 L44 14 V34 Z"/>'
+        '<circle cx="12" cy="22" r="2.4" fill="#fff"/>' )
+symbol( "keep-frozen", "Keep Frozen", "Food", "frozen freezer freeze cold -18",
+        '<rect x="6" y="6" width="36" height="36" rx="2" %s/>' % S( 3.5 ) + flake_at( 24, 24, 12, 3.5 ) )
+symbol( "food-contact", "Food Safe", "Food", "food contact safe glass fork packaging",
+        '<path d="M8 8 H24 L23 16 C22 21 20 23 16 23 C12 23 10 21 9 16 Z"/>'
+        '<path d="M16 23 V37 M10.5 39.5 H21.5" %s/>' % S( 3.5 )
+        + '<path d="M28 8 V16 M32.5 8 V16 M37 8 V16" %s/>' % S( 3 )
+        + '<path d="M28 16 Q28 21.5 32.5 21.5 Q37 21.5 37 16 M32.5 21.5 V40" %s/>' % S( 3.5 ) )
+symbol( "alcohol", "Contains Alcohol", "Food", "alcohol wine glass drink",
+        '<path d="M13 6 H35 L34 16 C33 24 29 28 24 28 C19 28 15 24 14 16 Z"/>'
+        '<path d="M24 28 V40 M16 42 H32" %s/>' % S( 3.5 ) )
+symbol( "dishwasher-safe", "Dishwasher Safe", "Food", "dishwasher dish wash plates",
+        '<rect x="6" y="6" width="36" height="36" rx="2" %s/>' % S( 3.5 )
+        + '<ellipse cx="18.5" cy="21" rx="4" ry="9"/><ellipse cx="29.5" cy="21" rx="4" ry="9"/>'
+        + dots( 3, 24, 35.5, gap=7, r=2.2 ) )
+symbol( "oven-safe", "Oven Safe", "Food", "oven bake heat safe",
+        '<rect x="6" y="7" width="36" height="34" rx="2" %s/>' % S( 3.5 )
+        + '<rect x="12" y="19" width="24" height="16" rx="1.5"/>' + dots( 3, 19, 13, gap=6, r=2.2 ) )
+
+# ---------------------------------------------------------------------------
+# Printing & labeling
+# ---------------------------------------------------------------------------
+bars, x = "", 6.0
+for w in ( 3, 3, 6, 3, 4.5, 3, 6, 3, 3 ):
+    bars += '<rect x="%.2f" y="7" width="%g" height="28"/>' % ( x, w )
+    x += w + 3.25
+symbol( "barcode", "Barcode", "Printing & labeling", "barcode bars scan product ean upc",
+        bars + '<path d="M6 40.5 H42" %s/>' % S( 3 ) )
+QR = ""
+for fx, fy in ( ( 4, 4 ), ( 30, 4 ), ( 4, 30 ) ):
+    QR += ( '<rect x="%g" y="%g" width="14" height="14" rx="1" %s/>' % ( fx + 1.75, fy + 1.75, S( 3.5 ) )
+            + '<rect x="%g" y="%g" width="5" height="5"/>' % ( fx + 6.25, fy + 6.25 ) )
+for bx, by in ( ( 24, 6 ), ( 24, 14 ), ( 30, 24 ), ( 38, 24 ), ( 24, 30 ), ( 32, 32 ), ( 38, 38 ), ( 24, 38 ),
+                ( 6, 24 ), ( 14, 24 ) ):
+    QR += '<rect x="%g" y="%g" width="4.5" height="4.5"/>' % ( bx, by )
+symbol( "qr-code", "QR Code", "Printing & labeling", "qr code scan matrix link", QR )
+symbol( "printer", "Printer", "Printing & labeling", "print printer printing",
+        '<rect x="14" y="5.5" width="20" height="12" %s/>' % S( 3 )
+        + '<rect x="5" y="17" width="38" height="17" rx="2.5"/>'
+        + '<rect x="14" y="28" width="20" height="14" fill="#fff" %s/>' % S( 3 ).replace( 'fill="none" ', "" )
+        + '<circle cx="37" cy="22.5" r="2" fill="#fff"/>' )
+symbol( "label-roll", "Label Roll", "Printing & labeling", "roll labels thermal sticker reel",
+        '<circle cx="18" cy="20" r="13"/><circle cx="18" cy="20" r="4.5" fill="#fff"/>'
+        '<rect x="18" y="27" width="26" height="8" />'
+        '<path d="M28 27 V35 M37 27 V35" %s/>' % WS( 2.5 ) )
+symbol( "scissors", "Scissors", "Printing & labeling", "scissors cut trim",
+        '<circle cx="11" cy="14" r="5.5" %s/><circle cx="11" cy="34" r="5.5" %s/>' % ( S( 3.5 ), S( 3.5 ) )
+        + '<path d="M15.5 17.5 L43 32 M15.5 30.5 L43 16" %s/>' % S( 4 ) )
+symbol( "fold-here", "Fold Here", "Printing & labeling", "fold crease bend line",
+        '<path d="M3 37 H45" fill="none" stroke="#000" stroke-width="3" stroke-dasharray="5 3.5"/>'
+        + bent_arrow( 180, 150, r=11, cx=24, cy=27, head=8 ) )
+symbol( "peel-here", "Peel Here", "Printing & labeling", "peel off sticker backing liner",
+        '<path d="M6 6 H42 V27 L27 42 H6 Z" %s/>' % S( 3.5 ) + '<path d="M42 27 H27 V42 Z"/>' )
+symbol( "crop-marks", "Crop Marks", "Printing & labeling", "crop trim marks cut bleed print",
+        '<path d="M3 13 H10 M13 3 V10 M38 13 H45 M35 3 V10 M3 35 H10 M13 38 V45 M38 35 H45 M35 38 V45" %s/>'
+        % S( 3 ) + '<rect x="16" y="16" width="16" height="16"/>' )
+symbol( "registration-mark", "Registration Mark", "Printing & labeling", "registration target print align",
+        '<circle cx="24" cy="24" r="13" %s/>' % S( 3.5 ) + '<circle cx="24" cy="24" r="5"/>'
+        + '<path d="M24 3 V45 M3 24 H45" %s/>' % S( 3 ) )
+symbol( "number-sign", "Number Sign", "Printing & labeling", "number hash serial batch lot",
+        '<path d="M19 7 L15 41 M33 7 L29 41 M8 17.5 H41 M7 30.5 H40" %s/>' % S( 4 ) )
+SHEET = '<rect x="9" y="4" width="30" height="40" rx="1.5" %s/>' % S( 3 )
+for lx in ( 13, 25 ):
+    for ly in ( 9, 17, 25, 33 ):
+        SHEET += '<rect x="%g" y="%g" width="10" height="5.5" rx="1"/>' % ( lx, ly )
+symbol( "label-sheet", "Label Sheet", "Printing & labeling", "sheet a4 letter labels page", SHEET )
+symbol( "ink", "Ink", "Printing & labeling", "ink drop toner color",
+        '<path d="M24 4 C24 4 38 21 38 30 A14 14 0 0 1 10 30 C10 21 24 4 24 4 Z"/>'
+        '<path d="M17 30 A7 7 0 0 0 24 37" %s/>' % WS( 3 ) )
+
+# ---------------------------------------------------------------------------
+# Packaging
+# ---------------------------------------------------------------------------
+symbol( "open-box", "Open Box", "Packaging", "box carton open unpack",
+        '<path d="M8 21 H40 V42 H8 Z" %s/>' % S( 3.5 )
+        + '<path d="M8 21 L3 12 M40 21 L45 12 M8 21 L15 13 M40 21 L33 13" %s/>' % S( 3.5 ) )
+symbol( "pallet", "Pallet", "Packaging", "pallet shipping freight skid",
+        '<rect x="11.75" y="7.75" width="24.5" height="12.5" %s/>' % S( 3.5 )
+        + '<rect x="4" y="24" width="40" height="5"/><rect x="6" y="29" width="6" height="6"/>'
+          '<rect x="21" y="29" width="6" height="6"/><rect x="36" y="29" width="6" height="6"/>'
+          '<rect x="4" y="35" width="40" height="5"/>' )
+symbol( "packing-tape", "Packing Tape", "Packaging", "tape roll seal adhesive",
+        '<circle cx="19" cy="21" r="12" fill="none" stroke="#000" stroke-width="7"/>'
+        '<path d="M19 30.5 H44 V37 H19 Z"/>' )
+symbol( "weight", "Weight", "Packaging", "weight heavy kg lb mass",
+        '<path d="M10 42 L15 18 H33 L38 42 Z"/><path d="M18 18 C18 8 30 8 30 18" %s/>' % S( 4 ) )
+symbol( "dimensions", "Dimensions", "Packaging", "size dimensions measure width height",
+        '<rect x="14" y="16" width="27" height="25" %s/>' % S( 3.5 )
+        + arrow( 27.5, 7, 15, 7, head=6.5, width=3 ) + arrow( 27.5, 7, 40, 7, head=6.5, width=3 )
+        + arrow( 5.5, 28.5, 5.5, 17, head=6.5, width=3 ) + arrow( 5.5, 28.5, 5.5, 40, head=6.5, width=3 ) )
+symbol( "compostable", "Compostable", "Packaging", "compost compostable biodegradable eco",
+        bent_arrow( 200, 150, r=19, cx=24, cy=24, head=8 ) + bent_arrow( 20, 150, r=19, cx=24, cy=24, head=8 )
+        + '<path d="M15 33 C15 22 22 16 33 15 C33 26 27 33 15 33 Z"/><path d="M17.5 30.5 L27.5 20.5" %s/>' % WS( 3 ) )
+symbol( "dispose-in-bin", "Dispose in Bin", "Packaging", "bin trash waste litter dispose",
+        '<rect x="9" y="10" width="30" height="4.5" rx="1"/><path d="M20 10 V6 H28 V10" %s/>' % S( 3 )
+        + '<path d="M12 17 H36 L34 43 H14 Z"/><path d="M20 22 V38 M28 22 V38" %s/>' % WS( 3 ) )
+symbol( "reusable", "Reusable", "Packaging", "reuse reusable refill return",
+        bent_arrow( -60, 140, r=16, cx=24, cy=24 ) + bent_arrow( 120, 140, r=16, cx=24, cy=24 ) )
+
+
+# ---------------------------------------------------------------------------
 os.makedirs( HERE, exist_ok=True )
 index = []
 for s in SYMBOLS:

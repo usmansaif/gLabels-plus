@@ -316,5 +316,407 @@
     "name": "Open Here",
     "category": "Arrows",
     "keywords": "open tear pull here"
+  },
+  {
+    "id": "center-of-gravity",
+    "name": "Centre of Gravity",
+    "category": "Handling",
+    "keywords": "center gravity balance weight lift"
+  },
+  {
+    "id": "no-hooks",
+    "name": "Do Not Use Hooks",
+    "category": "Handling",
+    "keywords": "hook hand hooks prohibited"
+  },
+  {
+    "id": "keep-away-from-water",
+    "name": "Keep Away from Water",
+    "category": "Handling",
+    "keywords": "water wet drop liquid moisture"
+  },
+  {
+    "id": "no-knife",
+    "name": "Do Not Use Knife",
+    "category": "Handling",
+    "keywords": "knife cutter blade open carefully"
+  },
+  {
+    "id": "hazard-electric",
+    "name": "Electrical Hazard",
+    "category": "Warning",
+    "keywords": "electric voltage shock lightning danger"
+  },
+  {
+    "id": "hazard-flammable",
+    "name": "Flammable",
+    "category": "Warning",
+    "keywords": "fire flame burn flammable danger"
+  },
+  {
+    "id": "hazard-hot-surface",
+    "name": "Hot Surface",
+    "category": "Warning",
+    "keywords": "hot heat surface burn temperature"
+  },
+  {
+    "id": "hazard-laser",
+    "name": "Laser",
+    "category": "Warning",
+    "keywords": "laser beam radiation light"
+  },
+  {
+    "id": "hazard-magnetic",
+    "name": "Magnetic Field",
+    "category": "Warning",
+    "keywords": "magnet magnetic field"
+  },
+  {
+    "id": "hazard-radiation",
+    "name": "Radiation",
+    "category": "Warning",
+    "keywords": "radiation radioactive nuclear trefoil"
+  },
+  {
+    "id": "hazard-toxic",
+    "name": "Toxic",
+    "category": "Warning",
+    "keywords": "poison toxic skull danger"
+  },
+  {
+    "id": "hazard-explosive",
+    "name": "Explosive",
+    "category": "Warning",
+    "keywords": "explosion explosive bang burst"
+  },
+  {
+    "id": "hazard-cold",
+    "name": "Low Temperature",
+    "category": "Warning",
+    "keywords": "cold freeze frost low temperature"
+  },
+  {
+    "id": "hazard-battery",
+    "name": "Battery Hazard",
+    "category": "Warning",
+    "keywords": "battery lithium cell charge"
+  },
+  {
+    "id": "no-smoking",
+    "name": "No Smoking",
+    "category": "Warning",
+    "keywords": "smoking cigarette smoke prohibited"
+  },
+  {
+    "id": "no-open-flame",
+    "name": "No Open Flame",
+    "category": "Warning",
+    "keywords": "fire flame open light prohibited"
+  },
+  {
+    "id": "no-food-drink",
+    "name": "No Food or Drink",
+    "category": "Warning",
+    "keywords": "food drink eating cup prohibited"
+  },
+  {
+    "id": "no-phone",
+    "name": "No Mobile Phones",
+    "category": "Warning",
+    "keywords": "phone mobile cell prohibited"
+  },
+  {
+    "id": "wash-30",
+    "name": "Wash at 30 °C",
+    "category": "Care",
+    "keywords": "wash washing machine laundry cold 30"
+  },
+  {
+    "id": "wash-40",
+    "name": "Wash at 40 °C",
+    "category": "Care",
+    "keywords": "wash washing machine laundry warm 40"
+  },
+  {
+    "id": "wash-50",
+    "name": "Wash at 50 °C",
+    "category": "Care",
+    "keywords": "wash washing machine laundry hot 50"
+  },
+  {
+    "id": "hand-wash",
+    "name": "Hand Wash",
+    "category": "Care",
+    "keywords": "hand wash gentle laundry"
+  },
+  {
+    "id": "do-not-wash",
+    "name": "Do Not Wash",
+    "category": "Care",
+    "keywords": "no wash washing laundry"
+  },
+  {
+    "id": "bleach",
+    "name": "Bleach Allowed",
+    "category": "Care",
+    "keywords": "bleach chlorine laundry"
+  },
+  {
+    "id": "do-not-bleach",
+    "name": "Do Not Bleach",
+    "category": "Care",
+    "keywords": "no bleach chlorine laundry"
+  },
+  {
+    "id": "tumble-dry",
+    "name": "Tumble Dry",
+    "category": "Care",
+    "keywords": "tumble dryer dry laundry"
+  },
+  {
+    "id": "tumble-dry-low",
+    "name": "Tumble Dry Low",
+    "category": "Care",
+    "keywords": "tumble dryer low heat dry laundry"
+  },
+  {
+    "id": "do-not-tumble-dry",
+    "name": "Do Not Tumble Dry",
+    "category": "Care",
+    "keywords": "no tumble dryer laundry"
+  },
+  {
+    "id": "line-dry",
+    "name": "Line Dry",
+    "category": "Care",
+    "keywords": "line hang dry laundry"
+  },
+  {
+    "id": "dry-flat",
+    "name": "Dry Flat",
+    "category": "Care",
+    "keywords": "flat dry laundry"
+  },
+  {
+    "id": "iron-low",
+    "name": "Iron Low (110 °C)",
+    "category": "Care",
+    "keywords": "iron ironing laundry low cool 110"
+  },
+  {
+    "id": "iron-medium",
+    "name": "Iron Medium (150 °C)",
+    "category": "Care",
+    "keywords": "iron ironing laundry medium warm 150"
+  },
+  {
+    "id": "iron-high",
+    "name": "Iron High (200 °C)",
+    "category": "Care",
+    "keywords": "iron ironing laundry high hot 200"
+  },
+  {
+    "id": "do-not-iron",
+    "name": "Do Not Iron",
+    "category": "Care",
+    "keywords": "no iron ironing laundry"
+  },
+  {
+    "id": "dry-clean",
+    "name": "Dry Clean",
+    "category": "Care",
+    "keywords": "dry clean professional laundry"
+  },
+  {
+    "id": "do-not-dry-clean",
+    "name": "Do Not Dry Clean",
+    "category": "Care",
+    "keywords": "no dry clean laundry"
+  },
+  {
+    "id": "organic",
+    "name": "Organic",
+    "category": "Food",
+    "keywords": "organic natural leaf bio eco"
+  },
+  {
+    "id": "vegan",
+    "name": "Vegan",
+    "category": "Food",
+    "keywords": "vegan plant based leaf"
+  },
+  {
+    "id": "contains-nuts",
+    "name": "Contains Nuts",
+    "category": "Food",
+    "keywords": "nuts peanut allergen allergy"
+  },
+  {
+    "id": "dairy",
+    "name": "Contains Milk",
+    "category": "Food",
+    "keywords": "milk dairy lactose carton allergen"
+  },
+  {
+    "id": "egg",
+    "name": "Contains Egg",
+    "category": "Food",
+    "keywords": "egg allergen"
+  },
+  {
+    "id": "fish",
+    "name": "Contains Fish",
+    "category": "Food",
+    "keywords": "fish seafood allergen"
+  },
+  {
+    "id": "keep-frozen",
+    "name": "Keep Frozen",
+    "category": "Food",
+    "keywords": "frozen freezer freeze cold -18"
+  },
+  {
+    "id": "food-contact",
+    "name": "Food Safe",
+    "category": "Food",
+    "keywords": "food contact safe glass fork packaging"
+  },
+  {
+    "id": "alcohol",
+    "name": "Contains Alcohol",
+    "category": "Food",
+    "keywords": "alcohol wine glass drink"
+  },
+  {
+    "id": "dishwasher-safe",
+    "name": "Dishwasher Safe",
+    "category": "Food",
+    "keywords": "dishwasher dish wash plates"
+  },
+  {
+    "id": "oven-safe",
+    "name": "Oven Safe",
+    "category": "Food",
+    "keywords": "oven bake heat safe"
+  },
+  {
+    "id": "barcode",
+    "name": "Barcode",
+    "category": "Printing & labeling",
+    "keywords": "barcode bars scan product ean upc"
+  },
+  {
+    "id": "qr-code",
+    "name": "QR Code",
+    "category": "Printing & labeling",
+    "keywords": "qr code scan matrix link"
+  },
+  {
+    "id": "printer",
+    "name": "Printer",
+    "category": "Printing & labeling",
+    "keywords": "print printer printing"
+  },
+  {
+    "id": "label-roll",
+    "name": "Label Roll",
+    "category": "Printing & labeling",
+    "keywords": "roll labels thermal sticker reel"
+  },
+  {
+    "id": "scissors",
+    "name": "Scissors",
+    "category": "Printing & labeling",
+    "keywords": "scissors cut trim"
+  },
+  {
+    "id": "fold-here",
+    "name": "Fold Here",
+    "category": "Printing & labeling",
+    "keywords": "fold crease bend line"
+  },
+  {
+    "id": "peel-here",
+    "name": "Peel Here",
+    "category": "Printing & labeling",
+    "keywords": "peel off sticker backing liner"
+  },
+  {
+    "id": "crop-marks",
+    "name": "Crop Marks",
+    "category": "Printing & labeling",
+    "keywords": "crop trim marks cut bleed print"
+  },
+  {
+    "id": "registration-mark",
+    "name": "Registration Mark",
+    "category": "Printing & labeling",
+    "keywords": "registration target print align"
+  },
+  {
+    "id": "number-sign",
+    "name": "Number Sign",
+    "category": "Printing & labeling",
+    "keywords": "number hash serial batch lot"
+  },
+  {
+    "id": "label-sheet",
+    "name": "Label Sheet",
+    "category": "Printing & labeling",
+    "keywords": "sheet a4 letter labels page"
+  },
+  {
+    "id": "ink",
+    "name": "Ink",
+    "category": "Printing & labeling",
+    "keywords": "ink drop toner color"
+  },
+  {
+    "id": "open-box",
+    "name": "Open Box",
+    "category": "Packaging",
+    "keywords": "box carton open unpack"
+  },
+  {
+    "id": "pallet",
+    "name": "Pallet",
+    "category": "Packaging",
+    "keywords": "pallet shipping freight skid"
+  },
+  {
+    "id": "packing-tape",
+    "name": "Packing Tape",
+    "category": "Packaging",
+    "keywords": "tape roll seal adhesive"
+  },
+  {
+    "id": "weight",
+    "name": "Weight",
+    "category": "Packaging",
+    "keywords": "weight heavy kg lb mass"
+  },
+  {
+    "id": "dimensions",
+    "name": "Dimensions",
+    "category": "Packaging",
+    "keywords": "size dimensions measure width height"
+  },
+  {
+    "id": "compostable",
+    "name": "Compostable",
+    "category": "Packaging",
+    "keywords": "compost compostable biodegradable eco"
+  },
+  {
+    "id": "dispose-in-bin",
+    "name": "Dispose in Bin",
+    "category": "Packaging",
+    "keywords": "bin trash waste litter dispose"
+  },
+  {
+    "id": "reusable",
+    "name": "Reusable",
+    "category": "Packaging",
+    "keywords": "reuse reusable refill return"
   }
 ]

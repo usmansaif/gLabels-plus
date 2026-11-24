@@ -57,6 +57,73 @@
 	<file>symbols/arrow-up.svg</file>
 	<file>symbols/arrow-both.svg</file>
 	<file>symbols/open-here.svg</file>
+	<file>symbols/center-of-gravity.svg</file>
+	<file>symbols/no-hooks.svg</file>
+	<file>symbols/keep-away-from-water.svg</file>
+	<file>symbols/no-knife.svg</file>
+	<file>symbols/hazard-electric.svg</file>
+	<file>symbols/hazard-flammable.svg</file>
+	<file>symbols/hazard-hot-surface.svg</file>
+	<file>symbols/hazard-laser.svg</file>
+	<file>symbols/hazard-magnetic.svg</file>
+	<file>symbols/hazard-radiation.svg</file>
+	<file>symbols/hazard-toxic.svg</file>
+	<file>symbols/hazard-explosive.svg</file>
+	<file>symbols/hazard-cold.svg</file>
+	<file>symbols/hazard-battery.svg</file>
+	<file>symbols/no-smoking.svg</file>
+	<file>symbols/no-open-flame.svg</file>
+	<file>symbols/no-food-drink.svg</file>
+	<file>symbols/no-phone.svg</file>
+	<file>symbols/wash-30.svg</file>
+	<file>symbols/wash-40.svg</file>
+	<file>symbols/wash-50.svg</file>
+	<file>symbols/hand-wash.svg</file>
+	<file>symbols/do-not-wash.svg</file>
+	<file>symbols/bleach.svg</file>
+	<file>symbols/do-not-bleach.svg</file>
+	<file>symbols/tumble-dry.svg</file>
+	<file>symbols/tumble-dry-low.svg</file>
+	<file>symbols/do-not-tumble-dry.svg</file>
+	<file>symbols/line-dry.svg</file>
+	<file>symbols/dry-flat.svg</file>
+	<file>symbols/iron-low.svg</file>
+	<file>symbols/iron-medium.svg</file>
+	<file>symbols/iron-high.svg</file>
+	<file>symbols/do-not-iron.svg</file>
+	<file>symbols/dry-clean.svg</file>
+	<file>symbols/do-not-dry-clean.svg</file>
+	<file>symbols/organic.svg</file>
+	<file>symbols/vegan.svg</file>
+	<file>symbols/contains-nuts.svg</file>
+	<file>symbols/dairy.svg</file>
+	<file>symbols/egg.svg</file>
+	<file>symbols/fish.svg</file>
+	<file>symbols/keep-frozen.svg</file>
+	<file>symbols/food-contact.svg</file>
+	<file>symbols/alcohol.svg</file>
+	<file>symbols/dishwasher-safe.svg</file>
+	<file>symbols/oven-safe.svg</file>
+	<file>symbols/barcode.svg</file>
+	<file>symbols/qr-code.svg</file>
+	<file>symbols/printer.svg</file>
+	<file>symbols/label-roll.svg</file>
+	<file>symbols/scissors.svg</file>
+	<file>symbols/fold-here.svg</file>
+	<file>symbols/peel-here.svg</file>
+	<file>symbols/crop-marks.svg</file>
+	<file>symbols/registration-mark.svg</file>
+	<file>symbols/number-sign.svg</file>
+	<file>symbols/label-sheet.svg</file>
+	<file>symbols/ink.svg</file>
+	<file>symbols/open-box.svg</file>
+	<file>symbols/pallet.svg</file>
+	<file>symbols/packing-tape.svg</file>
+	<file>symbols/weight.svg</file>
+	<file>symbols/dimensions.svg</file>
+	<file>symbols/compostable.svg</file>
+	<file>symbols/dispose-in-bin.svg</file>
+	<file>symbols/reusable.svg</file>
 
 </qresource>
 </RCC>

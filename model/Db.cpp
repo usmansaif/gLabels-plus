@@ -392,10 +392,16 @@ namespace glabels::model
         {
                 QStringList list;
 
+                // A template carried inside a label file (e.g. the sticker samples) is not
+                // in the database: it simply has no similar products
+                if ( !mTemplatesNameMap.contains( name ) && !mUserTemplatesNameMap.contains( name ) )
+                {
+                        return list;
+                }
+
                 auto tmplate1 = lookupTemplateFromName( name );
                 if ( tmplate1.isNull() )
                 {
-                        qWarning() << "Unknown template name: " << name;
                         return list;
                 }
 

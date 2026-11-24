@@ -24,6 +24,7 @@
 #include "model/Version.hpp"
 
 #include <QApplication>
+#include <QCursor>
 #include <QGuiApplication>
 #include <QLinearGradient>
 #include <QPainter>
@@ -39,8 +40,12 @@
 namespace
 {
         // Layout (logical pixels)
-        // Design is laid out on a 640x380 grid and drawn at SCALE (-> 896x532)
-        const qreal  SCALE        = 1.4;
+        // Design is laid out on a 640x380 grid and scaled to suit the screen:
+        // about 46% of the available width, at most 55% of the available height
+        const qreal  WIDTH_FRACTION  = 0.46;
+        const qreal  HEIGHT_FRACTION = 0.55;
+        const qreal  MIN_SCALE       = 0.75;
+        const qreal  MAX_SCALE       = 2.4;
         const int    W            = 640;
         const int    H            = 380;
         const int    MARGIN       = 40;
@@ -84,12 +89,16 @@ namespace glabels
         ///
         SplashScreen::SplashScreen()
         {
-                qreal dpr = 1.0;
-                if ( auto* screen = QGuiApplication::primaryScreen() )
+                // QSplashScreen opens on the screen under the mouse cursor
+                QScreen* screen = QGuiApplication::screenAt( QCursor::pos() );
+                if ( !screen )
                 {
-                        dpr = screen->devicePixelRatio();
+                        screen = QGuiApplication::primaryScreen();
                 }
-                setPixmap( renderBackground( QSize( W, H ), dpr ) );
+                const qreal dpr = screen ? screen->devicePixelRatio() : 1.0;
+                mScale = scaleForScreen( screen );
+
+                setPixmap( renderBackground( QSize( W, H ), dpr, mScale ) );
                 setCursor( Qt::BusyCursor );
 
                 mMessage = tr( "Starting..." );
@@ -185,15 +194,31 @@ namespace glabels
 
 
         ///
+        /// Scale for the design grid, from the screen's available (logical) size
+        ///
+        qreal SplashScreen::scaleForScreen( const QScreen* screen )
+        {
+                if ( !screen )
+                {
+                        return 1.4;
+                }
+                const QRect avail = screen->availableGeometry();
+                const qreal s = std::min( avail.width()  * WIDTH_FRACTION  / W,
+                                          avail.height() * HEIGHT_FRACTION / H );
+                return std::clamp( s, MIN_SCALE, MAX_SCALE );
+        }
+
+
+        ///
         /// Static artwork: background, decoration, branding, footer
         ///
-        QPixmap SplashScreen::renderBackground( const QSize& size, qreal dpr )
+        QPixmap SplashScreen::renderBackground( const QSize& size, qreal dpr, qreal scale )
         {
-                QPixmap pixmap( size * SCALE * dpr );
+                QPixmap pixmap( ( QSizeF( size ) * scale * dpr ).toSize() );
                 pixmap.setDevicePixelRatio( dpr );
 
                 QPainter p( &pixmap );
-                p.scale( SCALE, SCALE );
+                p.scale( scale, scale );
                 p.setRenderHint( QPainter::Antialiasing );
                 p.setRenderHint( QPainter::TextAntialiasing );
                 p.setRenderHint( QPainter::SmoothPixmapTransform );
@@ -277,7 +302,7 @@ namespace glabels
                 QPixmap logo( ":/images/glabels-logo.png" );
                 const int logoSize = 64;
                 p.drawPixmap( QRect( MARGIN, 44, logoSize, logoSize ),
-                              logo.scaled( QSize( logoSize, logoSize ) * dpr * SCALE,
+                              logo.scaled( QSize( logoSize, logoSize ) * dpr * scale,
                                            Qt::KeepAspectRatio, Qt::SmoothTransformation ) );
 
                 // Product name
@@ -364,7 +389,7 @@ namespace glabels
         {
                 p->setRenderHint( QPainter::Antialiasing );
                 p->setRenderHint( QPainter::TextAntialiasing );
-                p->scale( SCALE, SCALE );
+                p->scale( mScale, mScale );
 
                 const QRectF track( MARGIN, BAR_Y, W - 2*MARGIN, BAR_H );
 

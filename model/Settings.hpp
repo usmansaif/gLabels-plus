@@ -130,6 +130,9 @@ namespace glabels::model
                 static bool showMarkup();
                 static void setShowMarkup( bool value );
 
+                static bool mouseRotate();
+                static void setMouseRotate( bool value );
+
                 static bool showRulers();
                 static void setShowRulers( bool value );
 

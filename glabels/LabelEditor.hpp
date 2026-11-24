@@ -180,6 +180,10 @@ namespace glabels
                 void handleResizeMotion( model::Distance xWorld,
                                          model::Distance yWorld );
 
+                /// Selected object whose rotate zone (just outside a corner) is under pWorld,
+                /// or nullptr; outwardDeg receives the screen direction of that corner
+                model::ModelObject* rotateTargetAt( const QPointF& pWorld, double* outwardDeg );
+
                 void showDragInfo( const QPoint& pos );
                 void hideDragInfo();
 
@@ -220,6 +224,7 @@ namespace glabels
                         ArrowSelectRegion,
                         ArrowMove,
                         ArrowResize,
+                        ArrowRotate,
                         CreateIdle,
                         CreateDrag,
                         MeasureIdle,
@@ -275,6 +280,13 @@ namespace glabels
                 model::ModelObject*     mResizeObject;
                 model::Handle::Location mResizeHandleLocation;
                 bool                    mResizeHonorAspect;
+
+                /* ArrowRotate state */
+                model::ModelObject*     mRotateObject{ nullptr };
+                QPointF                 mRotateCenter;           // object center (pt)
+                double                  mRotateStartAngle{ 0 };  // pointer angle at drag start (degs)
+                double                  mRotateStartRotation{ 0 };
+                double                  mRotateCursorAngle{ 0 }; // corner direction at drag start (degs)
 
                 /* CreateDrag state */
                 CreateType           mCreateObjectType;

@@ -264,7 +264,6 @@ namespace glabels
 
                 // Add "Recent" page (only offered while no label is open)
                 mRecentView = new RecentView( this );
-                connect( mRecentView, &RecentView::homeRequested, this, &MainWindow::showWelcomePage );
                 mPages->addWidget( mRecentView );
                 mRecentButton = new QToolButton( this );
                 mRecentButton->setIcon( QIcon::fromTheme( "glabels-file-recent" ) );
@@ -357,6 +356,11 @@ namespace glabels
         void MainWindow::setModel( model::Model* model )
         {
                 mModel.reset( model );
+
+                // Give an untitled document its "Untitled N" number now, before the
+                // first undo checkpoint copies the model
+                mModel->shortName();
+
                 mUndoRedoModel = std::make_unique<UndoRedoModel>( mModel.get() );
 
                 mModel->setAlignReference( model::Model::AlignReference( model::Settings::alignReference() ) );
@@ -702,6 +706,11 @@ namespace glabels
                 viewMarkupAction->setCheckable( true );
                 viewMarkupAction->setStatusTip( tr("Change visibility of markup lines in current window") );
                 connect( viewMarkupAction, SIGNAL(toggled(bool)), this, SLOT(viewMarkup(bool)) );
+
+                viewMouseRotateAction = new QAction( tr("Rotate with Mouse"), this );
+                viewMouseRotateAction->setCheckable( true );
+                viewMouseRotateAction->setStatusTip( tr("Drag just outside a corner of the selected object to rotate it (Shift snaps to 15 degrees)") );
+                connect( viewMouseRotateAction, SIGNAL(toggled(bool)), this, SLOT(viewMouseRotate(bool)) );
 
                 viewZoomInAction = new QAction( tr("Zoom &In"), this );
                 viewZoomInAction->setIcon( QIcon::fromTheme( "glabels-zoom-in" ) );
@@ -1060,6 +1069,7 @@ namespace glabels
                 viewMenu->addSeparator();
                 viewMenu->addAction( viewGridAction );
                 viewMenu->addAction( viewMarkupAction );
+                viewMenu->addAction( viewMouseRotateAction );
                 viewMenu->addAction( viewRulersAction );
                 viewMenu->addAction( viewPropertiesUnitsAction );
                 viewMenu->addSeparator();
@@ -1526,7 +1536,7 @@ namespace glabels
                         { editPasteAction, "edit.paste" }, { editDeleteAction, "edit.delete" }, { mObjectListView->duplicateAction(), "edit.duplicate" }, { editDeleteQuickAction, "edit.deleteQuick" },
                         { editSelectAllAction, "edit.selectAll" }, { editUnSelectAllAction, "edit.unselectAll" },
                         { editPageSetupAction, "edit.pageSetup" }, { editShortcutsAction, "edit.shortcuts" }, { editPreferencesAction, "edit.preferences" },
-                        { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" },
+                        { viewGridAction, "view.grid" }, { viewMarkupAction, "view.markup" }, { viewMouseRotateAction, "view.mouseRotate" },
                         { viewRulersAction, "view.rulers" }, { viewPropertiesUnitsAction, "view.propertiesUnits" },
                         { viewPropertiesDockAction, "view.propertiesPanel" }, { viewObjectListDockAction, "view.objectsPanel" },
                         { viewZoomInAction, "view.zoomIn" }, { viewZoomOutAction, "view.zoomOut" },
@@ -2061,6 +2071,7 @@ namespace glabels
                 viewEditorToolBarAction->setEnabled( true );
                 viewGridAction->setEnabled( isEditorPage );
                 viewMarkupAction->setEnabled( isEditorPage );
+                viewMouseRotateAction->setEnabled( isEditorPage );
                 viewRulersAction->setEnabled( isEditorPage );
                 mZoomCombo->setEnabled( isEditorPage );
 
@@ -2206,6 +2217,7 @@ namespace glabels
                 viewVariablesDockAction  ->setChecked( showVariablesDock );
                 viewGridAction           ->setChecked( model::Settings::showGrid() );
                 viewMarkupAction         ->setChecked( model::Settings::showMarkup() );
+                viewMouseRotateAction    ->setChecked( model::Settings::mouseRotate() );
                 viewRulersAction         ->setChecked( model::Settings::showRulers() );
                 viewPropertiesUnitsAction->setChecked( model::Settings::propertiesShowUnits() );
                 mSyncing = false;
@@ -3022,6 +3034,18 @@ namespace glabels
 
 
         ///
+        /// View->Rotate with Mouse Action
+        ///
+        void MainWindow::viewMouseRotate( bool state )
+        {
+                if ( !mSyncing )
+                {
+                        model::Settings::setMouseRotate( state );
+                }
+        }
+
+
+        ///
         /// View->Zoom In Action
         ///
         void MainWindow::viewZoomIn()
@@ -3786,6 +3810,7 @@ namespace glabels
                 mSyncing = true;
                 viewGridAction->setChecked( model::Settings::showGrid() );
                 viewMarkupAction->setChecked( model::Settings::showMarkup() );
+                viewMouseRotateAction->setChecked( model::Settings::mouseRotate() );
                 viewRulersAction->setChecked( model::Settings::showRulers() );
                 viewPropertiesUnitsAction->setChecked( model::Settings::propertiesShowUnits() );
 
