@@ -25,6 +25,8 @@
 #include <QDialog>
 
 class QComboBox;
+class QDragEnterEvent;
+class QDropEvent;
 class QDoubleSpinBox;
 class QLabel;
 class QLineEdit;
@@ -42,7 +44,9 @@ namespace glabels
         /// black drawings for handling marks, food, contact details, shop and
         /// delivery, and simple marks and arrows, made to print sharply on direct
         /// thermal label printers.  Insert adds the chosen symbol to the label and
-        /// the dialog stays open until the user closes it.
+        /// the dialog stays open until the user closes it.  Users can add their own
+        /// SVG drawings (Add Your Own, or drop .svg files on the window); these are
+        /// validated and kept on the computer by CustomSymbols.
         ///
         class SymbolsDialog : public QDialog
         {
@@ -55,11 +59,21 @@ namespace glabels
                         QString name;        // translated
                         QString category;    // translated
                         QString keywords;
+                        QString path;        // ":/symbols/<id>.svg", or the stored file of a custom symbol
+                        bool    custom = false;
                 };
 
                 explicit SymbolsDialog( QWidget* parent = nullptr );
 
+                /// The built-in symbols
                 static QList<Symbol> symbols();
+
+                /// The built-in symbols followed by the user's own (see CustomSymbols)
+                static QList<Symbol> allSymbols();
+
+        protected:
+                void dragEnterEvent( QDragEnterEvent* event ) override;
+                void dropEvent( QDropEvent* event ) override;
 
         signals:
                 /// Insert the symbol: svg is the drawing, size its width and height in points
@@ -69,8 +83,14 @@ namespace glabels
                 void onFilterChanged();
                 void onSelectionChanged();
                 void onInsert();
+                void onAddCustom();
+                void onRemoveCustom();
 
         private:
+                void addCustomFromFile( const QString& fileName );
+                void populate( const QString& selectId, const QString& showCategory = QString() );
+                const Symbol* selectedSymbol() const;
+
                 QList<Symbol>   mSymbols;
                 QLineEdit*      mSearch;
                 QComboBox*      mCategory;
@@ -78,6 +98,7 @@ namespace glabels
                 QDoubleSpinBox* mSize;
                 QLabel*         mStatus;
                 QPushButton*    mInsertButton;
+                QPushButton*    mRemoveButton;
         };
 
 }

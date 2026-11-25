@@ -38,6 +38,7 @@ set (glabels_sources
   Projects.cpp
   Samples.cpp
   SymbolsDialog.cpp
+  CustomSymbols.cpp
   PropertiesView.cpp
   Preview.cpp
   PreviewOverlayItem.cpp
@@ -97,6 +98,7 @@ set (glabels_qobject_headers
   SimplePreview.hpp
   SplashScreen.hpp
   SymbolsDialog.hpp
+  CustomSymbols.hpp
   StartupView.hpp
   StartupWidgets.hpp
   TemplateDesigner.hpp

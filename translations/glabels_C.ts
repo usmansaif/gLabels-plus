@@ -1764,6 +1764,117 @@ Find it under File &gt; New from Sample.</source>
     </message>
 </context>
 <context>
+    <name>glabels::CustomSymbols</name>
+    <message>
+        <source>My Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file is larger than %1 MB. Simplify the drawing or save it as a plain (not Inkscape) SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compressed SVG (.svgz) is not supported. Save the drawing as a plain .svg file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG declares XML entities, which are not allowed in symbols. Export it again as a plain SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG uses XML entities, which are not allowed in symbols. Export it again as a plain SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is not an SVG drawing: the file starts with &lt;%1&gt; instead of &lt;svg&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The drawing is too complex (more than %1 elements).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The drawing is nested too deeply.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG contains script code, which is not allowed in symbols.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG contains &lt;%1&gt;, which cannot be printed. Remove it, or convert it to plain shapes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG contains script code (%1), which is not allowed in symbols.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG links to an external file or address (%1). Embed images in the file instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file is not a valid SVG (line %1: %2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is not an SVG drawing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG could not be read. Try saving it as a plain SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG has no size. Give it a viewBox, or a width and height.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The drawing is too long and thin to use as a symbol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The SVG does not draw anything that can be printed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a name for the symbol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name is too long (at most %1 characters).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The category is too long (at most %1 characters).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The keywords are too long (at most %1 characters).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You already have a symbol called &quot;%1&quot; in %2. Choose another name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not create the folder %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not save the symbol: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is not a custom symbol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>glabels::DropZone</name>
     <message>
         <source>Drop a data file here</source>
@@ -5880,6 +5991,120 @@ Click &quot;New label...&quot; to add one.</source>
     </message>
     <message>
         <source>Inserted &quot;%1&quot;. Choose another symbol, or close this window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Your Own Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No file chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Choose SVG File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Words to find it by, e.g. logo brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Category:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Keywords:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose an SVG drawing. Solid black shapes print best on thermal label printers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file is larger than %1 MB. Simplify the drawing or save it as a plain SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not open the file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The drawing passed all checks. Name it and press Add Symbol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose SVG File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG drawings (*.svg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Your &amp;Own...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add an SVG drawing of your own, such as a logo. It stays on this computer for all your labels. You can also drop .svg files on this window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the selected symbol of your own</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 · %2 (your own symbol)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not read &quot;%1&quot;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;%1&quot; can no longer be used: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My Symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Added &quot;%1&quot; to %2. It will be here every time you open gLabels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove &quot;%1&quot; from your symbols?
+
+Labels that already use it are not changed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removed &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
