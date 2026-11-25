@@ -51,6 +51,7 @@ namespace glabels
 {
 
         // Forward References
+        class ClaudeChatDock;
         class LabelEditor;
         class MergeView;
         class ObjectEditor;
@@ -88,6 +89,9 @@ namespace glabels
                 model::Model* model() const;
                 void setModel( model::Model* model );
                 bool isEmpty() const;
+                UndoRedoModel* undoRedoModel() const;
+                void showEditorPage();                  // switch to the editor unless it is showing
+                void showClaudeChat();                  // show the Claude chat panel and focus it
                 void closeDocument();
 
                 void showPrintPage();
@@ -202,6 +206,7 @@ namespace glabels
                 void objectsCenter();
                 void objectsPutTextOnShape();
                 void toolsInsertSymbol();
+                void toolsConnectClaude();
                 void onInsertSymbol( const QString& id, const QString& name, const QByteArray& svg, double size );
 
                 void objectsCenterHoriz();
@@ -446,6 +451,9 @@ namespace glabels
                 QAction*  objectsCenterAction;
                 QAction*  objectsPutTextOnShapeAction;
                 QAction*  toolsInsertSymbolAction;
+                QAction*  toolsConnectClaudeAction;
+                QAction*  viewClaudeChatAction;
+                ClaudeChatDock* mClaudeChatDock = nullptr;
                 SymbolsDialog* mSymbolsDialog = nullptr;
                 int       mSymbolInsertCount = 0;
                 QAction*  objectsCenterHorizAction;

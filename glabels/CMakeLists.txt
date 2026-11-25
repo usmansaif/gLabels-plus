@@ -39,6 +39,10 @@ set (glabels_sources
   Samples.cpp
   SymbolsDialog.cpp
   CustomSymbols.cpp
+  AiBridge.cpp
+  AiConnectDialog.cpp
+  ClaudeChatDock.cpp
+  McpServer.cpp
   PropertiesView.cpp
   Preview.cpp
   PreviewOverlayItem.cpp
@@ -99,6 +103,10 @@ set (glabels_qobject_headers
   SplashScreen.hpp
   SymbolsDialog.hpp
   CustomSymbols.hpp
+  AiBridge.hpp
+  AiConnectDialog.hpp
+  ClaudeChatDock.hpp
+  McpServer.hpp
   StartupView.hpp
   StartupWidgets.hpp
   TemplateDesigner.hpp
@@ -177,6 +185,7 @@ target_include_directories (glabels-qt
 target_link_libraries (glabels-qt
   Model
   Qt6::Concurrent
+  Qt6::Network
   Qt6::Widgets
   Qt6::Svg
 )

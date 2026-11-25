@@ -2,6 +2,93 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>ClaudeChatDock</name>
+    <message>
+        <source>Looking at your open labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading the label format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Updating the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adding to the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removing objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking a preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searching label templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creating a new label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Changing the label stock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searching symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inserting a symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adding an image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving the label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening a label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting a PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Looking for files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searching files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Using %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Color name</name>
     <message>
         <source>Light Scarlet Red</source>
@@ -1522,6 +1609,421 @@ Find it under File &gt; New from Sample.</source>
     </message>
     <message>
         <source>Custom label designs, printing from your inventory, POS or ERP data, and thermal printer setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::AiBridge</name>
+    <message>
+        <source>Claude: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Edit Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>updated the label (%n object(s))</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Claude: Add Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>added %n object(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Claude: Delete Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>deleted %n object(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>created a new label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Change Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>changed the template to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Insert Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>inserted the %1 symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Add Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>added the image %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>saved %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>opened %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>exported %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>undid %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::AiConnectDialog</name>
+    <message>
+        <source>Connect Claude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Design labels by chatting with Claude.&lt;/b&gt; Ask for a label in your own words and Claude builds it here: it picks the label stock, lays out text, barcodes and symbols, checks a preview and saves the file. Every change shows in the editor at once, and you can undo it with Ctrl+Z.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Let Claude work with my labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When this is off, Claude cannot see or change anything in gLabels Plus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code (terminal)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;nnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Desktop app</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conn&amp;ect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnec&amp;t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Try asking:&lt;/b&gt; &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cop&amp;y Example</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copied</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Off. Connecting Claude below turns it on.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On, served by another gLabels Plus window that is already open.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On. Claude is connected now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On. Waiting for Claude to connect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code is not installed on this computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;, then open this window again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Connected.&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reco&amp;nnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected to a different copy of gLabels Plus.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press Reconnect to use this copy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code is installed but not connected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect adds gLabels Plus to Claude Code for all your projects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code could not add gLabels Plus:
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnect Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code could not remove gLabels Plus:
+
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is not valid JSON (%2). Fix or remove it, then try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not create the folder for %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Connected.&lt;/b&gt; Restart Claude Desktop if it was open when you connected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reconn&amp;ect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected to a different copy of gLabels Plus. Press Reconnect to use this copy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Desktop is installed but not connected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Desktop was not found. Get it from &lt;a href=&quot;https://claude.ai/download&quot;&gt;claude.ai/download&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect Claude Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not update %1:
+
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>gLabels Plus was added to Claude Desktop.
+
+Quit Claude Desktop completely and open it again to start using it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnect Claude Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open &amp;Chat Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with Claude in a panel next to your label (Ctrl+Shift+K)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat in the panel next to your label, or run &lt;code&gt;claude&lt;/code&gt; in a terminal. Claude asks before using a gLabels tool the first time in the terminal.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>glabels::ClaudeChatDock</name>
+    <message>
+        <source>Claude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Claude (Esc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start a new conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Panel position and settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dock on the &amp;Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dock on the &amp;Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dock at the &amp;Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dock at the &amp;Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Float in Its Own Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect AI &amp;Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Hide Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Design labels by chatting.&lt;/b&gt;&lt;br&gt;Describe what you need and Claude builds it in the editor. You can undo anything with Ctrl+Z.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Design a 100 × 150 mm shipping label with a barcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make a price tag for 40 × 30 mm thermal labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check this label for text that doesn&apos;t fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a QR code that links to my website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask Claude to design or change your label...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send (Enter). Shift+Enter starts a new line.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check Again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude is working</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;Claude Code is not installed.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This panel talks to the Claude Code program on this computer, signed in with your own Claude account.&lt;/p&gt;&lt;p&gt;Install it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;, run &lt;code&gt;claude&lt;/code&gt; once in a terminal to sign in, then press Check Again.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not write the chat settings in %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not start Claude Code (%1): %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude could not reach the gLabels Plus tools.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That step didn&apos;t work; Claude will try another way.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code is not signed in. Open a terminal, run claude once and sign in, then send your message again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude stopped before finishing (%1).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stopped.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code stopped unexpectedly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code stopped: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude · your installed Claude Code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3459,6 +3961,26 @@ Find it under File &gt; New from Sample.</source>
     </message>
     <message>
         <source>Drag just outside a corner of the selected object to rotate it (Shift snaps to 15 degrees)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Claude...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect Claude Code or Claude Desktop so Claude can design and manage your labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect &amp;AI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Chat Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show or hide the chat with Claude, which designs and edits labels for you</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

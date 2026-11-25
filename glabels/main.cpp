@@ -19,7 +19,9 @@
 //
 
 
+#include "AiBridge.hpp"
 #include "MainWindow.hpp"
+#include "McpServer.hpp"
 #include "SplashScreen.hpp"
 
 #include "AppearanceModel.hpp"
@@ -48,6 +50,15 @@
 
 int main( int argc, char **argv )
 {
+        // "--mcp": the AI assistant connector (no window); see McpServer
+        for ( int i = 1; i < argc; i++ )
+        {
+                if ( qstrcmp( argv[i], "--mcp" ) == 0 )
+                {
+                        return glabels::runMcpServer( argc, argv );
+                }
+        }
+
         QApplication app( argc, argv );
 
         QCoreApplication::setOrganizationName( glabels::model::Version::ORGANIZATION_NAME );
@@ -178,6 +189,9 @@ int main( int argc, char **argv )
                 window->showMaximized();
         }
         splash.finish( windows.first() );
+
+        // Let a connected AI assistant reach the open labels (Tools > Connect AI)
+        glabels::AiBridge::instance()->update();
 
 
         return app.exec();

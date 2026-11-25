@@ -126,7 +126,7 @@ if (UNIX AND NOT APPLE)
    set (OpenGL_GL_PREFERENCE LEGACY)
 endif ()
 
-find_package (Qt6 6.2 REQUIRED COMPONENTS Concurrent Core Gui Widgets PrintSupport Xml Svg LinguistTools Test)
+find_package (Qt6 6.2 REQUIRED COMPONENTS Concurrent Core Gui Network Widgets PrintSupport Xml Svg LinguistTools Test)
 
 if (WIN32)
    # Locate Qt directories

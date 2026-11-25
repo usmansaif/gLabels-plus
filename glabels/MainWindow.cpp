@@ -21,6 +21,8 @@
 
 #include "MainWindow.hpp"
 #include "SymbolsDialog.hpp"
+#include "AiConnectDialog.hpp"
+#include "ClaudeChatDock.hpp"
 
 #include "File.hpp"
 #include "Help.hpp"
@@ -684,6 +686,18 @@ namespace glabels
                 viewObjectListDockAction->setStatusTip( tr("Show or hide the list of objects (layers)") );
                 connect( viewObjectListDockAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
 
+                viewClaudeChatAction = new QAction( tr("Claude Chat Panel"), this );
+                viewClaudeChatAction->setCheckable( true );
+                viewClaudeChatAction->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_K ) );
+                viewClaudeChatAction->setStatusTip( tr("Show or hide the chat with Claude, which designs and edits labels for you") );
+                connect( viewClaudeChatAction, SIGNAL(toggled(bool)), this, SLOT(viewDockToggled(bool)) );
+                connect( viewClaudeChatAction, &QAction::toggled, this, [this]( bool on ) {
+                        if ( on && !mSyncing && mClaudeChatDock )
+                        {
+                                QTimer::singleShot( 0, mClaudeChatDock, &ClaudeChatDock::focusInput );
+                        }
+                } );
+
                 viewRulersAction = new QAction( tr("Rulers"), this );
                 viewRulersAction->setCheckable( true );
                 viewRulersAction->setIcon( QIcon::fromTheme( "glabels-rulers" ) );
@@ -963,6 +977,10 @@ namespace glabels
                 toolsInsertSymbolAction->setStatusTip( tr("Insert handling, food, contact and other symbols made for thermal label printers") );
                 connect( toolsInsertSymbolAction, &QAction::triggered, this, &MainWindow::toolsInsertSymbol );
 
+                toolsConnectClaudeAction = new QAction( tr("&Claude..."), this );
+                toolsConnectClaudeAction->setStatusTip( tr("Connect Claude Code or Claude Desktop so Claude can design and manage your labels") );
+                connect( toolsConnectClaudeAction, &QAction::triggered, this, &MainWindow::toolsConnectClaude );
+
                 toolsPrintEstimatorAction = new QAction( tr("Print Sheet &Estimator..."), this );
                 toolsPrintEstimatorAction->setStatusTip( tr("Estimate how many printing sheets a job needs and the paper waste") );
                 connect( toolsPrintEstimatorAction, &QAction::triggered, this, &MainWindow::toolsPrintEstimator );
@@ -1066,6 +1084,7 @@ namespace glabels
                 viewPanelsMenu->addAction( viewPropertiesDockAction );
                 viewPanelsMenu->addAction( viewObjectListDockAction );
                 viewPanelsMenu->addAction( viewVariablesDockAction );
+                viewPanelsMenu->addAction( viewClaudeChatAction );
                 viewMenu->addSeparator();
                 viewMenu->addAction( viewGridAction );
                 viewMenu->addAction( viewMarkupAction );
@@ -1142,6 +1161,10 @@ namespace glabels
                 toolsMenu->addAction( toolsPrintEstimatorAction );
                 toolsMenu->addAction( toolsRollCostAction );
                 toolsMenu->addAction( fileTemplateDesignerAction );
+                toolsMenu->addSeparator();
+                QMenu* connectAiMenu = toolsMenu->addMenu( tr("Connect &AI") );
+                connectAiMenu->addAction( toolsConnectClaudeAction );
+                connectAiMenu->addAction( viewClaudeChatAction );
                 toolsMenu->addSeparator();
                 toolsMenu->addAction( editShortcutsAction );
 
@@ -1511,7 +1534,12 @@ namespace glabels
                 addDockWidget( Qt::LeftDockWidgetArea, mVariablesDock );
                 resizeDocks( { mVariablesDock }, { 230 }, Qt::Horizontal );
 
-                for ( auto* dock : { mPropertiesDock, mObjectListDock, mVariablesDock } )
+                // Claude chat, on the right; it can be moved to any side
+                mClaudeChatDock = new ClaudeChatDock( this );
+                addDockWidget( Qt::RightDockWidgetArea, mClaudeChatDock );
+                resizeDocks( { mClaudeChatDock }, { 360 }, Qt::Horizontal );
+
+                for ( auto* dock : std::initializer_list<QDockWidget*>{ mPropertiesDock, mObjectListDock, mVariablesDock, mClaudeChatDock } )
                 {
                         dock->toggleViewAction()->setVisible( false );
                         dock->installEventFilter( this );
@@ -1563,6 +1591,8 @@ namespace glabels
                         { toolsPrintEstimatorAction, "tools.printEstimator" },
                         { toolsRollCostAction, "tools.rollCost" },
                         { toolsInsertSymbolAction, "tools.insertSymbol" },
+                        { toolsConnectClaudeAction, "tools.connectClaude" },
+                        { viewClaudeChatAction, "view.claudeChat" },
                         { helpContentsAction, "help.contents" }, { helpReportBugAction, "help.reportBug" },
                         { helpWhatsNewAction, "help.whatsNew" }, { helpAboutAction, "help.about" },
                 };
@@ -1747,6 +1777,7 @@ namespace glabels
                 menu->addAction( viewPropertiesDockAction );
                 menu->addAction( viewObjectListDockAction );
                 menu->addAction( viewVariablesDockAction );
+                menu->addAction( viewClaudeChatAction );
                 return menu;
         }
 
@@ -1769,6 +1800,10 @@ namespace glabels
                         else if ( watched == mVariablesDock )
                         {
                                 viewVariablesDockAction->setChecked( false );
+                        }
+                        else if ( watched == mClaudeChatDock )
+                        {
+                                viewClaudeChatAction->setChecked( false );
                         }
                 }
                 return QMainWindow::eventFilter( watched, event );
@@ -1793,6 +1828,11 @@ namespace glabels
                         mPropertiesDock->setVisible( isEditor && viewPropertiesDockAction->isChecked() );
                         mObjectListDock->setVisible( isEditor && viewObjectListDockAction->isChecked() );
                         mVariablesDock->setVisible( isEditor && viewVariablesDockAction->isChecked() );
+                }
+                if ( mClaudeChatDock )
+                {
+                        // On every page: Claude can also start or open labels from the welcome page
+                        mClaudeChatDock->setVisible( viewClaudeChatAction->isChecked() );
                 }
 
                 bool rulers = viewRulersAction->isChecked();
@@ -2194,6 +2234,7 @@ namespace glabels
                 bool showPropertiesDock = settings.value( "showPropertiesDock", true ).toBool();
                 bool showObjectListDock = settings.value( "showObjectListDock", true ).toBool();
                 bool showVariablesDock = settings.value( "showVariablesDock", true ).toBool();
+                bool showClaudeChat    = settings.value( "showClaudeChatDock", false ).toBool();
                 QByteArray geometry     = settings.value( "geometry" ).toByteArray();
                 QByteArray state        = settings.value( "state" ).toByteArray();
                 settings.endGroup();
@@ -2215,6 +2256,7 @@ namespace glabels
                 viewPropertiesDockAction ->setChecked( showPropertiesDock );
                 viewObjectListDockAction ->setChecked( showObjectListDock );
                 viewVariablesDockAction  ->setChecked( showVariablesDock );
+                viewClaudeChatAction     ->setChecked( showClaudeChat );
                 viewGridAction           ->setChecked( model::Settings::showGrid() );
                 viewMarkupAction         ->setChecked( model::Settings::showMarkup() );
                 viewMouseRotateAction    ->setChecked( model::Settings::mouseRotate() );
@@ -2252,6 +2294,7 @@ namespace glabels
                 settings.setValue( "showPropertiesDock", viewPropertiesDockAction->isChecked() );
                 settings.setValue( "showObjectListDock", viewObjectListDockAction->isChecked() );
                 settings.setValue( "showVariablesDock",  viewVariablesDockAction->isChecked() );
+                settings.setValue( "showClaudeChatDock", viewClaudeChatAction->isChecked() );
                 settings.setValue( "geometry", saveGeometry() );
                 settings.setValue( "state",    saveState( STATE_VERSION ) );
                 settings.endGroup();
@@ -2500,6 +2543,38 @@ namespace glabels
         void MainWindow::fileShowEditorPage()
         {
                 mEditorButton->setChecked( true );
+        }
+
+
+        UndoRedoModel* MainWindow::undoRedoModel() const
+        {
+                return mUndoRedoModel.get();
+        }
+
+
+        void MainWindow::showEditorPage()
+        {
+                if ( mPages->currentIndex() != EDITOR_PAGE_INDEX )
+                {
+                        fileShowEditorPage();
+                }
+        }
+
+
+        void MainWindow::showClaudeChat()
+        {
+                viewClaudeChatAction->setChecked( true );
+                mClaudeChatDock->raise();
+                QTimer::singleShot( 0, mClaudeChatDock, &ClaudeChatDock::focusInput );
+        }
+
+
+        ///
+        /// Tools->Connect AI->Claude
+        ///
+        void MainWindow::toolsConnectClaude()
+        {
+                AiConnectDialog::showDialog( this );
         }
 
 
