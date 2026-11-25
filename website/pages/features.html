@@ -2,10 +2,10 @@
     <div class="wrap">
       <p class="eyebrow">Features</p>
       <h1>gLabels Plus features: free barcode and label design</h1>
-      <p class="answer">gLabels Plus designs and prints labels with text, barcodes, QR codes and images, merges data from CSV files, includes over 1,800 label templates and 24 thermal printer presets, and organizes work into Projects. Every feature is free and works offline on Linux, Windows and macOS.</p>
+      <p class="answer">gLabels Plus designs and prints labels with text, barcodes, QR codes and images, merges data from CSV files, includes over 1,800 label templates and 24 thermal printer presets, and organizes work into Projects. Every feature is free and works offline on Linux, Windows and macOS. An optional Claude chat panel can also design a label from a plain description.</p>
       <p class="byline">By <a href="https://usmansaif.com" rel="author">Usman Saif</a>, maintainer · Updated <time datetime="{{updated}}">{{updated_human}}</time></p>
       <nav class="toc" aria-label="On this page">
-        <a href="#highlights">Highlights</a><a href="#design">Designing</a><a href="#projects">Projects</a><a href="#products">Pages &amp; products</a><a href="#merge">Mail merge</a><a href="#printing">Printing</a><a href="#workspace">Workspace</a><a href="#shortcuts">Shortcuts</a><a href="#specs">Specs</a>
+        <a href="#highlights">Highlights</a><a href="#claude">Design with Claude</a><a href="#design">Designing</a><a href="#projects">Projects</a><a href="#products">Pages &amp; products</a><a href="#merge">Mail merge</a><a href="#printing">Printing</a><a href="#workspace">Workspace</a><a href="#shortcuts">Shortcuts</a><a href="#specs">Specs</a>
       </nav>
     </div>
   </section>
@@ -16,6 +16,16 @@
       <p class="eyebrow">Highlights</p>
       <h2 id="highlights-h">Built for people who print a lot of labels</h2>
       <div class="fcards">
+        <article class="fcard fcard-wide">
+          <img src="images/features/claude-chat.webp" alt="gLabels Plus with the Claude chat panel next to the editor: the user asked for a 4×6 shipping label and Claude built it with addresses, order details, a tracking barcode and a QR code" width="640" height="400" loading="lazy" decoding="async">
+          <div class="fcard-body">
+            <p class="eyebrow">{{claude_tag}}Design with Claude</p>
+            <h3>Describe the label. Claude builds it.</h3>
+            <p>Tell Claude what you need in plain words. It picks the label size, lays out text, barcodes, QR codes and symbols, checks a preview and fixes what doesn't fit, while you watch in the editor. Undo any step with <kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p>
+            <p>Optional: uses Claude Code with your own Claude account. <a href="#claude">How it works</a></p>
+            <p class="fc-keys"><b>Tools &gt; Connect AI &gt; Claude</b> <span>·</span> <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> <span>chat panel</span></p>
+          </div>
+        </article>
         <article class="fcard">
           <img src="images/features/sample-labels.webp" alt="Sample labels: a 4×6 shipping label, an asset tag, a product label, a bin location label, a SKU label and a sale price tag" width="640" height="400" loading="lazy" decoding="async">
           <div class="fcard-body">
@@ -139,6 +149,28 @@
           </div>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- Design with Claude -->
+  <section class="section" id="claude" aria-labelledby="claude-h">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">{{claude_tag}}Design with Claude</p>
+        <h2 id="claude-h">Can I design labels with AI?</h2>
+        <p class="sub">Yes. Connect Claude once in <b>Tools &gt; Connect AI &gt; Claude</b> and describe labels in plain words in the Claude chat panel. Claude works directly in gLabels Plus, so you see each change in the editor as it happens.</p>
+        <p class="ai-note"><b>Optional, and your choice.</b> It uses the Claude Code app installed on your computer with your own Claude account, or the Claude Desktop app. gLabels Plus has no AI service or subscription of its own. Your label goes to Claude only while you chat; everything else works offline. {{claude_when}}</p>
+      </div>
+      <ul class="ticks">
+        <li><b>Start from a sentence</b>: "a 4×6 shipping label with a tracking barcode" finds the right roll or sheet and lays out the whole label.</li>
+        <li><b>Edit by asking</b>: bigger text, a new line, a QR code, a different label size. Claude changes only what you ask for.</li>
+        <li><b>Checks its own work</b>: after each change Claude looks at a preview and fixes text that doesn't fit, overlaps and anything too close to the edge.</li>
+        <li><b>Symbols and logos</b>: Claude uses the built-in symbols, your own SVG symbols and image files from your computer.</li>
+        <li><b>Live and undoable</b>: every change appears in the editor at once and is a single <kbd>Ctrl</kbd>+<kbd>Z</kbd> step.</li>
+        <li><b>Save, open and PDF</b>: ask Claude to save the label, open another one or export a PDF proof. It never replaces a file without asking you first.</li>
+        <li><b>A panel that fits your layout</b>: dock the chat on any side of the window or float it, and show or hide it with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>.</li>
+        <li><b>Safe by design</b>: in the chat panel Claude can only use the label tools and read files. It cannot run programs or change other files.</li>
+      </ul>
     </div>
   </section>
 

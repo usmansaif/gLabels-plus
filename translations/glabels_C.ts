@@ -2023,7 +2023,11 @@ Quit Claude Desktop completely and open it again to start using it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Claude · your installed Claude Code</source>
+        <source>Chatting with Claude Code on this computer, signed in with your Claude account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

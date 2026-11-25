@@ -572,3 +572,34 @@ td:nth-child(2) { color: var(--muted); font-variant-numeric: tabular-nums; }
 .fc-keys kbd { font-family: var(--mono); font-size: .8rem; color: var(--text); }
 @media (max-width: 1000px) { .fcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .fcards { grid-template-columns: 1fr; gap: 16px; } }
+
+/* Design with Claude */
+.new-tag { display: inline-flex; align-items: center; flex: none; font-size: .7rem; font-weight: 800; line-height: 1.2; text-transform: uppercase; letter-spacing: .06em; padding: 3px 7px; border-radius: 4px; color: var(--accent); background: var(--accent-soft); }
+.hero-new { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; padding: 5px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font-size: .9rem; font-weight: 600; text-decoration: none; }
+.hero-new:hover { border-color: var(--line-strong); color: var(--text); }
+.ai { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
+.ai .steps { margin-bottom: 20px; }
+.ai-note { margin: 0; padding: 14px 16px; border-left: 3px solid var(--line-strong); background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0; color: var(--muted); font-size: .93rem; }
+.ai-note b { color: var(--text); }
+.split .ai-note { margin-top: -12px; }
+.chat-demo { display: flex; flex-direction: column; gap: 10px; padding-bottom: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-lg); font-size: .93rem; }
+.chat-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: .85rem; }
+.chat-head span { color: var(--muted); }
+.msg-user { align-self: flex-end; max-width: 82%; margin: 4px 16px 0; padding: 9px 13px; background: var(--accent-soft); border-radius: 10px 10px 2px 10px; }
+.msg-steps { list-style: none; margin: 0 16px; padding: 0; display: grid; gap: 2px; color: var(--muted); font-size: .82rem; }
+.msg-steps li::before { content: "\25E6\00a0"; }
+.msg-claude { margin: 0 16px; }
+.msg-claude b { display: block; margin-bottom: 2px; color: var(--accent); font-size: .85rem; }
+.chat-input { margin: 6px 16px 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: .88rem; }
+.fcard-wide { grid-column: 1 / -1; flex-direction: row; }
+.fcard-wide img { width: 56%; flex: none; border-bottom: 0; border-right: 1px solid var(--line); }
+.fcard-wide .fcard-body { justify-content: center; padding: 28px 32px; }
+.fcard-wide .eyebrow { margin-bottom: 0; }
+.fcard-wide h3 { font-size: 1.4rem; }
+@media (max-width: 1000px) { .ai { grid-template-columns: 1fr; gap: 36px; } }
+@media (max-width: 820px) {
+  .fcard-wide { flex-direction: column; }
+  .fcard-wide img { width: 100%; border-right: 0; border-bottom: 1px solid var(--line); }
+  .fcard-wide .fcard-body { padding: 18px 20px 20px; }
+}
+.hero-new:has(.new-tag) { padding-left: 6px; }

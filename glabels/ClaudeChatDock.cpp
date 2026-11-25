@@ -128,6 +128,8 @@ namespace glabels
                 //
                 mStatus = new QLabel;
                 mStatus->setForegroundRole( QPalette::PlaceholderText );
+                mStatus->setToolTip( tr("Chatting with Claude Code on this computer, signed in with your Claude account") );
+                mStatus->setMinimumWidth( 1 );          // never widen the panel
 
                 mStopButton = new QToolButton;
                 mStopButton->setText( tr("Stop") );
@@ -628,7 +630,7 @@ namespace glabels
                 else
                 {
                         mDotsTimer.stop();
-                        mStatus->setText( tr("Claude · your installed Claude Code") );
+                        mStatus->setText( tr("Ready") );
                 }
         }
 

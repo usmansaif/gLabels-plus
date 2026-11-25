@@ -2,11 +2,13 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
+        <a class="hero-new" href="#claude">{{claude_tag}}Design labels by chatting with Claude</a>
         <p class="platforms">Linux · Windows · macOS · Works offline</p>
         <h1>gLabels Plus: free <span class="grad">barcode and thermal label</span> design software.</h1>
         <p class="lead">
           Design barcode, MRP, shipping and product labels for Zebra, TSC, Xprinter and Godex thermal
           printers or any sheet printer. Bulk barcodes from CSV, QR codes and over 1,800 ready-made templates from 70+ brands.
+          Or just describe the label you need and let Claude build it for you.
         </p>
         <ul class="chips">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free forever, no account</li>
@@ -22,7 +24,7 @@
         </div>
       </div>
       <figure class="hero-shot">
-        <img src="images/screenshots/editor.png" alt="gLabels Plus free barcode label designer: label editor with rulers, objects panel and toolbar" width="1440" height="880" fetchpriority="high">
+        <img src="images/screenshots/claude-chat.png" alt="gLabels Plus label editor with the Claude chat panel docked on the right: Claude has designed a 4×6 shipping label with a From address, Ship To block, order details, a tracking barcode and a QR code" width="1436" height="876" fetchpriority="high">
         <figcaption class="release">
           <span class="rel-ver"><span class="dot"></span>Version <b>{{version}}</b></span>
           <span class="rel-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.6 12 21 12 21z"/></svg>Free &amp; open source</span>
@@ -40,6 +42,7 @@
         <h2 id="glance-h">What is gLabels Plus?</h2>
         <p class="answer">gLabels Plus is a free, open-source label designer for Linux, Windows and macOS. It creates barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, prints them on sheet and thermal roll printers, and merges data from CSV files. Version {{version}} is maintained by Usman Saif and builds on gLabels by Jaye Evins.</p>
         <nav aria-label="On this page"><ul class="hl-jump">
+          <li><a href="#claude">Design with Claude</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#why-switch">Why switch</a></li>
           <li><a href="#sizes">24 thermal sizes</a></li>
@@ -55,6 +58,33 @@
         <div><dt>License</dt><dd>GNU GPL v3</dd></div>
         <div><dt>Latest version</dt><dd>{{version}}</dd></div>
       </dl>
+    </div>
+  </section>
+
+  <!-- Design with Claude -->
+  <section class="section" id="claude" aria-labelledby="claude-h">
+    <div class="wrap ai">
+      <div class="ai-copy">
+        <p class="eyebrow">{{claude_tag}}Design with Claude</p>
+        <h2 id="claude-h">Describe the label. Claude builds it.</h2>
+        <p class="sub">Open the Claude panel and say what you need in your own words. Claude picks the label stock, lays out text, barcodes, QR codes and symbols, checks a preview and fixes anything that doesn't fit. You watch every change happen in the editor, and <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes any step.</p>
+        <ol class="steps">
+          <li><b>Connect once.</b> <b>Tools &gt; Connect AI &gt; Claude</b> links the Claude Code app on your computer, or the Claude Desktop app.</li>
+          <li><b>Ask in the chat panel.</b> Dock it on the left, right, top or bottom of the window, or show and hide it with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>.</li>
+          <li><b>Keep refining.</b> "Make the order number bigger", "add our logo", "switch to 50 × 25 mm labels". Claude saves and exports a PDF proof when you ask.</li>
+        </ol>
+        <p class="ai-note"><b>Optional, and your choice.</b> It uses Claude Code with your own Claude account; gLabels Plus has no AI service or subscription of its own. Your label goes to Claude only while you chat, and everything else keeps working offline. {{claude_when}}</p>
+      </div>
+      <div class="chat-demo" role="img" aria-label="Example chat: asked for a 50 × 25 mm price tag, Claude creates the label, adds the product name, a large price and a barcode, then adds a SALE tag when asked">
+        <div class="chat-head"><b>Claude</b><span>Ready</span></div>
+        <p class="msg-user">Make a 50 × 25 mm price tag for my shop: product name, the price in big bold text and a barcode.</p>
+        <ul class="msg-steps"><li>Searching label templates</li><li>Creating a new label</li><li>Updating the label</li><li>Checking a preview</li></ul>
+        <p class="msg-claude"><b>Claude</b>Done. The product name sits at the top, the price is 20 pt bold in the middle, and a Code 128 barcode runs along the bottom, 1.5 mm inside the edge so it prints and scans cleanly.</p>
+        <p class="msg-user">Add "SALE" in the top corner</p>
+        <ul class="msg-steps"><li>Updating the label</li><li>Checking a preview</li></ul>
+        <p class="msg-claude"><b>Claude</b>Added a small black SALE tag in the top-right corner. Everything still fits.</p>
+        <div class="chat-input">Ask Claude to design or change your label...</div>
+      </div>
     </div>
   </section>
 

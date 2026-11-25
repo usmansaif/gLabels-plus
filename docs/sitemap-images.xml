@@ -3,7 +3,7 @@
   <url>
     <loc>https://usmansaif.github.io/gLabels-plus/</loc>
     <image:image>
-      <image:loc>https://usmansaif.github.io/gLabels-plus/images/screenshots/editor.png</image:loc>
+      <image:loc>https://usmansaif.github.io/gLabels-plus/images/screenshots/claude-chat.png</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://usmansaif.github.io/gLabels-plus/images/screenshots/welcome.png</image:loc>
@@ -29,6 +29,9 @@
   </url>
   <url>
     <loc>https://usmansaif.github.io/gLabels-plus/features.html</loc>
+    <image:image>
+      <image:loc>https://usmansaif.github.io/gLabels-plus/images/features/claude-chat.webp</image:loc>
+    </image:image>
     <image:image>
       <image:loc>https://usmansaif.github.io/gLabels-plus/images/features/sample-labels.webp</image:loc>
     </image:image>

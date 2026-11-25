@@ -28,8 +28,8 @@ RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
 VERSION = "5.1.2"
 RELEASE_DATE = "2026-11-22"          # ISO date of the release named by VERSION
-UPDATED = "2026-11-22"               # last content update, shown on every page
-UPDATED_HUMAN = "22 November 2026"
+UPDATED = "2026-11-26"               # last content update, shown on every page
+UPDATED_HUMAN = "26 November 2026"
 RELEASE_TAG = "v" + VERSION          # GitHub release tag the download buttons fall back to
 PKG_VERSION = "5.1"                  # version string used in the release asset file names
 DOWNLOAD_BASE = f"{RELEASES_URL}/download/{RELEASE_TAG}/"
@@ -48,6 +48,15 @@ CONTACT_URL = "https://usmansaif.com/en/contact"   # custom barcode label printi
 MAINTAINER = {"@type": "Person", "@id": SITE_URL + "#maintainer", "name": "Usman Saif",
               "url": "https://usmansaif.com", "jobTitle": "Maintainer of gLabels Plus"}
 OG_IMAGE = SITE_URL + "images/screenshots/editor.png"
+
+# Design with Claude (Tools > Connect AI > Claude, the Claude chat panel).
+# None until a published release includes it; then that version, e.g. "5.1.4". Pages show a
+# "New in <version>" tag from then on, and the feature list, comparison table and structured
+# data only claim it once it can be downloaded.
+CLAUDE_VERSION = None
+CLAUDE_TAG = (f'<span class="new-tag">New in {CLAUDE_VERSION}</span>' if CLAUDE_VERSION else "")
+CLAUDE_WHEN = (f"Included from version {CLAUDE_VERSION}." if CLAUDE_VERSION
+               else "It arrives in the next release.")
 
 
 # --------------------------------------------------------------------------
@@ -242,6 +251,20 @@ FAQ = [
      "Yes. Select a text object and choose a Path in the Text tab: Arc (top) for a name over the top of a round sticker, Arc (bottom) for a website or weight under the bottom that still reads the right way up, Circle to go all the way round, Rectangle or Wave. The curve fits the text box. You can also draw a circle, ellipse, box or line, select it with the text and choose Objects > Put Text on Shape. Start angle turns the text round the curve a degree at a time, and Distance from edge moves it in or out, for example round the outside of a circle logo."),
     ("Does gLabels Plus have symbols like Fragile, This Way Up or Keep Refrigerated?",
      "Yes. Tools > Insert Symbol (Ctrl+Shift+Y) opens 53 solid black symbols made to print sharply on thermal label printers: handling marks (Fragile, This Way Up, Keep Dry, Keep Away from Heat, Do Not Stack, Recyclable), food marks (Keep Refrigerated, Vegetarian and Non-Vegetarian, Gluten Free, Spicy, Microwave Safe), contact icons (phone, mobile, email, website, location, opening hours), delivery and shop icons, check boxes, stars and arrows. Choose a size, press Insert, and the window stays open so you can add more. Symbols are saved inside the label file."),
+    ("Can I design labels with AI, like Claude?",
+     ("Yes. " if CLAUDE_VERSION else "Yes, from the next release. ") +
+     "Connect Claude once in Tools > Connect AI > Claude, then describe the label in the Claude chat panel "
+     "(Ctrl+Shift+K), for example a 4×6 shipping label with a tracking barcode and a QR code. Claude picks the "
+     "label size, lays out text, barcodes, QR codes and symbols, checks a preview and fixes anything that "
+     "doesn't fit. Every change appears in the editor as it happens and Ctrl+Z undoes it. The chat panel docks "
+     "to any side of the window. It works with Claude Code installed on your computer and your own Claude "
+     "account, and you can also connect the Claude Desktop app."),
+    ("Does the Claude feature send my labels online?",
+     "Only while you use it. The Claude feature is optional and stays off until you connect it. When you chat, "
+     "Claude Code sends your message and the label you are working on to Anthropic so Claude can answer, under "
+     "your own Claude account; gLabels Plus has no AI service or subscription of its own. In the chat panel "
+     "Claude can only use the label tools and read files: it cannot run programs or change other files. "
+     "Everything else in gLabels Plus works offline. Turn it off at any time in Tools > Connect AI > Claude."),
     ("My label sheet isn't listed. What can I do?",
      "Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it."),
     ("Where are my labels saved?",
@@ -422,7 +445,7 @@ GLABELS_SHARED = [
     ("Command line printing (batch)", True),
     ("Free and open source", True),
 ]
-GLABELS_PLUS_ONLY = [
+GLABELS_PLUS_ONLY = ([("Design labels by chatting with Claude (optional)", False)] if CLAUDE_VERSION else []) + [
     ("Ready-to-run installers for Windows, Linux and macOS", ("part", "Linux packages; Windows test builds")),
     ("Data Source import for CSV, TSV and JSON with automatic delimiter and encoding", ("part", "CSV and text files, set up by hand")),
     ("Variables panel: drag a data column onto the label", False),
@@ -510,6 +533,8 @@ PLACEHOLDERS = {
     "{{compare_table}}": compare_table,
     "{{compare_glabels}}": compare_glabels,
     "{{version}}": lambda: VERSION,
+    "{{claude_tag}}": lambda: CLAUDE_TAG,
+    "{{claude_when}}": lambda: CLAUDE_WHEN,
     "{{release_date}}": lambda: RELEASE_DATE,
     "{{updated}}": lambda: UPDATED,
     "{{updated_human}}": lambda: UPDATED_HUMAN,
@@ -544,7 +569,8 @@ def software_app(extra=None):
         "installUrl": RELEASES_URL,
         "releaseNotes": SITE_URL + "whats-new.html",
         "screenshot": [SITE_URL + "images/screenshots/" + n for n in
-                       ("editor.png", "welcome.png", "product-chooser.png", "print.png")],
+                       ("editor.png", "welcome.png", "product-chooser.png", "print.png")]
+                      + ([SITE_URL + "images/screenshots/claude-chat.png"] if CLAUDE_VERSION else []),
         "image": OG_IMAGE,
         "url": SITE_URL,
         "sameAs": [REPO_URL],
@@ -570,7 +596,8 @@ def software_app(extra=None):
             "Save your own designs as templates",
             "Print to PDF, crop marks and mirror printing", "Built-in Urdu Nastaliq font",
             "Works offline, no account", "Light and dark themes",
-        ],
+        ] + (["Optional Claude assistant: describe a label and Claude designs it in the editor"]
+             if CLAUDE_VERSION else []),
     }
     if extra:
         data.update(extra)

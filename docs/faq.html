@@ -85,7 +85,7 @@
     "@type": "ImageObject",
     "url": "https://usmansaif.github.io/gLabels-plus/images/screenshots/editor.png"
    },
-   "dateModified": "2026-11-22",
+   "dateModified": "2026-11-26",
    "author": {
     "@id": "https://usmansaif.github.io/gLabels-plus/#maintainer"
    },
@@ -230,6 +230,22 @@
     },
     {
      "@type": "Question",
+     "name": "Can I design labels with AI, like Claude?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, from the next release. Connect Claude once in Tools > Connect AI > Claude, then describe the label in the Claude chat panel (Ctrl+Shift+K), for example a 4×6 shipping label with a tracking barcode and a QR code. Claude picks the label size, lays out text, barcodes, QR codes and symbols, checks a preview and fixes anything that doesn't fit. Every change appears in the editor as it happens and Ctrl+Z undoes it. The chat panel docks to any side of the window. It works with Claude Code installed on your computer and your own Claude account, and you can also connect the Claude Desktop app."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does the Claude feature send my labels online?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Only while you use it. The Claude feature is optional and stays off until you connect it. When you chat, Claude Code sends your message and the label you are working on to Anthropic so Claude can answer, under your own Claude account; gLabels Plus has no AI service or subscription of its own. In the chat panel Claude can only use the label tools and read files: it cannot run programs or change other files. Everything else in gLabels Plus works offline. Turn it off at any time in Tools > Connect AI > Claude."
+     }
+    },
+    {
+     "@type": "Question",
      "name": "My label sheet isn't listed. What can I do?",
      "acceptedAnswer": {
       "@type": "Answer",
@@ -310,7 +326,7 @@
       <p class="eyebrow">Questions</p>
       <h1>gLabels Plus FAQ</h1>
       <p class="answer">gLabels Plus is a free, open-source label designer for Linux, Windows and macOS. Below are answers to the most common questions about pricing, printers, templates, barcodes, mail merge and shortcuts.</p>
-      <p class="byline">By <a href="https://usmansaif.com" rel="author">Usman Saif</a>, maintainer · Updated <time datetime="2026-11-22">22 November 2026</time></p>
+      <p class="byline">By <a href="https://usmansaif.com" rel="author">Usman Saif</a>, maintainer · Updated <time datetime="2026-11-26">26 November 2026</time></p>
     </div>
   </section>
 
@@ -382,6 +398,14 @@
           <p>Yes. Tools &gt; Insert Symbol (Ctrl+Shift+Y) opens 53 solid black symbols made to print sharply on thermal label printers: handling marks (Fragile, This Way Up, Keep Dry, Keep Away from Heat, Do Not Stack, Recyclable), food marks (Keep Refrigerated, Vegetarian and Non-Vegetarian, Gluten Free, Spicy, Microwave Safe), contact icons (phone, mobile, email, website, location, opening hours), delivery and shop icons, check boxes, stars and arrows. Choose a size, press Insert, and the window stays open so you can add more. Symbols are saved inside the label file.</p>
         </details>
         <details>
+          <summary><h3>Can I design labels with AI, like Claude?</h3></summary>
+          <p>Yes, from the next release. Connect Claude once in Tools &gt; Connect AI &gt; Claude, then describe the label in the Claude chat panel (Ctrl+Shift+K), for example a 4×6 shipping label with a tracking barcode and a QR code. Claude picks the label size, lays out text, barcodes, QR codes and symbols, checks a preview and fixes anything that doesn&#x27;t fit. Every change appears in the editor as it happens and Ctrl+Z undoes it. The chat panel docks to any side of the window. It works with Claude Code installed on your computer and your own Claude account, and you can also connect the Claude Desktop app.</p>
+        </details>
+        <details>
+          <summary><h3>Does the Claude feature send my labels online?</h3></summary>
+          <p>Only while you use it. The Claude feature is optional and stays off until you connect it. When you chat, Claude Code sends your message and the label you are working on to Anthropic so Claude can answer, under your own Claude account; gLabels Plus has no AI service or subscription of its own. In the chat panel Claude can only use the label tools and read files: it cannot run programs or change other files. Everything else in gLabels Plus works offline. Turn it off at any time in Tools &gt; Connect AI &gt; Claude.</p>
+        </details>
+        <details>
           <summary><h3>My label sheet isn&#x27;t listed. What can I do?</h3></summary>
           <p>Search by part number in the product chooser, because many sheets are listed under an equivalent brand. If it is still missing, use the built-in product template designer to measure and save it.</p>
         </details>
@@ -437,7 +461,7 @@
     <div class="footer-about">
       <a class="brand" href="./"><img src="assets/icon.svg" alt="" width="28" height="28"><span>gLabels <b>Plus</b></span></a>
       <p>A free, open-source label and business card designer for Linux, Windows and macOS. Maintained by <a href="https://usmansaif.com" target="_blank" rel="noopener">Usman Saif</a>, built on gLabels by Jaye Evins.</p>
-      <p class="ver"><span class="dot"></span> Latest version 5.1.2 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
+      <p class="ver"><span class="dot"></span> Latest version 5.1.2 · Updated <time datetime="2026-11-26">26 November 2026</time></p>
     </div>
     <nav aria-label="Product">
       <h2>Product</h2>
