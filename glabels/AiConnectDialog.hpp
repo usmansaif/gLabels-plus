@@ -65,6 +65,7 @@ namespace glabels
                 void refreshDesktop();
                 void onEnabledToggled( bool on );
 
+                void installClaudeCode();
                 void connectClaudeCode();
                 void disconnectClaudeCode();
                 void connectDesktop();

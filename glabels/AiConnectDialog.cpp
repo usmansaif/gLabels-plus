@@ -22,6 +22,7 @@
 #include "AiConnectDialog.hpp"
 
 #include "AiBridge.hpp"
+#include "ClaudeHost.hpp"
 #include "MainWindow.hpp"
 #include "McpServer.hpp"
 
@@ -88,20 +89,7 @@ namespace glabels
 
         QString AiConnectDialog::findClaudeCode()
         {
-                QString path = QStandardPaths::findExecutable( "claude" );
-                if ( !path.isEmpty() )
-                {
-                        return path;
-                }
-
-                // Programs started from a desktop menu often don't get the shell's PATH
-                const QString home = QDir::homePath();
-                QStringList dirs = { home + "/.local/bin", home + "/.claude/local", home + "/.npm-global/bin",
-                                     home + "/bin", "/usr/local/bin", "/opt/homebrew/bin" };
-#ifdef Q_OS_WIN
-                dirs << qEnvironmentVariable( "APPDATA" ) + "/npm";
-#endif
-                return QStandardPaths::findExecutable( "claude", dirs );
+                return ClaudeHost::find();
         }
 
 
@@ -247,17 +235,9 @@ namespace glabels
                 auto* process = new QProcess( this );
                 process->setProcessChannelMode( QProcess::MergedChannels );
 
-                QString program = mClaudePath;
+                QString program;
                 QStringList arguments = args;
-#ifdef Q_OS_WIN
-                // npm installs a .cmd wrapper, which needs the command interpreter
-                if ( program.endsWith( ".cmd", Qt::CaseInsensitive ) || program.endsWith( ".bat", Qt::CaseInsensitive ) )
-                {
-                        arguments.prepend( QDir::toNativeSeparators( program ) );
-                        arguments.prepend( "/c" );
-                        program = "cmd.exe";
-                }
-#endif
+                ClaudeHost::prepare( mClaudePath, QString(), &program, &arguments );
                 connect( process, &QProcess::finished, this, [process, done]( int code, QProcess::ExitStatus status ) {
                         QString output = QString::fromUtf8( process->readAll() ).trimmed();
                         done( status == QProcess::NormalExit ? code : -1, output );
@@ -285,9 +265,11 @@ namespace glabels
                 if ( mClaudePath.isEmpty() )
                 {
                         mCodeStatus->setText( tr("Claude Code is not installed on this computer.") );
-                        mCodeHint->setText( tr("Install it from <a href=\"https://claude.com/claude-code\">claude.com/claude-code</a>, "
-                                               "then open this window again.") );
-                        mCodeConnect->setEnabled( false );
+                        mCodeHint->setText( tr("Install installs it from <a href=\"https://claude.com/claude-code\">claude.com/claude-code</a> "
+                                               "and connects it. Then run <code>claude</code> once in a terminal to sign in "
+                                               "with your Claude account.") );
+                        mCodeConnect->setText( tr("&Install") );
+                        mCodeConnect->setEnabled( true );
                         mCodeDisconnect->setVisible( false );
                         return;
                 }
@@ -299,7 +281,7 @@ namespace glabels
                 runClaude( { "mcp", "get", serverName }, [this]( int code, const QString& output ) {
                         mCodeBusy = false;
                         bool connected = code == 0;
-                        bool current = output.contains( mcpCommand() );
+                        bool current = output.contains( ClaudeHost::mcpProgram() ) && output.contains( ClaudeHost::mcpArguments().join( ' ' ) );
 
                         if ( connected && current )
                         {
@@ -327,10 +309,38 @@ namespace glabels
         }
 
 
+        void AiConnectDialog::installClaudeCode()
+        {
+                mCodeBusy = true;
+                mCodeConnect->setEnabled( false );
+                mCodeStatus->setText( tr("Installing Claude Code...") );
+                mCodeHint->setText( tr("This downloads Claude Code and can take a minute.") );
+                ClaudeHost::install( this, [this]( bool ok, const QString& output ) {
+                        mCodeBusy = false;
+                        mClaudePath = findClaudeCode();
+                        if ( !ok || mClaudePath.isEmpty() )
+                        {
+                                QMessageBox::warning( this, tr("Install Claude Code"),
+                                                      tr("Claude Code could not be installed.\n\n%1\n\n"
+                                                         "You can install it yourself from claude.com/claude-code.")
+                                                      .arg( output.right( 1500 ) ) );
+                                refresh();
+                                return;
+                        }
+                        connectClaudeCode();
+                } );
+        }
+
+
         void AiConnectDialog::connectClaudeCode()
         {
-                if ( mClaudePath.isEmpty() || mCodeBusy )
+                if ( mCodeBusy )
                 {
+                        return;
+                }
+                if ( mClaudePath.isEmpty() )
+                {
+                        installClaudeCode();
                         return;
                 }
                 AiBridge::setEnabled( true );
@@ -342,7 +352,8 @@ namespace glabels
 
                 // Replace any earlier entry, so it points at this copy of the program
                 runClaude( { "mcp", "remove", serverName, "--scope", "user" }, [this]( int, const QString& ) {
-                        runClaude( { "mcp", "add", "--scope", "user", serverName, "--", mcpCommand(), "--mcp" },
+                        runClaude( QStringList{ "mcp", "add", "--scope", "user", serverName, "--", ClaudeHost::mcpProgram() }
+                                   + ClaudeHost::mcpArguments(),
                                    [this]( int code, const QString& output ) {
                                            mCodeBusy = false;
                                            if ( code != 0 )
@@ -465,7 +476,8 @@ namespace glabels
 
                 QJsonObject entry = config.value( "mcpServers" ).toObject().value( serverName ).toObject();
                 bool connected = !entry.isEmpty();
-                bool current = entry.value( "command" ).toString() == mcpCommand();
+                bool current = entry.value( "command" ).toString() == ClaudeHost::mcpProgram()
+                               && entry.value( "args" ).toVariant().toStringList() == ClaudeHost::mcpArguments();
 
                 if ( connected && current )
                 {
@@ -505,8 +517,8 @@ namespace glabels
                 }
 
                 QJsonObject servers = config.value( "mcpServers" ).toObject();
-                servers.insert( serverName, QJsonObject{ { "command", mcpCommand() },
-                                                         { "args", QJsonArray{ "--mcp" } } } );
+                servers.insert( serverName, QJsonObject{ { "command", ClaudeHost::mcpProgram() },
+                                                         { "args", QJsonArray::fromStringList( ClaudeHost::mcpArguments() ) } } );
                 config.insert( "mcpServers", servers );
 
                 if ( !writeDesktopConfig( path, config, &error ) )

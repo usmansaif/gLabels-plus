@@ -1808,10 +1808,6 @@ Find it under File &gt; New from Sample.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Install it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;, then open this window again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Checking...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1927,6 +1923,34 @@ Quit Claude Desktop completely and open it again to start using it.</source>
         <source>Chat in the panel next to your label, or run &lt;code&gt;claude&lt;/code&gt; in a terminal. Claude asks before using a gLabels tool the first time in the terminal.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Install installs it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt; and connects it. Then run &lt;code&gt;claude&lt;/code&gt; once in a terminal to sign in with your Claude account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installing Claude Code...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This downloads Claude Code and can take a minute.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code could not be installed.
+
+%1
+
+You can install it yourself from claude.com/claude-code.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::ClaudeChatDock</name>
@@ -2023,10 +2047,6 @@ Quit Claude Desktop completely and open it again to start using it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Claude Code is not installed.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This panel talks to the Claude Code program on this computer, signed in with your own Claude account.&lt;/p&gt;&lt;p&gt;Install it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;, run &lt;code&gt;claude&lt;/code&gt; once in a terminal to sign in, then press Check Again.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Could not write the chat settings in %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2093,6 +2113,26 @@ You can also drop files here or paste them.</source>
     </message>
     <message>
         <source>Attached: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;Claude Code is not installed.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This panel talks to the Claude Code program on this computer, signed in with your own Claude account.&lt;/p&gt;&lt;p&gt;Press Install Claude Code to install it from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;. Then run &lt;code&gt;claude&lt;/code&gt; once in a terminal to sign in.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;Installing Claude Code...&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This downloads Claude Code and can take a minute.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;&lt;b&gt;Claude Code could not be installed.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;%1&lt;/p&gt;&lt;p&gt;You can install it yourself from &lt;a href=&quot;https://claude.com/claude-code&quot;&gt;claude.com/claude-code&lt;/a&gt;, then press Check Again.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude Code is installed. If it isn&apos;t signed in yet, run claude once in a terminal and sign in with your Claude account.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

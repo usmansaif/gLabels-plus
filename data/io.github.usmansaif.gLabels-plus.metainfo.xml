@@ -78,6 +78,16 @@
   </screenshots>
   <translation type="qt">glabels-qt/translations/glabels</translation>
   <releases>
+    <release version="5.1.5" date="2026-11-26">
+      <description>
+        <ul>
+          <li>Attach files to Claude chat messages</li>
+          <li>Install Claude Code from the app and connect it in one step</li>
+          <li>Claude Code works from the Flatpak version</li>
+          <li>New application ID and a scalable app icon</li>
+        </ul>
+      </description>
+    </release>
     <release version="5.1.4" date="2026-11-26">
       <description>
         <ul>

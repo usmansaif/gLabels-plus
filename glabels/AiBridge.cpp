@@ -311,6 +311,15 @@ namespace glabels
 
         QString AiBridge::socketName()
         {
+                // In a Flatpak, Claude starts "glabels-qt --mcp" in its own sandbox; this folder
+                // is the one place both sandboxes of the app share
+                const QString flatpakId = qEnvironmentVariable( "FLATPAK_ID" );
+                const QString runtimeDir = qEnvironmentVariable( "XDG_RUNTIME_DIR" );
+                if ( !flatpakId.isEmpty() && !runtimeDir.isEmpty() )
+                {
+                        return runtimeDir + "/app/" + flatpakId + "/glabels-plus-ai";
+                }
+
                 QString user = qEnvironmentVariable( "USER", qEnvironmentVariable( "USERNAME", "user" ) );
                 user.remove( QRegularExpression( "[^A-Za-z0-9_.-]" ) );
                 return "glabels-plus-ai-" + user;

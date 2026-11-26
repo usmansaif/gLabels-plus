@@ -31,6 +31,7 @@
 
 class QLabel;
 class QPlainTextEdit;
+class QPushButton;
 class QStackedWidget;
 class QTextBrowser;
 class QToolButton;
@@ -69,6 +70,7 @@ namespace glabels
 
         private:
                 void checkInstalled();
+                void installClaudeCode();
                 void send( const QString& text );
                 void stop();
                 void newChat();
@@ -110,6 +112,7 @@ namespace glabels
                 QToolButton*    mAttachButton;
                 QWidget*        mAttachmentBar;
                 QLabel*         mMissingText;
+                QPushButton*    mInstallButton;
 
                 QString         mClaudePath;
                 QProcess*       mProcess = nullptr;

@@ -23,6 +23,7 @@
 
 #include "AiBridge.hpp"
 #include "AiConnectDialog.hpp"
+#include "ClaudeHost.hpp"
 #include "MainWindow.hpp"
 #include "McpServer.hpp"
 
@@ -274,12 +275,15 @@ namespace glabels
                 mMissingText->setWordWrap( true );
                 mMissingText->setOpenExternalLinks( true );
                 mMissingText->setAlignment( Qt::AlignCenter );
+                mInstallButton = new QPushButton( tr("Install Claude Code") );
+                connect( mInstallButton, &QPushButton::clicked, this, &ClaudeChatDock::installClaudeCode );
                 auto* checkAgain = new QPushButton( tr("Check Again") );
                 connect( checkAgain, &QPushButton::clicked, this, &ClaudeChatDock::checkInstalled );
                 auto* missingPage = new QWidget;
                 auto* missingLayout = new QVBoxLayout( missingPage );
                 missingLayout->addStretch( 1 );
                 missingLayout->addWidget( mMissingText );
+                missingLayout->addWidget( mInstallButton, 0, Qt::AlignCenter );
                 missingLayout->addWidget( checkAgain, 0, Qt::AlignCenter );
                 missingLayout->addStretch( 2 );
 
@@ -309,7 +313,7 @@ namespace glabels
                 if ( mProcess )
                 {
                         mProcess->disconnect( this );
-                        mProcess->kill();
+                        ClaudeHost::stop( mProcess );
                         mProcess->waitForFinished( 2000 );
                 }
                 QFile::remove( mPromptFile );
@@ -400,15 +404,39 @@ namespace glabels
                         mMissingText->setText( tr("<p><b>Claude Code is not installed.</b></p>"
                                                   "<p>This panel talks to the Claude Code program on this computer, "
                                                   "signed in with your own Claude account.</p>"
-                                                  "<p>Install it from <a href=\"https://claude.com/claude-code\">"
-                                                  "claude.com/claude-code</a>, run <code>claude</code> once in a "
-                                                  "terminal to sign in, then press Check Again.</p>") );
+                                                  "<p>Press Install Claude Code to install it from "
+                                                  "<a href=\"https://claude.com/claude-code\">claude.com/claude-code</a>. "
+                                                  "Then run <code>claude</code> once in a terminal to sign in.</p>") );
+                        mInstallButton->setEnabled( true );
                         mPages->setCurrentIndex( 1 );
                 }
                 else
                 {
                         mPages->setCurrentIndex( 0 );
                 }
+        }
+
+
+        void ClaudeChatDock::installClaudeCode()
+        {
+                mInstallButton->setEnabled( false );
+                mMissingText->setText( tr("<p><b>Installing Claude Code...</b></p>"
+                                          "<p>This downloads Claude Code and can take a minute.</p>") );
+                ClaudeHost::install( this, [this]( bool ok, const QString& output ) {
+                        checkInstalled();
+                        if ( !ok && mClaudePath.isEmpty() )
+                        {
+                                mMissingText->setText( tr("<p><b>Claude Code could not be installed.</b></p>"
+                                                          "<p>%1</p>"
+                                                          "<p>You can install it yourself from "
+                                                          "<a href=\"https://claude.com/claude-code\">claude.com/claude-code</a>, "
+                                                          "then press Check Again.</p>")
+                                                       .arg( output.right( 600 ).toHtmlEscaped() ) );
+                                return;
+                        }
+                        appendNote( tr("Claude Code is installed. If it isn't signed in yet, run claude once in a "
+                                       "terminal and sign in with your Claude account."), false );
+                } );
         }
 
 
@@ -461,7 +489,7 @@ namespace glabels
                 if ( mProcess && mProcessDirs != mExtraDirs )
                 {
                         mProcess->disconnect( this );
-                        mProcess->kill();
+                        ClaudeHost::stop( mProcess );
                         mProcess->waitForFinished( 2000 );
                         mProcess->deleteLater();
                         mProcess = nullptr;
@@ -510,7 +538,8 @@ namespace glabels
 
                 QFile prompt( mPromptFile );
                 QFile mcp( mMcpFile );
-                QJsonObject server{ { "command", mcpCommand() }, { "args", QJsonArray{ "--mcp" } } };
+                QJsonObject server{ { "command", ClaudeHost::mcpProgram() },
+                                    { "args", QJsonArray::fromStringList( ClaudeHost::mcpArguments() ) } };
                 QJsonObject config{ { "mcpServers", QJsonObject{ { "glabels-plus", server } } } };
                 if ( !prompt.open( QFile::WriteOnly ) || !mcp.open( QFile::WriteOnly ) )
                 {
@@ -543,22 +572,15 @@ namespace glabels
                         args << "--resume" << mSessionId;
                 }
 
-                QString program = mClaudePath;
-#ifdef Q_OS_WIN
-                if ( program.endsWith( ".cmd", Qt::CaseInsensitive ) || program.endsWith( ".bat", Qt::CaseInsensitive ) )
-                {
-                        args.prepend( QDir::toNativeSeparators( program ) );
-                        args.prepend( "/c" );
-                        program = "cmd.exe";
-                }
-#endif
-
                 // Work in the label's folder, so "the logo next to my label" makes sense
                 QString cwd = QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation );
                 if ( mWindow->model() && !mWindow->model()->fileName().isEmpty() )
                 {
                         cwd = mWindow->model()->dirPath();
                 }
+
+                QString program;
+                ClaudeHost::prepare( mClaudePath, cwd, &program, &args );
 
                 mProcess = new QProcess( this );
                 mProcess->setWorkingDirectory( cwd );
@@ -589,7 +611,7 @@ namespace glabels
                 {
                         // The conversation is kept: the next message resumes it
                         mStopping = true;
-                        mProcess->kill();
+                        ClaudeHost::stop( mProcess );
                 }
         }
 
@@ -600,7 +622,7 @@ namespace glabels
                 {
                         mStopping = true;
                         mProcess->disconnect( this );
-                        mProcess->kill();
+                        ClaudeHost::stop( mProcess );
                         mProcess->waitForFinished( 2000 );
                         mProcess->deleteLater();
                         mProcess = nullptr;

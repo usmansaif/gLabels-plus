@@ -26,7 +26,7 @@ SITE_URL = "https://usmansaif.github.io/gLabels-plus/"
 REPO_URL = "https://github.com/usmansaif/gLabels-plus"
 RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
-VERSION = "5.1.4"
+VERSION = "5.1.5"
 RELEASE_DATE = "2026-11-26"          # ISO date of the release named by VERSION
 UPDATED = "2026-11-26"               # last content update, shown on every page
 UPDATED_HUMAN = "26 November 2026"
@@ -151,6 +151,9 @@ LATEST = [
          how="Product chooser &gt; <b>Barcode labels</b> category"),
 ]
 LATEST_MINOR = [
+    "Attach files to Claude chat messages: drop, paste or pick a logo or data file",
+    "Install Claude Code from the chat panel or Tools &gt; Connect AI &gt; Claude, then connect it in one step",
+    "Ready for Flatpak: new application ID io.github.usmansaif.gLabels-plus and a scalable app icon",
     "Rotate objects with the mouse: drag just outside a corner, Shift snaps to 15 degrees",
     "Objects panel toolbar and right-click menu: rename, lock, duplicate, group, reorder and delete",
     "Duplicate objects in one click",

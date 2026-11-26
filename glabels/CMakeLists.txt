@@ -41,6 +41,7 @@ set (glabels_sources
   CustomSymbols.cpp
   AiBridge.cpp
   AiConnectDialog.cpp
+  ClaudeHost.cpp
   ClaudeChatDock.cpp
   McpServer.cpp
   PropertiesView.cpp
