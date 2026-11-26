@@ -27,10 +27,16 @@
 #include "UndoRedoModel.hpp"
 
 #include "barcode/Backends.hpp"
+#include "merge/Factory.hpp"
 #include "merge/Merge.hpp"
 #include "merge/Record.hpp"
 #include "model/Db.hpp"
 #include "model/FileUtil.hpp"
+#include "model/FrameEllipse.hpp"
+#include "model/FrameRect.hpp"
+#include "model/FrameRound.hpp"
+#include "model/Layout.hpp"
+#include "model/Markup.hpp"
 #include "model/Model.hpp"
 #include "model/ModelBarcodeObject.hpp"
 #include "model/ModelBoxObject.hpp"
@@ -45,6 +51,7 @@
 #include "model/XmlLabelParser.hpp"
 
 #include <QApplication>
+#include <QColor>
 #include <QBuffer>
 #include <QDir>
 #include <QDomDocument>
@@ -159,6 +166,10 @@ namespace
                         o.insert( "layout", frame->layoutDescription() );
                 }
                 o.insert( "roll", t.isRoll() );
+                if ( t.isUserDefined() )
+                {
+                        o.insert( "custom", true );
+                }
                 o.insert( "page", t.isRoll() ? QString( "roll %1 mm wide" ).arg( round2( t.rollWidth().mm() ) )
                                              : t.paperDescription( glabels::model::Units( glabels::model::Units::MM ) ) );
                 return o;
@@ -450,6 +461,12 @@ namespace glabels
                         { "open_label",         &AiBridge::toolOpenLabel },
                         { "export_pdf",         &AiBridge::toolExportPdf },
                         { "undo",               &AiBridge::toolUndo },
+                        { "redo",               &AiBridge::toolRedo },
+                        { "create_template",    &AiBridge::toolCreateTemplate },
+                        { "delete_template",    &AiBridge::toolDeleteTemplate },
+                        { "set_merge_data",     &AiBridge::toolSetMergeData },
+                        { "get_merge_data",     &AiBridge::toolGetMergeData },
+                        { "set_variable",       &AiBridge::toolSetVariable },
                 };
 
                 auto it = handlers.find( tool );
@@ -861,8 +878,25 @@ Tips for good labels:
                 painter.drawPath( m->frame()->path() );
                 painter.restore();
 
-                // Objects, with fields shown as ${name} placeholders
-                m->draw( &painter, true, merge::NullRecord(), model::Variables() );
+                // Objects, with fields shown as ${name} placeholders, or filled from a merge record
+                int recordIndex = args.value( "record" ).toInt( -1 );
+                const QList<merge::Record> records = m->merge() ? m->merge()->recordList() : QList<merge::Record>();
+                if ( args.contains( "record" ) && ( recordIndex < 0 || recordIndex >= records.size() ) )
+                {
+                        painter.end();
+                        return fail( QString( "No record %1; the merge data has %2 records (see get_merge_data)." )
+                                     .arg( recordIndex ).arg( records.size() ) );
+                }
+                if ( recordIndex >= 0 )
+                {
+                        model::Variables variables( m->variables() );
+                        variables.resetVariables();
+                        m->draw( &painter, false, records[recordIndex], variables );
+                }
+                else
+                {
+                        m->draw( &painter, true, merge::NullRecord(), model::Variables() );
+                }
 
                 // Outline on top, so overflow past the edge is visible
                 painter.save();
@@ -1363,6 +1397,438 @@ Tips for good labels:
                 undo->undo();
                 noteActivity( window, tr("undid %1").arg( what ) );
                 return ok( "Undid: " + what );
+        }
+
+
+        QJsonObject AiBridge::toolRedo( const QJsonObject& args )
+        {
+                QString error;
+                MainWindow* window = target( args, &error );
+                if ( !window )
+                {
+                        return fail( error );
+                }
+                auto* undo = window->undoRedoModel();
+                if ( !undo->canRedo() )
+                {
+                        return fail( "Nothing to redo." );
+                }
+                QString what = undo->redoDescription();
+                undo->redo();
+                noteActivity( window, tr("redid %1").arg( what ) );
+                return ok( "Redid: " + what );
+        }
+
+
+        QJsonObject AiBridge::toolCreateTemplate( const QJsonObject& args )
+        {
+                using model::Distance;
+
+                const QString brand = args.value( "brand" ).toString( "Custom" ).simplified();
+                const QString part = args.value( "part" ).toString().simplified();
+                const QString description = args.value( "description" ).toString().simplified();
+                static const QRegularExpression badChars( R"([/\\:*?"<>|\x00-\x1f])" );
+                if ( part.isEmpty() )
+                {
+                        return fail( "Give the template a part name, e.g. \"Jar lid 50 mm\"." );
+                }
+                if ( brand.isEmpty() || brand.contains( badChars ) || part.contains( badChars )
+                     || brand.size() > 60 || part.size() > 80 )
+                {
+                        return fail( "Brand and part must be short and must not contain / \\ : * ? \" < > |." );
+                }
+
+                // Label shape
+                const QString shape = args.value( "shape" ).toString( "rectangle" ).toLower();
+                double w = args.value( "width_mm" ).toDouble( 0 );
+                double h = args.value( "height_mm" ).toDouble( 0 );
+                if ( shape == "round" || shape == "circle" )
+                {
+                        double d = args.value( "diameter_mm" ).toDouble( w > 0 ? w : h );
+                        w = h = d;
+                }
+                else if ( shape != "rectangle" && shape != "ellipse" )
+                {
+                        return fail( "shape must be rectangle, round or ellipse." );
+                }
+                if ( w < 3 || h < 3 || w > 2000 || h > 5000 )
+                {
+                        return fail( shape == "round" || shape == "circle"
+                                     ? "Give diameter_mm between 3 and 2000."
+                                     : "Give width_mm and height_mm of the label (3-2000 mm wide, 3-5000 mm high)." );
+                }
+                double radius = std::max( 0.0, args.value( "corner_radius_mm" ).toDouble( 0 ) );
+                if ( radius > std::min( w, h ) / 2 )
+                {
+                        return fail( "corner_radius_mm can be at most half the shorter side." );
+                }
+                double margin = args.value( "margin_mm" ).toDouble( 1.5 );
+                if ( margin < 0 || margin > std::min( w, h ) / 2 )
+                {
+                        return fail( "margin_mm must be between 0 and half the shorter side." );
+                }
+
+                // Grid of labels
+                int nx = args.value( "columns" ).toInt( 1 );
+                int ny = args.value( "rows" ).toInt( 1 );
+                if ( nx < 1 || ny < 1 || nx * ny > 1000 )
+                {
+                        return fail( "columns and rows must be at least 1 (at most 1000 labels)." );
+                }
+                double gapX = args.value( "column_gap_mm" ).toDouble( 0 );
+                double gapY = args.value( "row_gap_mm" ).toDouble( 0 );
+                if ( gapX < 0 || gapY < 0 )
+                {
+                        return fail( "Gaps can't be negative." );
+                }
+                double dx = w + gapX, dy = h + gapY;
+                double gridW = ( nx - 1 ) * dx + w;
+                double gridH = ( ny - 1 ) * dy + h;
+
+                // Page: a roll, a known paper size or a custom page
+                const QString paperArg = args.value( "paper" ).toString( "roll" ).trimmed();
+                QString paperId;
+                double pageW = 0, pageH = 0, rollW = 0;
+                double x0 = args.value( "left_mm" ).toDouble( -1 );
+                double y0 = args.value( "top_mm" ).toDouble( -1 );
+                if ( paperArg.compare( "roll", Qt::CaseInsensitive ) == 0 )
+                {
+                        paperId = "roll";
+                        x0 = std::max( 0.0, x0 );
+                        y0 = std::max( 0.0, y0 );
+                        pageW = gridW + 2 * x0;
+                        pageH = gridH + 2 * y0;
+                        rollW = args.value( "roll_width_mm" ).toDouble( pageW );
+                        if ( rollW < pageW - 0.01 )
+                        {
+                                return fail( QString( "roll_width_mm must be at least the width of the labels across (%1 mm)." )
+                                             .arg( round2( pageW ) ) );
+                        }
+                }
+                else if ( paperArg.compare( "other", Qt::CaseInsensitive ) == 0
+                          || paperArg.compare( "custom", Qt::CaseInsensitive ) == 0 )
+                {
+                        paperId = "other";
+                        pageW = args.value( "page_width_mm" ).toDouble( 0 );
+                        pageH = args.value( "page_height_mm" ).toDouble( 0 );
+                        if ( pageW <= 0 || pageH <= 0 )
+                        {
+                                return fail( "With paper \"other\", give page_width_mm and page_height_mm." );
+                        }
+                }
+                else
+                {
+                        model::Paper paper;
+                        for ( const auto& p : model::Db::papers() )
+                        {
+                                if ( p.id().compare( paperArg, Qt::CaseInsensitive ) == 0
+                                     || p.name().compare( paperArg, Qt::CaseInsensitive ) == 0 )
+                                {
+                                        paper = p;
+                                }
+                        }
+                        if ( paper.id().isEmpty() )
+                        {
+                                QStringList names;
+                                for ( const auto& p : model::Db::papers() )
+                                {
+                                        names << p.id();
+                                }
+                                return fail( QString( "Unknown paper \"%1\". Use \"roll\", \"other\" (with page_width_mm and "
+                                                      "page_height_mm) or one of: %2." ).arg( paperArg, names.join( ", " ) ) );
+                        }
+                        paperId = paper.id();
+                        pageW = paper.width().mm();
+                        pageH = paper.height().mm();
+                }
+
+                if ( paperId != "roll" )
+                {
+                        // Center the grid on the page unless told otherwise
+                        if ( x0 < 0 )
+                        {
+                                x0 = ( pageW - gridW ) / 2;
+                        }
+                        if ( y0 < 0 )
+                        {
+                                y0 = ( pageH - gridH ) / 2;
+                        }
+                        if ( x0 < -0.01 || y0 < -0.01 || x0 + gridW > pageW + 0.01 || y0 + gridH > pageH + 0.01 )
+                        {
+                                return fail( QString( "The labels (%1 × %2 mm with margins %3, %4 mm) don't fit on the %5 × %6 mm page. "
+                                                      "Use fewer columns or rows, smaller gaps or other offsets." )
+                                             .arg( round2( gridW ) ).arg( round2( gridH ) )
+                                             .arg( round2( std::max( 0.0, x0 ) ) ).arg( round2( std::max( 0.0, y0 ) ) )
+                                             .arg( round2( pageW ) ).arg( round2( pageH ) ) );
+                        }
+                        x0 = std::max( 0.0, x0 );
+                        y0 = std::max( 0.0, y0 );
+                }
+
+                const bool overwrite = args.value( "overwrite" ).toBool();
+                if ( model::Db::isSystemTemplateKnown( brand, part ) )
+                {
+                        return fail( QString( "\"%1\" is a built-in template name. Choose another part name." )
+                                     .arg( model::Template::brandPartToName( brand, part ) ) );
+                }
+                if ( model::Db::isUserTemplateKnown( brand, part ) && !overwrite )
+                {
+                        return fail( QString( "A custom template named \"%1\" already exists. Ask the user, then pass "
+                                              "overwrite: true to replace it." ).arg( model::Template::brandPartToName( brand, part ) ) );
+                }
+
+                model::Template t( brand, part, description.isEmpty() ? QString( "Custom label" ) : description, paperId,
+                                   Distance::mm( pageW ), Distance::mm( pageH ), Distance::mm( rollW ), "", true );
+                model::Layout layout( nx, ny, Distance::mm( x0 ), Distance::mm( y0 ),
+                                      Distance::mm( nx > 1 ? dx : 0 ), Distance::mm( ny > 1 ? dy : 0 ) );
+                if ( shape == "ellipse" )
+                {
+                        model::FrameEllipse frame( Distance::mm( w ), Distance::mm( h ), Distance::mm( 0 ) );
+                        frame.addMarkup( model::MarkupMargin( Distance::mm( margin ) ) );
+                        frame.addLayout( layout );
+                        t.addFrame( frame );
+                }
+                else if ( shape == "rectangle" )
+                {
+                        model::FrameRect frame( Distance::mm( w ), Distance::mm( h ), Distance::mm( radius ),
+                                                Distance::mm( 0 ), Distance::mm( 0 ) );
+                        frame.addMarkup( model::MarkupMargin( Distance::mm( margin ), Distance::mm( margin ) ) );
+                        frame.addLayout( layout );
+                        t.addFrame( frame );
+                }
+                else
+                {
+                        model::FrameRound frame( Distance::mm( w / 2 ), Distance::mm( 0 ) );
+                        frame.addMarkup( model::MarkupMargin( Distance::mm( margin ) ) );
+                        frame.addLayout( layout );
+                        t.addFrame( frame );
+                }
+
+                if ( model::Db::isUserTemplateKnown( brand, part ) )
+                {
+                        model::Db::deleteUserTemplateByBrandPart( brand, part );
+                }
+                model::Db::registerUserTemplate( t );
+                model::Template saved = model::Db::lookupTemplateFromName( t.name() );
+                if ( saved.isNull() || !saved.isUserDefined() )
+                {
+                        return fail( "Could not save the template in " + model::FileUtil::userTemplatesDir().path() );
+                }
+
+                QJsonObject result = templateJson( saved );
+                result.insert( "file", QDir::toNativeSeparators( saved.fileName() ) );
+                result.insert( "note", "Saved with the user's own templates (also listed in File > New under the brand). "
+                                       "Use new_label or set_template with this name." );
+                if ( auto* window = mLastWindow.data() )
+                {
+                        noteActivity( window, tr("created the template %1").arg( saved.name() ) );
+                }
+                return ok( result );
+        }
+
+
+        QJsonObject AiBridge::toolDeleteTemplate( const QJsonObject& args )
+        {
+                const QString name = args.value( "template" ).toString();
+                model::Template t = model::Db::lookupTemplateFromName( name );
+                if ( t.isNull() )
+                {
+                        return fail( QString( "No template named \"%1\"." ).arg( name ) );
+                }
+                if ( !t.isUserDefined() )
+                {
+                        return fail( "Only the user's own (custom) templates can be deleted; this one is built in." );
+                }
+                model::Db::deleteUserTemplateByBrandPart( t.brand(), t.part() );
+                if ( model::Db::isUserTemplateKnown( t.brand(), t.part() ) )
+                {
+                        return fail( "Could not delete the template." );
+                }
+                return ok( QString( "Deleted the custom template \"%1\". Labels already made with it keep their layout." ).arg( name ) );
+        }
+
+
+        QJsonObject AiBridge::toolSetMergeData( const QJsonObject& args )
+        {
+                QString error;
+                MainWindow* window = target( args, &error );
+                if ( !window )
+                {
+                        return fail( error );
+                }
+                model::Model* m = window->model();
+
+                const QString path = QDir::fromNativeSeparators( args.value( "path" ).toString() );
+                if ( path.isEmpty() )
+                {
+                        window->undoRedoModel()->checkpoint( tr("Claude: Disconnect Data") );
+                        m->setMerge( merge::Factory::createMerge( "None" ) );
+                        noteActivity( window, tr("disconnected the merge data") );
+                        return ok( "Disconnected the merge data. The label now prints without records." );
+                }
+                QFileInfo info( path );
+                if ( !info.isAbsolute() || !info.isFile() )
+                {
+                        return fail( "Give the absolute path of an existing CSV, TSV, TXT or JSON file (or no path to disconnect)." );
+                }
+
+                QString format = args.value( "format" ).toString( "auto" ).toLower();
+                bool header = args.value( "has_header" ).toBool( true );
+                if ( format == "auto" )
+                {
+                        const QString ext = info.suffix().toLower();
+                        format = ext == "json" ? "json" : ext == "tsv" || ext == "tab" ? "tsv" : ext == "csv" ? "csv" : "text";
+                }
+                QString id;
+                if ( format == "json" )       id = "Json";
+                else if ( format == "csv" )   id = header ? "Text/Comma/Line1Keys" : "Text/Comma";
+                else if ( format == "tsv" )   id = header ? "Text/Tab/Line1Keys" : "Text/Tab";
+                else if ( format == "semicolon" ) id = header ? "Text/Semicolon/Keys" : "Text/Semicolon";
+                else if ( format == "text" )  id = header ? "Text/Auto/Line1Keys" : "Text/Auto";
+                else
+                {
+                        return fail( "format must be auto, csv, tsv, semicolon, text (auto-detect delimiter) or json." );
+                }
+
+                merge::Merge* merge = merge::Factory::createMerge( id );
+                if ( !merge )
+                {
+                        return fail( "This merge format is not available." );
+                }
+                merge->setSource( info.absoluteFilePath() );
+                if ( merge->recordList().isEmpty() && merge->keys().isEmpty() )
+                {
+                        delete merge;
+                        return fail( "No records could be read from " + path + ". Check the file and the format." );
+                }
+
+                window->undoRedoModel()->checkpoint( tr("Claude: Connect Data") );
+                m->setMerge( merge );
+                noteActivity( window, tr("connected %1").arg( info.fileName() ) );
+
+                QJsonObject result = toolGetMergeData( QJsonObject{ { "document", docId( window ) }, { "limit", 3 } } );
+                result.insert( "text", "Connected. Put fields on the label as ${Field} in text and barcode data.\n"
+                                       + result.value( "text" ).toString() );
+                return result;
+        }
+
+
+        QJsonObject AiBridge::toolGetMergeData( const QJsonObject& args )
+        {
+                QString error;
+                MainWindow* window = target( args, &error );
+                if ( !window )
+                {
+                        return fail( error );
+                }
+                const merge::Merge* merge = window->model()->merge();
+                if ( !merge || merge->id() == "None" || merge->source().isEmpty() )
+                {
+                        return ok( "This label has no merge data. Connect a file with set_merge_data." );
+                }
+
+                int limit = qBound( 0, args.value( "limit" ).toInt( 10 ), 200 );
+                int start = std::max( 0, args.value( "start" ).toInt( 0 ) );
+                const auto& records = merge->recordList();
+
+                QJsonArray list;
+                for ( int i = start; i < records.size() && i < start + limit; i++ )
+                {
+                        QJsonObject r{ { "index", i } };
+                        if ( !records[i].isSelected() )
+                        {
+                                r.insert( "selected", false );
+                        }
+                        for ( const QString& key : merge->keys() )
+                        {
+                                r.insert( key, records[i].value( key ).left( 200 ) );
+                        }
+                        list.append( r );
+                }
+
+                QJsonObject result;
+                result.insert( "source", QDir::toNativeSeparators( merge->source() ) );
+                result.insert( "format", merge::Factory::idToName( merge->id() ) );
+                result.insert( "fields", QJsonArray::fromStringList( merge->keys() ) );
+                result.insert( "records", int( records.size() ) );
+                result.insert( "selected_records", merge->nSelectedRecords() );
+                result.insert( "rows", list );
+                return ok( result );
+        }
+
+
+        QJsonObject AiBridge::toolSetVariable( const QJsonObject& args )
+        {
+                QString error;
+                MainWindow* window = target( args, &error );
+                if ( !window )
+                {
+                        return fail( error );
+                }
+                model::Model* m = window->model();
+
+                const QString name = args.value( "name" ).toString().trimmed();
+                static const QRegularExpression validName( "^[A-Za-z_][A-Za-z0-9_ .-]{0,59}$" );
+                if ( !validName.match( name ).hasMatch() )
+                {
+                        return fail( "Give a variable name of letters, digits and _ (starting with a letter)." );
+                }
+
+                if ( args.value( "delete" ).toBool() )
+                {
+                        if ( !m->variables().hasVariable( name ) )
+                        {
+                                return fail( QString( "The label has no variable \"%1\"." ).arg( name ) );
+                        }
+                        window->undoRedoModel()->checkpoint( tr("Claude: Delete Variable") );
+                        m->variables().deleteVariable( name );
+                        noteActivity( window, tr("deleted the variable %1").arg( name ) );
+                        return ok( QString( "Deleted the variable \"%1\". Remove any ${%1} left on the label." ).arg( name ) );
+                }
+
+                const QString type = args.value( "type" ).toString( "string" ).toLower();
+                const QString increment = args.value( "increment" ).toString( "never" ).toLower();
+                if ( !QStringList{ "string", "integer", "float", "color" }.contains( type ) )
+                {
+                        return fail( "type must be string, integer, float or color." );
+                }
+                if ( !QStringList{ "never", "per_item", "per_copy", "per_page" }.contains( increment ) )
+                {
+                        return fail( "increment must be never, per_item, per_copy or per_page." );
+                }
+                QString value = args.value( "initial_value" ).toVariant().toString();
+                QString step = args.value( "step" ).toVariant().toString();
+                if ( step.isEmpty() )
+                {
+                        step = increment == "never" ? "0" : "1";
+                }
+                if ( type == "integer" || type == "float" )
+                {
+                        if ( value.isEmpty() )
+                        {
+                                value = "0";
+                        }
+                        bool okValue = false, okStep = false;
+                        value.toDouble( &okValue );
+                        step.toDouble( &okStep );
+                        if ( !okValue || !okStep || ( type == "integer" && ( value.contains( '.' ) || step.contains( '.' ) ) ) )
+                        {
+                                return fail( "initial_value and step must be " + QString( type == "integer" ? "whole numbers." : "numbers." ) );
+                        }
+                }
+                if ( type == "color" && !QColor::isValidColorName( value ) )
+                {
+                        return fail( "A color variable needs a color such as #ff0000 or black as initial_value." );
+                }
+
+                model::Variable variable( model::Variable::idStringToType( type ), name, value,
+                                          model::Variable::idStringToIncrement( increment ), step );
+                bool existed = m->variables().hasVariable( name );
+                window->undoRedoModel()->checkpoint( tr("Claude: Set Variable") );
+                m->variables().replaceVariable( name, variable );
+                noteActivity( window, tr("set the variable %1").arg( name ) );
+                return ok( QString( "%1 the %2 variable \"%3\" (start %4, increment %5). Use it as ${%3} in text or barcode data." )
+                           .arg( existed ? "Updated" : "Added", type, name, value, increment ) );
         }
 
 }

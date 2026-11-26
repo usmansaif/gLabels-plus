@@ -100,6 +100,12 @@ namespace glabels
                 QJsonObject toolOpenLabel( const QJsonObject& args );
                 QJsonObject toolExportPdf( const QJsonObject& args );
                 QJsonObject toolUndo( const QJsonObject& args );
+                QJsonObject toolRedo( const QJsonObject& args );
+                QJsonObject toolCreateTemplate( const QJsonObject& args );
+                QJsonObject toolDeleteTemplate( const QJsonObject& args );
+                QJsonObject toolSetMergeData( const QJsonObject& args );
+                QJsonObject toolGetMergeData( const QJsonObject& args );
+                QJsonObject toolSetVariable( const QJsonObject& args );
 
                 /// The window a tool acts on: the "document" argument, or the
                 /// window the user worked in last.  Sets *error if there is none.

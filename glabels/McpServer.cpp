@@ -54,9 +54,11 @@ namespace
                 "window on the user's computer; every change appears there at once and the user can undo it "
                 "with Ctrl+Z.\n"
                 "Workflow: get_status to see what is open; list_templates + new_label to start a label on the "
-                "right stock (or open_label); get_format_guide once before writing XML; get_label to read the "
+                "right stock (or open_label), or create_template for a size no template has; get_format_guide once before writing XML; get_label to read the "
                 "design; set_label_objects or add_objects to change it; render_preview to look at the result "
                 "and fix overlaps or overflow; save_label when the user wants it saved.\n"
+                "Mail merge: set_merge_data connects a CSV/JSON file, then use ${Field} in text and barcodes and "
+                "render_preview with a record to check real values. set_variable makes counters and serial numbers.\n"
                 "All tool sizes are in millimetres. Keep about 1.5-2 mm margin inside the label edge. Never "
                 "overwrite files without the user's say-so.";
 
@@ -111,9 +113,10 @@ namespace
 },
 {
   "name": "render_preview",
-  "description": "Render the label to a PNG image so you can see it: check layout, overlaps, text overflow and margins after each change. Merge fields show as ${name}.",
+  "description": "Render the label to a PNG image so you can see it: check layout, overlaps, text overflow and margins after each change. Merge fields show as ${name}, or with real values when you pass a record.",
   "inputSchema": { "type": "object", "properties": {
     "max_pixels": { "type": "integer", "description": "Longest side in pixels, 200-2000. Default 900." },
+    "record": { "type": "integer", "description": "Fill the fields from this merge record (index from get_merge_data) instead of showing ${name}." },
     "document": { "type": "integer" }
   } },
   "annotations": { "readOnlyHint": true }
@@ -209,6 +212,80 @@ namespace
   "inputSchema": { "type": "object", "properties": {
     "document": { "type": "integer" }
   } }
+},
+{
+  "name": "redo",
+  "description": "Redo the change that undo last took back.",
+  "inputSchema": { "type": "object", "properties": {
+    "document": { "type": "integer" }
+  } }
+},
+{
+  "name": "create_template",
+  "description": "Create a custom label stock template when no template from list_templates fits: any label size on a thermal roll, a standard sheet (A4, US-Letter...) or a custom page, with rows and columns of labels. It is saved with the user's own templates (as in the Template Designer) and can then be used with new_label or set_template. Sizes in mm.",
+  "inputSchema": { "type": "object", "properties": {
+    "part": { "type": "string", "description": "Name of the stock, e.g. \"Jar lid 50 mm\" or \"100 x 150 shipping\". The template name is brand + \" \" + part." },
+    "brand": { "type": "string", "description": "Default \"Custom\"." },
+    "description": { "type": "string", "description": "What the label is for, e.g. \"Shipping label\"." },
+    "shape": { "type": "string", "enum": ["rectangle", "round", "ellipse"], "description": "Default rectangle." },
+    "width_mm": { "type": "number", "description": "Label width (rectangle, ellipse)." },
+    "height_mm": { "type": "number", "description": "Label height (rectangle, ellipse)." },
+    "diameter_mm": { "type": "number", "description": "Round labels." },
+    "corner_radius_mm": { "type": "number", "description": "Rounded corners of a rectangle. Default 0." },
+    "margin_mm": { "type": "number", "description": "Safe-area margin drawn inside the label. Default 1.5." },
+    "paper": { "type": "string", "description": "\"roll\" (default; continuous thermal roll, one label after another), a paper id such as A4, US-Letter, A5, or \"other\" for a custom page." },
+    "page_width_mm": { "type": "number", "description": "With paper \"other\"." },
+    "page_height_mm": { "type": "number", "description": "With paper \"other\"." },
+    "roll_width_mm": { "type": "number", "description": "Roll: width of the backing paper. Default: the labels' width." },
+    "columns": { "type": "integer", "description": "Labels across. Default 1." },
+    "rows": { "type": "integer", "description": "Labels down per sheet (rolls: usually 1). Default 1." },
+    "column_gap_mm": { "type": "number", "description": "Space between columns. Default 0." },
+    "row_gap_mm": { "type": "number", "description": "Space between rows. Default 0." },
+    "left_mm": { "type": "number", "description": "Distance from the page's left edge to the first label. Sheets: default centers the grid; rolls: default 0." },
+    "top_mm": { "type": "number", "description": "Distance from the page's top edge to the first label. Sheets: default centers the grid; rolls: default 0." },
+    "overwrite": { "type": "boolean", "description": "Replace an existing custom template with the same name. Ask the user first." }
+  }, "required": ["part"] }
+},
+{
+  "name": "delete_template",
+  "description": "Delete one of the user's own (custom) templates. Built-in templates can't be deleted. Only do this when the user asks.",
+  "inputSchema": { "type": "object", "properties": {
+    "template": { "type": "string", "description": "Exact template name (list_templates shows custom: true for these)." }
+  }, "required": ["template"] },
+  "annotations": { "destructiveHint": true }
+},
+{
+  "name": "set_merge_data",
+  "description": "Connect a data file (CSV, TSV, text or JSON) to the label for mail merge: each record prints as its own label, filling ${Field} placeholders in text and barcodes. Returns the field names and the first records. Omit path to disconnect the data.",
+  "inputSchema": { "type": "object", "properties": {
+    "path": { "type": "string", "description": "Absolute path of the data file." },
+    "format": { "type": "string", "enum": ["auto", "csv", "tsv", "semicolon", "text", "json"], "description": "Default auto (from the file extension; text auto-detects the delimiter). JSON must be an array of objects." },
+    "has_header": { "type": "boolean", "description": "First line holds the column names. Default true." },
+    "document": { "type": "integer" }
+  } }
+},
+{
+  "name": "get_merge_data",
+  "description": "Show the label's merge data: source file, field names, record count and records.",
+  "inputSchema": { "type": "object", "properties": {
+    "start": { "type": "integer", "description": "First record index. Default 0." },
+    "limit": { "type": "integer", "description": "Records to return, 0-200. Default 10." },
+    "document": { "type": "integer" }
+  } },
+  "annotations": { "readOnlyHint": true }
+},
+{
+  "name": "set_variable",
+  "description": "Add, change or delete a label variable, used as ${name} in text and barcode data. Use integer variables with an increment for serial numbers and counters (e.g. start 1001, per_item, step 1).",
+  "inputSchema": { "type": "object", "properties": {
+    "name": { "type": "string" },
+    "type": { "type": "string", "enum": ["string", "integer", "float", "color"], "description": "Default string." },
+    "initial_value": { "type": "string", "description": "Starting value (a color such as #cc0000 for color variables)." },
+    "increment": { "type": "string", "enum": ["never", "per_item", "per_copy", "per_page"], "description": "When a number goes up by step. Default never." },
+    "step": { "type": "string", "description": "Amount added at each increment. Default 1 when it increments." },
+    "delete": { "type": "boolean", "description": "Delete the variable instead." },
+    "document": { "type": "integer" }
+  }, "required": ["name"] }
 }
 ])JSON";
 

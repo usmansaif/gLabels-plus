@@ -1692,6 +1692,46 @@ Find it under File &gt; New from Sample.</source>
         <source>undid %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>redid %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>created the template %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Disconnect Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>disconnected the merge data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Connect Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>connected %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Delete Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>deleted the variable %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Claude: Set Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>set the variable %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::AiConnectDialog</name>
