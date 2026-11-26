@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=gLabels Plus Label Designer 4
+Name=gLabels Plus
 Comment=Create labels and business cards
 Comment[de]=Entwurf von Etiketten und Visitenkarten
 Comment[es]=Crear etiquetas y tarjetas de visita
@@ -11,7 +11,7 @@ Comment[pt_BR]=Crie etiquetas e cartões de visita
 Comment[uk]=Створюйте етикетки та візитки
 Keywords=label;card;print;office;barcode;
 Exec=glabels-qt %F
-Icon=glabels-plus
+Icon=io.github.usmansaif.gLabels-plus
 Terminal=false
 Type=Application
 Categories=Office;

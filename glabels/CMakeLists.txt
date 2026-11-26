@@ -195,13 +195,17 @@ target_link_libraries (glabels-qt
 #=======================================
 install (TARGETS glabels-qt RUNTIME DESTINATION bin)
 
-# Application icon: the gLabels Plus logo shown in the About dialog.  A unique name
-# ("glabels-plus") so the desktop entry never picks up the upstream gLabels icon.
+# Application icon: the gLabels Plus logo shown in the About dialog.  Named after the
+# application ID so the desktop entry and Flatpak find it, and never pick up the
+# upstream gLabels icon.
 foreach (size 16 22 24 32 48 64 128)
   install (FILES icons/app/glabels-plus-${size}.png
            DESTINATION share/icons/hicolor/${size}x${size}/apps
-           RENAME glabels-plus.png)
+           RENAME ${DESKTOP_FILE_NAME}.png)
 endforeach ()
+install (FILES icons/app/glabels-plus.svg
+         DESTINATION share/icons/hicolor/scalable/apps
+         RENAME ${DESKTOP_FILE_NAME}.svg)
 
 install (FILES icons/glabels-flat/scalable/apps/glabels.svg DESTINATION share/icons/hicolor/scalable/apps)
 install (FILES icons/glabels-flat/16x16/apps/glabels.svg    DESTINATION share/icons/hicolor/16x16/apps)

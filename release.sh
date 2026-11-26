@@ -132,7 +132,7 @@ linux_bundle() {
         --appdir "$APPDIR" \
         --executable "$APPDIR/usr/bin/glabels-qt" \
         --executable "$APPDIR/usr/bin/glabels-batch-qt" \
-        --desktop-file "$APPDIR/usr/share/applications/org.glabels.glabels-qt.desktop" \
+        --desktop-file "$APPDIR/usr/share/applications/io.github.usmansaif.gLabels-plus.desktop" \
         --plugin qt ${out[@]+"${out[@]}"} )
 
     if want appimage; then

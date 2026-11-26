@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.usmansaif.gLabels-plus</id>
+  <developer id="io.github.usmansaif">
+    <name>Usman Saif</name>
+  </developer>
+  <launchable type="desktop-id">io.github.usmansaif.gLabels-plus.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>gLabels Plus</name>
+  <summary>Design and print labels and business cards</summary>
+  <description>
+    <p>gLabels Plus is a label designer for address labels, name tags, price tags,
+    barcode and shipping labels, stickers, CD/DVD labels and business cards. It works
+    with the peel-off label and card sheets sold in office supply stores and with
+    thermal roll printers.</p>
+    <p>Features:</p>
+    <ul>
+      <li>Thousands of built-in templates for sheet and roll labels, plus custom sizes</li>
+      <li>Text, curved text, images, lines, shapes, symbols and barcodes, including QR codes</li>
+      <li>Mail merge from CSV and other data files to print a unique label for each record</li>
+      <li>Variables and counters for serial numbers</li>
+      <li>Projects to group labels by business or client</li>
+      <li>Optional Claude chat panel for designing labels with an AI assistant, using the separately installed Claude Code tool</li>
+    </ul>
+    <p>gLabels Plus is a fork of gLabels by Jaye Evins.</p>
+  </description>
+  <categories>
+    <category>Office</category>
+  </categories>
+  <keywords>
+    <keyword>label</keyword>
+    <keyword>card</keyword>
+    <keyword>print</keyword>
+    <keyword>office</keyword>
+    <keyword>barcode</keyword>
+    <keyword>sticker</keyword>
+    <keyword>mail merge</keyword>
+  </keywords>
+  <url type="homepage">https://usmansaif.github.io/gLabels-plus/</url>
+  <url type="bugtracker">https://github.com/usmansaif/gLabels-plus/issues</url>
+  <url type="vcs-browser">https://github.com/usmansaif/gLabels-plus</url>
+  <url type="faq">https://usmansaif.github.io/gLabels-plus/faq.html</url>
+  <url type="donation">https://usmansaif.github.io/gLabels-plus/donate.html</url>
+  <content_rating type="oars-1.1" />
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  <branding>
+    <color type="primary" scheme_preference="light">#a9c1ff</color>
+    <color type="primary" scheme_preference="dark">#3b2a8a</color>
+  </branding>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://usmansaif.github.io/gLabels-plus/images/screenshots/editor.png</image>
+      <caption>Designing a label</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://usmansaif.github.io/gLabels-plus/images/screenshots/product-chooser.png</image>
+      <caption>Choosing a label template</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://usmansaif.github.io/gLabels-plus/images/screenshots/properties.png</image>
+      <caption>Editing object properties</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://usmansaif.github.io/gLabels-plus/images/screenshots/print.png</image>
+      <caption>Printing a sheet of labels</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://usmansaif.github.io/gLabels-plus/images/screenshots/claude-chat.png</image>
+      <caption>Designing a label with the Claude chat panel</caption>
+    </screenshot>
+  </screenshots>
+  <translation type="qt">glabels-qt/translations/glabels</translation>
+  <releases>
+    <release version="5.1.4" date="2026-11-26">
+      <description>
+        <ul>
+          <li>Claude chat panel for designing and managing labels</li>
+          <li>31 social media brand logos as built-in symbols</li>
+          <li>Custom SVG symbols that are kept on the computer</li>
+        </ul>
+      </description>
+    </release>
+    <release version="5.1.3" date="2026-11-24">
+      <description>
+        <ul>
+          <li>Rotate objects with the mouse</li>
+          <li>67 new symbols</li>
+        </ul>
+      </description>
+    </release>
+    <release version="5.1.2" date="2026-11-22">
+      <description>
+        <ul>
+          <li>Ribbon and label cost estimator</li>
+          <li>Redesigned About dialog</li>
+        </ul>
+      </description>
+    </release>
+    <release version="5.1.1" date="2026-11-21">
+      <description>
+        <ul>
+          <li>Curved text and symbols</li>
+          <li>Sticker samples and a print estimator</li>
+        </ul>
+      </description>
+    </release>
+    <release version="5.1" date="2026-11-19">
+      <description>
+        <ul>
+          <li>Data source import, Variables panel and Recent Labels screen</li>
+          <li>Sample label library and in-app help</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+</component>
