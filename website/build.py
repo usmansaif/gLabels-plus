@@ -26,8 +26,8 @@ SITE_URL = "https://usmansaif.github.io/gLabels-plus/"
 REPO_URL = "https://github.com/usmansaif/gLabels-plus"
 RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
-VERSION = "5.1.2"
-RELEASE_DATE = "2026-11-22"          # ISO date of the release named by VERSION
+VERSION = "5.1.4"
+RELEASE_DATE = "2026-11-26"          # ISO date of the release named by VERSION
 UPDATED = "2026-11-26"               # last content update, shown on every page
 UPDATED_HUMAN = "26 November 2026"
 RELEASE_TAG = "v" + VERSION          # GitHub release tag the download buttons fall back to
@@ -53,7 +53,7 @@ OG_IMAGE = SITE_URL + "images/screenshots/editor.png"
 # None until a published release includes it; then that version, e.g. "5.1.4". Pages show a
 # "New in <version>" tag from then on, and the feature list, comparison table and structured
 # data only claim it once it can be downloaded.
-CLAUDE_VERSION = None
+CLAUDE_VERSION = "5.1.4"
 CLAUDE_TAG = (f'<span class="new-tag">New in {CLAUDE_VERSION}</span>' if CLAUDE_VERSION else "")
 CLAUDE_WHEN = (f"Included from version {CLAUDE_VERSION}." if CLAUDE_VERSION
                else "It arrives in the next release.")
@@ -99,12 +99,19 @@ TOOL_KEYS = [("V", "Select"), ("T", "Text"), ("R", "Box"), ("L", "Line"), ("O", 
 # icon: key into ICONS; keys: show TOOL_KEYS chips; how: where to find it in the app;
 # short: optional one-line text for the home teaser and llms.txt (defaults to summary).
 LATEST = [
+    dict(icon="ai", title="Design labels with Claude",
+         summary="Describe the label you need in your own words and Claude picks the label stock, lays out text, barcodes, QR codes and symbols, checks a preview and fixes anything that doesn't fit. Every change appears in the editor as it happens, and Ctrl+Z undoes any step. Works with Claude Code on your computer and your own Claude account, or connect the Claude Desktop app.",
+         short="Describe a label in your own words and Claude picks the stock, lays out text, barcodes, QR codes and symbols, checks a preview and fixes what doesn't fit, while you watch in the editor.",
+         how="<b>Tools &gt; Connect AI &gt; Claude</b> once · then the Claude panel (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>)"),
+    dict(icon="symbols", title="Social media logos and your own symbols",
+         summary="31 social media and review logos (Facebook, Instagram, X, TikTok, YouTube, WhatsApp, LinkedIn, Google, Tripadvisor and more) join the symbols, now 151 in all. Add your own SVG files as symbols too; they stay on your computer and appear under My Symbols.",
+         how="<b>Tools &gt; Insert Symbol</b> &gt; <b>Social media</b> category · <b>Add Your Own</b> for SVG files"),
     dict(icon="ribbon", title="Ribbon and label cost estimator",
          summary="Work out how many label rolls and thermal transfer ribbons a job needs and what they cost. Choose a product from the library or enter the label size, gap, labels across, labels per roll and roll price, the ribbon length and price, and how many labels you need. As you type you get the ribbons and rolls to buy with their amounts, what is left over, and the cost per label. Choose any currency; direct thermal jobs leave the ribbon out.",
          short="Tools &gt; Ribbon &amp; Label Cost Estimator works out the label rolls and thermal transfer ribbons a job needs, the amount to buy and the cost per label, in any currency. Enter the label size, gap, labels across, labels per roll, roll price, ribbon length and ribbon price; direct thermal jobs leave the ribbon out.",
          how="<b>Tools &gt; Ribbon &amp; Label Cost Estimator</b> · save the estimate as PDF, PNG or text"),
     dict(icon="symbols", title="Symbols for thermal labels",
-         summary="53 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), food marks (Keep Refrigerated, Vegetarian, Gluten Free), contact icons (phone, email, website, location), delivery, shop, check boxes, stars and arrows.",
+         summary="151 solid black symbols that print sharply on thermal printers: handling marks (Fragile, This Way Up, Keep Dry), hazard and care signs, food marks (Keep Refrigerated, Vegetarian, Gluten Free, allergens), contact icons (phone, email, website, location), social media logos, delivery, shop, check boxes, stars and arrows.",
          how="<b>Tools &gt; Insert Symbol</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Y</kbd>) · the window stays open while you add more"),
     dict(icon="curve", title="Curved text for round labels",
          summary="Set text along an arc, round a circle, round a box or on a wave, or draw any circle, ellipse, box or line and put the text on it. Start angle turns the words round the curve a degree at a time, and distance from edge moves them in or out.",
@@ -144,6 +151,7 @@ LATEST = [
          how="Product chooser &gt; <b>Barcode labels</b> category"),
 ]
 LATEST_MINOR = [
+    "Rotate objects with the mouse: drag just outside a corner, Shift snaps to 15 degrees",
     "Objects panel toolbar and right-click menu: rename, lock, duplicate, group, reorder and delete",
     "Duplicate objects in one click",
     "Readable selected rows on the welcome screen",
@@ -165,6 +173,7 @@ ICONS = {
     "layers": '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
     "symbols": '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
     "curve": '<path d="M4 17a8 8 0 0 1 16 0"/><path d="M8 17h.01M12 9h.01M16 17h.01"/>',
+    "ai": '<path d="M10 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/><path d="M18 14c.3 2 1.1 2.8 3 3-1.9.2-2.7 1-3 3-.3-2-1.1-2.8-3-3 1.9-.2 2.7-1 3-3z"/>',
     "sticker": '<circle cx="12" cy="12" r="9"/><path d="M7.5 9.5a6 6 0 0 1 9 0M8 15h8"/>',
     "samples": '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 }
@@ -250,7 +259,7 @@ FAQ = [
     ("Can I put curved text on a round label?",
      "Yes. Select a text object and choose a Path in the Text tab: Arc (top) for a name over the top of a round sticker, Arc (bottom) for a website or weight under the bottom that still reads the right way up, Circle to go all the way round, Rectangle or Wave. The curve fits the text box. You can also draw a circle, ellipse, box or line, select it with the text and choose Objects > Put Text on Shape. Start angle turns the text round the curve a degree at a time, and Distance from edge moves it in or out, for example round the outside of a circle logo."),
     ("Does gLabels Plus have symbols like Fragile, This Way Up or Keep Refrigerated?",
-     "Yes. Tools > Insert Symbol (Ctrl+Shift+Y) opens 53 solid black symbols made to print sharply on thermal label printers: handling marks (Fragile, This Way Up, Keep Dry, Keep Away from Heat, Do Not Stack, Recyclable), food marks (Keep Refrigerated, Vegetarian and Non-Vegetarian, Gluten Free, Spicy, Microwave Safe), contact icons (phone, mobile, email, website, location, opening hours), delivery and shop icons, check boxes, stars and arrows. Choose a size, press Insert, and the window stays open so you can add more. Symbols are saved inside the label file."),
+     "Yes. Tools > Insert Symbol (Ctrl+Shift+Y) opens 151 solid black symbols made to print sharply on thermal label printers: handling marks (Fragile, This Way Up, Keep Dry, Keep Away from Heat, Do Not Stack, Recyclable), food marks (Keep Refrigerated, Vegetarian and Non-Vegetarian, Gluten Free, Spicy, Microwave Safe), contact icons (phone, mobile, email, website, location, opening hours), social media logos (Facebook, Instagram, WhatsApp, TikTok and more), delivery and shop icons, check boxes, stars and arrows. Choose a size, press Insert, and the window stays open so you can add more. Symbols are saved inside the label file."),
     ("Can I design labels with AI, like Claude?",
      ("Yes. " if CLAUDE_VERSION else "Yes, from the next release. ") +
      "Connect Claude once in Tools > Connect AI > Claude, then describe the label in the Claude chat panel "
@@ -590,7 +599,7 @@ def software_app(extra=None):
             "Smart distance guides and snapping", "Measure tool", "Layer groups and names",
             "28 ready-made sample labels: shipping, receipt, invoice, SKU, product and asset",
             "Curved text along arcs and circles for round labels",
-            "53 thermal-friendly symbols: Fragile, This Way Up, Keep Refrigerated, phone, email and more",
+            "151 thermal-friendly symbols: Fragile, This Way Up, Keep Refrigerated, phone, email, social media logos and more",
             "Ribbon and label cost estimator for thermal printing jobs, in any currency",
             "15 black and white sticker designs for thermal printers: bakery, cottage food, jar, candle, soap and coffee labels",
             "Save your own designs as templates",

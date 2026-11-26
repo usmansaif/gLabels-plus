@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.22)
 ###############################################################################
 # gLabels Label Designer Project
 ###############################################################################
-project (glabels-plus VERSION "5.1.3")
+project (glabels-plus VERSION "5.1.4")
 
 #
 # Path for locally defined cmake modules
