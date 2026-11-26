@@ -124,6 +124,37 @@
 	<file>symbols/compostable.svg</file>
 	<file>symbols/dispose-in-bin.svg</file>
 	<file>symbols/reusable.svg</file>
+	<file>symbols/facebook.svg</file>
+	<file>symbols/instagram.svg</file>
+	<file>symbols/x-twitter.svg</file>
+	<file>symbols/tiktok.svg</file>
+	<file>symbols/youtube.svg</file>
+	<file>symbols/whatsapp.svg</file>
+	<file>symbols/linkedin.svg</file>
+	<file>symbols/pinterest.svg</file>
+	<file>symbols/snapchat.svg</file>
+	<file>symbols/telegram.svg</file>
+	<file>symbols/threads.svg</file>
+	<file>symbols/messenger.svg</file>
+	<file>symbols/bluesky.svg</file>
+	<file>symbols/mastodon.svg</file>
+	<file>symbols/discord.svg</file>
+	<file>symbols/reddit.svg</file>
+	<file>symbols/tumblr.svg</file>
+	<file>symbols/twitch.svg</file>
+	<file>symbols/spotify.svg</file>
+	<file>symbols/wechat.svg</file>
+	<file>symbols/signal.svg</file>
+	<file>symbols/github.svg</file>
+	<file>symbols/medium.svg</file>
+	<file>symbols/behance.svg</file>
+	<file>symbols/dribbble.svg</file>
+	<file>symbols/vimeo.svg</file>
+	<file>symbols/google.svg</file>
+	<file>symbols/google-maps.svg</file>
+	<file>symbols/tripadvisor.svg</file>
+	<file>symbols/yelp.svg</file>
+	<file>symbols/etsy.svg</file>
 
 </qresource>
 </RCC>
