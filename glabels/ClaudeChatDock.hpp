@@ -26,6 +26,7 @@
 #include <QJsonObject>
 #include <QProcess>
 #include <QSet>
+#include <QStringList>
 #include <QTimer>
 
 class QLabel;
@@ -33,6 +34,7 @@ class QPlainTextEdit;
 class QStackedWidget;
 class QTextBrowser;
 class QToolButton;
+class QUrl;
 class QWidget;
 
 
@@ -76,9 +78,16 @@ namespace glabels
                 void handleEvent( const QJsonObject& event );
                 void setBusy( bool busy );
                 void moveTo( Qt::DockWidgetArea area );
+                void updateSendButton();
+
+                // Attachments
+                void chooseAttachments();
+                bool addAttachments( const QList<QUrl>& urls );
+                void removeAttachment( const QString& path );
+                void updateAttachmentBar();
 
                 // Transcript
-                void appendUser( const QString& text );
+                void appendUser( const QString& text, const QStringList& attachments );
                 void appendClaudeText( const QString& delta );
                 void appendTool( const QString& toolName );
                 void appendNote( const QString& text, bool error );
@@ -98,6 +107,8 @@ namespace glabels
                 QWidget*        mSuggestions;
                 QPlainTextEdit* mInput;
                 QToolButton*    mSendButton;
+                QToolButton*    mAttachButton;
+                QWidget*        mAttachmentBar;
                 QLabel*         mMissingText;
 
                 QString         mClaudePath;
@@ -107,6 +118,9 @@ namespace glabels
                 QString         mSessionId;
                 QString         mPromptFile;
                 QString         mMcpFile;
+                QStringList     mAttachments;        // files waiting to go with the next message
+                QStringList     mExtraDirs;          // folders Claude may read (--add-dir)
+                QStringList     mProcessDirs;        // the folders the running Claude Code was given
                 bool            mBusy = false;
                 bool            mStopping = false;
                 bool            mHasMessages = false;

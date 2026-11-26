@@ -2070,6 +2070,31 @@ Quit Claude Desktop completely and open it again to start using it.</source>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Attach</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach files for Claude to use, such as a logo or a data file.
+You can also drop files here or paste them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach Files for Claude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All files (*);;Images (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.webp);;Data files (*.csv *.tsv *.txt *.json);;gLabels files (*.glabels)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this attachment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attached: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>glabels::ColorHistory</name>

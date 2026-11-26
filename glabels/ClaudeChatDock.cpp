@@ -29,9 +29,14 @@
 #include "model/Model.hpp"
 
 #include <QApplication>
+#include <QClipboard>
 #include <QCoreApplication>
 #include <QDir>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QFile>
+#include <QFileDialog>
+#include <QFileIconProvider>
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QJsonArray>
@@ -40,16 +45,19 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QMenu>
+#include <QMimeData>
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QStackedWidget>
 #include <QStandardPaths>
+#include <QStyle>
 #include <QTextBlock>
 #include <QTextBrowser>
 #include <QTextCursor>
 #include <QTextTable>
 #include <QToolButton>
+#include <QUrl>
 #include <QVBoxLayout>
 
 
@@ -105,7 +113,11 @@ namespace
                         "did or asking one clear question. Don't show XML or code unless asked.\n"
                         "Before saying a design is done, check it with render_preview and fix overlaps, text that "
                         "doesn't fit, and anything outside the label.\n"
-                        "Sizes are in millimetres unless the user uses other units. Ask before overwriting files." )
+                        "Sizes are in millimetres unless the user uses other units. Ask before overwriting files.\n"
+                        "The user can attach files and folders to a message; their full paths are listed after "
+                        "\"Attached files:\". Use them directly: add_image for pictures and logos, set_merge_data "
+                        "for CSV, TSV or JSON data, open_label for .glabels files, and Read for anything else. "
+                        "Don't ask the user to type a path for a file they attached." )
                         .arg( documentId );
         }
 }
@@ -202,12 +214,15 @@ namespace glabels
                 mInput->setPlaceholderText( tr("Ask Claude to design or change your label...") );
                 mInput->setTabChangesFocus( true );
                 mInput->installEventFilter( this );
+                mInput->viewport()->installEventFilter( this );          // drag and drop of files
+                mTranscript->viewport()->setAcceptDrops( true );
+                mTranscript->viewport()->installEventFilter( this );
                 int lineHeight = mInput->fontMetrics().lineSpacing();
                 mInput->setFixedHeight( lineHeight * 3 + 14 );
                 connect( mInput->document(), &QTextDocument::contentsChanged, this, [this, lineHeight]() {
                         int lines = qBound( 3, int( mInput->document()->size().height() ), 8 );
                         mInput->setFixedHeight( lineHeight * lines + 14 );
-                        mSendButton->setEnabled( !mBusy && !mInput->toPlainText().trimmed().isEmpty() );
+                        updateSendButton();
                 } );
 
                 mSendButton = new QToolButton;
@@ -216,10 +231,31 @@ namespace glabels
                 mSendButton->setEnabled( false );
                 connect( mSendButton, &QToolButton::clicked, this, [this]() { send( mInput->toPlainText() ); } );
 
+                mAttachButton = new QToolButton;
+                mAttachButton->setIcon( style()->standardIcon( QStyle::SP_FileIcon ) );
+                mAttachButton->setText( tr("Attach") );
+                mAttachButton->setToolTip( tr("Attach files for Claude to use, such as a logo or a data file.\n"
+                                              "You can also drop files here or paste them.") );
+                mAttachButton->setAutoRaise( true );
+                connect( mAttachButton, &QToolButton::clicked, this, &ClaudeChatDock::chooseAttachments );
+
+                auto* buttons = new QVBoxLayout;
+                buttons->setSpacing( 2 );
+                buttons->addStretch( 1 );
+                buttons->addWidget( mAttachButton, 0, Qt::AlignHCenter );
+                buttons->addWidget( mSendButton, 0, Qt::AlignHCenter );
+
                 auto* inputRow = new QHBoxLayout;
                 inputRow->setContentsMargins( 8, 4, 8, 8 );
                 inputRow->addWidget( mInput, 1 );
-                inputRow->addWidget( mSendButton, 0, Qt::AlignBottom );
+                inputRow->addLayout( buttons );
+
+                // Files waiting to be sent, one row each with a remove button
+                mAttachmentBar = new QWidget;
+                auto* attachmentLayout = new QVBoxLayout( mAttachmentBar );
+                attachmentLayout->setContentsMargins( 8, 4, 8, 0 );
+                attachmentLayout->setSpacing( 0 );
+                mAttachmentBar->setVisible( false );
 
                 auto* chatPage = new QWidget;
                 auto* chatLayout = new QVBoxLayout( chatPage );
@@ -228,6 +264,7 @@ namespace glabels
                 chatLayout->addLayout( header );
                 chatLayout->addWidget( mTranscript, 1 );
                 chatLayout->addWidget( mSuggestions );
+                chatLayout->addWidget( mAttachmentBar );
                 chatLayout->addLayout( inputRow );
 
                 //
@@ -295,9 +332,50 @@ namespace glabels
 
         bool ClaudeChatDock::eventFilter( QObject* watched, QEvent* event )
         {
+                // Files dropped on the message box or the conversation are attached
+                if ( watched == mInput->viewport() || watched == mTranscript->viewport() )
+                {
+                        if ( event->type() == QEvent::DragEnter || event->type() == QEvent::DragMove )
+                        {
+                                auto* drag = static_cast<QDragMoveEvent*>( event );
+                                if ( drag->mimeData()->hasUrls() )
+                                {
+                                        for ( const QUrl& url : drag->mimeData()->urls() )
+                                        {
+                                                if ( url.isLocalFile() )
+                                                {
+                                                        drag->acceptProposedAction();
+                                                        return true;
+                                                }
+                                        }
+                                }
+                        }
+                        else if ( event->type() == QEvent::Drop )
+                        {
+                                auto* drop = static_cast<QDropEvent*>( event );
+                                if ( drop->mimeData()->hasUrls() && addAttachments( drop->mimeData()->urls() ) )
+                                {
+                                        drop->acceptProposedAction();
+                                        mInput->setFocus();
+                                        return true;
+                                }
+                        }
+                }
+
                 if ( watched == mInput && event->type() == QEvent::KeyPress )
                 {
                         auto* key = static_cast<QKeyEvent*>( event );
+
+                        // Files copied in the file manager are attached, not pasted as text
+                        if ( key->matches( QKeySequence::Paste ) )
+                        {
+                                const QMimeData* data = QApplication::clipboard()->mimeData();
+                                if ( data && data->hasUrls() && addAttachments( data->urls() ) )
+                                {
+                                        return true;
+                                }
+                        }
+
                         if ( ( key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter )
                              && !( key->modifiers() & Qt::ShiftModifier ) )
                         {
@@ -349,7 +427,7 @@ namespace glabels
         void ClaudeChatDock::send( const QString& rawText )
         {
                 const QString text = rawText.trimmed();
-                if ( text.isEmpty() || mBusy )
+                if ( ( text.isEmpty() && mAttachments.isEmpty() ) || mBusy )
                 {
                         return;
                 }
@@ -368,16 +446,53 @@ namespace glabels
                         AiBridge::setEnabled( true );
                 }
 
-                appendUser( text );
+                // Claude may read the attached files and folders; a folder it was not
+                // given yet means restarting Claude Code with it (the chat is resumed)
+                const QStringList attachments = mAttachments;
+                for ( const QString& path : attachments )
+                {
+                        QFileInfo info( path );
+                        QString dir = info.isDir() ? info.absoluteFilePath() : info.absolutePath();
+                        if ( !mExtraDirs.contains( dir ) )
+                        {
+                                mExtraDirs << dir;
+                        }
+                }
+                if ( mProcess && mProcessDirs != mExtraDirs )
+                {
+                        mProcess->disconnect( this );
+                        mProcess->kill();
+                        mProcess->waitForFinished( 2000 );
+                        mProcess->deleteLater();
+                        mProcess = nullptr;
+                }
+
+                appendUser( text, attachments );
                 mInput->clear();
+                mAttachments.clear();
+                updateAttachmentBar();
 
                 if ( !mProcess && !startProcess() )
                 {
                         return;
                 }
 
+                QString content = text;
+                if ( !attachments.isEmpty() )
+                {
+                        if ( !content.isEmpty() )
+                        {
+                                content += "\n\n";
+                        }
+                        content += "Attached files:";
+                        for ( const QString& path : attachments )
+                        {
+                                content += "\n- " + QDir::toNativeSeparators( path );
+                        }
+                }
+
                 QJsonObject message{ { "type", "user" },
-                                     { "message", QJsonObject{ { "role", "user" }, { "content", text } } } };
+                                     { "message", QJsonObject{ { "role", "user" }, { "content", content } } } };
                 mProcess->write( QJsonDocument( message ).toJson( QJsonDocument::Compact ) + "\n" );
                 setBusy( true );
         }
@@ -419,6 +534,10 @@ namespace glabels
                         "--tools", "Read,Glob,Grep",
                         "--allowedTools", "mcp__glabels-plus,Read,Glob,Grep",
                 };
+                for ( const QString& dir : mExtraDirs )
+                {
+                        args << "--add-dir" << dir;
+                }
                 if ( !mSessionId.isEmpty() )
                 {
                         args << "--resume" << mSessionId;
@@ -459,6 +578,7 @@ namespace glabels
                         mProcess = nullptr;
                         return false;
                 }
+                mProcessDirs = mExtraDirs;
                 return true;
         }
 
@@ -487,6 +607,9 @@ namespace glabels
                 }
                 mStopping = false;
                 mSessionId.clear();
+                mExtraDirs.clear();
+                mAttachments.clear();
+                updateAttachmentBar();
                 mTranscript->clear();
                 mHasMessages = false;
                 endStream();
@@ -620,7 +743,7 @@ namespace glabels
         {
                 mBusy = busy;
                 mStopButton->setVisible( busy );
-                mSendButton->setEnabled( !busy && !mInput->toPlainText().trimmed().isEmpty() );
+                updateSendButton();
                 if ( busy )
                 {
                         mDots = 0;
@@ -632,6 +755,127 @@ namespace glabels
                         mDotsTimer.stop();
                         mStatus->setText( tr("Ready") );
                 }
+        }
+
+
+        void ClaudeChatDock::updateSendButton()
+        {
+                mSendButton->setEnabled( !mBusy && ( !mInput->toPlainText().trimmed().isEmpty() || !mAttachments.isEmpty() ) );
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////
+        // Attachments
+        ///////////////////////////////////////////////////////////////////////////
+
+        void ClaudeChatDock::chooseAttachments()
+        {
+                QString dir = QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation );
+                if ( !mAttachments.isEmpty() )
+                {
+                        dir = QFileInfo( mAttachments.last() ).absolutePath();
+                }
+                else if ( mWindow->model() && !mWindow->model()->fileName().isEmpty() )
+                {
+                        dir = mWindow->model()->dirPath();
+                }
+
+                QStringList files = QFileDialog::getOpenFileNames(
+                        this, tr("Attach Files for Claude"), dir,
+                        tr("All files (*);;"
+                           "Images (*.png *.jpg *.jpeg *.gif *.bmp *.svg *.webp);;"
+                           "Data files (*.csv *.tsv *.txt *.json);;"
+                           "gLabels files (*.glabels)") );
+
+                QList<QUrl> urls;
+                for ( const QString& file : files )
+                {
+                        urls << QUrl::fromLocalFile( file );
+                }
+                addAttachments( urls );
+                mInput->setFocus();
+        }
+
+
+        bool ClaudeChatDock::addAttachments( const QList<QUrl>& urls )
+        {
+                bool added = false;
+                for ( const QUrl& url : urls )
+                {
+                        if ( !url.isLocalFile() )
+                        {
+                                continue;
+                        }
+                        QFileInfo info( url.toLocalFile() );
+                        if ( !info.exists() )
+                        {
+                                continue;
+                        }
+                        QString path = info.absoluteFilePath();
+                        if ( !mAttachments.contains( path ) )
+                        {
+                                mAttachments << path;
+                        }
+                        added = true;
+                }
+                if ( added )
+                {
+                        updateAttachmentBar();
+                }
+                return added;
+        }
+
+
+        void ClaudeChatDock::removeAttachment( const QString& path )
+        {
+                mAttachments.removeAll( path );
+                updateAttachmentBar();
+        }
+
+
+        void ClaudeChatDock::updateAttachmentBar()
+        {
+                auto* layout = mAttachmentBar->layout();
+                while ( QLayoutItem* item = layout->takeAt( 0 ) )
+                {
+                        if ( item->widget() )
+                        {
+                                item->widget()->deleteLater();
+                        }
+                        delete item;
+                }
+
+                QFileIconProvider icons;
+                for ( const QString& path : mAttachments )
+                {
+                        QFileInfo info( path );
+
+                        auto* row = new QWidget;
+                        auto* rowLayout = new QHBoxLayout( row );
+                        rowLayout->setContentsMargins( 0, 0, 0, 0 );
+                        rowLayout->setSpacing( 4 );
+
+                        auto* icon = new QLabel;
+                        icon->setPixmap( icons.icon( info ).pixmap( 16, 16 ) );
+
+                        auto* name = new QLabel( info.fileName().isEmpty() ? path : info.fileName() );
+                        name->setToolTip( QDir::toNativeSeparators( path ) );
+                        name->setMinimumWidth( 1 );          // never widen the panel
+
+                        auto* remove = new QToolButton;
+                        remove->setText( QString::fromUtf8( "\u00d7" ) );          // ×
+                        remove->setToolTip( tr("Remove this attachment") );
+                        remove->setAutoRaise( true );
+                        connect( remove, &QToolButton::clicked, this, [this, path]() { removeAttachment( path ); } );
+
+                        rowLayout->addWidget( icon );
+                        rowLayout->addWidget( name, 1 );
+                        rowLayout->addWidget( remove );
+                        layout->addWidget( row );
+                }
+
+                mAttachmentBar->setVisible( !mAttachments.isEmpty() );
+                updateSendButton();
         }
 
 
@@ -661,7 +905,7 @@ namespace glabels
         }
 
 
-        void ClaudeChatDock::appendUser( const QString& text )
+        void ClaudeChatDock::appendUser( const QString& text, const QStringList& attachments )
         {
                 endStream();
                 mTurnHeaderShown = false;
@@ -687,6 +931,25 @@ namespace glabels
                 QTextTable* table = cursor.insertTable( 1, 1, format );
                 QTextCursor cell = table->cellAt( 0, 0 ).firstCursorPosition();
                 cell.insertText( text, QTextCharFormat() );
+
+                if ( !attachments.isEmpty() )
+                {
+                        QTextCharFormat fileFormat;
+                        fileFormat.setForeground( palette().color( QPalette::PlaceholderText ) );
+                        fileFormat.setFontPointSize( QApplication::font().pointSizeF() * 0.92 );
+                        bool first = text.isEmpty();
+                        for ( const QString& path : attachments )
+                        {
+                                if ( !first )
+                                {
+                                        cell.insertBlock( QTextBlockFormat(), fileFormat );
+                                }
+                                first = false;
+                                fileFormat.setToolTip( QDir::toNativeSeparators( path ) );
+                                QString name = QFileInfo( path ).fileName();
+                                cell.insertText( tr("Attached: %1").arg( name.isEmpty() ? path : name ), fileFormat );
+                        }
+                }
 
                 scrollToEndIfFollowing( true );
         }
