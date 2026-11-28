@@ -624,6 +624,54 @@ namespace glabels::model
 
 
         ///
+        /// Size the box needs to show its text at the set font size (no shrinking).
+        /// Wrapped text keeps the box width and only needs more height.
+        ///
+        Size ModelTextObject::fitSize() const
+        {
+                if ( mTextWrapMode == QTextOption::NoWrap )
+                {
+                        return naturalSize();
+                }
+
+                QFont font = makeFont( mFontSize );
+
+                QTextOption textOption;
+                textOption.setAlignment( mTextHAlign | Qt::AlignAbsolute );
+                textOption.setWrapMode( mTextWrapMode );
+
+                QFontMetricsF fontMetrics( font );
+                double dy = fontMetrics.lineSpacing() * mTextLineSpacing;
+                double lineWidth = std::max( 1.0, mW.pt() - 2*marginPts );
+
+                QString displayText = mText.isEmpty() ? tr("Text") : merge::DataSourceUtil::toDisplay( mText.toString() );
+                QTextDocument document( displayText );
+
+                double y = 0;
+                QRectF boundingRect;
+                for ( int i = 0; i < document.blockCount(); i++ )
+                {
+                        QTextLayout layout( document.findBlockByNumber(i).text() );
+                        layout.setFont( font );
+                        layout.setTextOption( textOption );
+
+                        layout.beginLayout();
+                        for ( QTextLine l = layout.createLine(); l.isValid(); l = layout.createLine() )
+                        {
+                                l.setLineWidth( lineWidth );
+                                l.setPosition( QPointF( 0, y ) );
+                                y += dy;
+                        }
+                        layout.endLayout();
+
+                        boundingRect = layout.boundingRect().united( boundingRect );
+                }
+
+                return Size( mW, Distance::pt( boundingRect.height() + 2*marginPts ) );
+        }
+
+
+        ///
         /// Can Text Capability Implementation
         ///
         bool ModelTextObject::canText() const

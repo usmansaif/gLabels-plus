@@ -809,6 +809,14 @@ namespace glabels
 
                         mUndoRedoModel->checkpoint( tr("Text") );
 
+                        // Remember the look of the letters: when it gets bigger, the box grows with it
+                        const double oldFontSize      = mObject->fontSize();
+                        const QString oldFontFamily   = mObject->fontFamily();
+                        const QFont::Weight oldWeight = mObject->fontWeight();
+                        const bool oldItalic          = mObject->fontItalicFlag();
+                        const double oldLineSpacing   = mObject->textLineSpacing();
+                        const double oldLetterSpacing = mObject->textLetterSpacing();
+
                         QTextOption::WrapMode wrapMode;
                         switch (textWrapModeCombo->currentIndex())
                         {
@@ -835,8 +843,64 @@ namespace glabels
                         updateTextPathControls();
                         mObject->setText( merge::DataSourceUtil::fromDisplay( textEdit->toPlainText() ) );
 
+                        // Typing more text still shrinks to fit (auto shrink); a bigger font grows the box
+                        if ( mObject->fontSize()          > oldFontSize      ||
+                             mObject->fontFamily()        != oldFontFamily   ||
+                             mObject->fontWeight()        != oldWeight       ||
+                             mObject->fontItalicFlag()    != oldItalic       ||
+                             mObject->textLineSpacing()   > oldLineSpacing   ||
+                             mObject->textLetterSpacing() > oldLetterSpacing )
+                        {
+                                growTextBoxToFit();
+                        }
+
                         mBlocked = false;
                 }
+        }
+
+
+        ///
+        /// Grow the text box so its text shows at the set font size, as far as
+        /// the label allows (keeping the usual edge margin). The box grows around
+        /// its alignment: centered text grows both ways, right-aligned text to the left.
+        ///
+        void ObjectEditor::growTextBoxToFit()
+        {
+                auto* text = dynamic_cast<model::ModelTextObject*>( mObject );
+                if ( !text || !mModel || text->textPath() != model::TextPath::Straight || !text->matrix().isIdentity() )
+                {
+                        return;
+                }
+
+                const double margin = model::Distance::mm( 1.5 ).pt();
+                const double labelW = mModel->w().pt();
+                const double labelH = mModel->h().pt();
+
+                model::Size need = text->fitSize();
+
+                double x = text->x0().pt(), w = text->w().pt();
+                double y = text->y0().pt(), h = text->h().pt();
+                double newW = std::max( w, std::min( need.w().pt(), labelW - 2*margin ) );
+                double newH = std::max( h, std::min( need.h().pt(), labelH - 2*margin ) );
+                if ( newW <= w + 0.01 && newH <= h + 0.01 )
+                {
+                        return;   // already fits
+                }
+
+                // Grow around the alignment point
+                Qt::Alignment hAlign = text->textHAlign();
+                Qt::Alignment vAlign = text->textVAlign();
+                if ( hAlign & Qt::AlignHCenter )      x -= ( newW - w ) / 2;
+                else if ( hAlign & Qt::AlignRight )   x -= ( newW - w );
+                if ( vAlign & Qt::AlignVCenter )      y -= ( newH - h ) / 2;
+                else if ( vAlign & Qt::AlignBottom )  y -= ( newH - h );
+
+                // Keep it on the label
+                x = std::max( margin, std::min( x, labelW - margin - newW ) );
+                y = std::max( margin, std::min( y, labelH - margin - newH ) );
+
+                text->setPosition( model::Distance::pt( x ), model::Distance::pt( y ) );
+                text->setSize( model::Distance::pt( newW ), model::Distance::pt( newH ) );
         }
 
 

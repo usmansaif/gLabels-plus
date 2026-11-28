@@ -201,6 +201,13 @@ namespace glabels::model
                 Size naturalSize() const override;
 
 
+                //
+                // Size the box needs to show its text at the set font size,
+                // keeping the current width when the text wraps
+                //
+                Size fitSize() const;
+
+
                 ///////////////////////////////////////////////////////////////
                 // Capability Implementations
                 ///////////////////////////////////////////////////////////////

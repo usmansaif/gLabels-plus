@@ -87,6 +87,13 @@ namespace
         const QColor  guideTextColor( 255, 255, 255 );
         const double  snapTolerancePixels = 5;
         const double  selectRegionOutlineWidthPixels = 3;
+
+        // Multi-object selection box: resized from its corners, aspect ratio kept
+        const QColor  groupBoxColor( 0, 0, 255, 160 );
+        const QColor  groupHandleFillColor( 0, 192, 0, 96 );   // same look as object handles
+        const QColor  groupHandleOutlineColor( 0, 0, 0, 192 );
+        const double  groupHandlePixels     = 7;
+        const double  groupHandleGrabPixels = 11;
 }
 
 
@@ -761,8 +768,35 @@ namespace glabels
                                 {
                                         model::ModelObject* object = nullptr;
                                         auto& handle = mModel->handleAt( mScale, xWorld, yWorld );
+                                        const int groupCorner = groupHandleAt( pWorld );
 
-                                        if ( mModel->isSelectionAtomic() && !handle.isNull() )
+                                        if ( groupCorner >= 0 )
+                                        {
+                                                //
+                                                // Start a resize of the whole selection, keeping its
+                                                // aspect ratio: the opposite corner stays where it is
+                                                //
+                                                mGroupResizeStartBox = selectionExtent();
+                                                mGroupResizeBox = mGroupResizeStartBox;
+                                                const QRectF& b = mGroupResizeStartBox;
+                                                const QPointF corners[4] = { b.topLeft(), b.topRight(),
+                                                                             b.bottomRight(), b.bottomLeft() };
+                                                mGroupResizeAnchor = corners[ (groupCorner + 2) % 4 ];
+
+                                                mGroupResizeItems.clear();
+                                                for ( auto* o : mModel->getSelection() )
+                                                {
+                                                        mGroupResizeItems << GroupResizeItem{
+                                                                o,
+                                                                QPointF( o->x0().pt(), o->y0().pt() ),
+                                                                QSizeF( o->w().pt(), o->h().pt() ),
+                                                                o->canText() ? o->fontSize() : 0.0,
+                                                                o->canLineWidth() ? o->lineWidth().pt() : 0.0 };
+                                                }
+
+                                                mState = ArrowGroupResize;
+                                        }
+                                        else if ( mModel->isSelectionAtomic() && !handle.isNull() )
                                         {
                                                 //
                                                 // Start an object resize
@@ -963,7 +997,11 @@ namespace glabels
                         {
 
                         case IdleState:
-                                if ( mModel->isSelectionAtomic() &&
+                                if ( int c = groupHandleAt( pWorld ); c >= 0 )
+                                {
+                                        setCursor( (c % 2 == 0) ? Qt::SizeFDiagCursor : Qt::SizeBDiagCursor );
+                                }
+                                else if ( mModel->isSelectionAtomic() &&
                                      !mModel->handleAt( mScale, xWorld, yWorld ).isNull() )
                                 {
                                         setCursor( resizeCursor( mModel->handleAt( mScale, xWorld, yWorld ) ) );
@@ -1022,6 +1060,12 @@ namespace glabels
                         case ArrowResize:
                                 mUndoRedoModel->checkpoint( tr("Resize") );
                                 handleResizeMotion( xWorld, yWorld );
+                                break;
+
+                        case ArrowGroupResize:
+                                mUndoRedoModel->checkpoint( tr("Resize") );
+                                handleGroupResizeMotion( pWorld );
+                                update();
                                 break;
 
                         case ArrowRotate:
@@ -1097,7 +1141,8 @@ namespace glabels
 
                         }
 
-                        if ( mState == ArrowMove || mState == ArrowResize || mState == ArrowRotate || mState == CreateDrag )
+                        if ( mState == ArrowMove || mState == ArrowResize || mState == ArrowGroupResize ||
+                             mState == ArrowRotate || mState == CreateDrag )
                         {
                                 showDragInfo( event->pos() );
                         }
@@ -1137,6 +1182,12 @@ namespace glabels
                                 {
 
                                 case ArrowResize:
+                                        mState = IdleState;
+                                        update();
+                                        break;
+
+                                case ArrowGroupResize:
+                                        mGroupResizeItems.clear();
                                         mState = IdleState;
                                         update();
                                         break;
@@ -1460,6 +1511,13 @@ namespace glabels
                                 return;
                         }
                         text = tr("Angle: %1°").arg( QString::number( mRotateObject->rotation(), 'f', 1 ) );
+                }
+                else if ( mState == ArrowGroupResize )
+                {
+                        text = tr("W: %1  H: %2 %3")
+                                .arg( fmt( model::Distance::pt( mGroupResizeBox.width() ) ),
+                                      fmt( model::Distance::pt( mGroupResizeBox.height() ) ),
+                                      units.toIdString() );
                 }
                 else
                 {
@@ -2035,6 +2093,132 @@ namespace glabels
                         {
                                 object->drawSelectionHighlight( painter, mScale );
                         }
+                }
+
+                painter->restore();
+
+                drawGroupHandles( painter );
+        }
+
+
+        ///
+        /// Whether the selection can be resized as one: two or more objects, none locked
+        ///
+        bool
+        LabelEditor::canGroupResize() const
+        {
+                if ( !mModel || mModel->isSelectionEmpty() || mModel->isSelectionAtomic() )
+                {
+                        return false;
+                }
+                for ( auto* object : mModel->getSelection() )
+                {
+                        if ( object->isLocked() )
+                        {
+                                return false;
+                        }
+                }
+                return selectionExtent().isValid();
+        }
+
+
+        ///
+        /// Corner handle of the selection's bounding box under pWorld, or -1
+        ///
+        int
+        LabelEditor::groupHandleAt( const QPointF& pWorld ) const
+        {
+                if ( !canGroupResize() )
+                {
+                        return -1;
+                }
+                const QRectF b = selectionExtent();
+                const QPointF corners[4] = { b.topLeft(), b.topRight(), b.bottomRight(), b.bottomLeft() };
+                const double c = groupHandleGrabPixels / (2*mScale);
+                for ( int i = 0; i < 4; i++ )
+                {
+                        if ( qAbs( pWorld.x() - corners[i].x() ) <= c && qAbs( pWorld.y() - corners[i].y() ) <= c )
+                        {
+                                return i;
+                        }
+                }
+                return -1;
+        }
+
+
+        ///
+        /// Scale every selected object about the anchor corner by the same factor,
+        /// so the group keeps its aspect ratio (and so does every object in it)
+        ///
+        void
+        LabelEditor::handleGroupResizeMotion( const QPointF& pWorld )
+        {
+                const QRectF& b0 = mGroupResizeStartBox;
+                if ( b0.width() <= 0 && b0.height() <= 0 )
+                {
+                        return;
+                }
+
+                // Use whichever direction the pointer has pulled further
+                const double sx = b0.width()  > 0 ? qAbs( pWorld.x() - mGroupResizeAnchor.x() ) / b0.width()  : 0;
+                const double sy = b0.height() > 0 ? qAbs( pWorld.y() - mGroupResizeAnchor.y() ) / b0.height() : 0;
+                const double minSize = 1.0;   // pt: never shrink the group to nothing
+                const double sMin = minSize / std::max( b0.width(), b0.height() );
+                const double s = std::max( std::max( sx, sy ), sMin );
+
+                for ( const auto& item : mGroupResizeItems )
+                {
+                        auto* o = item.object;
+                        const QPointF origin = mGroupResizeAnchor + s * (item.origin - mGroupResizeAnchor);
+                        o->setSize( model::Distance::pt( item.size.width()  * s ),
+                                    model::Distance::pt( item.size.height() * s ) );
+                        o->setPosition( model::Distance::pt( origin.x() ),
+                                        model::Distance::pt( origin.y() ) );
+                        if ( item.fontSize > 0 )
+                        {
+                                o->setFontSize( item.fontSize * s );
+                        }
+                        if ( item.lineWidth > 0 )
+                        {
+                                o->setLineWidth( model::Distance::pt( item.lineWidth * s ) );
+                        }
+                }
+
+                mGroupResizeBox = QRectF( mGroupResizeAnchor + s * (b0.topLeft()     - mGroupResizeAnchor),
+                                          mGroupResizeAnchor + s * (b0.bottomRight() - mGroupResizeAnchor) ).normalized();
+        }
+
+
+        ///
+        /// Bounding box and corner handles of a multi-object selection
+        ///
+        void
+        LabelEditor::drawGroupHandles( QPainter* painter )
+        {
+                if ( !canGroupResize() )
+                {
+                        return;
+                }
+
+                const QRectF b = selectionExtent();
+                const double s = 1.0 / mScale;
+
+                painter->save();
+
+                QPen dash( groupBoxColor, 1, Qt::DashLine );
+                dash.setCosmetic( true );
+                painter->setPen( dash );
+                painter->setBrush( Qt::NoBrush );
+                painter->drawRect( b );
+
+                QPen pen( groupHandleOutlineColor );
+                pen.setCosmetic( true );
+                painter->setPen( pen );
+                painter->setBrush( groupHandleFillColor );
+                for ( const QPointF& p : { b.topLeft(), b.topRight(), b.bottomRight(), b.bottomLeft() } )
+                {
+                        painter->drawRect( QRectF( p.x() - s*groupHandlePixels/2, p.y() - s*groupHandlePixels/2,
+                                                   s*groupHandlePixels, s*groupHandlePixels ) );
                 }
 
                 painter->restore();

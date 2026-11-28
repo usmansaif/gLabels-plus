@@ -78,6 +78,15 @@
   </screenshots>
   <translation type="qt">glabels-qt/translations/glabels</translation>
   <releases>
+    <release version="5.1.6" date="2026-11-28">
+      <description>
+        <ul>
+          <li>Resize a group or several objects at once with their proportions kept</li>
+          <li>Text boxes grow to fit a bigger font</li>
+          <li>Esc on the Print page goes back to the editor</li>
+        </ul>
+      </description>
+    </release>
     <release version="5.1.5" date="2026-11-26">
       <description>
         <ul>

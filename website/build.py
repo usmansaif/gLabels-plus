@@ -26,10 +26,10 @@ SITE_URL = "https://usmansaif.github.io/gLabels-plus/"
 REPO_URL = "https://github.com/usmansaif/gLabels-plus"
 RELEASES_URL = REPO_URL + "/releases"
 NAME = "gLabels Plus"
-VERSION = "5.1.5"
-RELEASE_DATE = "2026-11-26"          # ISO date of the release named by VERSION
-UPDATED = "2026-11-26"               # last content update, shown on every page
-UPDATED_HUMAN = "26 November 2026"
+VERSION = "5.1.6"
+RELEASE_DATE = "2026-11-28"          # ISO date of the release named by VERSION
+UPDATED = "2026-11-28"               # last content update, shown on every page
+UPDATED_HUMAN = "28 November 2026"
 RELEASE_TAG = "v" + VERSION          # GitHub release tag the download buttons fall back to
 PKG_VERSION = "5.1"                  # version string used in the release asset file names
 DOWNLOAD_BASE = f"{RELEASES_URL}/download/{RELEASE_TAG}/"
@@ -151,6 +151,9 @@ LATEST = [
          how="Product chooser &gt; <b>Barcode labels</b> category"),
 ]
 LATEST_MINOR = [
+    "Resize a group or several objects at once: drag a corner of the selection box, proportions stay locked",
+    "Text boxes grow to fit when you pick a bigger font, around their alignment and within the label",
+    "Esc on the Print page goes back to the editor",
     "Attach files to Claude chat messages: drop, paste or pick a logo or data file",
     "Install Claude Code from the chat panel or Tools &gt; Connect AI &gt; Claude, then connect it in one step",
     "Ready for Flatpak: new application ID io.github.usmansaif.gLabels-plus and a scalable app icon",

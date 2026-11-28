@@ -1,6 +1,6 @@
 # gLabels Plus
 
-> gLabels Plus is a free, open-source (GPL v3) label and business card designer for Linux, Windows and macOS. It makes barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge from CSV, over 1,800 templates from 70+ brands and 24 thermal roll printer presets. Latest version: 5.1.5 (2026-11-26). Maintainer: Usman Saif (https://usmansaif.com). Based on gLabels by Jaye Evins.
+> gLabels Plus is a free, open-source (GPL v3) label and business card designer for Linux, Windows and macOS. It makes barcode, QR code, address, shipping and product labels, name badges, CD/DVD labels and business cards, with mail merge from CSV, over 1,800 templates from 70+ brands and 24 thermal roll printer presets. Latest version: 5.1.6 (2026-11-28). Maintainer: Usman Saif (https://usmansaif.com). Based on gLabels by Jaye Evins.
 
 ## Key facts
 - Price: free, no account, no trial, no watermark
@@ -17,13 +17,13 @@
 ## Pages
 - [Home](https://usmansaif.github.io/gLabels-plus/): Free, open-source, offline label designer for Windows, Linux and macOS. 1,800+ templates, CSV mail merge and barcode labels for Zebra, TSC and Xprinter.
 - [Features](https://usmansaif.github.io/gLabels-plus/features.html): All gLabels Plus features: barcodes and QR codes, CSV mail merge, 1,800+ templates, thermal roll presets, Projects, one-key tools and print to PDF.
-- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.1.5 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
-- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.1.5 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
+- [Download](https://usmansaif.github.io/gLabels-plus/download.html): Download gLabels Plus 5.1.6 free: AppImage, .deb and .rpm for Linux, installer and portable .zip for Windows, .dmg for macOS, or build from source.
+- [What's New](https://usmansaif.github.io/gLabels-plus/whats-new.html): gLabels Plus 5.1.6 release notes: sample label library, single-key tool shortcuts, quick font search, Projects, page selector, 24 thermal barcode label sizes, splash screen and more.
 - [Barcode Labels](https://usmansaif.github.io/gLabels-plus/barcode-labels.html): 24 free barcode label templates for Zebra, TSC, Xprinter and Godex thermal printers, from 30 × 15 mm and 50 × 25 mm to 4 × 6 inch shipping labels.
 - [FAQ](https://usmansaif.github.io/gLabels-plus/faq.html): Is gLabels Plus free? Does it print Avery and Zebra labels, barcodes, QR codes and mail merge from Excel? Answers to the most common questions.
 - [Donate](https://usmansaif.github.io/gLabels-plus/donate.html): gLabels Plus is free and open source. Support it by donating, sponsoring a feature, starring it on GitHub or contributing templates and translations.
 
-## What's new in 5.1.5
+## What's new in 5.1.6
 - Design labels with Claude: Describe a label in your own words and Claude picks the stock, lays out text, barcodes, QR codes and symbols, checks a preview and fixes what doesn't fit, while you watch in the editor.
 - Social media logos and your own symbols: 31 social media and review logos (Facebook, Instagram, X, TikTok, YouTube, WhatsApp, LinkedIn, Google, Tripadvisor and more) join the symbols, now 151 in all. Add your own SVG files as symbols too; they stay on your computer and appear under My Symbols.
 - Ribbon and label cost estimator: Tools > Ribbon & Label Cost Estimator works out the label rolls and thermal transfer ribbons a job needs, the amount to buy and the cost per label, in any currency. Enter the label size, gap, labels across, labels per roll, roll price, ribbon length and ribbon price; direct thermal jobs leave the ribbon out.
@@ -40,6 +40,9 @@
 - Projects: Keep each business or client's labels together in one folder that's easy to back up or share.
 - Page selector: Change the page (product) at any time. Objects keep their positions and sizes, and one Undo reverts it.
 - 24 barcode label sizes: Thermal roll presets for Zebra, TSC, Xprinter and Godex, from 30 × 15 mm jewelry tags to 4 × 6″ shipping labels.
+- Resize a group or several objects at once: drag a corner of the selection box, proportions stay locked
+- Text boxes grow to fit when you pick a bigger font, around their alignment and within the label
+- Esc on the Print page goes back to the editor
 - Attach files to Claude chat messages: drop, paste or pick a logo or data file
 - Install Claude Code from the chat panel or Tools > Connect AI > Claude, then connect it in one step
 - Ready for Flatpak: new application ID io.github.usmansaif.gLabels-plus and a scalable app icon

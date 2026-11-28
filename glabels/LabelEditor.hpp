@@ -180,6 +180,13 @@ namespace glabels
                 void handleResizeMotion( model::Distance xWorld,
                                          model::Distance yWorld );
 
+                /// Multi-object selection: corner handle of its bounding box under pWorld
+                /// (0 = top-left, 1 = top-right, 2 = bottom-right, 3 = bottom-left), or -1
+                int  groupHandleAt( const QPointF& pWorld ) const;
+                bool canGroupResize() const;
+                void handleGroupResizeMotion( const QPointF& pWorld );
+                void drawGroupHandles( QPainter* painter );
+
                 /// Selected object whose rotate zone (just outside a corner) is under pWorld,
                 /// or nullptr; outwardDeg receives the screen direction of that corner
                 model::ModelObject* rotateTargetAt( const QPointF& pWorld, double* outwardDeg );
@@ -224,6 +231,7 @@ namespace glabels
                         ArrowSelectRegion,
                         ArrowMove,
                         ArrowResize,
+                        ArrowGroupResize,
                         ArrowRotate,
                         CreateIdle,
                         CreateDrag,
@@ -280,6 +288,19 @@ namespace glabels
                 model::ModelObject*     mResizeObject;
                 model::Handle::Location mResizeHandleLocation;
                 bool                    mResizeHonorAspect;
+
+                /* ArrowGroupResize state (whole selection scaled with its aspect ratio kept) */
+                struct GroupResizeItem {
+                        model::ModelObject* object;
+                        QPointF             origin;     // x0, y0 (pt)
+                        QSizeF              size;       // w, h (pt)
+                        double              fontSize;
+                        double              lineWidth;  // pt
+                };
+                QList<GroupResizeItem>  mGroupResizeItems;
+                QRectF                  mGroupResizeStartBox;
+                QPointF                 mGroupResizeAnchor;      // corner that stays put (pt)
+                QRectF                  mGroupResizeBox;         // current box, for drag info
 
                 /* ArrowRotate state */
                 model::ModelObject*     mRotateObject{ nullptr };

@@ -102,6 +102,7 @@ namespace glabels
                 void onRectSizeControlsChanged();
                 void onLineSizeControlsChanged();
                 void onTextControlsChanged();
+                void growTextBoxToFit();
                 void onTextInsertFieldKeySelected( QString key );
                 void onBarcodeControlsChanged();
                 void onBarcodeInsertFieldKeySelected( QString key );

@@ -63,6 +63,7 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QShortcut>
 #include <QShowEvent>
 #include <QTimer>
 #include <QClipboard>
@@ -256,6 +257,11 @@ namespace glabels
 
                 // Add "Print" page
                 mPages->addWidget( printPage );
+                // Esc on the Print page goes back to the editor (Ctrl+P opens it).
+                // A popup (printer list, spin box) still takes Esc first.
+                auto* printEscape = new QShortcut( QKeySequence( Qt::Key_Escape ), printPage );
+                printEscape->setContext( Qt::WidgetWithChildrenShortcut );
+                connect( printEscape, &QShortcut::activated, this, &MainWindow::fileShowEditorPage );
                 mPrintButton = new QToolButton( this );
                 mPrintButton->setIcon( QIcon::fromTheme( "glabels-print" ) );
                 mPrintButton->setText( tr("Print") );
